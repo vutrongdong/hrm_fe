@@ -1,0 +1,83 @@
+{
+  "title": {
+    "login": "Đăng nhập",
+    "home": "Trang chủ",
+    "user": {
+      "index": "User",
+      "detail": "Chi tiết user",
+      "create": "Thêm mới user",
+      "edit": "Chỉnh sửa user"
+    },
+    "role": {
+      "index": "Quyền truy cập",
+      "detail": "Chi tiết quyền try cập",
+      "create": "Thêm mới quyền try cập",
+      "edit": "Chỉnh sửa quyền try cập"
+    },
+    "account": {
+      "change-password": "Đổi mật khẩu",
+      "change-information": "Thông tin cá nhân"
+    }
+  },
+  "label": {
+    "name": "Tên",
+    "email": "Email",
+    "password": "Mật khẩu",
+    "password_confirmation": "Nhập lại mật khẩu",
+    "salutation": "Danh xưng",
+    "first_name": "Tên gọi",
+    "last_name": "Họ",
+    "company_name": "Tên công ty",
+    "display_name": "Tên hiển thị",
+    "home_phone": "Điện thoại nhà",
+    "phone": "Điện thoại",
+    "skype": "Skype",
+    "website": "Website",
+    "type": "Loại",
+    "facebook": "Facebook",
+    "twitter": "Twitter",
+    "street": "Đường phố",
+    "city": "Tỉnh thành",
+    "district": "Quận huyện",
+    "note": "Ghi chú",
+    "sku": "Sku",
+    "unit": "Đơn vị",
+    "manufacturer": "Nhà sản xuất",
+    "brand": "Thương hiệu",
+    "price": "Giá",
+    "sale_price": "Giá bán",
+    "purchase_price": "Giá mua",
+    "description": "Mô tả",
+    "value": "Giá trị",
+    "warehouse": "Kho hàng",
+    "quantity": "Số lượng",
+    "reference": "Tài liệu tham khảo",
+    "reason": "Lý do",
+    "slug": "Slug",
+    "uuid": "Mã",
+    "old_password": "Mật khẩu hiện tại",
+    "new_password": "Mật khẩu mới",
+    "new_password_confirmation": "Nhập lại mật khẩu mới"
+  },
+  "alert": {
+    "invalid": "Vui lòng kiểm tra thông tin cần nhập",
+    "success": "Thành công",
+    "failed": "Thất bại",
+    "error": "Lỗi",
+    "not-found": "Tài nguyên không tồn tại trên hệ thống",
+    "confirm": "Xác nhận",
+    "confirm_delete": "Bạn chắc chắn muốn xóa bản ghi này?",
+    "accept": "Đồng ý",
+    "donot": "Không"
+  },
+  "control": {
+    "create": "Thêm mới",
+    "add": "Thêm",
+    "update": "Cập nhật",
+    "edit": "Chỉnh sửa",
+    "save": "Lưu lại",
+    "active": "Kích hoạt",
+    "lock": "Khóa",
+    "change-password": "Đổi mật khẩu"
+  }
+}
