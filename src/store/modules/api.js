@@ -50,20 +50,20 @@ const actions = {
                   msg.push('&bullet; ' + err[0])
                 }
               })
-              dispatch('showNotify', {text: msg.join('<br />'), color: 'warning'})
+              dispatch('showNotify', { text: msg.join('<br />'), color: 'warning' })
               break
             case 403:
-              dispatch('showNotify', {text: 'Bạn không có quyền thực hiện tác vụ này', color: 'warning'})
-              router.push({name: 'forbidden'})
+              dispatch('showNotify', { text: 'Bạn không có quyền thực hiện tác vụ này', color: 'warning' })
+              router.push({ name: 'forbidden' })
               break
             case 401:
-              dispatch('showNotify', {text: 'Phiên đăng nhập hết hạn vui lòng đăng nhập', color: 'warning'})
+              dispatch('showNotify', { text: 'Phiên đăng nhập hết hạn vui lòng đăng nhập', color: 'warning' })
               dispatch('clearLogged')
-              router.push({name: 'login'})
+              router.push({ name: 'login' })
               break
             case 500:
-              dispatch('showNotify', {text: 'Máy chủ sảy ra sự cố vui lòng thử lại sau', color: 'error'})
-              router.push({name: 'opps'})
+              dispatch('showNotify', { text: 'Máy chủ sảy ra sự cố vui lòng thử lại sau', color: 'error' })
+              router.push({ name: 'opps' })
               break
           }
         }

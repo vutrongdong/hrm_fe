@@ -105,14 +105,14 @@ export default {
   watch: {
     userProfile: {
       handler: function (newVal) {
-        this.account = {...this.account, ...newVal}
+        this.account = { ...this.account, ...newVal }
       },
       deep: true
     }
   },
   mounted () {
     if (this.userProfile.id) {
-      this.account = {...this.account, ...this.userProfile}
+      this.account = { ...this.account, ...this.userProfile }
     }
   }
 }

@@ -88,14 +88,14 @@ export default{
   methods: {
     ...mapActions(['getAllPermission']),
     setInitData () {
-      let initData = {...this.dataRole}
+      let initData = { ...this.dataRole }
       initData.permissions = map(initData.permissions, (value, key) => key)
-      this.role = {...this.role, ...initData}
+      this.role = { ...this.role, ...initData }
     },
     validateBeforeSubmit () {
       this.$validator.validateAll().then(result => {
         if (result) {
-          let submitData = {...this.role}
+          let submitData = { ...this.role }
           submitData.permissions = chain(submitData.permissions).map((value) => {
             return [value, true]
           }).fromPairs()

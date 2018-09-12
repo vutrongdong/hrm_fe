@@ -38,3 +38,6 @@ export const SET_PERMISSION = 'PERMISSION/SET_PERMISSION'
 export const SET_ALL_PERMISSION = 'PERMISSION/SET_ALL_PERMISSION'
 // role
 export const SET_ROLE = 'USER/SET_ROLE'
+
+// branch
+export const SET_BRANCH = 'BRANCH/SET_BRANCH'

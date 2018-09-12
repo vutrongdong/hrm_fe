@@ -152,13 +152,13 @@ export default{
   methods: {
     ...mapActions(['fetchApi']),
     setInitData () {
-      let dataUser = {...this.dataUser}
+      let dataUser = { ...this.dataUser }
       if (dataUser.roles) {
         dataUser.roles = map(dataUser.roles.data, (role) => {
           return role.id
         })
       }
-      this.user = {...this.user, ...dataUser}
+      this.user = { ...this.user, ...dataUser }
     },
     validateBeforeSubmit () {
       this.$validator.validateAll().then(result => {

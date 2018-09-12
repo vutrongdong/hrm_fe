@@ -86,13 +86,13 @@ export default{
     ...mapActions('Role', ['setRole']),
     roleDetail (role) {
       this.setRole({ role })
-      this.$router.push({name: 'role-detail', params: {id: role.id}})
+      this.$router.push({ name: 'role-detail', params: { id: role.id } })
     }
   },
   mounted () {
     this.dataViewHeight = this.$refs.laylout.clientHeight - 49
 
-    let query = {...this.$route.query}
+    let query = { ...this.$route.query }
     if (query.hasOwnProperty('reload')) {
       this.$nextTick(() => {
         this.$refs[this.dataViewName].$emit('reload')

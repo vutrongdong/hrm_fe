@@ -14,6 +14,13 @@
       "create": "Thêm mới quyền try cập",
       "edit": "Chỉnh sửa quyền try cập"
     },
+    "branch": {
+      "name": "branch",
+      "index": "List branch",
+      "detail": "Thông tin chi nhánh",
+      "create": "Thêm mới Chi nhánh",
+      "edit": "Chỉnh sửa sửa chi nhánh"
+    },
     "account": {
       "change-password": "Đổi mật khẩu",
       "change-information": "Thông tin cá nhân"
@@ -22,7 +29,17 @@
   "label": {
     "name": "Tên",
     "email": "Email",
+    "about":"Thông tin",
+    "address":"Địa Chỉ",
+    "instagram":"instagram",
+    "city_id":"city",
     "password": "Mật khẩu",
+    "zalo":"zalo",
+    "tax_number":"mã số thuế",
+    "status":"trạng thái",
+    "district_id":"Quận huyện",
+    "ward_id":"Xã phường",
+    "bank":"Ngân hàng",
     "password_confirmation": "Nhập lại mật khẩu",
     "salutation": "Danh xưng",
     "first_name": "Tên gọi",
@@ -37,7 +54,7 @@
     "facebook": "Facebook",
     "twitter": "Twitter",
     "street": "Đường phố",
-    "city": "Tỉnh thành",
+    "branch": "Tỉnh thành",
     "district": "Quận huyện",
     "note": "Ghi chú",
     "sku": "Sku",

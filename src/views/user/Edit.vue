@@ -53,7 +53,7 @@ export default{
             text: 'Thành công'
           })
 
-          this.setUser({user: response.data})
+          this.setUser({ user: response.data })
 
           this.updateDataviewEntry({
             name: 'user',
@@ -72,7 +72,7 @@ export default{
   created () {
     this.setMiniDrawer(true)
     if (!this.userDetail.id) {
-      this.getUser({ userId: this.$route.params.id, params: {include: 'roles'} })
+      this.getUser({ userId: this.$route.params.id, params: { include: 'roles' } })
     }
   },
   mounted () {

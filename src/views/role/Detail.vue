@@ -70,9 +70,9 @@ export default{
       search: '',
       dataViewHeight: 0,
       headers: [
-        {text: 'Nhóm quyền', value: 'group'},
-        {text: 'Tên', value: 'name'},
-        {text: 'slug', value: 'slug'}
+        { text: 'Nhóm quyền', value: 'group' },
+        { text: 'Tên', value: 'name' },
+        { text: 'slug', value: 'slug' }
       ],
       pagination: {
         sortBy: 'name'
@@ -105,7 +105,7 @@ export default{
               color: 'success'
             })
             this.dialogDelete = false
-            this.$router.push({name: 'role'})
+            this.$router.push({ name: 'role' })
           },
           error: (error) => {
             if (error.status === 404) {
@@ -131,7 +131,7 @@ export default{
               text: this.$t('alert.not-found'),
               color: 'warning'
             })
-            this.$router.push({name: 'role'})
+            this.$router.push({ name: 'role' })
           }
         }
       })

@@ -50,7 +50,7 @@ export default{
             text: 'Thành công'
           })
 
-          this.setRole({role: response.data})
+          this.setRole({ role: response.data })
 
           this.updateDataviewEntry({
             name: 'role',

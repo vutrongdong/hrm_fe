@@ -50,12 +50,12 @@ const actions = {
         success: (response) => {
           commit(SET_PROFILE, response.data)
           if (response.data.setting) {
-            dispatch('Setting/setSetting', {settings: response.data.setting.data})
+            dispatch('Setting/setSetting', { settings: response.data.setting.data })
           }
           if (response.data.roles) {
             let permissions = {}
             forEach(response.data.roles.data, (role) => {
-              permissions = {...permissions, ...role.permissions}
+              permissions = { ...permissions, ...role.permissions }
             })
             dispatch('setPermissons', { permissions })
           }
