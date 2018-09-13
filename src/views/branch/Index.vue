@@ -7,9 +7,9 @@
 </template>
 
 <script>
-import List from './Listting';
+import List from './Listting'
 export default{
-  components:{
+  components: {
     List
   }
 }

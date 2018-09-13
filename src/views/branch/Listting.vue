@@ -49,39 +49,39 @@ import DataView from '@/components/DataView/DataView'
 import NoData from '@/components/NoData'
 import { mapActions } from 'vuex'
 export default {
- name: 'BranchListting',
- components:{
-  DataView,
-  NoData
-},
-data: () => ({
-  dataViewHeight: 0,
-  dataViewName: 'branch',
-  params: {
-    q:''
-  }
-}),
-methods:{
-  ...mapActions('branch',['getBranch']),
-  branchDetail(branch){
-    this.getBranch({ branchId:branch.id})
-    this.$router.push({ name: 'branch-detail', params: { id: branch.id } })
-  }
-},
-mounted () {
-  this.dataViewHeight = this.$refs.laylout.clientHeight - 49
+  name: 'BranchListting',
+  components: {
+    DataView,
+    NoData
+  },
+  data: () => ({
+    dataViewHeight: 0,
+    dataViewName: 'branch',
+    params: {
+      q: ''
+    }
+  }),
+  methods: {
+    ...mapActions('Branch',['getBranch']),
+    branchDetail (branch) {
+      this.getBranch({ branchId: branch.id, params: { include: 'branch' } })
+      this.$router.push({ name: 'branch-detail', params: { id: branch.id } })
+    }
+  },
+  mounted () {
+    this.dataViewHeight = this.$refs.laylout.clientHeight - 49
 
-  let query = { ...this.$route.query }
-  if (query.hasOwnProperty('reload')) {
-    this.$nextTick(() => {
-      this.$refs[this.dataViewName].$emit('reload')
-    })
-    delete query.reload
-    this.$router.replace({
-      query: query
-    })
+    let query = { ...this.$route.query }
+    if (query.hasOwnProperty('reload')) {
+      this.$nextTick(() => {
+        this.$refs[this.dataViewName].$emit('reload')
+      })
+      delete query.reload
+      this.$router.replace({
+        query: query
+      })
+    }
   }
-}
 }
 </script>
 <style>

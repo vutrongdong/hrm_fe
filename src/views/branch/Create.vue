@@ -9,11 +9,11 @@
 import BranchForm from './Form'
 import { mapActions } from 'vuex'
 export default{
-  name:'CreateForm',
-  components:{
+  name: 'CreateForm',
+  components: {
     BranchForm
   },
-  methods:{
+  methods: {
     ...mapActions(['showNotify', 'setMiniDrawer']),
     ...mapActions('branch', ['createBranch']),
     submitForm (formData) {

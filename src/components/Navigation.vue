@@ -105,26 +105,26 @@ export default {
   data () {
     return {
       items: [
-      {
-        icon: 'fas fa-object-group',
-        text: this.$t('title.home'),
-        router: { name: 'home' },
-        access_permission: true
-      },
-      // {
-      //   icon: 'fas fa-object-group',
-      //   text: this.$t('title.item.index'),
-      //   access_permission: 'item.view',
-      //   model: false,
-      //   children: [
-      //   {
-      //     icon: 'fas fa-cube',
-      //     text: this.$t('title.item.index'),
-      //     router: { name: 'item' },
-      //     access_permission: 'item.view'
-      //   }
-      //   ]
-      // },
+        {
+          icon: 'fas fa-object-group',
+          text: this.$t('title.home'),
+          router: { name: 'home' },
+          access_permission: true
+        },
+        // {
+        //   icon: 'fas fa-object-group',
+        //   text: this.$t('title.item.index'),
+        //   access_permission: 'item.view',
+        //   model: false,
+        //   children: [
+        //   {
+        //     icon: 'fas fa-cube',
+        //     text: this.$t('title.item.index'),
+        //     router: { name: 'item' },
+        //     access_permission: 'item.view'
+        //   }
+        //   ]
+        // },
         // {
         //   icon: 'keyboard_arrow_up',
         //   'icon-alt': 'keyboard_arrow_down',
@@ -153,40 +153,40 @@ export default {
           router: { name: 'branch' },
           access_permission: 'branch.view',
           children: [
-          {
-            icon: 'fas fa-cube',
-            text: this.$t('title.branch.index'),
-            router: { name: 'branch' },
-            access_permission: 'branch.view'
-          },
-                    {
-            icon: 'fas fa-cube',
-            text: this.$t('title.branch.create'),
-            router: { name: 'branch-create' },
-            access_permission: 'branch.create'
-          }
+            {
+              icon: 'fas fa-cube',
+              text: this.$t('title.branch.index'),
+              router: { name: 'branch' },
+              access_permission: 'branch.view'
+            },
+            {
+              icon: 'fas fa-cube',
+              text: this.$t('title.branch.create'),
+              router: { name: 'branch-create' },
+              access_permission: 'branch.create'
+            }
           ]
         }
-        ]
-      }
-    },
-    computed: {
-      ...mapGetters(['miniDrawer', 'userProfile']),
-      userName () {
-        return this.userProfile.name && this.userProfile.name.length > 13 ? vnFilter(this.userProfile.name).match(/\b(\w)/g).join('').toUpperCase() : this.userProfile.name
-      }
-    },
-    methods: {
-      ...mapActions(['setMiniDrawer']),
-      checkOpenGroup (routers, index) {
-        if (routers.length) {
-          routers.forEach(router => {
-            if (router.router.name === this.$route.name) {
-              this.items[index].model = true
-            }
-          })
-        }
+      ]
+    }
+  },
+  computed: {
+    ...mapGetters(['miniDrawer', 'userProfile']),
+    userName () {
+      return this.userProfile.name && this.userProfile.name.length > 13 ? vnFilter(this.userProfile.name).match(/\b(\w)/g).join('').toUpperCase() : this.userProfile.name
+    }
+  },
+  methods: {
+    ...mapActions(['setMiniDrawer']),
+    checkOpenGroup (routers, index) {
+      if (routers.length) {
+        routers.forEach(router => {
+          if (router.router.name === this.$route.name) {
+            this.items[index].model = true
+          }
+        })
       }
     }
   }
-  </script>
+}
+</script>

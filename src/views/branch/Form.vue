@@ -24,15 +24,15 @@
 
           <v-text-field :error-messages="errors.has('email') ? errors.collect('email') : []":data-vv-as="$t('label.email')"name="email":label="$t('label.email')"v-model="branch.email">
           </v-text-field>
-          <!--  -->
+
           <v-text-field :error-messages="errors.has('facebook') ? errors.collect('facebook') : []"v-validate="'required|min:3'":data-vv-as="$t('label.facebook')"name="name":label="$t('label.facebook') "v-model="branch.facebook">
           </v-text-field>
+        </v-flex>
+        <v-flex xs6>
 
           <v-text-field :error-messages="errors.has('instagram') ? errors.collect('instagram') : []":data-vv-as="$t('label.instagram')"name="instagram":label="$t('label.instagram')"v-model="branch.instagram">
           </v-text-field>
 
-        </v-flex>
-        <v-flex xs6>
 
           <v-text-field :error-messages="errors.has('zalo') ? errors.collect('zalo') : []":data-vv-as="$t('label.zalo')"name="zalo":label="$t('label.zalo')"v-model="branch.zalo">
           </v-text-field>
@@ -50,11 +50,11 @@
           <v-text-field :error-messages="errors.has('district_id') ? errors.collect('district_id') : []":data-vv-as="$t('label.district_id')"name="district_id":label="$t('label.district_id')"v-model="branch.district_id">
           </v-text-field>
 
-          <v-text-field :error-messages="errors.has('ward_id') ? errors.collect('ward_id') : []":data-vv-as="$t('label.ward_id')"name="ward_id":label="$t('label.ward_id')"v-model="branch.ward_id">
-          </v-text-field>
-
-          <v-text-field :error-messages="errors.has('status') ? errors.collect('status') : []":data-vv-as="$t('label.status')"name="status":label="$t('label.status')"v-model="branch.status">
-          </v-text-field>
+          <label>Trạng Thái</label>
+          <v-radio-group row :error-messages="errors.has('status') ? errors.collect('status') : []":data-vv-as="$t('label.status')"name="status" v-model="branch.status">
+            <v-radio label="Chi Nhánh Chính" value="1"></v-radio>
+            <v-radio label="Chi Nhánh Phụ" value="0"></v-radio>
+          </v-radio-group>
         </v-flex>
       </v-layout>
     </v-container>
@@ -65,7 +65,7 @@ import { mapGetters, mapActions } from 'vuex'
 import { map } from 'lodash'
 export default{
   name: 'BranchForm',
-  computed:{
+  computed: {
     ...mapGetters(['isFetchingApi']),
     isCreate () {
       return this.type === 'create'
@@ -86,26 +86,24 @@ export default{
   data () {
     return {
       branch: {
-        name:'',
-        description:'',
-        about:'',
-        phone:'',
-        address:'',
-        website:'',
-        email:'',
-        facebook:'',
-        instagram:'',
-        zalo:'',
-        tax_number:'',
-        bank:'',
-        type:'',
-        city_id:'',
-        district_id:'',
-        ward_id:'',
-        status:'',
+        name: '',
+        description: '',
+        about: '',
+        phone: '',
+        address: '',
+        website: '',
+        email: '',
+        facebook: '',
+        instagram: '',
+        zalo: '',
+        tax_number: '',
+        bank: '',
+        type: '',
+        city_id: '',
+        district_id: '',
+        status: ''
       }
     }
-  },
+  }
 }
 </script>
-
