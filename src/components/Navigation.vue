@@ -146,7 +146,13 @@ export default {
           text: this.$t('title.role.index'),
           router: {name: 'role'},
           access_permission: 'role.view'
-        }
+        },
+        {
+          icon: 'fa-user',
+          text: this.$t('title.position.index'),
+          router: {name: 'position'},
+          access_permission: 'position.view'
+        },
       ]
     }
   },

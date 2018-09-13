@@ -17,10 +17,17 @@
     "account": {
       "change-password": "Đổi mật khẩu",
       "change-information": "Thông tin cá nhân"
+    },
+    "position":{
+       "index": "Chức danh",
+       "detail":"Chi tiết chức danh",
+       "create": "Thêm mới chức danh",
+       "edit": "Chỉnh sửa chức danh"
     }
   },
   "label": {
     "name": "Tên",
+    "status" : "hien thi",
     "email": "Email",
     "password": "Mật khẩu",
     "password_confirmation": "Nhập lại mật khẩu",

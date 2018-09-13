@@ -8,7 +8,6 @@
           hide-details
           single-line
         ></v-text-field>
-
         <!-- <v-menu :nudge-width="100" offset-y>
           <v-toolbar-title slot="activator">
             <v-btn icon slot="activator">
@@ -91,7 +90,6 @@ export default{
   },
   mounted () {
     this.dataViewHeight = this.$refs.laylout.clientHeight - 49
-
     let query = {...this.$route.query}
     if (query.hasOwnProperty('reload')) {
       this.$nextTick(() => {

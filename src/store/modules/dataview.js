@@ -17,12 +17,7 @@ const initState = () => {
   return {
     dataViews: {
       user: {...DEFAULT_MODULE_DATA},
-      contact: {...DEFAULT_MODULE_DATA},
-      item: {...DEFAULT_MODULE_DATA},
-      itemGroup: {...DEFAULT_MODULE_DATA},
-      warehouse: {...DEFAULT_MODULE_DATA},
-      role: {...DEFAULT_MODULE_DATA},
-      itemAdjustment: {...DEFAULT_MODULE_DATA}
+      position: {...DEFAULT_MODULE_DATA}
     }
   }
 }

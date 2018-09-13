@@ -1,4 +1,4 @@
-import * as modules from './auth-modules/'
+import * as modules from './auth-modules'
 // console.log(modules)
 import { flatten } from 'lodash'
 export default {
