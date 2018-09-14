@@ -32,8 +32,11 @@
                 >
                   <v-list-tile-content>
                     <v-list-tile-title>{{ position.name }}</v-list-tile-title>
-                    <v-list-tile-sub-title class="text--primary">{{ position.status }}</v-list-tile-sub-title>
                   </v-list-tile-content>
+                <v-list-tile-action>
+                  <v-icon v-if="position.status" color="green lighten-1">check</v-icon>
+                  <v-icon v-else color="grey lighten-1">lock</v-icon>
+                </v-list-tile-action>
                 </v-list-tile>
                 <v-divider
                   :key="'div' + index + position.id"

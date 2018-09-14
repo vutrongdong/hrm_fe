@@ -8,21 +8,11 @@
       :label="$t('label.name') + ' *'"
       v-model="position.name">
     </v-text-field>
-    <v-text-field
-      :error-messages="errors.has('status') ? errors.collect('status') : []"
-      v-validate="'required|numeric'"
-      :data-vv-as="$t('label.status')"
-      name="status"
-      :label="$t('label.status') + ' *'"
-      type="status"
-      v-model="position.status">
-    </v-text-field>
-
-   <!--   <v-select
-            v-model="position.status"
-            :items="items"
-            label="Standard"
-      ></v-select> -->
+    <v-select v-validate="'required'"
+              :error-messages="errors.has('status') ? errors.collect('status') : []"
+               :data-vv-as="$t('label.status')" name="status" :label="$t('label.status')"
+                v-model="position.status" :items="items" item-value="id" item-text="name">
+    </v-select>
     <v-flex xs12 text-xs-center>
       <v-btn
         :loading="isFetchingApi"
@@ -69,7 +59,22 @@ export default{
         name: '',
         status: '',
       },
-      items: ['1','0']
+      items: [
+          {
+            "id"   : '',
+            "name" : '-- Su lua chon ---'
+
+          },
+          {
+          "id": 1,
+          "name": "Hiển thị",
+          },
+          {
+            "id": 0,
+            "name": "Không hiển thị"
+          }
+
+          ]
 
     }
   },

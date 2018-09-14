@@ -32,11 +32,14 @@
       </v-toolbar>
       <v-container fluid class="white scroll-y border-e0-top" :style="{height: dataViewHeight + 'px'}">
                   <p>Tên chức vụ: {{positionDetail.name}}</p>
-                  <p> status    : {{positionDetail.status}} </p>
+                 <div>
+                   Status
+                  <v-icon v-if="positionDetail.status" color="green lighten-1">check</v-icon>
+                  <v-icon v-else color="grey lighten-1">lock</v-icon>
+                 </div>
       </v-container>
     </v-flex>
         <dialog-confirm v-model="dialogDelete" @input="remove" />
-
     </v-layout>
 
 </template>
