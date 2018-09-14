@@ -36,10 +36,12 @@ const actions = {
       )
   },
   getDistrictByCity ({ commit, dispatch }, payload) {
+    let {city_id} = payload
+    // console.log(city_id)
     dispatch(
       'fetchApi',
       {
-        url: `cities/${cityId}?include=districts`,
+        url: `cities/${city_id}?include=districts`,
         method: 'GET',
         success: (response) => {
           commit(SET_DISTRICTS, response.data)

@@ -42,7 +42,7 @@
       <p>Zalo: {{branchDetail.zalo}}</p>
       <p>Mã số thuế: {{branchDetail.tax_number}}</p>
       <p>Ngân hàng: {{branchDetail.bank}}</p>
-      <p>Chi nhánh chính <v-icon color="green" v-if="branchDetail.type==isBranchMain">done_outline</v-icon><v-icon v-else color="red">
+      <p>Chi nhánh chính <v-icon color="green" v-if="branchDetail.type_txt==='Chi nhánh chính'">done_outline</v-icon><v-icon v-else color="red">
       highlight_off</v-icon></p>
     </v-container>
   </v-flex>
@@ -67,9 +67,6 @@ export default{
   },
   computed: {
     ...mapGetters('Branch',['branchDetail']),
-    isBranchMain () {
-      return 1
-    }
   },
   methods: {
     ...mapActions(['setMiniDrawer']),
