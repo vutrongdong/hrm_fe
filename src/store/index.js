@@ -2,7 +2,7 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import createLogger from 'vuex/dist/logger'
 // modules
-import * as modules from './modules'
+import * as modules from './modules/'
 import { forEach } from 'lodash'
 import { SET_INITIAL_STATE } from './mutation-types'
 console.log(modules)

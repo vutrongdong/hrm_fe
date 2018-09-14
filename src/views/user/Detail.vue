@@ -59,7 +59,7 @@ export default{
   data () {
     return {
       dataViewHeight: 0,
-      dialogDelete: false
+      dialogDelete: false,
     }
   },
   computed: {

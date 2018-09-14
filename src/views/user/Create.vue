@@ -1,9 +1,10 @@
 <template>
-    <v-layout ref="laylout" row fill-height>
-      <v-flex xs12 pa-5 class="white">
-        <user-form @submit="submitForm" />
-      </v-flex>
-    </v-layout>
+  <v-layout ref="laylout" row fill-height>
+    <v-flex xs12 pa-5 class="white">
+      <h3>Thêm Chi Nhánh</h3>
+      <user-form @submit="submitForm" />
+    </v-flex>
+  </v-layout>
 </template>
 
 <script>

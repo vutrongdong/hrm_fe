@@ -17,7 +17,8 @@ const initState = () => {
   return {
     dataViews: {
       user: { ...DEFAULT_MODULE_DATA },
-      branch: { ...DEFAULT_MODULE_DATA }
+      branch: { ...DEFAULT_MODULE_DATA },
+      city:{...DEFAULT_MODULE_DATA}
     }
   }
 }

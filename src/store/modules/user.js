@@ -1,4 +1,4 @@
-import {
+  import {
   SET_USER,
   SET_INITIAL_STATE
 } from '../mutation-types'

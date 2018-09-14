@@ -3,7 +3,7 @@
     <v-flex xs4>
       <listting />
     </v-flex>
-    <v-flex xs8 class="border-e0-left">
+    <v-flex xs12 class="border-e0-left">
       <v-toolbar dense color="white" flat>
         <v-toolbar-title>{{ $t('title.branch.detail') }}: {{branchDetail.name}}</v-toolbar-title>
         <v-spacer></v-spacer>
@@ -42,13 +42,8 @@
       <p>Zalo: {{branchDetail.zalo}}</p>
       <p>Mã số thuế: {{branchDetail.tax_number}}</p>
       <p>Ngân hàng: {{branchDetail.bank}}</p>
-      <p>Chi nhánh chính <v-icon color="green" v-if="branchDetail.type==1">done_outline</v-icon><v-icon v-else color="red">
-highlight_off</v-icon></p>
-      <p v-if="branchDetail.roles">Quyền truy cập:
-        <v-chip color="secondary" text-color="white" v-for="role in branchDetail.roles.data" :key="'role' + role.id">
-          {{role.name}}
-        </v-chip>
-      </p>
+      <p>Chi nhánh chính <v-icon color="green" v-if="branchDetail.type==isBranchMain">done_outline</v-icon><v-icon v-else color="red">
+      highlight_off</v-icon></p>
     </v-container>
   </v-flex>
   <dialog-confirm v-model="dialogDelete" @input="remove" />
@@ -71,7 +66,10 @@ export default{
     }
   },
   computed: {
-    ...mapGetters('Branch',['branchDetail'])
+    ...mapGetters('Branch',['branchDetail']),
+    isBranchMain () {
+      return 1
+    }
   },
   methods: {
     ...mapActions(['setMiniDrawer']),

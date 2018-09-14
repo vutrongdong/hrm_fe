@@ -149,23 +149,23 @@ export default {
         },
         {
           icon: 'fas fa-object-group',
-          text: this.$t('title.branch.name'),
+          text: this.$t('title.branch.index'),
           router: { name: 'branch' },
           access_permission: 'branch.view',
-          children: [
-            {
-              icon: 'fas fa-cube',
-              text: this.$t('title.branch.index'),
-              router: { name: 'branch' },
-              access_permission: 'branch.view'
-            },
-            {
-              icon: 'fas fa-cube',
-              text: this.$t('title.branch.create'),
-              router: { name: 'branch-create' },
-              access_permission: 'branch.create'
-            }
-          ]
+          // children: [
+          //   {
+          //     icon: 'fas fa-cube',
+          //     text: this.$t('title.branch.index'),
+          //     router: { name: 'branch' },
+          //     access_permission: 'branch.view'
+          //   },
+          //   {
+          //     icon: 'fas fa-cube',
+          //     text: this.$t('title.branch.create'),
+          //     router: { name: 'branch-create' },
+          //     access_permission: 'branch.create'
+          //   }
+          // ]
         }
       ]
     }

@@ -15,7 +15,7 @@ export default{
   },
   methods: {
     ...mapActions(['showNotify', 'setMiniDrawer']),
-    ...mapActions('branch', ['createBranch']),
+    ...mapActions('Branch', ['createBranch']),
     submitForm (formData) {
       this.createBranch({
         branch: formData,
