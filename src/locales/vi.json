@@ -14,6 +14,12 @@
       "create": "Thêm mới quyền try cập",
       "edit": "Chỉnh sửa quyền try cập"
     },
+    "department": {
+        "index": "Phòng ban",
+        "detail": "Chi tiết phòng ban",
+        "create": "Thêm mới phòng ban",
+        "edit": "Chỉnh sửa phòng ban"
+    },
     "account": {
       "change-password": "Đổi mật khẩu",
       "change-information": "Thông tin cá nhân"
@@ -64,7 +70,14 @@
     "uuid": "Mã",
     "old_password": "Mật khẩu hiện tại",
     "new_password": "Mật khẩu mới",
-    "new_password_confirmation": "Nhập lại mật khẩu mới"
+    "new_password_confirmation": "Nhập lại mật khẩu mới",
+    "about":"trong khoảng",
+    "address": "địa chỉ",
+    "instagram":"instagram",
+    "zalo":"zalo",
+    "tax_number":"mã số thuế",
+    "bank":"bank"
+
   },
   "alert": {
     "invalid": "Vui lòng kiểm tra thông tin cần nhập",

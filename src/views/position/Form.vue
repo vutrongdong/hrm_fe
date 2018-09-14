@@ -8,20 +8,21 @@
       :label="$t('label.name') + ' *'"
       v-model="position.name">
     </v-text-field>
-    <!-- <v-text-field
+    <v-text-field
       :error-messages="errors.has('status') ? errors.collect('status') : []"
-      v-validate="'required'"
+      v-validate="'required|numeric'"
       :data-vv-as="$t('label.status')"
       name="status"
       :label="$t('label.status') + ' *'"
       type="status"
       v-model="position.status">
-    </v-text-field> -->
-      <v-select
+    </v-text-field>
+
+   <!--   <v-select
+            v-model="position.status"
             :items="items"
             label="Standard"
-      ></v-select>
-
+      ></v-select> -->
     <v-flex xs12 text-xs-center>
       <v-btn
         :loading="isFetchingApi"
@@ -68,7 +69,8 @@ export default{
         name: '',
         status: '',
       },
-      items: ['Foo', 'Bar', 'Fizz', 'Buzz']
+      items: ['1','0']
+
     }
   },
   methods: {

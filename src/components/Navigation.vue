@@ -153,6 +153,12 @@ export default {
           router: {name: 'position'},
           access_permission: 'position.view'
         },
+         {
+          icon: 'fa-user',
+          text: this.$t('title.department.index'),
+          router: {name: 'department'},
+          access_permission: 'department.view'
+        },
       ]
     }
   },
