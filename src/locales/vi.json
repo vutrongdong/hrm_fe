@@ -15,11 +15,16 @@
       "edit": "Chỉnh sửa quyền try cập"
     },
     "branch": {
-      "name": "branch",
-      "index": "List branch",
+      "index": "Chi nhánh",
       "detail": "Thông tin chi nhánh",
       "create": "Thêm mới Chi nhánh",
       "edit": "Chỉnh sửa chi nhánh"
+    },
+    "setting": {
+      "index": "Cài đặt",
+      "detail": "Thông tin",
+      "create": "Thêm cài đặt",
+      "edit": "Chỉnh sửa cài đặt"
     },
     "account": {
       "change-password": "Đổi mật khẩu",

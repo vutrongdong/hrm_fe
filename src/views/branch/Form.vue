@@ -3,7 +3,7 @@
     <v-container fluid>
       <v-layout row wrap>
         <v-flex xs6>
-          <v-text-field :error-messages="errors.has('name') ? errors.collect('name') : []" v-validate="'required|min:3'":data-vv-as="$t('label.name')"name="name":label="$t('label.name') + '*'"v-model="branch.name">
+          <v-text-field :error-messages="errors.has('name') ? errors.collect('name') : []" v-validate="'required'":data-vv-as="$t('label.name')"name="name":label="$t('label.name') + '*'"v-model="branch.name">
           </v-text-field>
 
           <v-text-field :error-messages="errors.has('phone') ? errors.collect('phone') : []":data-vv-as="$t('label.phone')"name="phone":label="$t('label.phone')"v-model="branch.phone">
@@ -12,10 +12,10 @@
           <v-text-field :error-messages="errors.has('website') ? errors.collect('website') : []":data-vv-as="$t('label.website')"name="website":label="$t('label.website')"v-model="branch.website">
           </v-text-field>
 
-          <v-text-field :error-messages="errors.has('email') ? errors.collect('email') : []":data-vv-as="$t('label.email')"name="email":label="$t('label.email')"v-model="branch.email">
+          <v-text-field :error-messages="errors.has('email') ? errors.collect('email') : []":data-vv-as="$t('label.email')"name="email":label="$t('label.email') + '*'"v-model="branch.email">
           </v-text-field>
 
-          <v-text-field :error-messages="errors.has('facebook') ? errors.collect('facebook') : []"v-validate="'required|min:3'":data-vv-as="$t('label.facebook')"name="name":label="$t('label.facebook') "v-model="branch.facebook">
+          <v-text-field :error-messages="errors.has('facebook') ? errors.collect('facebook') : []":data-vv-as="$t('label.facebook')"name="facebook":label="$t('label.facebook') "v-model="branch.facebook">
           </v-text-field>
           <v-text-field :error-messages="errors.has('instagram') ? errors.collect('instagram') : []":data-vv-as="$t('label.instagram')"name="instagram":label="$t('label.instagram')"v-model="branch.instagram">
           </v-text-field>
@@ -23,10 +23,10 @@
           <v-text-field :error-messages="errors.has('zalo') ? errors.collect('zalo') : []":data-vv-as="$t('label.zalo')"name="zalo":label="$t('label.zalo')"v-model="branch.zalo">
           </v-text-field>
 
-          <v-radio-group label='Trạng Thái :'  row :error-messages="errors.has('status') ? errors.collect('status') : []":data-vv-as="$t('label.status')"name="status" v-model="branch.status"><br>
-            <v-radio label="Hiện" value="1"></v-radio>
-            <v-radio label="Ân" value="0"></v-radio>
-          </v-radio-group>
+          <label>Trạng thái</label>
+          <v-checkbox   style="margin-top:0px" :label='status' :error-messages="errors.has('status') ? errors.collect('status') : []":data-vv-as="$t('label.status')" name="status" v-model="branch.status">
+          </v-checkbox>
+
         </v-flex>
         <v-flex xs6>
 
@@ -44,21 +44,17 @@
           <v-text-field :error-messages="errors.has('bank') ? errors.collect('bank') : []":data-vv-as="$t('label.bank')"name="bank":label="$t('label.bank')"v-model="branch.bank">
           </v-text-field>
 
-          <v-select v-validate="'required'" :error-messages="errors.has('city_id') ? errors.collect('city_id') : []" :data-vv-as="$t('label.city_id')" name="city_id" :label="$t('label.city_id')" v-model="branch.city_id" :items="cityAll" item-value="id" item-text="name" @change="changedCity">
+          <v-select v-if="Array.isArray(cityAll)" v-validate="'required'" :error-messages="errors.has('city_id') ? errors.collect('city_id') : []" :data-vv-as="$t('label.city_id')" name="city_id" :label="$t('label.city_id') + '*'" v-model="branch.city_id" :items="cityAll" item-value="id" item-text="name" @change="changedCity" placeholder="Chọn một thành phố" >
           </v-select>
 
-          <v-select v-if="districtByCity.districts" :error-messages="errors.has('district_id') ? errors.collect('district_id') : []":data-vv-as="$t('label.district_id')" name="district_id":label="$t('label.district_id')"v-model="branch.district_id" :items="districtByCity.districts.data" item-value="id" item-text="name" placeholder="chúc">
+          <v-select v-if="districtByCity.districts" :error-messages="errors.has('district_id') ? errors.collect('district_id') : []":data-vv-as="$t('label.district_id')" name="district_id" :label="$t('label.district_id')+ '*'"v-model="branch.district_id" :items="districtByCity.districts.data" item-value="id" item-text="name" placeholder="Hãy chọn một quận hoặc huyện">
           </v-select>
 
-          <v-select v-model="branch.district_id" v-else :label="$t('label.district_id')" placeholder='vui lòng chọn thành phố trước khi chọn bố'>
+          <v-select v-else name="district_id" :label="$t('label.district_id')" v-model="branch.district_id" placeholder="Bạn cần chọn thành phố trước">
           </v-select>
 
-          <v-radio-group>
-            <v-radio-group row :error-messages="errors.has('type') ? errors.collect('type') : []":data-vv-as="$t('label.type')"name="type" v-model="branch.type">
-              <v-radio label="Chi Nhánh Chính" value="1"></v-radio>
-              <v-radio label="Chi Nhánh Phụ" value="0"></v-radio>
-            </v-radio-group>
-          </v-radio-group>
+          <label>Thuộc loại</label>
+          <v-checkbox style="margin-top:0px" :label="type_branch" :error-messages="errors.has('type') ? errors.collect('type') : []":data-vv-as="$t('label.type')" name="type" v-model="branch.type"></v-checkbox>
 
         </v-flex>
         <v-flex xs12 text-xs-center>
@@ -81,82 +77,99 @@
 </v-form>
 </template>
 <script>
-  import { mapGetters, mapActions } from 'vuex'
-  import { map } from 'lodash'
-  export default{
-    name: 'BranchForm',
-    components: {
-      DataView
-    },
-    computed: {
-      ...mapGetters(['isFetchingApi']),
-      ...mapGetters('City',['cityAll', 'districtByCity']),
-      isCreate () {
-        return this.type === 'create'
-      }
-    },
-    props: {
-      type: {
-        type: String,
-        default: 'create'
-      },
-      dataBranch: {
-        type: Object,
-        default: () => {
-          return {}
-        }
-      }
-    },
-    data () {
-      return {
-        branch: {
-          name: '',
-          description: '',
-          about: '',
-          phone: '',
-          address: '',
-          website: '',
-          email: '',
-          facebook: '',
-          instagram: '',
-          zalo: '',
-          tax_number: '',
-          bank: '',
-          type: '',
-          city_id: '',
-          district_id: '',
-          type: ''
-        }
-      }
-    },
-    methods: {
-      ...mapActions(['fetchApi']),
-      ...mapActions('City',['getCity','getDistrictByCity']),
-      setInitData () {
-        let dataBranch = { ...this.dataBranch }
-        this.branch = { ...this.branch, ...dataBranch }
-      },
-      changedCity(value){
-        this.getDistrictByCity({
-          city_id: value
-        })
-      },
-      validateBeforeSubmit () {
-        this.$validator.validateAll().then(result => {
-          if (result) {
-            this.$emit('submit', this.branch)
-          } else {
-            this.$store.dispatch('showNotify', {
-              text: this.$t('alert.invalid'),
-              color: 'warning'
-            })
-          }
-        })
-      }
-    },
-    created () {
-      this.getCity()
-      !!this.dataBranch && this.setInitData()
+import { mapGetters, mapActions } from 'vuex'
+import { map } from 'lodash'
+export default{
+  name: 'BranchForm',
+  components: {
+    DataView
+  },
+  computed: {
+    ...mapGetters(['isFetchingApi']),
+    ...mapGetters('City',['cityAll', 'districtByCity']),
+    isCreate () {
+      return this.type === 'create'
     }
+  },
+  props: {
+    type: {
+      type: String,
+      default: 'create'
+    },
+    dataBranch: {
+      type: Object,
+      default: () => {
+        return {}
+      }
+    }
+  },
+  data () {
+    return {
+      // defaults:0,
+      type_branch: 'Chi nhánh Chính',
+      status: 'Hiển thị',
+      branch: {
+        name: '',
+        description: '',
+        about: '',
+        phone: '',
+        address: '',
+        website: '',
+        email: '',
+        facebook: '',
+        instagram: '',
+        zalo: '',
+        tax_number: '',
+        bank: '',
+        type: 0,
+        city_id: '',
+        district_id: '',
+        status: ''
+      }
+    }
+  },
+  methods: {
+    ...mapActions(['fetchApi']),
+    ...mapActions('City',['getCity','getDistrictByCity']),
+    setInitData () {
+      let dataBranch = { ...this.dataBranch }
+      this.branch = { ...this.branch, ...dataBranch }
+    },
+    changedCity(value){
+      this.getDistrictByCity({
+        city_id: value
+      })
+    },
+    validateBeforeSubmit () {
+      this.$validator.validateAll().then(result => {
+        if (result) {
+          let branch = Object.assign({}, this.branch)
+          branch.status = branch.status ? 1 : 0
+          branch.type = branch.type ? 1 : 0
+          this.$emit('submit', branch)
+        } else {
+          this.$store.dispatch('showNotify', {
+            text: this.$t('alert.invalid'),
+            color: 'warning'
+          })
+        }
+      })
+    }
+  },
+  mounted(){
+    this.getDistrictByCity({
+        city_id: this.branch.city_id
+      })
+  },
+  created () {
+    this.getCity()
+    !!this.dataBranch && this.setInitData()
   }
-  </script>
+}
+</script>
+<style>
+  label{
+    color: #5b5a5a;
+    font-size:17px;
+  }
+</style>

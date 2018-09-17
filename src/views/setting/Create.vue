@@ -1,25 +1,25 @@
 <template>
   <v-layout ref="laylout" row fill-height>
-    <v-flex xs12 pa-5 class="white">
-      <user-form @submit="submitForm" />
+    <v-flex xs12>
+      <h2 style="padding:15px">Thêm Chi Thông Tin</h2>
+      <setting-form @submit="submitForm"/>
     </v-flex>
   </v-layout>
 </template>
-
 <script>
-import UserForm from './Form'
+import settingForm from './Form'
 import { mapActions } from 'vuex'
 export default{
-  name: 'CreateUser',
+  name: 'CreateForm',
   components: {
-    UserForm
+    settingForm
   },
   methods: {
     ...mapActions(['showNotify', 'setMiniDrawer']),
-    ...mapActions('User', ['createUser']),
+    ...mapActions('Setting', ['createSetting']),
     submitForm (formData) {
-      this.createUser({
-        user: formData,
+      this.createSetting({
+        setting: formData,
         cb: (response) => {
           this.showNotify({
             color: 'success',
@@ -27,7 +27,7 @@ export default{
           })
 
           this.$router.push({
-            name: 'user',
+            name: 'setting',
             query: {
               reload: null
             }
@@ -35,9 +35,6 @@ export default{
         }
       })
     }
-  },
-  created () {
-    this.setMiniDrawer(false)
   }
 }
 </script>

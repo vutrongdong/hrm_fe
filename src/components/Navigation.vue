@@ -7,13 +7,14 @@
         :to="{name: 'account-change-information'}"
         >
         <v-list-tile-avatar>
-          <img :src="userProfile.avatar_url" alt=".name">
+          <v-icon style="margin-left:-17px">fa-address-book</i></v-icon>
+          <!-- <img :src="userProfile.avatar_url" alt=".name"> -->
         </v-list-tile-avatar>
 
         <v-list-tile-content>
           <v-list-tile-title>
             <v-tooltip bottom>
-              <span slot="activator">
+              <span slot="activator" style="color:green">
                 {{ userName }}
               </span>
               <span>{{userProfile.name}}</span>
@@ -105,12 +106,12 @@ export default {
   data () {
     return {
       items: [
-        {
-          icon: 'fas fa-object-group',
-          text: this.$t('title.home'),
-          router: { name: 'home' },
-          access_permission: true
-        },
+      {
+        icon: 'fas fa-object-group',
+        text: this.$t('title.home'),
+        router: { name: 'home' },
+        access_permission: true
+      },
         // {
         //   icon: 'fas fa-object-group',
         //   text: this.$t('title.item.index'),
@@ -148,45 +149,37 @@ export default {
           access_permission: 'role.view'
         },
         {
-          icon: 'fas fa-object-group',
+          icon: 'fas fa-code-branch',
           text: this.$t('title.branch.index'),
           router: { name: 'branch' },
           access_permission: 'branch.view',
-          // children: [
-          //   {
-          //     icon: 'fas fa-cube',
-          //     text: this.$t('title.branch.index'),
-          //     router: { name: 'branch' },
-          //     access_permission: 'branch.view'
-          //   },
-          //   {
-          //     icon: 'fas fa-cube',
-          //     text: this.$t('title.branch.create'),
-          //     router: { name: 'branch-create' },
-          //     access_permission: 'branch.create'
-          //   }
-          // ]
+        },
+        {
+          icon: 'settings',
+          text: this.$t('title.setting.index'),
+          router: { name: 'setting' },
+          access_permission: 'setting.view',
         }
-      ]
-    }
-  },
-  computed: {
-    ...mapGetters(['miniDrawer', 'userProfile']),
-    userName () {
-      return this.userProfile.name && this.userProfile.name.length > 13 ? vnFilter(this.userProfile.name).match(/\b(\w)/g).join('').toUpperCase() : this.userProfile.name
-    }
-  },
-  methods: {
-    ...mapActions(['setMiniDrawer']),
-    checkOpenGroup (routers, index) {
-      if (routers.length) {
-        routers.forEach(router => {
-          if (router.router.name === this.$route.name) {
-            this.items[index].model = true
-          }
-        })
+        ]
+      }
+    },
+    computed: {
+      ...mapGetters(['miniDrawer', 'userProfile']),
+      userName () {
+        return this.userProfile.name && this.userProfile.name.length > 13 ? vnFilter(this.userProfile.name).match(/\b(\w)/g).join('').toUpperCase() : this.userProfile.name
+      }
+    },
+    methods: {
+      ...mapActions(['setMiniDrawer']),
+      checkOpenGroup (routers, index) {
+        if (routers.length) {
+          routers.forEach(router => {
+            if (router.router.name === this.$route.name) {
+              this.items[index].model = true
+            }
+          })
+        }
       }
     }
   }
-}
-</script>
+  </script>

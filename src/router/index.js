@@ -3,8 +3,8 @@ import Router from 'vue-router'
 import ls from 'local-storage'
 import i18n from '@/i18n'
 // modules
-import * as modules from './modules'
-// console.log(modules)
+import * as modules from './modules/'
+console.log(modules)
 Vue.use(Router)
 
 const router = new Router({

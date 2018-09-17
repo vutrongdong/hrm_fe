@@ -1,6 +1,7 @@
 <template>
   <v-layout ref="laylout" row fill-height>
     <v-flex xs12>
+      <h2 style="padding:15px">Thêm Chi Nhánh</h2>
       <branch-form @submit="submitForm"/>
     </v-flex>
   </v-layout>

@@ -20,12 +20,27 @@ const state = {
  * actions
  */
 const actions = {
-  getSetting ({ commit, dispatch }, payload) {
+    FetchSetting ({ commit, dispatch }, payload) {
     let { params } = payload || {}
     dispatch(
       'fetchApi',
       {
         url: 'settings',
+        method: 'GET',
+        params: params || {},
+        success: (response) => {
+          commit(SET_SETTINGS, response.data)
+        }
+      },
+      { root: true }
+    )
+  },
+  getSetting ({ commit, dispatch }, payload) {
+    let { settingId,params } = payload || {}
+    dispatch(
+      'fetchApi',
+      {
+        url: `settings/${settingId}`,
         method: 'GET',
         params: params || {},
         success: (response) => {
@@ -41,13 +56,33 @@ const actions = {
       commit(SET_SETTINGS, settings)
     }
   },
-  updateSetting ({ commit, dispatch }, payload) {
-    let { setting, cb } = payload || {}
+   createSetting ({ commit, dispatch }, payload) {
+    let { setting, cb, params } = payload
     dispatch('fetchApi', {
-      url: '/settings',
+      url: 'settings',
+      method: 'POST',
+      data: setting,
+      params: params,
+      success: cb
+    }, { root: true })
+  },
+  updateSetting ({ commit, dispatch }, payload) {
+    let { id, setting, cb, params } = payload
+    dispatch('fetchApi', {
+      url: `settings/${id}`,
       method: 'PUT',
       data: setting,
+      params: params,
       success: cb
+    }, { root: true })
+  },
+  deleteSetting ({ commit, dispatch }, payload) {
+    let { id, cb, error } = payload || {}
+    dispatch('fetchApi', {
+      url: `settings/${id}`,
+      method: 'DELETE',
+      success: cb,
+      error: error
     }, { root: true })
   }
 }
@@ -68,7 +103,7 @@ const mutations = {
  * getters
  */
 const getters = {
-  settings: (state) => state.settings
+  settingDetail: (state) => state.settings
 }
 
 export default {
