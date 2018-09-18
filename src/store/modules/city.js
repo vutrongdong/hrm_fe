@@ -1,23 +1,27 @@
+
 import {
   SET_CITIES,
   SET_DISTRICTS,
   SET_INITIAL_STATE,
+  SET_BRANCH
 } from '../mutation-types'
 
 const initState = () => {
   return {
     city: {},
-    districts:{}
+    districts: {},
+    branches: {}
   }
 }
 
 const state = {
   city: initState().city,
-  districts: initState().districts
+  districts: initState().districts,
+  branches: initState().branches
 }
 
-const actions ={
-   setCity ({ commit }, payload) {
+const actions = {
+  setCity ({ commit }, payload) {
     let { city } = payload
     commit(SET_CITIES, city)
   },
@@ -32,22 +36,25 @@ const actions ={
         }
       },
       { root: true }
-      )
+    )
   },
-  getDistrictByCity({commit,dispatch},payload){
-    dispatch('fetchApi',
-    {
-        url: `cities/${cityId}?include=districts`,
+
+  getDistrictByCity ({ commit, dispatch }, payload) {
+    let { city_id } = payload
+    dispatch(
+      'fetchApi',
+      {
+        url: `cities/${city_id}?include=districts`,
         method: 'GET',
-        success: (response) =>{
-           commit(SET_DISTRICTS,response.data)
+        success: (response) => {
+          commit(SET_DISTRICTS, response.data)
         }
-    },
-    {root:true}
+      },
+      { root: true }
     )
   }
-}
 
+}
 const mutations = {
   [SET_CITIES]: (state, city) => {
     state.city = city
@@ -55,14 +62,15 @@ const mutations = {
   [SET_INITIAL_STATE]: (state) => {
     state.city = initState().city
   },
-  [SET_DISTRICTS]: (state,districts)=>{
+  [SET_DISTRICTS]: (state, districts) => {
     state.districts = districts
   }
 }
 
 const getters = {
   cityAll: (state) => state.city,
-  districtByCity:(state)=>state.districts
+  districtByCity: (state) => state.districts
+
 }
 export default {
   namespaced: true,

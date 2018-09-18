@@ -35,7 +35,7 @@
                <v-btn v-if="canAccess('setting.update')" icon @click="$router.push({name: 'setting-edit', params: {id: item.id}})">
                 <v-icon style="float:right;position:absolute">edit</v-icon>
               </v-btn>
-              <v-btn v-if="canAccess('setting.delete')" icon @click="removeConfirm(item)">
+              <v-btn v-if="canAccess('setting.delete')" icon @click="removeConfirm(item.id)">
                 <v-icon>delete</v-icon>
               </v-btn>
             </span>
@@ -78,8 +78,7 @@ export default{
     ...mapActions(['setMiniDrawer']),
     ...mapActions('Setting', ['FetchSetting', 'deleteSetting']),
     ...mapActions('Dataview', ['removeDataviewEntry']),
-    removeConfirm (item) {
-      console.log('data',item);
+    removeConfirm (id) {
       swal({
         title: 'Xác nhận',
         text: 'Bạn chắc chắn muốn xóa bản ghi này',
@@ -88,17 +87,13 @@ export default{
       })
         .then((willDelete) => {
           if (willDelete) {
-                  console.log('data 1',item);
-
             this.deleteSetting({
-              id: item.id,
+              id: id,
               cb: (response) => {
                 this.removeDataviewEntry({
                   name: 'setting',
-                  data: item,
-                  key: 'id',
-
-
+                  data: this.settingDetail,
+                  key: 'id'
                 })
                 this.$store.dispatch('showNotify', {
                   text: this.$t('alert.success'),
@@ -133,14 +128,3 @@ export default{
   }
 }
 </script>
-<style scope>
-p span{
-  padding: 7px;
-  margin-top:-25px;
-  float: right;
-  margin-right:10px;
-}
-h3{
-  clear:both;
-}
-</style>

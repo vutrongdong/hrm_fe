@@ -53,8 +53,8 @@
 <script>
 import DataView from '@/components/DataView/DataView'
 import { mapActions } from 'vuex'
-  export default{
-     name: 'PositionListting',
+export default{
+  name: 'PositionListting',
   components: {
     DataView
   },
@@ -70,14 +70,14 @@ import { mapActions } from 'vuex'
     ...mapActions('Position', ['setPosition']),
     positionDetail (position) {
       this.setPosition({ position })
-      this.$router.push({name: 'position-detail', params: {id: position.id}})
+      this.$router.push({ name: 'position-detail', params: { id: position.id } })
     }
   },
   mounted () {
     this.dataViewHeight = this.$refs.laylout.clientHeight - 49
     console.log(this.dataViewHeight)
     console.log(this.$refs)
-    let query = {...this.$route.query}
+    let query = { ...this.$route.query }
     if (query.hasOwnProperty('reload')) {
       this.$nextTick(() => {
         this.$refs[this.dataViewName].$emit('reload')
@@ -88,6 +88,5 @@ import { mapActions } from 'vuex'
       })
     }
   }
-  }
+}
 </script>
-

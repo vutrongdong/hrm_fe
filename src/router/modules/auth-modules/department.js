@@ -3,7 +3,7 @@ export default[
     path: 'department',
     name: 'department',
     meta: {
-      title:{
+      title: {
         i18n: 'title.department.index'
       },
       require_auth: true,

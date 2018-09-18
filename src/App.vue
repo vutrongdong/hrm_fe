@@ -49,10 +49,10 @@ export default {
               path = path.replace(new RegExp(`:${key}`, 'gi'), value)
             })
           }
-          item.name !== 'home' && breadcrumb.push({path: path, name: this.itemTitle(item.meta)})
+          item.name !== 'home' && breadcrumb.push({ path: path, name: this.itemTitle(item.meta) })
         })
       }
-      to.name !== 'home' && breadcrumb.push({path: to.path, name: this.itemTitle(to.meta)})
+      to.name !== 'home' && breadcrumb.push({ path: to.path, name: this.itemTitle(to.meta) })
       this.setBreadcrumb(breadcrumb)
     }
   }

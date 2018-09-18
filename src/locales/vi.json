@@ -20,6 +20,12 @@
         "create": "Thêm mới phòng ban",
         "edit": "Chỉnh sửa phòng ban"
     },
+    "branch": {
+        "index": "Chi nhánh",
+        "detail": "Chi tiết chi nhánh",
+        "create": "Thêm mới chi nhánh",
+        "edit": "Chỉnh sửa chi nhánh"
+    },
     "account": {
       "change-password": "Đổi mật khẩu",
       "change-information": "Thông tin cá nhân"
@@ -29,11 +35,18 @@
        "detail":"Chi tiết chức danh",
        "create": "Thêm mới chức danh",
        "edit": "Chỉnh sửa chức danh"
+    },
+      "setting":{
+       "index": "Thiết lập",
+       "detail":"Chi tiết thiết lập",
+       "create": "Thêm mới thiết lập",
+       "edit": "Chỉnh sửa thiết lập"
     }
+
   },
   "label": {
     "name": "Tên",
-    "status" : "hien thi",
+    "status" : "trạng thái",
     "email": "Email",
     "password": "Mật khẩu",
     "password_confirmation": "Nhập lại mật khẩu",
@@ -46,7 +59,6 @@
     "phone": "Điện thoại",
     "skype": "Skype",
     "website": "Website",
-    "type": "Loại",
     "facebook": "Facebook",
     "twitter": "Twitter",
     "street": "Đường phố",
@@ -71,12 +83,17 @@
     "old_password": "Mật khẩu hiện tại",
     "new_password": "Mật khẩu mới",
     "new_password_confirmation": "Nhập lại mật khẩu mới",
-    "about":"trong khoảng",
+    "about":"about",
     "address": "địa chỉ",
     "instagram":"instagram",
     "zalo":"zalo",
     "tax_number":"mã số thuế",
-    "bank":"bank"
+    "bank":"bank",
+    "type":"type",
+    "branch_status": "branch status",
+    "city_id" : "thành phố ",
+    "districts_id" : "quận huyện",
+    "branch_id" : "chi nhánh"
 
   },
   "alert": {

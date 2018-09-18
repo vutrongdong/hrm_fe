@@ -9,14 +9,12 @@ import store from './store'
 import './registerServiceWorker'
 import './assets/css/site.css'
 import i18n from './i18n'
-
+import swal from 'sweetalert'
 import * as filters from '@/filters'
 import permissionMixin from '@/mixins/permission'
 import formatMixin from '@/mixins/format'
-
 import FBSignInButton from 'vue-facebook-signin-button'
 Vue.use(FBSignInButton)
-
 // custom filters
 Object.keys(filters).forEach(key => {
   Vue.filter(key, filters[key])

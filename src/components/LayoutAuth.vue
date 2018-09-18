@@ -110,7 +110,7 @@ export default {
     ...mapActions(['setMiniDrawer', 'setDrawer', 'clearLogged']),
     logout () {
       this.clearLogged()
-      this.$router.push({name: 'login'})
+      this.$router.push({ name: 'login' })
     }
   }
 }

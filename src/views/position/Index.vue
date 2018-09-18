@@ -6,11 +6,11 @@
     </v-layout>
 </template>
 <script>
-  import listting from './Listting'
-  export default{
-    name: 'Position',
- components: {
+import listting from './Listting'
+export default{
+  name: 'Position',
+  components: {
     listting
-  },
   }
+}
 </script>

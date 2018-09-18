@@ -47,7 +47,7 @@ export function formatUnixTime (value, formatStr = 'YYYY-MM-DD HH:mm') {
   return ''
 }
 
-export function browserNotify (options = {body: null, image: null, url: null}, title = 'Goship thông báo', icon = '/static/logo-notify.png', timeout = 10000) {
+export function browserNotify (options = { body: null, image: null, url: null }, title = 'Goship thông báo', icon = '/static/logo-notify.png', timeout = 10000) {
   if (!('Notification' in window)) {
     console.log('This browser does not support desktop notification')
   } else if (Notification.permission === 'granted') {
@@ -101,8 +101,8 @@ export function flattenAttributes (attrs, name = '') {
         value.value.forEach(function (v) {
           // them thuoc tinh va ten
           let attrs = []
-          attrs.push({name: value.name, value: v})
-          r.push({[value.name]: v, name: name + '-' + v, attrs: attrs})
+          attrs.push({ name: value.name, value: v })
+          r.push({ [value.name]: v, name: name + '-' + v, attrs: attrs })
         })
         return r
       })
@@ -124,9 +124,9 @@ export function flattenAttributes (attrs, name = '') {
         objVal = Object.values(obj)
         n = name + '-' + join(reverse(objVal), '/')
         forEach(obj, (val, key) => {
-          attrs.push({name: key, value: val})
+          attrs.push({ name: key, value: val })
         })
-        r.push(Object.assign({}, s, f, {name: n, attrs: attrs}))
+        r.push(Object.assign({}, s, f, { name: n, attrs: attrs }))
       })
     })
     return r
@@ -155,7 +155,7 @@ export function getAttributesFromItems (data) {
       return result
     }, {})
     .map(function (value, key) {
-      return {name: key, value: uniq(value)}
+      return { name: key, value: uniq(value) }
     })
     .value())
 }

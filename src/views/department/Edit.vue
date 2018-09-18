@@ -12,7 +12,7 @@
         </v-btn>
     </v-toolbar>
      <v-container fluid class="white scroll-y border-e0-top" :style="{height: dataViewHeight + 'px'}">
-        <DepartmentForm v-if="departmentDetail.id" @submit="submitForm" type="edit" :dataDepartment="DepartmentForm"></DepartmentForm>
+        <DepartmentForm v-if="departmentDetail.id" @submit="submitForm" type="edit" :dataDepartment="departmentDetail"></DepartmentForm>
       </v-container>
     </v-flex>
     </v-layout>
@@ -21,7 +21,7 @@
 import DepartmentForm from './Form'
 import listting from './Listting'
 import { mapActions, mapGetters } from 'vuex'
-  export default{
+export default{
   name: 'DepartmentDetail',
   components: {
     listting,
@@ -35,25 +35,42 @@ import { mapActions, mapGetters } from 'vuex'
   computed: {
     ...mapGetters('Department', ['departmentDetail'])
   },
-  methods:{
+  methods: {
     ...mapActions(['showNotify', 'setMiniDrawer']),
     ...mapActions('Department', ['updateDepartment', 'getDepartment', 'setDepartment']),
     ...mapActions('Dataview', ['updateDataviewEntry']),
-    submitForm(){
-
+    submitForm (formData) {
+      this.updateDepartment({
+        id: this.$route.params.id,
+        department: formData,
+        cb: (response) => {
+          this.showNotify({
+            color: 'success',
+            text: 'Thành công'
+          })
+          this.setDepartment({ department: response.data })
+          this.updateDataviewEntry({
+            name: 'department',
+            data: response.data,
+            key: 'id'
+          })
+          this.$router.push({
+            name: 'department-detail',
+            params: { id: this.$route.params.id }
+          })
+        }
+      })
     }
   },
   created () {
     this.setMiniDrawer(true)
     if (!this.departmentDetail.id) {
-      this.getDepartment({ departmentId: this.$route.params.id, params: {include: 'branch'} })
+      this.getDepartment({ departmentId: this.$route.params.id, params: { include: 'branch' } })
     }
   },
-   mounted () {
-     this.dataViewHeight = this.$refs.laylout.clientHeight - 48
+  mounted () {
+    this.dataViewHeight = this.$refs.laylout.clientHeight - 48
   }
 
-  }
+}
 </script>
-
-

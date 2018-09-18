@@ -30,10 +30,10 @@
           <v-icon>close</v-icon>
         </v-btn>
       </v-toolbar>
-      <v-container fluid class="white scroll-y border-e0-top" :style="{height: dataViewHeight + 'px'}">
+      <v-container fluid id="" class="white scroll-y border-e0-top" :style="{height: dataViewHeight + 'px'}">
                   <p>Tên chức vụ: {{positionDetail.name}}</p>
                  <div>
-                   Status
+                   Trạng thái
                   <v-icon v-if="positionDetail.status" color="green lighten-1">check</v-icon>
                   <v-icon v-else color="grey lighten-1">lock</v-icon>
                  </div>
@@ -47,7 +47,7 @@
 import listting from './Listting'
 import DialogConfirm from '@/components/DialogConfirm'
 import { mapActions, mapGetters } from 'vuex'
-  export default{
+export default{
   name: 'PositionDetail',
   components: {
     listting,
@@ -59,35 +59,35 @@ import { mapActions, mapGetters } from 'vuex'
       dialogDelete: false
     }
   },
-   computed: {
-    ...mapGetters('Position',['positionDetail'])
+  computed: {
+    ...mapGetters('Position', ['positionDetail'])
   },
-  methods:{
+  methods: {
     ...mapActions(['setMiniDrawer']),
-    ...mapActions('Position',['getPosition','deletePosition']),
+    ...mapActions('Position', ['getPosition', 'deletePosition']),
     ...mapActions('Dataview', ['removeDataviewEntry']),
-    removeConfirm(){
-        this.dialogDelete = true
+    removeConfirm () {
+      this.dialogDelete = true
     },
 
-    remove(confirm){
-      if (confirm){
+    remove (confirm) {
+      if (confirm) {
         this.deletePosition({
           id: this.$route.params.id,
-          cb: (response) =>{
+          cb: (response) => {
             this.removeDataviewEntry({
-                name: 'position',
-                data  : this.positionDetail,
-                key: 'id'
+              name: 'position',
+              data: this.positionDetail,
+              key: 'id'
             })
             this.$store.dispatch('showNotify', {
               text: this.$t('alert.success'),
               color: 'success'
             })
             this.dialogDelete = false
-            this.$router.push({name: 'position'})
+            this.$router.push({ name: 'position' })
           },
-          error: (error) =>{
+          error: (error) => {
             if (error.status === 404) {
               this.$store.dispatch('showNotify', {
                 text: this.$t('alert.not-found'),
@@ -99,16 +99,14 @@ import { mapActions, mapGetters } from 'vuex'
       }
     }
   },
-  created(){
+  created () {
     this.setMiniDrawer(true)
-     if (!this.positionDetail.id) {
-      this.getPosition({positionId:this.$route.params.id, params: {include: 'position' } })
+    if (!this.positionDetail.id) {
+      this.getPosition({ positionId: this.$route.params.id, params: { include: 'position' } })
     }
   },
   mounted () {
     this.dataViewHeight = this.$refs.laylout.clientHeight - 48
   }
-  }
+}
 </script>
-
-

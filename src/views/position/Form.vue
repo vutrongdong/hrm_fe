@@ -57,38 +57,35 @@ export default{
     return {
       position: {
         name: '',
-        status: '',
+        status: ''
       },
       items: [
-          {
-            "id"   : '',
-            "name" : '-- Su lua chon ---'
-
-          },
-          {
-          "id": 1,
-          "name": "Hiển thị",
-          },
-          {
-            "id": 0,
-            "name": "Không hiển thị"
-          }
-
-          ]
-
+        {
+          'id': '',
+          'name': '-- Su lua chon ---'
+        },
+        {
+          'id': 1,
+          'name': 'Hiển thị'
+        },
+        {
+          'id': 0,
+          'name': 'Không hiển thị'
+        }
+      ]
     }
   },
   methods: {
     ...mapActions(['fetchApi']),
-    setInitData(){
-      let dataPosition = {...this.dataPosition}
-      this.position = {...this.position, ...dataPosition}
+    setInitData () {
+      let dataPosition = { ...this.dataPosition }
+      this.position = { ...this.position, ...dataPosition }
     },
     validateBeforeSubmit () {
       this.$validator.validateAll().then(result => {
         if (result) {
-          let submitData = {...this.position}
-          this.$emit('submit',submitData)
+          let submitData = { ...this.position }
+          this.$emit('submit', submitData)
         } else {
           this.$store.dispatch('showNotify', {
             text: this.$t('alert.invalid'),

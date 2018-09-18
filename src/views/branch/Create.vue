@@ -1,32 +1,32 @@
 <template>
-    <v-layout row >
-        <v-flex xs12 pa-5 class="white">
-                  <PositionForm @submit="submitForm"></PositionForm>
-        </v-flex>
-    </v-layout>
+  <v-layout ref="laylout" row fill-height>
+    <v-flex xs12>
+      <h2 style="padding:15px">Thêm Chi Nhánh</h2>
+      <branch-form @submit="submitForm"/>
+    </v-flex>
+  </v-layout>
 </template>
 <script>
-import PositionForm from './Form'
+import BranchForm from './Form'
 import { mapActions } from 'vuex'
 export default{
-  name: 'CreatePosition',
+  name: 'CreateForm',
   components: {
-    PositionForm
+    BranchForm
   },
   methods: {
     ...mapActions(['showNotify', 'setMiniDrawer']),
-    ...mapActions('Position', ['createPosition']),
+    ...mapActions('Branch', ['createBranch']),
     submitForm (formData) {
-      this.createPosition({
-        position: formData,
+      this.createBranch({
+        branch: formData,
         cb: (response) => {
           this.showNotify({
             color: 'success',
             text: 'Thành công'
           })
-
           this.$router.push({
-            name: 'position',
+            name: 'branch',
             query: {
               reload: null
             }
@@ -34,12 +34,6 @@ export default{
         }
       })
     }
-  },
-  created () {
-    this.setMiniDrawer(false)
   }
 }
 </script>
-<style>
-
-</style>

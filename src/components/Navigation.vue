@@ -108,7 +108,7 @@ export default {
         {
           icon: 'fa-home',
           text: this.$t('title.home'),
-          router: {name: 'home'},
+          router: { name: 'home' },
           access_permission: true
         },
         {
@@ -120,7 +120,7 @@ export default {
             {
               icon: 'fas fa-cube',
               text: this.$t('title.item.index'),
-              router: {name: 'item'},
+              router: { name: 'item' },
               access_permission: 'item.view'
             }
           ]
@@ -138,27 +138,39 @@ export default {
         {
           icon: 'fa-user',
           text: this.$t('title.user.index'),
-          router: {name: 'user'},
+          router: { name: 'user' },
           access_permission: 'user.view'
         },
         {
           icon: 'fa-key',
           text: this.$t('title.role.index'),
-          router: {name: 'role'},
+          router: { name: 'role' },
           access_permission: 'role.view'
         },
         {
-          icon: 'fa-user',
+          icon: 'fas fa-map-marker-alt',
           text: this.$t('title.position.index'),
-          router: {name: 'position'},
+          router: { name: 'position' },
           access_permission: 'position.view'
         },
-         {
-          icon: 'fa-user',
+        {
+          icon: 'far fa-building',
           text: this.$t('title.department.index'),
-          router: {name: 'department'},
+          router: { name: 'department' },
           access_permission: 'department.view'
         },
+        {
+          icon: 'fas fa-code-branch',
+          text: this.$t('title.branch.index'),
+          router: { name: 'branch' },
+          access_permission: 'branch.view'
+        },
+        {
+          icon: 'fas fa-cog',
+          text: this.$t('title.setting.index'),
+          router: { name: 'setting' },
+          access_permission: 'setting.view'
+        }
       ]
     }
   },

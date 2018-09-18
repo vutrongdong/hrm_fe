@@ -87,7 +87,7 @@ export default{
               color: 'success'
             })
             this.dialogDelete = false
-            this.$router.push({name: 'user'})
+            this.$router.push({ name: 'user' })
           },
           error: (error) => {
             if (error.status === 404) {

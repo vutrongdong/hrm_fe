@@ -1,24 +1,24 @@
 <template>
     <v-layout row >
         <v-flex xs12 pa-5 class="white">
-                  <PositionForm @submit="submitForm"></PositionForm>
+                  <DepartmentForm @submit="submitForm"></DepartmentForm>
         </v-flex>
     </v-layout>
 </template>
 <script>
-import PositionForm from './Form'
+import DepartmentForm from './Form'
 import { mapActions } from 'vuex'
 export default{
   name: 'CreatePosition',
-  components:{
-    PositionForm
-   },
-   methods:{
+  components: {
+    DepartmentForm
+  },
+  methods: {
     ...mapActions(['showNotify', 'setMiniDrawer']),
-    ...mapActions('Position',['createPosition']),
+    ...mapActions('Department', ['createDepartment']),
     submitForm (formData) {
-      this.createPosition({
-        position: formData,
+      this.createDepartment({
+        department: formData,
         cb: (response) => {
           this.showNotify({
             color: 'success',
@@ -26,7 +26,7 @@ export default{
           })
 
           this.$router.push({
-            name: 'position',
+            name: 'department',
             query: {
               reload: null
             }
@@ -34,11 +34,11 @@ export default{
         }
       })
     }
-   },
-   created () {
+  },
+  created () {
     this.setMiniDrawer(false)
   }
-  }
+}
 </script>
 <style>
 

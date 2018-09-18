@@ -94,13 +94,13 @@ export default{
     ...mapActions('User', ['getUser']),
     userDetail (user) {
       this.getUser({ userId: user.id, params: { include: 'roles' } })
-      this.$router.push({name: 'user-detail', params: {id: user.id}})
+      this.$router.push({ name: 'user-detail', params: { id: user.id } })
     }
   },
   mounted () {
     this.dataViewHeight = this.$refs.laylout.clientHeight - 49
 
-    let query = {...this.$route.query}
+    let query = { ...this.$route.query }
     if (query.hasOwnProperty('reload')) {
       this.$nextTick(() => {
         this.$refs[this.dataViewName].$emit('reload')

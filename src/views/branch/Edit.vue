@@ -3,29 +3,29 @@
     <v-flex xs4>
       <listting />
     </v-flex>
-    <v-flex xs8 class="border-e0-left white">
+    <v-flex xs12 class="border-e0-left white">
       <v-toolbar dense color="white" flat>
-        <v-toolbar-title>{{ $t('title.user.edit') }}: {{userDetail.name}}</v-toolbar-title>
+        <v-toolbar-title>{{ $t('title.branch.edit') }}: {{branchDetail.name}}</v-toolbar-title>
         <v-spacer></v-spacer>
-        <v-btn icon @click="$router.push({name: 'user-detail', params: {id: $route.params.id}})">
+        <v-btn icon @click="$router.push({name: 'branch-detail', params: {id: $route.params.id}})">
           <v-icon>close</v-icon>
         </v-btn>
       </v-toolbar>
       <v-container fluid class="white scroll-y border-e0-top" :style="{height: dataViewHeight + 'px'}">
-        <user-form v-if="userDetail.id" @submit="submitForm" type="edit" :dataUser="userDetail" />
+        <branch-form v-if="branchDetail.id" @submit="submitForm" type="edit" :dataBranch="branchDetail" />
       </v-container>
     </v-flex>
   </v-layout>
 </template>
 
 <script>
-import UserForm from './Form'
+import BranchForm from './Form'
 import Listting from './Listting'
 import { mapActions, mapGetters } from 'vuex'
 export default{
-  name: 'CreateUser',
+  name: 'CreateBranch',
   components: {
-    UserForm,
+    BranchForm,
     Listting
   },
   data () {
@@ -34,16 +34,16 @@ export default{
     }
   },
   computed: {
-    ...mapGetters('User', ['userDetail'])
+    ...mapGetters('Branch', ['branchDetail'])
   },
   methods: {
     ...mapActions(['showNotify', 'setMiniDrawer']),
-    ...mapActions('User', ['updateUser', 'getUser', 'setUser']),
+    ...mapActions('Branch', ['updateBranch', 'getBranchs', 'setBranch']),
     ...mapActions('Dataview', ['updateDataviewEntry']),
     submitForm (formData) {
-      this.updateUser({
+      this.updateBranch({
         id: this.$route.params.id,
-        user: formData,
+        branch: formData,
         params: {
           include: 'roles'
         },
@@ -52,17 +52,14 @@ export default{
             color: 'success',
             text: 'Thành công'
           })
-
-          this.setUser({ user: response.data })
-
+          this.setBranch({ branch: response.data })
           this.updateDataviewEntry({
-            name: 'user',
+            name: 'branch',
             data: response.data,
             key: 'id'
           })
-
           this.$router.push({
-            name: 'user-detail',
+            name: 'branch-detail',
             params: { id: this.$route.params.id }
           })
         }
@@ -71,8 +68,8 @@ export default{
   },
   created () {
     this.setMiniDrawer(true)
-    if (!this.userDetail.id) {
-      this.getUser({ userId: this.$route.params.id, params: { include: 'roles' } })
+    if (!this.branchDetail.id) {
+      this.getBranchs({ branchId: this.$route.params.id })
     }
   },
   mounted () {

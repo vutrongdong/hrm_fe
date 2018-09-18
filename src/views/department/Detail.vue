@@ -37,23 +37,24 @@
                 <v-icon v-if="departmentDetail.status" color="green lighten-1">check</v-icon>
                 <v-icon v-else color="grey lighten-1">lock</v-icon>
             </div>
-            <p>tên chi nhánh: {{departmentDetail.branch ? departmentDetail.branch.data.name : ''}} </p>
-            <p>mô tả: {{departmentDetail.branch ? departmentDetail.branch.data.description : ''}} </p>
-            <p>điện thoại:{{departmentDetail.branch ? departmentDetail.branch.data.phone : ''}}</p>
-            <p>địa chỉ: {{departmentDetail.branch ? departmentDetail.branch.data.address : ''}} </p>
+            <p>branch name : {{departmentDetail.branch ? departmentDetail.branch.data.name : ''}} </p>
+            <p>description : {{departmentDetail.branch ? departmentDetail.branch.data.description : ''}} </p>
+            <p>phone :{{departmentDetail.branch ? departmentDetail.branch.data.phone : ''}}</p>
+            <p>address : {{departmentDetail.branch ? departmentDetail.branch.data.address : ''}} </p>
             <p>website: {{departmentDetail.branch ? departmentDetail.branch.data.website : ''}}</p>
             <p>email: {{departmentDetail.branch ? departmentDetail.branch.data.email : ''}} </p>
-            <p>facebook: {{departmentDetail.branch ? departmentDetail.branch.data.facebook : ''}} </p>
-
+            <p>facebook: {{departmentDetail.branch ? departmentDetail.branch.data.facebook : ''}}</p>
         </v-container>
     </v-flex>
+     <dialog-confirm v-model="dialogDelete" @input="remove" />
+
     </v-layout>
 </template>
 <script>
 import listting from './Listting'
 import DialogConfirm from '@/components/DialogConfirm'
 import { mapActions, mapGetters } from 'vuex'
-  export default{
+export default{
   name: 'PositionDetail',
   components: {
     listting,
@@ -65,28 +66,55 @@ import { mapActions, mapGetters } from 'vuex'
       dialogDelete: false
     }
   },
-   computed: {
-    ...mapGetters('Department',['departmentDetail'])
+  computed: {
+    ...mapGetters('Department', ['departmentDetail'])
   },
-  methods:{
+  methods: {
     ...mapActions(['setMiniDrawer']),
-    ...mapActions('Department',['getDepartment','deleteDepartment']),
+    ...mapActions('Department', ['getDepartment', 'deleteDepartment']),
     ...mapActions('Dataview', ['removeDataviewEntry']),
-    removeConfirm(){
-        this.dialogDelete = true
+    removeConfirm () {
+      this.dialogDelete = true
     },
-  },
-  created(){
-    this.setMiniDrawer(true)
-     if (!this.departmentDetail.id) {
-      this.getDepartment({ departmentId: this.$route.params.id, params: { include: 'branch' } })
+    remove (confirm) {
+      if (confirm) {
+        this.deleteDepartment({
+          id: this.$route.params.id,
+          cb: (response) => {
+            this.removeDataviewEntry({
+              name: 'department',
+              data: this.departmentDetail,
+              key: 'id'
+            })
+            this.$store.dispatch('showNotify', {
+              text: this.$t('alert.success'),
+              color: 'success'
+            })
+            this.dialogDelete = false
+            this.$router.push({ name: 'department' })
+          },
+          error: (error) => {
+            if (error.status === 404) {
+              this.$store.dispatch('showNotify', {
+                text: this.$t('alert.not-found'),
+                color: 'warning'
+              })
+            }
+          }
+        })
+      }
     }
+  },
+  created () {
+    this.setMiniDrawer(true)
+    console.log('id :' + this.departmentDetail.id)
+    // if (!this.departmentDetail.id) {
+    this.getDepartment({ departmentId: this.$route.params.id, params: { include: 'branch' } })
+    // }
   },
   mounted () {
     this.dataViewHeight = this.$refs.laylout.clientHeight - 48
-    console.log(this.dataViewHeight);
+    console.log(this.dataViewHeight)
   }
-  }
+}
 </script>
-
-

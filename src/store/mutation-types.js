@@ -18,7 +18,7 @@ export const SET_DELETE_TITLE = 'DELETE_MESSAGE/SET_DELETE_TITLE'
 export const SET_DELETE_NAME = 'DELETE_MESSAGE/SET_DELETE_NAME'
 export const SET_DELETE_CALLBACK = 'DELETE_MESSAGE/SET_DELETE_CALLBACK'
 
-//////position
+/// ///position
 export const SET_POSITION = 'POSITION/SET_POSITION'
 
 // auth
@@ -42,5 +42,10 @@ export const SET_PERMISSION = 'PERMISSION/SET_PERMISSION'
 export const SET_ALL_PERMISSION = 'PERMISSION/SET_ALL_PERMISSION'
 // role
 export const SET_ROLE = 'USER/SET_ROLE'
-//department
+// department
 export const SET_DEPARTMENT = 'DEPARTMENT/SET_DEPARTMENT'
+/// branch
+export const SET_BRANCH = 'DEPARTMENT/SET_BRANCH'
+/// setting
+export const REMOVE_SETTING = 'SETTING/REMOVE_SETTING'
+export const SET_SETTING = 'SETTING/SET_SETTING'

@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import createLogger from 'vuex/dist/logger'
 // modules
+// import swal from 'sweetalert'
 import * as modules from './modules'
 import { forEach } from 'lodash'
 import { SET_INITIAL_STATE } from './mutation-types'
@@ -11,7 +12,7 @@ Vue.use(Vuex)
 const debug = process.env.NODE_ENV !== 'production'
 
 export default new Vuex.Store({
-  strict: debug,
+  // strict: debug,
   state: {
 
   },

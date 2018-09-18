@@ -40,16 +40,16 @@ const actions = {
       { root: true }
     )
   },
-  createPosition ({commit, dispatch}, payload) {
+  createPosition ({ commit, dispatch }, payload) {
     let { position, cb } = payload || {}
     dispatch('fetchApi', {
       url: 'positions',
       method: 'POST',
       data: position,
       success: cb
-    }, {root: true})
+    }, { root: true })
   },
-  updatePosition ({commit, dispatch}, payload) {
+  updatePosition ({ commit, dispatch }, payload) {
     let { id, position, cb, error } = payload || {}
     dispatch('fetchApi', {
       url: `positions/${id}`,
@@ -57,16 +57,16 @@ const actions = {
       data: position,
       success: cb,
       error: error
-    }, {root: true})
+    }, { root: true })
   },
-  deletePosition ({commit, dispatch}, payload) {
+  deletePosition ({ commit, dispatch }, payload) {
     let { id, cb, error } = payload || {}
     dispatch('fetchApi', {
       url: `positions/${id}`,
       method: 'DELETE',
       success: cb,
       error: error
-    }, {root: true})
+    }, { root: true })
   }
 }
 
@@ -76,7 +76,7 @@ const actions = {
 const mutations = {
   [SET_POSITION]: (state, position) => {
     state.position = position
-  },
+  }
   // [SET_INITIAL_STATE]: (state) => {
   //   state.role = initState().role
   // }

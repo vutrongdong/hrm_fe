@@ -21,56 +21,55 @@
 import PositionForm from './Form'
 import listting from './Listting'
 import { mapActions, mapGetters } from 'vuex'
- export default{
+export default{
   name: 'EditPosition',
   components: {
     PositionForm,
     listting
   },
-   data () {
+  data () {
     return {
       dataViewHeight: 0
     }
   },
-  computed:{
-      ...mapGetters('Position', ['positionDetail'])
+  computed: {
+    ...mapGetters('Position', ['positionDetail'])
   },
-  methods:{
+  methods: {
     ...mapActions(['showNotify', 'setMiniDrawer']),
     ...mapActions('Position', ['updatePosition', 'getPosition', 'setPosition']),
     ...mapActions('Dataview', ['updateDataviewEntry']),
-    submitForm(formData){
-        this.updatePosition({
-             id: this.$route.params.id,
-             position:formData,
-             cb: (response) =>{
-              this.showNotify({
-                color: 'success',
-                text: 'Thành công'
-              })
-             this.setPosition({position: response.data})
-             this.updateDataviewEntry({
-              name: 'position',
-              data: response.data,
-              key: 'id'
-             })
-              this.$router.push({
-                name: 'position-detail',
-                params: { id: this.$route.params.id }
-              })
-          }
-        })
+    submitForm (formData) {
+      this.updatePosition({
+        id: this.$route.params.id,
+        position: formData,
+        cb: (response) => {
+          this.showNotify({
+            color: 'success',
+            text: 'Thành công'
+          })
+          this.setPosition({ position: response.data })
+          this.updateDataviewEntry({
+            name: 'position',
+            data: response.data,
+            key: 'id'
+          })
+          this.$router.push({
+            name: 'position-detail',
+            params: { id: this.$route.params.id }
+          })
+        }
+      })
     }
   },
-  created(){
-      this.setMiniDrawer(true)
-      if(!this.positionDetail.id){
+  created () {
+    this.setMiniDrawer(true)
+    if (!this.positionDetail.id) {
       this.getPosition({ positionId: this.$route.params.id })
-      }
+    }
   },
-  mounted(){
+  mounted () {
     this.dataViewHeight = this.$refs.laylout.clientHeight - 48
   }
-     }
+}
 </script>
-
