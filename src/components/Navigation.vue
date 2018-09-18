@@ -106,12 +106,12 @@ export default {
   data () {
     return {
       items: [
-      {
-        icon: 'fas fa-object-group',
-        text: this.$t('title.home'),
-        router: { name: 'home' },
-        access_permission: true
-      },
+        {
+          icon: 'fas fa-object-group',
+          text: this.$t('title.home'),
+          router: { name: 'home' },
+          access_permission: true
+        },
         // {
         //   icon: 'fas fa-object-group',
         //   text: this.$t('title.item.index'),
@@ -152,34 +152,34 @@ export default {
           icon: 'fas fa-code-branch',
           text: this.$t('title.branch.index'),
           router: { name: 'branch' },
-          access_permission: 'branch.view',
+          access_permission: 'branch.view'
         },
         {
           icon: 'settings',
           text: this.$t('title.setting.index'),
           router: { name: 'setting' },
-          access_permission: 'setting.view',
+          access_permission: 'setting.view'
         }
-        ]
-      }
-    },
-    computed: {
-      ...mapGetters(['miniDrawer', 'userProfile']),
-      userName () {
-        return this.userProfile.name && this.userProfile.name.length > 13 ? vnFilter(this.userProfile.name).match(/\b(\w)/g).join('').toUpperCase() : this.userProfile.name
-      }
-    },
-    methods: {
-      ...mapActions(['setMiniDrawer']),
-      checkOpenGroup (routers, index) {
-        if (routers.length) {
-          routers.forEach(router => {
-            if (router.router.name === this.$route.name) {
-              this.items[index].model = true
-            }
-          })
-        }
+      ]
+    }
+  },
+  computed: {
+    ...mapGetters(['miniDrawer', 'userProfile']),
+    userName () {
+      return this.userProfile.name && this.userProfile.name.length > 13 ? vnFilter(this.userProfile.name).match(/\b(\w)/g).join('').toUpperCase() : this.userProfile.name
+    }
+  },
+  methods: {
+    ...mapActions(['setMiniDrawer']),
+    checkOpenGroup (routers, index) {
+      if (routers.length) {
+        routers.forEach(router => {
+          if (router.router.name === this.$route.name) {
+            this.items[index].model = true
+          }
+        })
       }
     }
   }
-  </script>
+}
+</script>

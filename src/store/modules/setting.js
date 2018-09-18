@@ -1,11 +1,12 @@
 import {
   SET_SETTINGS,
+  DELETE_SETTING,
   SET_INITIAL_STATE
 } from '../mutation-types'
 
 const initState = () => {
   return {
-    settings: {}
+    settings: []
   }
 }
 
@@ -20,7 +21,7 @@ const state = {
  * actions
  */
 const actions = {
-    FetchSetting ({ commit, dispatch }, payload) {
+  FetchSetting ({ commit, dispatch }, payload) {
     let { params } = payload || {}
     dispatch(
       'fetchApi',
@@ -36,7 +37,7 @@ const actions = {
     )
   },
   getSetting ({ commit, dispatch }, payload) {
-    let { settingId,params } = payload || {}
+    let { settingId, params } = payload || {}
     dispatch(
       'fetchApi',
       {
@@ -56,7 +57,7 @@ const actions = {
       commit(SET_SETTINGS, settings)
     }
   },
-   createSetting ({ commit, dispatch }, payload) {
+  createSetting ({ commit, dispatch }, payload) {
     let { setting, cb, params } = payload
     dispatch('fetchApi', {
       url: 'settings',
@@ -76,14 +77,12 @@ const actions = {
       success: cb
     }, { root: true })
   },
-  deleteSetting ({ commit, dispatch }, payload) {
-    let { id, cb, error } = payload || {}
-    dispatch('fetchApi', {
-      url: `settings/${id}`,
-      method: 'DELETE',
-      success: cb,
-      error: error
-    }, { root: true })
+  async deleteSetting ({ commit, dispatch }, payload) {
+    const { id, cb, error } = payload || {}
+    let response = await axios.delete('/settings/' + id).then(response => {
+      commit(DELETE_SETTING, id)
+      cb && cb(response.data)
+    })
   }
 }
 
@@ -93,6 +92,9 @@ const actions = {
 const mutations = {
   [SET_SETTINGS]: (state, settings) => {
     state.settings = settings
+  },
+  [DELETE_SETTING] (state, id) {
+    return state.settings = state.settings.filter((setting) => setting.id !== id)
   },
   [SET_INITIAL_STATE]: (state) => {
     state.settings = initState().settings

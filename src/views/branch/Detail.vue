@@ -3,7 +3,7 @@
     <v-flex xs4>
       <listting />
     </v-flex>
-    <v-flex xs12 class="border-e0-left">
+    <v-flex xs8 class="border-e0-left">
       <v-toolbar dense color="white" flat>
         <v-toolbar-title>{{ $t('title.branch.detail') }}: {{branchDetail.name}}</v-toolbar-title>
         <v-spacer></v-spacer>
@@ -66,11 +66,11 @@ export default{
     }
   },
   computed: {
-    ...mapGetters('Branch',['branchDetail']),
+    ...mapGetters('Branch', ['branchDetail'])
   },
   methods: {
     ...mapActions(['setMiniDrawer']),
-    ...mapActions('Branch',['getBranch', 'deleteBranch']),
+    ...mapActions('Branch', ['getBranch', 'deleteBranch']),
     ...mapActions('Dataview', ['removeDataviewEntry']),
     removeConfirm () {
       this.dialogDelete = true

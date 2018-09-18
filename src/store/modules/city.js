@@ -1,13 +1,13 @@
 import {
   SET_CITIES,
   SET_DISTRICTS,
-  SET_INITIAL_STATE,
+  SET_INITIAL_STATE
 } from '../mutation-types'
 
 const initState = () => {
   return {
     city: {},
-    districts:{}
+    districts: {}
   }
 }
 
@@ -15,7 +15,6 @@ const state = {
   city: initState().city,
   districts: initState().districts
 }
-
 
 const actions = {
   setCity ({ commit }, payload) {
@@ -33,10 +32,10 @@ const actions = {
         }
       },
       { root: true }
-      )
+    )
   },
   getDistrictByCity ({ commit, dispatch }, payload) {
-    let {city_id} = payload
+    let { city_id } = payload
     // console.log(city_id)
     dispatch(
       'fetchApi',
@@ -48,7 +47,7 @@ const actions = {
         }
       },
       { root: true }
-      )
+    )
   }
 }
 const mutations = {
@@ -58,14 +57,14 @@ const mutations = {
   [SET_INITIAL_STATE]: (state) => {
     state.city = initState().city
   },
-  [SET_DISTRICTS]: (state,districts)=>{
+  [SET_DISTRICTS]: (state, districts) => {
     state.districts = districts
   }
 }
 
 const getters = {
   cityAll: (state) => state.city,
-  districtByCity:(state)=>state.districts
+  districtByCity: (state) => state.districts
 }
 export default {
   namespaced: true,

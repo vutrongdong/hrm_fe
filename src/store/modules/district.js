@@ -13,7 +13,6 @@
 //   district: initState().district
 // }
 
-
 // const actions = {
 //   setDistrict ({ commit }, payload) {
 //     let { district } = payload

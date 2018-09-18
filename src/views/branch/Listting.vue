@@ -62,7 +62,7 @@ export default {
     }
   }),
   methods: {
-    ...mapActions('Branch',['getBranch']),
+    ...mapActions('Branch', ['getBranch']),
     branchDetail (branch) {
       this.getBranch({ branchId: branch.id, params: { include: 'branch' } })
       this.$router.push({ name: 'branch-detail', params: { id: branch.id } })

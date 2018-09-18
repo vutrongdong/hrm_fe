@@ -59,11 +59,11 @@ export default{
   },
   data () {
     return {
-      status:'Hiển thị',
+      status: 'Hiển thị',
       setting: {
         name: '',
         value: '',
-        status:''
+        status: ''
       }
     }
   },
@@ -76,7 +76,7 @@ export default{
     validateBeforeSubmit () {
       this.$validator.validateAll().then(result => {
         if (result) {
-          this.$emit('submit',this.setting)
+          this.$emit('submit', this.setting)
         } else {
           this.$store.dispatch('showNotify', {
             text: this.$t('alert.invalid'),

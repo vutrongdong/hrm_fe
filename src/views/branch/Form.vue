@@ -2,7 +2,7 @@
   <v-form @submit.prevent="validateBeforeSubmit">
     <v-container fluid>
       <v-layout row wrap>
-        <v-flex xs6>
+        <v-flex md6>
           <v-text-field :error-messages="errors.has('name') ? errors.collect('name') : []" v-validate="'required'":data-vv-as="$t('label.name')"name="name":label="$t('label.name') + '*'"v-model="branch.name">
           </v-text-field>
 
@@ -28,7 +28,7 @@
           </v-checkbox>
 
         </v-flex>
-        <v-flex xs6>
+        <v-flex md6>
 
           <v-text-field :error-messages="errors.has('description') ? errors.collect('description') : []":data-vv-as="$t('label.description')"name="description":label="$t('label.description')"v-model="branch.description">
           </v-text-field>
@@ -86,7 +86,7 @@ export default{
   },
   computed: {
     ...mapGetters(['isFetchingApi']),
-    ...mapGetters('City',['cityAll', 'districtByCity']),
+    ...mapGetters('City', ['cityAll', 'districtByCity']),
     isCreate () {
       return this.type === 'create'
     }
@@ -130,12 +130,12 @@ export default{
   },
   methods: {
     ...mapActions(['fetchApi']),
-    ...mapActions('City',['getCity','getDistrictByCity']),
+    ...mapActions('City', ['getCity', 'getDistrictByCity']),
     setInitData () {
       let dataBranch = { ...this.dataBranch }
       this.branch = { ...this.branch, ...dataBranch }
     },
-    changedCity(value){
+    changedCity (value) {
       this.getDistrictByCity({
         city_id: value
       })
@@ -156,10 +156,10 @@ export default{
       })
     }
   },
-  mounted(){
+  mounted () {
     this.getDistrictByCity({
-        city_id: this.branch.city_id
-      })
+      city_id: this.branch.city_id
+    })
   },
   created () {
     this.getCity()

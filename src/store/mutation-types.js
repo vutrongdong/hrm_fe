@@ -33,6 +33,7 @@ export const SET_CITIES = 'DATA_RAW/SET_CITIES'
 export const SET_DISTRICTS = 'DATA_RAW/SET_DISTRICTS'
 // setting
 export const SET_SETTINGS = 'SETTING/SET_SETTINGS'
+export const DELETE_SETTING = 'SETTING/DELETE_SETTING'
 // permission
 export const SET_PERMISSION = 'PERMISSION/SET_PERMISSION'
 export const SET_ALL_PERMISSION = 'PERMISSION/SET_ALL_PERMISSION'
@@ -41,3 +42,9 @@ export const SET_ROLE = 'USER/SET_ROLE'
 
 // branch
 export const SET_BRANCH = 'BRANCH/SET_BRANCH'
+
+// department
+export const SET_DEPARTMENT = 'DEPARTMENT/SET_DEPARTMENT'
+
+//position
+export const SET_POSITION = 'POSITION/SET_POSITION'

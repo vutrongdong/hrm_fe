@@ -25,7 +25,7 @@ const actions = {
     commit(SET_BRANCH, branch)
   },
   getBranch ({ commit, dispatch }, payload) {
-    let { branchId,params } = payload
+    let { branchId, params } = payload
     console.log(branchId)
     dispatch(
       'fetchApi',

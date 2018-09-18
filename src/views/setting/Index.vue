@@ -1,21 +1,4 @@
-<!-- <template>
-  <v-layout ref="laylout" row fill-height>
-    <v-flex xs12>
-      <List/>
-    </v-flex>
-  </v-layout>
-</template>
-
-<script>
-import List from './Listting'
-export default{
-  components: {
-    List
-  }
-}
-</script>
--->
-<template>
+ <template>
   <v-layout ref="laylout" row fill-height>
     <v-flex xs12 class="border-e0-left">
       <data-view
@@ -52,7 +35,7 @@ export default{
                <v-btn v-if="canAccess('setting.update')" icon @click="$router.push({name: 'setting-edit', params: {id: item.id}})">
                 <v-icon style="float:right;position:absolute">edit</v-icon>
               </v-btn>
-              <v-btn v-if="canAccess('setting.delete')" icon @click="removeConfirm">
+              <v-btn v-if="canAccess('setting.delete')" icon @click="remove(item.id)">
                 <v-icon>delete</v-icon>
               </v-btn>
             </span>
@@ -60,7 +43,6 @@ export default{
           </p>
         </div>
       </template>
-      <dialog-confirm v-model="dialogDelete" @input="remove" />
     </v-list>
   </template>
 </data-view>
@@ -90,41 +72,46 @@ export default{
     }
   },
   computed: {
-    ...mapGetters('Setting',['settingDetail']),
+    ...mapGetters('Setting', ['settingDetail'])
   },
   methods: {
     ...mapActions(['setMiniDrawer']),
-    ...mapActions('Setting',['FetchSetting', 'deleteSetting']),
+    ...mapActions('Setting', ['FetchSetting', 'deleteSetting']),
     ...mapActions('Dataview', ['removeDataviewEntry']),
-    removeConfirm () {
-      this.dialogDelete = true
-    },
-    remove (confirm) {
-      if (confirm) {
-        this.deleteSetting({
-          id:settingId,
-          cb: (response) => {
-            this.removeDataviewEntry({
-              name: 'setting',
-              data: this.settingDetail,
-              key: 'id'
+    remove (id) {
+      swal({
+        title: 'Xác nhận',
+        text: 'Bạn chắc chắn muốn xóa bản ghi này',
+        buttons: true,
+        dangerMode: true
+      })
+        .then((willDelete) => {
+          if (willDelete) {
+            $('#' + id).remove()
+            this.deleteSetting({
+              id: id,
+              cb: (response) => {
+                this.removeDataviewEntry({
+                  name: 'setting',
+                  data: this.settingDetail,
+                  key: 'id'
+                })
+                this.$store.dispatch('showNotify', {
+                  text: this.$t('alert.success'),
+                  color: 'success'
+                })
+              },
+              error: (error) => {
+                if (error.status === 404) {
+                  this.$store.dispatch('showNotify', {
+                    text: this.$t('alert.not-found'),
+                    color: 'warning'
+                  })
+                }
+              }
             })
-            this.$store.dispatch('showNotify', {
-              text: this.$t('alert.success'),
-              color: 'success'
-            })
-            this.dialogDelete = false
-          },
-          error: (error) => {
-            if (error.status === 404) {
-              this.$store.dispatch('showNotify', {
-                text: this.$t('alert.not-found'),
-                color: 'warning'
-              })
-            }
           }
         })
-      }
     }
   },
   mounted () {
@@ -140,9 +127,7 @@ export default{
       })
     }
   }
-
 }
-
 </script>
 
 <style scope>
