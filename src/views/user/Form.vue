@@ -38,10 +38,10 @@
 
           <template>
             <v-menu ref="menu":close-on-content-click="false"v-model="menu":nudge-right="40"lazy transition="scale-transition"offset-y full-width min-width="290px">
-              <v-text-field slot="activator"v-model="user.date_birth" label="Ngày sinh"readonly >
+              <v-text-field slot="activator"v-model="user.date_of_birth" label="Ngày sinh"readonly >
               </v-text-field>
 
-              <v-date-picker ref="picker" v-model="user.date_birth":max="new Date().toISOString().substr(0, 10)"min="1950-01-01"@change="save">
+              <v-date-picker ref="picker" v-model="user.date_of_birth":max="new Date().toISOString().substr(0, 10)"min="1950-01-01"@change="save">
               </v-date-picker>
             </v-menu>
           </template>
@@ -57,6 +57,7 @@
                 <v-radio value='1' label="Nữ"></v-radio>
               </v-radio-group>
             </v-flex>
+            <v-spacer></v-spacer>
             <v-flex xs5>
               <label style="margin-top:10px">Trạng Thái</label>
               <v-radio-group style="margin-top:-2px" v-model="user.status" row>
@@ -68,8 +69,8 @@
         </v-flex>
 
         <v-flex xs12>
-          <h3 style="margin-bottom:15px">Vị trí, phòng ban</h3>
-          <children :id='index' v-for="(n,index) in range" :dataRange="range" @add="Add()" @delete="Remove(index)"></children>
+          <h3 style="margin-bottom:15px">Chi nhánh, phòng ban, vị trí</h3>
+          <children :id='index' v-for="(n,index) in range" :DepartmentUser="department_user" @add="Add()" @delete="Remove(index)"></children>
         </v-flex>
 
         <v-flex xs12 text-xs-center>
@@ -124,12 +125,12 @@ export default{
       user: {
         name: '',
         email: '',
-        data:'',
         password: '',
         password_confirmation: '',
         roles: []
       },
-      roles: []
+      roles: [],
+      department_user:[]
     }
   },
   methods: {

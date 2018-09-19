@@ -55,6 +55,7 @@
           {{role.name}}
         </v-chip>
       </p>
+      <P>Trạng thái:{{ userDetail.status_txt }}</P>
     </v-container>
   </v-flex>
   <dialog-confirm v-model="dialogDelete" @input="remove" />

@@ -1,28 +1,59 @@
 import {
   SET_BRANCH,
-  SET_INITIAL_STATE
+  SET_INITIAL_STATE,
+  SET_DEPARTMENT
 } from '../mutation-types'
 
 const initState = () => {
   return {
-    branch: {}
+    branch: {},
+    dm:{},
   }
 }
 /**
  * [state description]
  * @type {Object}
  */
-const state = {
-  branch: initState().branch
+ const state = {
+  branch: initState().branch,
+  dm: initState().dm
 }
 /**
  * [actions description]
  * @type {Object}
  */
-const actions = {
+ const actions = {
   setBranch ({ commit }, payload) {
     let { branch } = payload
     commit(SET_BRANCH, branch)
+  },
+  getBranchForUser ({ commit, dispatch }, payload) {
+    dispatch(
+      'fetchApi',
+      {
+        url: `branches`,
+        method: 'GET',
+        success: (response) => {
+          commit(SET_BRANCH, response.data)
+        }
+      },
+      { root: true }
+      )
+  },
+  getDepartmentForUser ({ commit, dispatch }, payload) {
+    let { branch_id } = payload
+    console.log(branch_id)
+    dispatch(
+      'fetchApi',
+      {
+        url: `branches/${branch_id}?include=departments`,
+        method: 'GET',
+        success: (response) => {
+          commit(SET_DEPARTMENT, response.data)
+        }
+      },
+      { root: true }
+    )
   },
   getBranch ({ commit, dispatch }, payload) {
     let { branchId, params } = payload
@@ -38,7 +69,7 @@ const actions = {
         }
       },
       { root: true }
-    )
+      )
   },
   createBranch ({ commit, dispatch }, payload) {
     let { branch, cb, params } = payload
@@ -74,20 +105,25 @@ const actions = {
  * [mutations description]
  * @type {Object}
  */
-const mutations = {
+ const mutations = {
   [SET_BRANCH]: (state, branch) => {
     state.branch = branch
   },
   [SET_INITIAL_STATE]: (state) => {
     state.branch = initState().branch
+  },
+  [SET_DEPARTMENT]:(state,dm)=>{
+    state.dm =initState().dm
   }
 }
 /**
  * [getters description]
  * @type {Object}
  */
-const getters = {
-  branchDetail: (state) => state.branch
+ const getters = {
+  branchAll:(state)=>state.branch,
+  branchDetail: (state) => state.branch,
+  DepartmentByBranch:(state)=>state.dm
 }
 
 export default {

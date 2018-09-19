@@ -19,7 +19,9 @@ const initState = () => {
       user: { ...DEFAULT_MODULE_DATA },
       branch: { ...DEFAULT_MODULE_DATA },
       city: { ...DEFAULT_MODULE_DATA },
-      setting: { ...DEFAULT_MODULE_DATA }
+      setting: { ...DEFAULT_MODULE_DATA },
+      position: { ...DEFAULT_MODULE_DATA },
+      department: { ...DEFAULT_MODULE_DATA },
     }
   }
 }
@@ -27,14 +29,14 @@ const initState = () => {
 /**
  * state
  */
-const state = {
+ const state = {
   dataViews: initState().dataViews
 }
 
 /**
  * actions
  */
-const actions = {
+ const actions = {
   setDataview ({ commit }, payload) {
     commit(SET_DATA_VIEW, payload)
   },
@@ -55,7 +57,7 @@ const actions = {
 /**
  * mutations
  */
-const mutations = {
+ const mutations = {
   [SET_DATA_VIEW]: (state, payload) => {
     let { name, data, pagination, lastScrollPos, uniqueKey } = payload
     uniqueKey = uniqueKey || 'id'
@@ -83,7 +85,7 @@ const mutations = {
 /**
  * getters
  */
-const getters = {
+ const getters = {
   dataViews: state => name => get(state.dataViews, name, { data: [], pagination: { ...DEFAULT_PAGINATION }, lastScrollPos: 0 })
 }
 
