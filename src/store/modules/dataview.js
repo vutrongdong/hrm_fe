@@ -19,7 +19,9 @@ const initState = () => {
       user: { ...DEFAULT_MODULE_DATA },
       position: { ...DEFAULT_MODULE_DATA },
       department: { ...DEFAULT_MODULE_DATA },
-      setting: { ...DEFAULT_MODULE_DATA }
+      setting: { ...DEFAULT_MODULE_DATA },
+      plan:{...DEFAULT_MODULE_DATA},
+      branch:{...DEFAULT_MODULE_DATA}
     }
   }
 }

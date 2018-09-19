@@ -26,8 +26,14 @@
         "create": "Thêm mới chi nhánh",
         "edit": "Chỉnh sửa chi nhánh"
     },
-    "account": {
-      "change-password": "Đổi mật khẩu",
+    "candidate": {
+        "index": "Ứng viên",
+        "detail": "Chi tiết ứng viên",
+        "create": "Thêm mới ứng viên",
+        "edit": "Chỉnh sửa ứng viên"
+    },
+      "account": {
+    "change-password": "Đổi mật khẩu",
       "change-information": "Thông tin cá nhân"
     },
     "position":{
@@ -36,7 +42,19 @@
        "create": "Thêm mới chức danh",
        "edit": "Chỉnh sửa chức danh"
     },
-      "setting":{
+    "plan":{
+       "index": "Kế hoạch",
+       "detail":"Chi tiết kế hoạch",
+       "create": "Thêm mới kế hoạch",
+       "edit": "Chỉnh sửa kế hoạch"
+    },
+    "plandetail":{
+       "index": "kế hoạch chi tiết",
+       "detail":"kế hoạch chi tiết",
+       "create":"Thêm kế hoạch chi tiết",
+       "edit": "Chỉnh sửa kế hoạch chi tiết"
+    },
+    "setting":{
        "index": "Thiết lập",
        "detail":"Chi tiết thiết lập",
        "create": "Thêm mới thiết lập",
@@ -93,7 +111,9 @@
     "branch_status": "branch status",
     "city_id" : "thành phố ",
     "districts_id" : "quận huyện",
-    "branch_id" : "chi nhánh"
+    "branch_id" : "chi nhánh",
+    "title": "title",
+    "content" : "content"
 
   },
   "alert": {

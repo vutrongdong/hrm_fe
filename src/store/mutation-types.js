@@ -46,6 +46,8 @@ export const SET_ROLE = 'USER/SET_ROLE'
 export const SET_DEPARTMENT = 'DEPARTMENT/SET_DEPARTMENT'
 /// branch
 export const SET_BRANCH = 'DEPARTMENT/SET_BRANCH'
+//// plan
+export const SET_PLAN = 'PLAN/SET_PLAN'
 /// setting
 export const REMOVE_SETTING = 'SETTING/REMOVE_SETTING'
 export const SET_SETTING = 'SETTING/SET_SETTING'

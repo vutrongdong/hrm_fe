@@ -1,7 +1,7 @@
  <template ref="laylout" column fill-height>
   <v-layout ref="laylout" column fill-height>
     <v-toolbar dense color="white" flat>
-      <v-btn v-if="canAccess('department.create')" class="mr-3" icon color="primary" @click="$router.push({name: 'department-create'})">
+      <v-btn v-if="canAccess('candidate.create')" class="mr-3" icon color="primary" @click="$router.push({name: 'candidate-create'})">
         <v-icon>add</v-icon>
       </v-btn>
       <v-text-field
@@ -17,10 +17,10 @@
         :viewHeight="dataViewHeight"
         :params="params"
         :ref="dataViewName"
-       >
-      <template slot-scope="{items}">
-        <v-list three-line>
-          <template v-for="(item) in items.data">
+        >
+        <template slot-scope="{items}">
+          <v-list three-line>
+            <template  v-for="(item) in items.data">
               <v-list-tile
                 :key="'item' + item.id"
                 avatar
@@ -28,46 +28,45 @@
                 :inactive="item.id === $route.params.id"
                 :class="item.id === $route.params.id && 'grey lighten-2'"
               >
-               <v-list-tile-content>
-                  <v-list-tile-title>{{ item.name }}</v-list-tile-title>
-                </v-list-tile-content>
+                  <v-list-tile-content>
+                      <v-list-tile-title>{{ item.name }}</v-list-tile-title>
+                  </v-list-tile-content>
+                  <v-list-tile-action>
+                      <v-icon v-if="item.status" color="green lighten-1">check</v-icon>
+                      <v-icon v-else color="grey lighten-1">lock</v-icon>
+                  </v-list-tile-action>
 
-                 <v-list-tile-action>
-                  <v-icon v-if="item.status" color="green lighten-1">check</v-icon>
-                  <v-icon v-else color="grey lighten-1">lock</v-icon>
-                </v-list-tile-action>
               </v-list-tile>
-          </template>
-        </v-list>
-      </template>
-      </data-view>
+            </template>
+          </v-list>
+        </template>
+        </data-view>
     </v-flex>
-  </v-layout>
-</template>
-
+    </v-layout>
+ </template>
 <script>
 import DataView from '@/components/DataView/DataView'
 import NoData from '@/components/NoData'
 import { mapActions } from 'vuex'
 export default{
-  name: 'departmentListting',
+  name: 'candidateListting',
   components: {
     DataView,
     NoData
   },
   data: () => ({
     dataViewHeight: 0,
-    dataViewName: 'department',
+    dataViewName: 'candidate',
     params: {
       q: '',
       include: 'branch'
     }
   }),
-  methods: {
+  methods:{
     ...mapActions('Department', ['getDepartment']),
     departmentDetail (department) {
       this.getDepartment({ departmentId: department.id, params: { include: 'branch' } })
-      this.$router.push({ name: 'department-detail', params: { id: department.id } })
+      this.$router.push({ name: 'candidate-detail', params: { id: department.id } })
     }
   },
   mounted () {

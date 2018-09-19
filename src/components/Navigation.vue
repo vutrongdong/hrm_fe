@@ -122,6 +122,12 @@ export default {
               text: this.$t('title.item.index'),
               router: { name: 'item' },
               access_permission: 'item.view'
+            },
+            {
+              icon: 'fas fa-cube',
+              text: this.$t('title.item.index'),
+              router: { name: 'item' },
+              access_permission: 'item.view'
             }
           ]
         },
@@ -170,7 +176,33 @@ export default {
           text: this.$t('title.setting.index'),
           router: { name: 'setting' },
           access_permission: 'setting.view'
-        }
+        },
+        {
+          icon: 'far fa-id-card',
+          text: this.$t('title.candidate.index'),
+          router: { name: 'candidate' },
+          access_permission: 'candidate.view'
+        },
+         {
+          icon: 'fas fa-object-group',
+          text: this.$t('title.plan.index'),
+          access_permission: 'plan.view',
+          model: false,
+          children: [
+            {
+              icon: 'fab fa-playstation',
+              text: this.$t('title.plan.index'),
+              router: { name: 'plan' },
+              access_permission: 'plan.view'
+            },
+            {
+              icon: 'fas fa-cube',
+              text: this.$t('title.plandetail.index'),
+              router: { name: 'plandetail' },
+              access_permission: 'plandetail.view'
+            }
+          ]
+        },
       ]
     }
   },
