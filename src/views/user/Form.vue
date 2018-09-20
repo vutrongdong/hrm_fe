@@ -70,11 +70,11 @@
 
         <v-flex xs12>
           <h3 style="margin-bottom:15px">Chi nhánh, phòng ban, vị trí</h3>
-          <children :id='index' v-for="(n,index) in range" :DepartmentUser="department_user" @add="Add()" @delete="Remove(index)"></children>
+          <children :id='index' v-for="(n, index) in range" @add="Add()" @delete="Remove(index)" v-on:changeDepartment="updateDepartment($event)" v-on:changePosition="updatePosition($event)"></children>
         </v-flex>
 
         <v-flex xs12 text-xs-center>
-          <v-btn :loading="isFetchingApi":disabled="isFetchingApi"color="primary"type="submit"
+          <v-btn :loading="isFetchingApi":disabled="isFetchingApi" color="primary"type="submit"
           >
           <template v-if="isCreate">
             <v-icon left>add</v-icon> {{$t('control.create')}}
@@ -123,14 +123,23 @@ export default{
       range:1,
       menu: false,
       user: {
-        name: '',
-        email: '',
-        password: '',
-        password_confirmation: '',
-        roles: []
+        name: 'fgdhfgjh',
+        email: 'gdfhfgh@gmail.com',
+        password: '111111',
+        date_of_birth: null,
+        password_confirmation: '111111',
+        roles: [],
+        department_user:[
+          {
+            department_id:[],
+            position_id:[],
+
+            // department_id:[5],
+            // position_id:[2]
+          }
+        ]
       },
-      roles: [],
-      department_user:[]
+      roles: []
     }
   },
   methods: {
@@ -152,7 +161,7 @@ export default{
     },
     Remove(index){
       if(index!=0){
-        $('#'+index).remove()
+        $('#'+ index).remove()
       }
     },
     validateBeforeSubmit () {
@@ -166,6 +175,12 @@ export default{
           })
         }
       })
+    },
+    updateDepartment(updated){
+      this.user.department_user.push("department_id"+updated)
+    },
+    updatePosition(updated){
+      // this.user.department_user.push(updated)
     }
   },
   mounted () {

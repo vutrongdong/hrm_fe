@@ -1,9 +1,9 @@
 <template>
   <v-layout ref="laylout" row fill-height>
-    <v-flex xs4>
+    <v-flex xs3>
       <listting />
     </v-flex>
-    <v-flex xs8 class="border-e0-left white">
+    <v-flex xs9 class="border-e0-left white">
       <v-toolbar dense color="white" flat>
         <v-toolbar-title>{{ $t('title.user.edit') }}: {{userDetail.name}}</v-toolbar-title>
         <v-spacer></v-spacer>

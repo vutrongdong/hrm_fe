@@ -1,13 +1,12 @@
 import {
   SET_BRANCH,
-  SET_INITIAL_STATE,
-  SET_DEPARTMENT
+  SET_INITIAL_STATE
 } from '../mutation-types'
 
 const initState = () => {
   return {
     branch: {},
-    dm:{},
+    department:{},
   }
 }
 /**
@@ -16,7 +15,7 @@ const initState = () => {
  */
  const state = {
   branch: initState().branch,
-  dm: initState().dm
+  department: initState().department
 }
 /**
  * [actions description]
@@ -26,6 +25,10 @@ const initState = () => {
   setBranch ({ commit }, payload) {
     let { branch } = payload
     commit(SET_BRANCH, branch)
+  },
+  setDepartment({commit},payload){
+    let {department} = payload
+    comit(SET_DEPARTMENT,department)
   },
   getBranchForUser ({ commit, dispatch }, payload) {
     dispatch(
@@ -40,21 +43,6 @@ const initState = () => {
       { root: true }
       )
   },
-  getDepartmentForUser ({ commit, dispatch }, payload) {
-    let { branch_id } = payload
-    console.log(branch_id)
-    dispatch(
-      'fetchApi',
-      {
-        url: `branches/${branch_id}?include=departments`,
-        method: 'GET',
-        success: (response) => {
-          commit(SET_DEPARTMENT, response.data)
-        }
-      },
-      { root: true }
-    )
-  },
   getBranch ({ commit, dispatch }, payload) {
     let { branchId, params } = payload
     console.log(branchId)
@@ -65,7 +53,7 @@ const initState = () => {
         method: 'GET',
         params: params || {},
         success: (response) => {
-          commit(SET_BRANCH, response.data)
+          commit(SET_BRANCH, response)
         }
       },
       { root: true }
@@ -111,9 +99,6 @@ const initState = () => {
   },
   [SET_INITIAL_STATE]: (state) => {
     state.branch = initState().branch
-  },
-  [SET_DEPARTMENT]:(state,dm)=>{
-    state.dm =initState().dm
   }
 }
 /**
@@ -122,8 +107,7 @@ const initState = () => {
  */
  const getters = {
   branchAll:(state)=>state.branch,
-  branchDetail: (state) => state.branch,
-  DepartmentByBranch:(state)=>state.dm
+  branchDetail: (state) => state.branch
 }
 
 export default {
