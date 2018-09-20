@@ -67,6 +67,22 @@ const actions = {
       success: cb,
       error: error
     }, { root: true })
+  },
+PositionForUser ({ commit, dispatch }, payload) {
+    let { positionId, params, error } = payload || {}
+    dispatch(
+      'fetchApi',
+      {
+        url: `positions`,
+        method: 'GET',
+        params: params || {},
+        success: (response) => {
+          commit(SET_POSITION, response.data)
+        },
+        error: error
+      },
+      { root: true }
+    )
   }
 }
 
@@ -86,7 +102,9 @@ const mutations = {
  * getters
  */
 const getters = {
-  positionDetail: (state) => state.position
+  positionDetail: (state) => state.position,
+  positionAll: (state) => state.position
+
 }
 
 export default {

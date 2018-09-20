@@ -18,22 +18,23 @@ export default{
     ...mapActions(['showNotify', 'setMiniDrawer']),
     ...mapActions('User', ['createUser']),
     submitForm (formData) {
-      this.createUser({
-        user: formData,
-        cb: (response) => {
-          this.showNotify({
-            color: 'success',
-            text: 'Thành công'
-          })
+      // this.createUser({
+      //   user: formData,
+      //   cb: (response) => {
+      //     this.showNotify({
+      //       color: 'success',
+      //       text: 'Thành công'
+      //     })
 
-          this.$router.push({
-            name: 'user',
-            query: {
-              reload: null
-            }
-          })
-        }
-      })
+      //     this.$router.push({
+      //       name: 'user',
+      //       query: {
+      //         reload: null
+      //       }
+      //     })
+      //   }
+      // })
+      console.log('data',formData);
     }
   },
   created () {

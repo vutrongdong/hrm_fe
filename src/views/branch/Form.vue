@@ -156,9 +156,9 @@ export default{
     }
   },
   mounted () {
-    this.getDistrictByCity({
-      city_id: this.branch.city_id
-    })
+    // this.getDistrictByCity({
+    //   city_id: this.branch.city_id
+    // })
   },
   created () {
     this.getCity()
