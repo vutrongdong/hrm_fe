@@ -129,15 +129,8 @@ export default{
         date_of_birth: null,
         password_confirmation: '111111',
         roles: [],
-        department_user:[
-          {
-            department_id:[],
-            position_id:[],
-
-            // department_id:[5],
-            // position_id:[2]
-          }
-        ]
+        department_id:[],
+        position_id:[]
       },
       roles: []
     }
@@ -177,10 +170,10 @@ export default{
       })
     },
     updateDepartment(updated){
-      this.user.department_user.push("department_id"+updated)
+      this.user.department_id.push(updated)
     },
     updatePosition(updated){
-      // this.user.department_user.push(updated)
+      this.user.position_id.push(updated)
     }
   },
   mounted () {
