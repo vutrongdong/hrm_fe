@@ -71,11 +71,11 @@ export default{
     removeConfirm () {
       this.dialogDelete = true
     },
-    remove(confirm){
-      if(confirm){
+    remove (confirm) {
+      if (confirm) {
         this.deletePlan({
           id: this.$route.params.id,
-          cb: (response) =>{
+          cb: (response) => {
             this.removeDataviewEntry({
               name: 'plan',
               data: this.planDetail,
@@ -88,8 +88,8 @@ export default{
             this.dialogDelete = false
             this.$router.push({ name: 'plan' })
           },
-          error:(error) =>{
-              if (error.status === 404) {
+          error: (error) => {
+            if (error.status === 404) {
               this.$store.dispatch('showNotify', {
                 text: this.$t('alert.not-found'),
                 color: 'warning'

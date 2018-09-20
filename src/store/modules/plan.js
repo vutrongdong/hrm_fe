@@ -1,5 +1,5 @@
 import {
-  SET_PLAN,
+  SET_PLAN
 } from '../mutation-types'
 
 const initState = () => {
@@ -12,7 +12,7 @@ const initState = () => {
  * state
  */
 const state = {
-   plan: initState().plan
+  plan: initState().plan
 }
 
 /**
@@ -39,7 +39,7 @@ const actions = {
       { root: true }
     )
   },
-  createPlan({ commit, dispatch }, payload) {
+  createPlan ({ commit, dispatch }, payload) {
     let { plan, cb } = payload || {}
     dispatch('fetchApi', {
       url: 'plans',
@@ -73,7 +73,7 @@ const actions = {
  * mutations
  */
 const mutations = {
-  [SET_PLAN]: (state,plan) => {
+  [SET_PLAN]: (state, plan) => {
     state.plan = plan
   }
   // [SET_INITIAL_STATE]: (state) => {

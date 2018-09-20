@@ -1,0 +1,146 @@
+nguyenxuancuong@ADMIN ~/Sites/hrmapi (pta-crud●)$ git add .                                            [ruby-2.3.1p112]
+nguyenxuancuong@ADMIN ~/Sites/hrmapi (pta-crud●)$ git commit -m "cương"                                [ruby-2.3.1p112]
+[pta-crud e9fcc04] cương
+ 2 files changed, 65 insertions(+), 65 deletions(-)
+ rewrite storage/oauth-private.key (97%)
+ rewrite storage/oauth-public.key (95%)
+nguyenxuancuong@ADMIN ~/Sites/hrmapi (pta-crud)$ git fetch                                             [ruby-2.3.1p112]
+remote: Counting objects: 82, done.
+remote: Compressing objects: 100% (17/17), done.
+remote: Total 82 (delta 67), reused 80 (delta 65), pack-reused 0
+Unpacking objects: 100% (82/82), done.
+From github.com:nguyenhatech/hrm_api
+ * [new branch]      phase2     -> origin/phase2
+nguyenxuancuong@ADMIN ~/Sites/hrmapi (pta-crud)$ git checkout phase2                                   [ruby-2.3.1p112]
+Branch phase2 set up to track remote branch phase2 from origin.
+Switched to a new branch 'phase2'
+nguyenxuancuong@ADMIN ~/Sites/hrmapi (phase2)$ git pull origin phase2                                  [ruby-2.3.1p112]
+From github.com:nguyenhatech/hrm_api
+ * branch            phase2     -> FETCH_HEAD
+Already up-to-date.
+nguyenxuancuong@ADMIN ~/Sites/hrmapi (phase2)$ php artisan migrate:rollback                            [ruby-2.3.1p112]
+Rolling back: 2018_09_18_044526_create_interview_table
+Rolled back:  2018_09_18_044526_create_interview_table
+Rolling back: 2018_09_18_044514_create_candidates_table
+Rolled back:  2018_09_18_044514_create_candidates_table
+Rolling back: 2018_09_18_044502_create_plan_details_table
+Rolled back:  2018_09_18_044502_create_plan_details_table
+Rolling back: 2018_09_18_044452_create_plans_table
+Rolled back:  2018_09_18_044452_create_plans_table
+Rolling back: 2018_09_18_044442_create_contract_user_table
+Rolled back:  2018_09_18_044442_create_contract_user_table
+Rolling back: 2018_09_18_044430_create_contracts_table
+Rolled back:  2018_09_18_044430_create_contracts_table
+Rolling back: 2018_09_10_061416_create_department_user_table
+Rolled back:  2018_09_10_061416_create_department_user_table
+Rolling back: 2018_09_10_061336_create_positions_table
+Rolled back:  2018_09_10_061336_create_positions_table
+Rolling back: 2018_09_10_061240_create_departments_table
+Rolled back:  2018_09_10_061240_create_departments_table
+Rolling back: 2018_09_10_060921_create_branches_table
+Rolled back:  2018_09_10_060921_create_branches_table
+Rolling back: 2018_09_10_060739_create_settings_table
+Rolled back:  2018_09_10_060739_create_settings_table
+Rolling back: 2018_09_10_050335_alter_users_table
+Rolled back:  2018_09_10_050335_alter_users_table
+Rolling back: 2018_09_10_050330_create_wards_table
+Rolled back:  2018_09_10_050330_create_wards_table
+Rolling back: 2018_09_10_050223_create_districts_table
+Rolled back:  2018_09_10_050223_create_districts_table
+Rolling back: 2018_09_10_050155_create_cities_table
+Rolled back:  2018_09_10_050155_create_cities_table
+Rolling back: 2018_07_17_163723_create_role_users_table
+Rolled back:  2018_07_17_163723_create_role_users_table
+Rolling back: 2018_07_17_163531_create_roles_table
+Rolled back:  2018_07_17_163531_create_roles_table
+Rolling back: 2018_07_17_153100_create_users_table
+Rolled back:  2018_07_17_153100_create_users_table
+Rolling back: 2016_06_01_000005_create_oauth_personal_access_clients_table
+Rolled back:  2016_06_01_000005_create_oauth_personal_access_clients_table
+Rolling back: 2016_06_01_000004_create_oauth_clients_table
+Rolled back:  2016_06_01_000004_create_oauth_clients_table
+Rolling back: 2016_06_01_000003_create_oauth_refresh_tokens_table
+Rolled back:  2016_06_01_000003_create_oauth_refresh_tokens_table
+Rolling back: 2016_06_01_000002_create_oauth_access_tokens_table
+Rolled back:  2016_06_01_000002_create_oauth_access_tokens_table
+Rolling back: 2016_06_01_000001_create_oauth_auth_codes_table
+Rolled back:  2016_06_01_000001_create_oauth_auth_codes_table
+nguyenxuancuong@ADMIN ~/Sites/hrmapi (phase2)$ php artisan migrate                                     [ruby-2.3.1p112]
+Migrating: 2016_06_01_000001_create_oauth_auth_codes_table
+Migrated:  2016_06_01_000001_create_oauth_auth_codes_table
+Migrating: 2016_06_01_000002_create_oauth_access_tokens_table
+Migrated:  2016_06_01_000002_create_oauth_access_tokens_table
+Migrating: 2016_06_01_000003_create_oauth_refresh_tokens_table
+Migrated:  2016_06_01_000003_create_oauth_refresh_tokens_table
+Migrating: 2016_06_01_000004_create_oauth_clients_table
+Migrated:  2016_06_01_000004_create_oauth_clients_table
+Migrating: 2016_06_01_000005_create_oauth_personal_access_clients_table
+Migrated:  2016_06_01_000005_create_oauth_personal_access_clients_table
+Migrating: 2018_07_17_153100_create_users_table
+Migrated:  2018_07_17_153100_create_users_table
+Migrating: 2018_07_17_163531_create_roles_table
+Migrated:  2018_07_17_163531_create_roles_table
+Migrating: 2018_07_17_163723_create_role_users_table
+Migrated:  2018_07_17_163723_create_role_users_table
+Migrating: 2018_09_10_050155_create_cities_table
+Migrated:  2018_09_10_050155_create_cities_table
+Migrating: 2018_09_10_050223_create_districts_table
+Migrated:  2018_09_10_050223_create_districts_table
+Migrating: 2018_09_10_050330_create_wards_table
+Migrated:  2018_09_10_050330_create_wards_table
+Migrating: 2018_09_10_050335_alter_users_table
+Migrated:  2018_09_10_050335_alter_users_table
+Migrating: 2018_09_10_060739_create_settings_table
+Migrated:  2018_09_10_060739_create_settings_table
+Migrating: 2018_09_10_060921_create_branches_table
+Migrated:  2018_09_10_060921_create_branches_table
+Migrating: 2018_09_10_061240_create_departments_table
+Migrated:  2018_09_10_061240_create_departments_table
+Migrating: 2018_09_10_061336_create_positions_table
+Migrated:  2018_09_10_061336_create_positions_table
+Migrating: 2018_09_10_061416_create_department_user_table
+Migrated:  2018_09_10_061416_create_department_user_table
+Migrating: 2018_09_18_044430_create_contracts_table
+Migrated:  2018_09_18_044430_create_contracts_table
+Migrating: 2018_09_18_044442_create_contract_user_table
+Migrated:  2018_09_18_044442_create_contract_user_table
+Migrating: 2018_09_18_044452_create_plans_table
+Migrated:  2018_09_18_044452_create_plans_table
+Migrating: 2018_09_18_044502_create_plan_details_table
+Migrated:  2018_09_18_044502_create_plan_details_table
+Migrating: 2018_09_18_044514_create_candidates_table
+Migrated:  2018_09_18_044514_create_candidates_table
+Migrating: 2018_09_18_044526_create_interview_table
+Migrated:  2018_09_18_044526_create_interview_table
+nguyenxuancuong@ADMIN ~/Sites/hrmapi (phase2)$ php artisan db:seeder                                   [ruby-2.3.1p112]
+
+
+  Command "db:seeder" is not defined.
+
+  Did you mean one of these?
+      db:seed
+      make:seeder
+
+
+nguyenxuancuong@ADMIN ~/Sites/hrmapi (phase2)$ php artisan db:seed                                     [ruby-2.3.1p112]
+Seeding: CitiesTableSeeder
+Seeding: DistrictsTableSeeder
+Seeding: WardsTableSeeder
+Seeding: SettingsTableSeeder
+Seeding: BranchesTableSeeder
+Seeding: DepartmentsTableSeeder
+Seeding: PositionsTableSeeder
+Seeding: UserSeeder
+Seeding: ContractsTableSeeder
+Seeding: PlansTableSeeder
+Seeding: CandidatesTableSeeder
+nguyenxuancuong@ADMIN ~/Sites/hrmapi (phase2)$ php artisan passport:install --force                    [ruby-2.3.1p112]
+Encryption keys generated successfully.
+Personal access client created successfully.
+Client ID: 1
+Client Secret: 8jc5JA5X5FzCkTV1rhP2V1lH5FDkxHi46G4ncMNg
+Password grant client created successfully.
+Client ID: 2
+Client Secret: Wp24oOcwJsk4fk8ACkMzK4bjIwaHrftTNerv6MPW
+nguyenxuancuong@ADMIN ~/Sites/hrmapi (phase2●)$ subl .                                                 [ruby-2.3.1p112]
+nguyenxuancuong@ADMIN ~/Sites/hrmapi (phase2

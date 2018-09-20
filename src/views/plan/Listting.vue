@@ -63,13 +63,13 @@ export default{
     params: {
       include: 'details',
       q: ''
-     }
+    }
   }),
-  methods:{
-  ...mapActions('Plan', ['setPlan']),
-  planDetail(plan){
-     this.setPlan({ plan })
-     this.$router.push({ name: 'plan-detail', params: { id: plan.id } })
+  methods: {
+    ...mapActions('Plan', ['setPlan']),
+    planDetail (plan) {
+      this.setPlan({ plan })
+      this.$router.push({ name: 'plan-detail', params: { id: plan.id } })
     }
   },
   mounted () {

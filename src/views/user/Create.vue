@@ -34,7 +34,7 @@ export default{
       //     })
       //   }
       // })
-      console.log('data',formData);
+      console.log('data', formData)
     }
   },
   created () {

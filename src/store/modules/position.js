@@ -68,7 +68,7 @@ const actions = {
       error: error
     }, { root: true })
   },
-PositionForUser ({ commit, dispatch }, payload) {
+  PositionForUser ({ commit, dispatch }, payload) {
     let { positionId, params, error } = payload || {}
     dispatch(
       'fetchApi',

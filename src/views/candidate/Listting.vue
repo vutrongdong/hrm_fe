@@ -62,7 +62,7 @@ export default{
       include: 'branch'
     }
   }),
-  methods:{
+  methods: {
     ...mapActions('Department', ['getDepartment']),
     departmentDetail (department) {
       this.getDepartment({ departmentId: department.id, params: { include: 'branch' } })

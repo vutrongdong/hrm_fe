@@ -79,7 +79,7 @@ export default{
     ...mapActions('Setting', ['FetchSetting', 'deleteSetting']),
     ...mapActions('Dataview', ['removeDataviewEntry']),
     removeConfirm (item) {
-      console.log('data',item);
+      console.log('data', item)
       swal({
         title: 'Xác nhận',
         text: 'Bạn chắc chắn muốn xóa bản ghi này',
@@ -88,7 +88,7 @@ export default{
       })
         .then((willDelete) => {
           if (willDelete) {
-                  console.log('data 1',item);
+            console.log('data 1', item)
 
             this.deleteSetting({
               id: item.id,
@@ -96,8 +96,7 @@ export default{
                 this.removeDataviewEntry({
                   name: 'setting',
                   data: item,
-                  key: 'id',
-
+                  key: 'id'
 
                 })
                 this.$store.dispatch('showNotify', {

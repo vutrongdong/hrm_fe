@@ -183,7 +183,7 @@ export default {
           router: { name: 'candidate' },
           access_permission: 'candidate.view'
         },
-         {
+        {
           icon: 'fas fa-object-group',
           text: this.$t('title.plan.index'),
           access_permission: 'plan.view',
@@ -202,7 +202,7 @@ export default {
               access_permission: 'plandetail.view'
             }
           ]
-        },
+        }
       ]
     }
   },

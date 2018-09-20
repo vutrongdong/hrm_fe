@@ -3,25 +3,36 @@
     <v-layout row wrap align-center>
       <v-flex md3>
         <v-select
-          v-if="Array.isArray(branchAll)"
-          :items="branchAll"
-          item-text="name"
-          item-value="id"
-          :error-messages="errors.has('branch_id') ? errors.collect('branch_id') : []
-          "name="branch_id"
-          placeholder="Thuộc chi nhánh"
-          single-line
-          @change="changedBranch"
+        v-if="Array.isArray(branchAll)"
+        :items="branchAll"
+        item-text="name"
+        item-value="id"
+        :error-messages="errors.has('branch_id') ? errors.collect('branch_id') : []
+        "name="branch_id"
+        placeholder="Thuộc chi nhánh"
+        single-line
+        @change="changedBranch"
         ></v-select>
       </v-flex>
       <v-spacer></v-spacer>
       <v-flex md3>
-        <v-select v-model="user.department_id" :items="departments" :disabled="!departments" item-text="name" item-value="id" :error-messages="errors.has ('department_id') ? errors.collect('department_id') : []" name="department_id" placeholder="Thuộc phòng ban" single-line > </v-select>
+        {{DepartmentByBranch}}
+        <v-select
+        :items="departments"
+        :disabled="!departments"
+        item-text="name"
+        item-value="id"
+        :error-messages="errors.has ('department_id') ? errors.collect('department_id') : []"
+        name="department_id"
+        placeholder="Thuộc phòng ban"
+        single-line
+        @change="changeDepartment">
+        </v-select>
       </v-flex>
     </v-flex>
     <v-spacer></v-spacer>
     <v-flex md3>
-     <v-select v-if="Array.isArray(positionAll)" v-model="user.position_id":items="positionAll"item-text="name" item-value="id" :error-messages="errors.has('position_id') ? errors.collect('position_id') : []" name="position_id" placeholder="Vị trí"single-line > </v-select>
+     <v-select v-if="Array.isArray(positionAll)" :items="positionAll"item-text="name" item-value="id" :error-messages="errors.has('position_id') ? errors.collect('position_id') : []" name="position_id" placeholder="Vị trí"single-line @change="changePosition"> </v-select>
    </v-flex>
    <v-spacer></v-spacer>
    <v-btn style="margin-top:-5px;" icon color="error" @click="$emit('delete')"><v-icon>delete</v-icon></v-btn>
@@ -39,68 +50,69 @@ export default {
   data () {
     return {
       user:{
-       department_user:[]
-     },
-     department_user:[],
-     departments: []
-   }
- },
- props:{
-  dataUser: {
-    type: Object,
-    default: () => {
-      return {
-      }
+      },
+      departments: []
     }
   },
-  id: {
-    type: Number,
-    require: true
-  }
-},
-computed: {
-  ...mapGetters('Branch', ['branchAll','DepartmentByBranch']),
-  ...mapGetters('Position', ['positionAll'])
-},
-methods:{
-  ...mapActions(['fetchApi']),
-  ...mapActions('Position', ['PositionForUser']),
-  ...mapActions('Branch', ['getBranchForUser','getDepartmentForUser']),
-  changedBranch(value){
-    this.getDepartmentForUser({
-      branch_id: value,
-      params: { include: 'departments' },
-      cb: () => {
-        this.departments = this.DepartmentByBranch.departments.data
+  props:{
+    dataUser: {
+      type: Object,
+      default: () => {
+        return {
+        }
+      }
+    },
+    id: {
+      type: Number,
+      require: true
+    }
+  },
+  computed: {
+    ...mapGetters('Branch', ['branchAll']),
+    ...mapGetters('Department', ['DepartmentByBranch']),
+    ...mapGetters('Position', ['positionAll'])
+  },
+  methods:{
+    ...mapActions(['fetchApi']),
+    ...mapActions('Position', ['PositionForUser']),
+    ...mapActions('Branch', ['getBranchForUser']),
+    ...mapActions('Department', ['getDepartmentForUser']),
+    changedBranch(value){
+      this.getDepartmentForUser({
+        branch_id: value,
+        params: { include: 'departments' },
+        cb: () => {
+          this.departments = this.DepartmentByBranch
+        }
+      })
+    },
+    changeDepartment(value){
+      this.$emit('changeDepartment',value)
+    },
+    changePosition(value){
+      this.$emit('changePosition',value)
+    },
+    setInitData () {
+      let dataUser = { ...this.dataUser }
+      this.user = { ...this.user, ...dataUser }
+    },
+  },
+  mounted(){
+    this.fetchApi({
+      url: 'departments',
+      method: 'GET',
+      params: {
+        limit: -1
+      },
+      success: (response) => {
+        this.department_user = response.data
       }
     })
   },
-  setInitData () {
-    let dataUser = { ...this.dataUser }
-    // if (dataUser.department_user) {
-    //   dataUser.department_user = map(dataUser.department_user.data, (department_user) => {
-    //     return department_user.id
-    //   })
-    // }
-    this.user = { ...this.user, ...dataUser }
-  },
-},
-mounted(){
-  this.fetchApi({
-    url: 'departments',
-    method: 'GET',
-    params: {
-      limit: -1
-    },
-    success: (response) => {
-      this.department_user = response.data
-    }
-  })
-},
-created () {
-  this.getBranchForUser()
-  this.PositionForUser()
-  !!this.dataUser && this.setInitData()
-}
+  created () {
+    this.getBranchForUser()
+    this.PositionForUser()
+    !!this.dataUser && this.setInitData()
+  }
 }
 </script>

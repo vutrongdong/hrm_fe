@@ -37,50 +37,50 @@ import { mapGetters, mapActions } from 'vuex'
 import { map, chain } from 'lodash'
 export default{
   name: 'PlanForm',
-  computed:{
+  computed: {
     ...mapGetters(['isFetchingApi']),
     isCreate () {
       return this.type === 'create'
     }
   },
-  props:{
-    type:{
+  props: {
+    type: {
       type: String,
       default: 'create'
     },
-     dataPlan: {
+    dataPlan: {
       type: Object,
       default: () => {
         return {}
       }
     }
   },
-  data(){
-    return{
-      plan:{
-         title:'',
-         content:''
+  data () {
+    return {
+      plan: {
+        title: '',
+        content: ''
       }
     }
   },
-  methods:{
+  methods: {
     ...mapActions(['fetchApi']),
-    setInitData(){
-        let dataPlan = { ...this.dataPlan}
-        this.plan = { ...this.plan, ...dataPlan }
+    setInitData () {
+      let dataPlan = { ...this.dataPlan }
+      this.plan = { ...this.plan, ...dataPlan }
     },
-    validateBeforeSubmit(){
-        this.$validator.validateAll().then(result =>{
-            if(result){
-              let submitData = { ...this.plan}
-              this.$emit('submit', submitData)
-            }else{
+    validateBeforeSubmit () {
+      this.$validator.validateAll().then(result => {
+        if (result) {
+          let submitData = { ...this.plan }
+          this.$emit('submit', submitData)
+        } else {
           this.$store.dispatch('showNotify', {
             text: this.$t('alert.invalid'),
             color: 'warning'
           })
-            }
-        })
+        }
+      })
     }
   },
   created () {

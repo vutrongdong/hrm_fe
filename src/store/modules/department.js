@@ -42,6 +42,21 @@ const actions = {
       { root: true }
     )
   },
+    getDepartmentForUser ({ commit, dispatch }, payload) {
+    let { branch_id, cb } = payload
+    dispatch(
+     'fetchApi',
+     {
+      url: `departments/branches/${branch_id}`,
+      method: 'GET',
+      success: (response) => {
+        commit(SET_DEPARTMENT, response.data)
+        cb && cb()
+      }
+    },
+    { root: true }
+    )
+  },
   createDepartment ({ commit, dispatch }, payload) {
     let { department, cb, params } = payload
     dispatch('fetchApi', {
@@ -86,7 +101,9 @@ const mutations = {
  * getters
  */
 const getters = {
-  departmentDetail: (state) => state.department }
+  departmentDetail: (state) => state.department,
+  DepartmentByBranch:(state) => state.department
+   }
 
 export default {
   namespaced: true,

@@ -27,8 +27,8 @@ export default{
     PlanForm,
     listting
   },
-  data(){
-    return{
+  data () {
+    return {
       dataViewHeight: 0
     }
   },
@@ -39,34 +39,34 @@ export default{
     ...mapActions(['showNotify', 'setMiniDrawer']),
     ...mapActions('Plan', ['updatePlan', 'getPlan', 'setPlan']),
     ...mapActions('Dataview', ['updateDataviewEntry']),
-    submitForm(formData){
+    submitForm (formData) {
       this.updatePlan({
         id: this.$route.params.id,
         plan: formData,
-        cb: (response) =>{
+        cb: (response) => {
           this.showNotify({
             color: 'success',
             text: 'Thành công'
           })
-        this.setPlan({plan: response.data})
-        this.updateDataviewEntry({
-           name: 'plan',
-           data: response.data,
-           key: 'id'
-        })
-        this.$router.push({
+          this.setPlan({ plan: response.data })
+          this.updateDataviewEntry({
+            name: 'plan',
+            data: response.data,
+            key: 'id'
+          })
+          this.$router.push({
             name: 'plan-detail',
             params: { id: this.$route.params.id }
-        })
+          })
         }
       })
     }
   },
-  created(){
-      this.setMiniDrawer(true)
-      if(!this.planDetail.id){
-          this.getPlan({ planId: this.$route.params.id })
-      }
+  created () {
+    this.setMiniDrawer(true)
+    if (!this.planDetail.id) {
+      this.getPlan({ planId: this.$route.params.id })
+    }
   },
   mounted () {
     this.dataViewHeight = this.$refs.laylout.clientHeight - 48
