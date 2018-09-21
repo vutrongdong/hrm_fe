@@ -1,4 +1,5 @@
- <template>
+
+<template>
   <v-layout ref="laylout" row fill-height>
     <v-flex xs12 class="border-e0-left">
       <data-view
@@ -11,7 +12,7 @@
       >
       <template slot-scope="{items}">
         <v-toolbar dense color="white" flat>
-          <h3>{{ $t('title.setting.detail') }} công ty</h3>
+          <h1>{{ $t('title.setting.detail') }} công ty</h1>
           <v-spacer></v-spacer>
           <v-menu :nudge-width="100" offset-y>
         </v-menu>
@@ -27,9 +28,9 @@
         </v-btn>
       </v-toolbar>
       <v-list three-line>
-        <template>
-          <div style="padding-left:30px" :key="index"  v-for="(item, index) in items.data">
-            <p id="item.id" style="text-transform:capitalize;width:100%">{{ item.name }} : {{ item.value }}
+        <template v-for="(item) in items.data">
+          <div style="padding-left:30px;padding-top:12px;display:block;" :key="item.id">
+            <p style="text-transform:capitalize;width:100%">{{ item.name }} : {{ item.value }} : {{item.id}}
               <span>
                <v-btn v-if="canAccess('setting.update')" icon @click="$router.push({name: 'setting-edit', params: {id: item.id}})">
                 <v-icon style="float:right;position:absolute">edit</v-icon>
@@ -39,7 +40,7 @@
               </v-btn>
             </span>
           </p>
-          <hr>
+        <hr>
         </div>
       </template>
     </v-list>
@@ -49,6 +50,7 @@
 </v-layout>
 </template>
 <script>
+import Sweetalert from 'sweetalert'
 import DataView from '@/components/DataView/DataView'
 import { mapActions, mapGetters } from 'vuex'
 import DialogConfirm from '@/components/DialogConfirm'
@@ -86,7 +88,6 @@ export default{
         .then((willDelete) => {
           if (willDelete) {
             console.log('data 1', item)
-
             this.deleteSetting({
               id: item.id,
               cb: (response) => {
@@ -94,7 +95,6 @@ export default{
                   name: 'setting',
                   data: item,
                   key: 'id'
-
                 })
                 this.$store.dispatch('showNotify', {
                   text: this.$t('alert.success'),
@@ -129,10 +129,9 @@ export default{
   }
 }
 </script>
-
 <style scope>
 p span{
-  padding: 10px 0px;
+  padding: 7px;
   margin-top:-25px;
   float: right;
   margin-right:10px;

@@ -9,27 +9,21 @@ import store from './store'
 import './registerServiceWorker'
 import './assets/css/site.css'
 import i18n from './i18n'
-import Sweetalert from 'sweetalert'
 import * as filters from '@/filters'
 import permissionMixin from '@/mixins/permission'
 import formatMixin from '@/mixins/format'
 import BootstrapVue from 'bootstrap-vue'
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
-import JQuery from 'jquery'
 import FBSignInButton from 'vue-facebook-signin-button'
 Vue.use(BootstrapVue)
 Vue.use(FBSignInButton)
-Vue.use(Sweetalert)
-Vue.use(JQuery)
 // custom filters
 Object.keys(filters).forEach(key => {
   Vue.filter(key, filters[key])
 })
 Vue.mixin(permissionMixin)
 Vue.mixin(formatMixin)
-window.$ = require('jquery')
-window.JQuery = require('jquery')
 Vue.config.productionTip = false
 Vue.directive('number-only', {
   inserted: function (el, binding, vnode) {

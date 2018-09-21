@@ -1,12 +1,12 @@
 import {
   SET_SETTINGS,
-  REMOVE_SETTING,
-  SET_INITIAL_STATE
+  SET_INITIAL_STATE,
+  REMOVE_SETTING
 } from '../mutation-types'
 
 const initState = () => {
   return {
-    settings: []
+    settings: {}
   }
 }
 
@@ -77,9 +77,9 @@ const actions = {
       success: cb
     }, { root: true })
   },
-  deleteSetting ({ commit, dispatch }, payload) {
-    const { id, cb } = payload || {}
-    this.$http.delete('/settings/' + id).then(response => {
+  async deleteSetting ({ commit, dispatch }, payload) {
+    const { id, cb, error } = payload || {}
+    let response = await axios.delete('/settings/' + id).then(response => {
       commit(REMOVE_SETTING, id)
       cb && cb(response.data)
     })
@@ -93,13 +93,13 @@ const mutations = {
   [SET_SETTINGS]: (state, settings) => {
     state.settings = settings
   },
+  [SET_INITIAL_STATE]: (state) => {
+    state.settings = initState().settings
+  },
   [REMOVE_SETTING]: (state, id) => {
     console.log(id)
     delete state.settings[id]
     console.log(state.settings[id])
-  },
-  [SET_INITIAL_STATE]: (state) => {
-    state.settings = initState().settings
   }
 }
 

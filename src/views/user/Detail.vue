@@ -123,7 +123,7 @@ export default{
   created () {
     this.setMiniDrawer(true)
     if (!this.userDetail.id) {
-      this.getUser({ userId: this.$route.params.id, params: { include: 'roles,departments,positions' } })
+      this.getUser({ userId: this.$route.params.id, params: { include: 'departments,positions,roles' } })
     }
   },
   mounted () {

@@ -131,15 +131,16 @@
           </v-flex>
         </v-flex>
         <!-- branch,department,position -->
-        <v-flex xs12>
+        <v-flex xs12 id="children">
           <h3 style="margin-bottom:15px">Chi nhánh, phòng ban, vị trí</h3>
           <children
-          :id='index'
+          :id="index"
           :key="index"
+          :user="user"
           v-for="(n, index) in range"
           @add="Add()"
           @delete="Remove(index)"
-          v-on:positionAndDepartment="positionAndDepartment($event)"> </children>
+          v-on:positionAndDepartment="positionAndDepartment($event, index)"> </children>
         </v-flex>
         <!-- button create or update -->
         <v-flex xs12 text-xs-center>
@@ -202,10 +203,10 @@ export default{
         date_of_birth: null,
         password_confirmation: '111111',
         roles: [],
-        department_user: [],
-        department_position: []
+        departments: []
       },
-      roles: []
+      roles: [],
+      departmentPosition:[]
     }
   },
   methods: {
@@ -224,17 +225,16 @@ export default{
     },
     Add () {
       this.range += 1
-      this.user.department_user.push(this.department_position)
     },
     Remove (index) {
       if (index !== 0) {
-        console.log(index)
-        $('#' + index).remove()
+        document.getElementById(index).remove()
       }
     },
     validateBeforeSubmit () {
       this.$validator.validateAll().then(result => {
         if (result) {
+          this.user.departments.push(this.departmentPosition)
           this.$emit('submit', this.user)
         } else {
           this.$store.dispatch('showNotify', {
@@ -244,9 +244,9 @@ export default{
         }
       })
     },
-    positionAndDepartment (updated) {
-      this.department_position = updated
-      // this.user.department_user.push(updated)
+    positionAndDepartment (updated, index) {
+      this.departmentPosition = updated
+      // this.user.departments.push(updated)
     }
   },
   mounted () {

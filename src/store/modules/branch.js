@@ -1,6 +1,6 @@
 import {
-  SET_BRANCH,
-  SET_INITIAL_STATE
+  SET_INITIAL_STATE,
+  SET_BRANCH
 } from '../mutation-types'
 
 const initState = () => {
@@ -8,35 +8,30 @@ const initState = () => {
     branch: {}
   }
 }
-/**
- * [state description]
- * @type {Object}
- */
+
 const state = {
+  city: initState().city,
+  districts: initState().districts,
   branch: initState().branch
 }
-/**
- * [actions description]
- * @type {Object}
- */
 const actions = {
   setBranch ({ commit }, payload) {
     let { branch } = payload
     commit(SET_BRANCH, branch)
   },
-  getBranchForUser ({ commit, dispatch }, payload) {
-    dispatch(
-      'fetchApi',
-      {
-        url: `branches`,
-        method: 'GET',
-        success: (response) => {
-          commit(SET_BRANCH, response.data)
-        }
-      },
-      { root: true }
-    )
-  },
+  // getBranch ({ commit, dispatch }, payload) {
+  //   dispatch(
+  //     'fetchApi',
+  //     {
+  //       url: `branches`,
+  //       method: 'GET',
+  //       success: (response) => {
+  //         commit(SET_BRANCH, response.data)
+  //       }
+  //     },
+  //     { root: true }
+  //   )
+  // },
   getBranch ({ commit, dispatch }, payload) {
     let { branchId, params } = payload
     console.log(branchId)
@@ -47,7 +42,20 @@ const actions = {
         method: 'GET',
         params: params || {},
         success: (response) => {
-          commit(SET_BRANCH, response)
+          commit(SET_BRANCH, response.data)
+        }
+      },
+      { root: true }
+    )
+  },
+  getBranchForUser ({ commit, dispatch }, payload) {
+    dispatch(
+      'fetchApi',
+      {
+        url: `branches`,
+        method: 'GET',
+        success: (response) => {
+          commit(SET_BRANCH, response.data)
         }
       },
       { root: true }
@@ -83,10 +91,6 @@ const actions = {
     }, { root: true })
   }
 }
-/**
- * [mutations description]
- * @type {Object}
- */
 const mutations = {
   [SET_BRANCH]: (state, branch) => {
     state.branch = branch
@@ -94,16 +98,13 @@ const mutations = {
   [SET_INITIAL_STATE]: (state) => {
     state.branch = initState().branch
   }
+
 }
-/**
- * [getters description]
- * @type {Object}
- */
+
 const getters = {
   branchAll: (state) => state.branch,
   branchDetail: (state) => state.branch
 }
-
 export default {
   namespaced: true,
   state,

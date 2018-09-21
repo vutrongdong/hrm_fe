@@ -12,15 +12,15 @@
         name="branch_id"
         placeholder="Thuộc chi nhánh"
         single-line
-        @change="changedBranch"
+        @change="changeBranch"
         ></v-select>
       </v-flex>
       <v-spacer></v-spacer>
       <!-- department -->
       <v-flex md3>
         <v-select
-        :items="departments"
         :disabled="!departmentActive"
+        :items="departments"
         item-text="name"
         item-value="id"
         :error-messages="errors.has ('department_id') ? errors.collect('department_id') : []"
@@ -50,12 +50,13 @@
         <v-btn class="mr-3"
         style="margin-top:-5px;"
         icon color="primary"
-        @click="$emit('add')">
-        <v-icon>add</v-icon> </v-btn>
-        <v-spacer></v-spacer>
-      </v-layout>
-    </v-container>
-  </template>
+        @click="add">
+        <v-icon>add</v-icon>
+      </v-btn>
+      <v-spacer></v-spacer>
+    </v-layout>
+  </v-container>
+</template>
 <script>
 import { mapGetters, mapActions } from 'vuex'
 export default {
@@ -65,7 +66,8 @@ export default {
       departments: [],
       departmentActive: false,
       positionActive: false,
-      valDepartment: null
+      valDepartment: null,
+      valPosition: null
     }
   },
   props: {
@@ -73,65 +75,79 @@ export default {
       type: Object,
       default: () => {
         return {
-        }
-      }
-    },
-    id: {
-      type: Number,
-      require: true
-    }
-  },
-  computed: {
-    ...mapGetters('Branch', ['branchAll']),
-    ...mapGetters('Department', ['departmentByBranch']),
-    ...mapGetters('Position', ['positionAll'])
-  },
-  methods: {
-    ...mapActions(['fetchApi']),
-    ...mapActions('Position', ['positionForUser']),
-    ...mapActions('Branch', ['getBranchForUser']),
-    ...mapActions('Department', ['getDepartmentForUser']),
-    changedBranch (value) {
-      this.departmentActive = true
-      this.getDepartmentForUser({
-        branch_id: value,
-        params: { include: 'departments' },
-        cb: () => {
-          this.departments = this.departmentByBranch
-        }
-      })
-    },
-    changeDepartment (value) {
-      this.valDepartment = value
-      this.positionActive = true
-    },
-    changePosition (value) {
-      let object = {}
-      object['department_id'] = this.valDepartment
-      object['position_id'] = value
-      this.$emit('positionAndDepartment', object)
-    },
-    setInitData () {
-      let dataUser = { ...this.dataUser }
-      this.user = { ...this.user, ...dataUser }
-    }
-  },
-  mounted () {
-    this.fetchApi({
-      url: 'departments',
-      method: 'GET',
-      params: {
-        limit: -1
-      },
-      success: (response) => {
-        this.department_user = response.data
+         departments: []
+       }
+     }
+   }
+ },
+ computed: {
+  ...mapGetters('Branch', ['branchAll']),
+  ...mapGetters('Department', ['departmentByBranch']),
+  ...mapGetters('Position', ['positionAll'])
+},
+methods: {
+  ...mapActions(['fetchApi']),
+  ...mapActions('Position', ['positionForUser']),
+  ...mapActions('Branch', ['getBranchForUser']),
+  ...mapActions('Department', ['getDepartmentForUser']),
+  changeBranch (value) {
+    this.departmentActive = true
+    this.getDepartmentForUser({
+      branch_id: value,
+      params: { include: 'departments' },
+      cb: () => {
+        this.departments = this.departmentByBranch
       }
     })
   },
-  created () {
-    this.getBranchForUser()
-    this.positionForUser()
-    !!this.dataUser && this.setInitData()
+  changeDepartment (value) {
+    this.valDepartment = value
+    this.positionActive = true
+  },
+  changePosition (value) {
+    this.valPosition = value
+    let object = {}
+    object['department_id'] = this.valDepartment
+    object['position_id'] = this.valPosition
+    this.$emit('positionAndDepartment', object)
+  },
+  setInitData () {
+    let dataUser = { ...this.dataUser }
+    this.user = { ...this.user, ...dataUser }
+  },
+  add(){
+    this.$emit('add')
   }
+},
+mounted () {
+  this.fetchApi({
+    url: 'departments',
+    method: 'GET',
+    params: {
+      limit: -1
+    },
+    success: (response) => {
+      this.departments = response.data
+    }
+  })
+},
+mounted(){
+  this.getDepartmentForUser({
+    branch_id:1,
+    params: { include: 'departments' },
+    cb: () => {
+      this.departments = this.departmentByBranch
+    }
+  })
+},
+created () {
+  if(this.$route.params.id){
+    this.departmentActive=true,
+    this.positionActive=true
+  }
+  this.getBranchForUser()
+  this.positionForUser()
+  !!this.dataUser && this.setInitData()
+}
 }
 </script>

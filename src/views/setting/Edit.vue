@@ -43,15 +43,12 @@ export default{
             color: 'success',
             text: 'Thành công'
           })
-
           this.setSetting({ setting: response.data })
-
           this.updateDataviewEntry({
             name: 'setting',
             data: response.data,
             key: 'id'
           })
-
           this.$router.push({
             name: 'setting'
           })
