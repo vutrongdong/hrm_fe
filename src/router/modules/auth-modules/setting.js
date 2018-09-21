@@ -33,27 +33,6 @@ export default[
     component: () => import('@/views/setting/Create')
   },
   {
-    path: 'setting/detail',
-    name: 'setting-detail',
-    meta: {
-      title: {
-        i18n: 'title.setting.detail'
-      },
-      require_auth: true,
-      breadcrumb: [
-        {
-          path: '/setting',
-          meta: {
-            title: {
-              i18n: 'title.setting.index'
-            }
-          }
-        }
-      ]
-    },
-    component: () => import('@/views/setting/Detail')
-  },
-  {
     path: 'setting/:id/edit',
     name: 'setting-edit',
     meta: {

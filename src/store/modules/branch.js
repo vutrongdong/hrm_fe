@@ -5,30 +5,24 @@ import {
 
 const initState = () => {
   return {
-    branch: {},
-    department:{},
+    branch: {}
   }
 }
 /**
  * [state description]
  * @type {Object}
  */
- const state = {
-  branch: initState().branch,
-  department: initState().department
+const state = {
+  branch: initState().branch
 }
 /**
  * [actions description]
  * @type {Object}
  */
- const actions = {
+const actions = {
   setBranch ({ commit }, payload) {
     let { branch } = payload
     commit(SET_BRANCH, branch)
-  },
-  setDepartment({commit},payload){
-    let {department} = payload
-    comit(SET_DEPARTMENT,department)
   },
   getBranchForUser ({ commit, dispatch }, payload) {
     dispatch(
@@ -41,7 +35,7 @@ const initState = () => {
         }
       },
       { root: true }
-      )
+    )
   },
   getBranch ({ commit, dispatch }, payload) {
     let { branchId, params } = payload
@@ -57,7 +51,7 @@ const initState = () => {
         }
       },
       { root: true }
-      )
+    )
   },
   createBranch ({ commit, dispatch }, payload) {
     let { branch, cb, params } = payload
@@ -93,7 +87,7 @@ const initState = () => {
  * [mutations description]
  * @type {Object}
  */
- const mutations = {
+const mutations = {
   [SET_BRANCH]: (state, branch) => {
     state.branch = branch
   },
@@ -105,8 +99,8 @@ const initState = () => {
  * [getters description]
  * @type {Object}
  */
- const getters = {
-  branchAll:(state)=>state.branch,
+const getters = {
+  branchAll: (state) => state.branch,
   branchDetail: (state) => state.branch
 }
 

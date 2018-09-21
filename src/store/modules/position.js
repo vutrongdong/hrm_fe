@@ -1,6 +1,5 @@
 import {
-  SET_POSITION,
-  SET_INITIAL_STATE
+  SET_POSITION
 } from '../mutation-types'
 
 const initState = () => {
@@ -24,8 +23,8 @@ const actions = {
     let { position } = payload || {}
     commit(SET_POSITION, position)
   },
-  PositionForUser ({ commit, dispatch }, payload) {
-    let { positionId, params, error } = payload || {}
+  positionForUser ({ commit, dispatch }, payload) {
+    let { params, error } = payload || {}
     dispatch(
       'fetchApi',
       {

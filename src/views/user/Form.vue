@@ -4,51 +4,113 @@
       <v-layout row wrap>
         <v-flex xs6>
           <h3>Thông tin tài khoản</h3>
-          <v-text-field :error-messages="errors.has('name') ? errors.collect('name') : []"v-validate="'required|min:3'":data-vv-as="$t('label.name')"name="name":label="$t('label.name') + '*'" v-model="user.name">
-          </v-text-field>
-
-          <v-text-field :error-messages="errors.has('phone') ? errors.collect('phone') : []":data-vv-as="$t('label.phone')"name="phone":label="$t('label.phone')"v-model="user.phone">
-          </v-text-field>
-
-          <v-text-field :error-messages="errors.has('email') ? errors.collect('email') : []"v-validate="'required|email'":data-vv-as="$t('label.email')"name="email":label="$t('label.email') + '*'"type="email":disabled="!isCreate"v-model="user.email">
-          </v-text-field>
-
-          <v-text-field v-if="isCreate":error-messages="errors.has('password') ? errors.collect('password') : []"v-validate="'required|min:6'":data-vv-as="$t('label.password')"name="password":label="$t('label.password') + '*'"type="password"v-model="user.password">
-          </v-text-field>
-
-          <v-text-field v-if="isCreate":error-messages="errors.has('password_confirmation') ? errors.collect('password_confirmation') : []"v-validate="'required|min:6'":data-vv-as="$t('label.password_confirmation')"name="password_confirmation":label="$t('label.password_confirmation') + '*'"type="password"v-model="user.password_confirmation">
-          </v-text-field>
-
+          <!-- name -->
+          <v-text-field
+          :error-messages="errors.has('name') ? errors.collect('name') : []"
+          v-validate="'required|min:3'"
+          :data-vv-as="$t('label.name')"
+          name="name"
+          :label="$t('label.name') + '*'"
+          v-model="user.name"></v-text-field>
+          <!-- phone -->
+          <v-text-field
+          :error-messages="errors.has('phone') ? errors.collect('phone') : []"
+          :data-vv-as="$t('label.phone')"
+          name="phone"
+          :label="$t('label.phone')"
+          v-model="user.phone"></v-text-field>
+          <!-- email -->
+          <v-text-field
+          :error-messages="errors.has('email') ? errors.collect('email') : []"
+          v-validate="'required|email'"
+          :data-vv-as="$t('label.email')"
+          name="email"
+          :label="$t('label.email') + '*'"
+          type="email"
+          :disabled="!isCreate"
+          v-model="user.email"> </v-text-field>
+          <!-- password -->
+          <v-text-field
+          v-if="isCreate"
+          :error-messages="errors.has('password') ? errors.collect('password') : []"
+          v-validate="'required|min:6'"
+          :data-vv-as="$t('label.password')"
+          name="password"
+          :label="$t('label.password') + '*'"
+          type="password"
+          v-model="user.password"> </v-text-field>
+          <!-- password_confirmation -->
+          <v-text-field
+          v-if="isCreate"
+          :error-messages="errors.has('password_confirmation') ? errors.collect('password_confirmation') : []"
+          v-validate="'required|min:6'"
+          :data-vv-as="$t('label.password_confirmation')"
+          name="password_confirmation"
+          :label="$t('label.password_confirmation') + '*'"
+          type="password"
+          v-model="user.password_confirmation"> </v-text-field>
+          <!-- user_roles -->
           <h3>Quyền truy cập</h3>
-          <v-autocomplete multiple v-model="user.roles":items="roles"chips item-text="name"item-value="id"color="white"hide-no-data hide-selected placeholder="tìm kiếm"prepend-icon="mdi-database-search" style="margin-top:-5px; margin-left:-33px">
-            <template slot="selection"slot-scope="data">
-              <v-chip :selected="data.selected"close class="chip--select-multi"@input="data.parent.selectItem(data.item)">
-                {{ data.item.name }}
-              </v-chip>
-            </template>
-          </v-autocomplete>
+          <v-autocomplete multiple
+          v-model="user.roles"
+          :items="roles"
+          chips
+          item-text="name"
+          item-value="id"
+          color="white"
+          hide-no-data
+          hide-selected
+          placeholder="tìm kiếm"
+          prepend-icon="mdi-database-search"
+          style="margin-top:-5px; margin-left:-33px">
+          <template slot="selection" slot-scope="data">
+            <v-chip
+            :selected="data.selected"
+            close class="chip--select-multi"
+            @input="data.parent.selectItem(data.item)">
+            {{ data.item.name }}
+          </v-chip></template></v-autocomplete>
         </v-flex>
         <v-flex xs6>
           <h3>Thông tin nhân sự</h3>
-          <v-text-field :error-messages="errors.has('qualification') ? errors.collect('qualification') : []":data-vv-as="$t('label.qualification')"name="qualification":label="$t('label.qualification')" v-model="user.qualification">
-          </v-text-field>
-
-          <v-text-field :error-messages="errors.has('address') ? errors.collect('address') : []":data-vv-as="$t('label.address')"name="address":label="$t('label.address')"v-model="user.address">
-          </v-text-field>
-
+          <!-- qualification -->
+          <v-text-field
+          :error-messages="errors.has('qualification') ? errors.collect('qualification') : []"
+          :data-vv-as="$t('label.qualification')"
+          name="qualification"
+          :label="$t('label.qualification')"
+          v-model="user.qualification"></v-text-field>
+          <!-- address -->
+          <v-text-field
+          :error-messages="errors.has('address') ? errors.collect('address') : []"
+          :data-vv-as="$t('label.address')"
+          name="address"
+          :label="$t('label.address')"
+          v-model="user.address"> </v-text-field>
+          <!-- birth_day -->
           <template>
-            <v-menu ref="menu":close-on-content-click="false"v-model="menu":nudge-right="40"lazy transition="scale-transition"offset-y full-width min-width="290px">
-              <v-text-field slot="activator"v-model="user.date_of_birth" label="Ngày sinh"readonly >
-              </v-text-field>
-
-              <v-date-picker ref="picker" v-model="user.date_of_birth":max="new Date().toISOString().substr(0, 10)"min="1950-01-01"@change="save">
-              </v-date-picker>
-            </v-menu>
+            <v-menu
+            ref="menu"
+            :close-on-content-click="false"
+            v-model="menu"
+            :nudge-right="40"
+            lazy transition="scale-transition"
+            offset-y
+            full-width
+            min-width="290px">
+            <v-text-field
+            slot="activator"
+            v-model="user.date_of_birth"
+            label="Ngày sinh"
+            readonly > </v-text-field>
+            <v-date-picker
+            ref="picker"
+            v-model="user.date_of_birth"
+            :max="new Date().toISOString().substr(0, 10)"
+            min="1950-01-01"
+            @change="save"> </v-date-picker> </v-menu>
           </template>
-
-          <v-text-field :error-messages="errors.has('company_name') ? errors.collect('company_name') : []":data-vv-as="$t('label.company_name')"name="company_name":label="$t('label.company_name')"v-model="user.company_name">
-          </v-text-field>
-
+          <!-- gender -->
           <v-flex xs12 row>
             <v-flex xs5 style="margin-left:20px">
               <label style="margin-top:10px">Giới tính</label>
@@ -58,6 +120,7 @@
               </v-radio-group>
             </v-flex>
             <v-spacer></v-spacer>
+            <!-- status -->
             <v-flex xs5>
               <label style="margin-top:10px">Trạng Thái</label>
               <v-radio-group style="margin-top:-2px" v-model="user.status" row>
@@ -67,14 +130,24 @@
             </v-flex>
           </v-flex>
         </v-flex>
-
+        <!-- branch,department,position -->
         <v-flex xs12>
           <h3 style="margin-bottom:15px">Chi nhánh, phòng ban, vị trí</h3>
-          <children :id='index' v-for="(n, index) in range" @add="Add()" @delete="Remove(index)" v-on:changeDepartment="updateDepartment($event)" v-on:changePosition="updatePosition($event)"></children>
+          <children
+          :id='index'
+          :key="index"
+          v-for="(n, index) in range"
+          @add="Add()"
+          @delete="Remove(index)"
+          v-on:positionAndDepartment="positionAndDepartment($event)"> </children>
         </v-flex>
-
+        <!-- button create or update -->
         <v-flex xs12 text-xs-center>
-          <v-btn :loading="isFetchingApi":disabled="isFetchingApi" color="primary"type="submit"
+          <v-btn
+          :loading="isFetchingApi"
+          :disabled="isFetchingApi"
+          color="primary"
+          type="submit"
           >
           <template v-if="isCreate">
             <v-icon left>add</v-icon> {{$t('control.create')}}
@@ -94,7 +167,7 @@ import { map } from 'lodash'
 import children from './Form_sub'
 export default{
   name: 'UserForm',
-  components:{children},
+  components: { children },
   computed: {
     ...mapGetters(['isFetchingApi']),
     isCreate () {
@@ -120,7 +193,7 @@ export default{
   },
   data () {
     return {
-      range:1,
+      range: 1,
       menu: false,
       user: {
         name: 'fgdhfgjh',
@@ -129,8 +202,8 @@ export default{
         date_of_birth: null,
         password_confirmation: '111111',
         roles: [],
-        department_id:[],
-        position_id:[]
+        department_user: [],
+        department_position: []
       },
       roles: []
     }
@@ -149,12 +222,14 @@ export default{
     save (date) {
       this.$refs.menu.save(date)
     },
-    Add() {
+    Add () {
       this.range += 1
+      this.user.department_user.push(this.department_position)
     },
-    Remove(index){
-      if(index!=0){
-        $('#'+ index).remove()
+    Remove (index) {
+      if (index !== 0) {
+        console.log(index)
+        $('#' + index).remove()
       }
     },
     validateBeforeSubmit () {
@@ -169,11 +244,9 @@ export default{
         }
       })
     },
-    updateDepartment(updated){
-      this.user.department_id.push(updated)
-    },
-    updatePosition(updated){
-      this.user.position_id.push(updated)
+    positionAndDepartment (updated) {
+      this.department_position = updated
+      // this.user.department_user.push(updated)
     }
   },
   mounted () {

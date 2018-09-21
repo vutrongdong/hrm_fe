@@ -20,6 +20,8 @@ import JQuery from 'jquery'
 import FBSignInButton from 'vue-facebook-signin-button'
 Vue.use(BootstrapVue)
 Vue.use(FBSignInButton)
+Vue.use(Sweetalert)
+Vue.use(JQuery)
 // custom filters
 Object.keys(filters).forEach(key => {
   Vue.filter(key, filters[key])

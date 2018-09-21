@@ -5,7 +5,6 @@
     </v-flex>
   </v-layout>
 </template>
-
 <script>
 import UserForm from './Form'
 import { mapActions } from 'vuex'
@@ -27,7 +26,6 @@ export default{
             color: 'success',
             text: 'Thành công'
           })
-
           this.$router.push({
             name: 'user',
             query: {

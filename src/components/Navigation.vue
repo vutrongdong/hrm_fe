@@ -7,7 +7,7 @@
         :to="{name: 'account-change-information'}"
         >
         <v-list-tile-avatar>
-          <v-icon style="margin-left:-17px">fa-address-book</i></v-icon>
+          <v-icon style="margin-left:-17px">fa-address-book</v-icon>
           <!-- <img :src="userProfile.avatar_url" alt=".name"> -->
         </v-list-tile-avatar>
 

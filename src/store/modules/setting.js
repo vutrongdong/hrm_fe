@@ -77,9 +77,9 @@ const actions = {
       success: cb
     }, { root: true })
   },
-  async deleteSetting ({ commit, dispatch }, payload) {
-    const { id, cb, error } = payload || {}
-    let response = await axios.delete('/settings/' + id).then(response => {
+  deleteSetting ({ commit, dispatch }, payload) {
+    const { id, cb } = payload || {}
+    this.$http.delete('/settings/' + id).then(response => {
       commit(REMOVE_SETTING, id)
       cb && cb(response.data)
     })

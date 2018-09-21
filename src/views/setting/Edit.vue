@@ -14,16 +14,13 @@
     </v-flex>
   </v-layout>
 </template>
-
 <script>
 import settingForm from './Form'
-import Listting from './Listting'
 import { mapActions, mapGetters } from 'vuex'
 export default{
   name: 'Createsetting',
   components: {
-    settingForm,
-    Listting
+    settingForm
   },
   data () {
     return {

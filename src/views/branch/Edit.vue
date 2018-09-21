@@ -17,7 +17,6 @@
     </v-flex>
   </v-layout>
 </template>
-
 <script>
 import BranchForm from './Form'
 import Listting from './Listting'
@@ -52,15 +51,12 @@ export default{
             color: 'success',
             text: 'Thành công'
           })
-
           this.setBranch({ branch: response.data })
-
           this.updateDataviewEntry({
             name: 'branch',
             data: response.data,
             key: 'id'
           })
-
           this.$router.push({
             name: 'branch-detail',
             params: { id: this.$route.params.id }

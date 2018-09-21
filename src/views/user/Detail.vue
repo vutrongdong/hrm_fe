@@ -65,7 +65,6 @@
   <dialog-confirm v-model="dialogDelete" @input="remove" />
 </v-layout>
 </template>
-
 <script>
 import Listting from './Listting'
 import { mapActions, mapGetters } from 'vuex'

@@ -46,5 +46,5 @@ export const SET_BRANCH = 'BRANCH/SET_BRANCH'
 // department
 export const SET_DEPARTMENT = 'DEPARTMENT/SET_DEPARTMENT'
 
-//position
+// position
 export const SET_POSITION = 'POSITION/SET_POSITION'

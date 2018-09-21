@@ -11,10 +11,9 @@
       >
       <template slot-scope="{items}">
         <v-toolbar dense color="white" flat>
-          <h1>{{ $t('title.setting.detail') }} công ty</h1>
+          <h3>{{ $t('title.setting.detail') }} công ty</h3>
           <v-spacer></v-spacer>
           <v-menu :nudge-width="100" offset-y>
-          </v-list>
         </v-menu>
         <v-btn v-if="canAccess('setting.create')" class="mr-3" icon color="primary" @click="$router.push({name: 'setting-create'})">
           <v-icon>add</v-icon>
@@ -28,8 +27,8 @@
         </v-btn>
       </v-toolbar>
       <v-list three-line>
-        <template v-for="(item, index) in items.data">
-          <div style="padding-left:30px">
+        <template>
+          <div style="padding-left:30px" :key="index"  v-for="(item, index) in items.data">
             <p id="item.id" style="text-transform:capitalize;width:100%">{{ item.name }} : {{ item.value }}
               <span>
                <v-btn v-if="canAccess('setting.update')" icon @click="$router.push({name: 'setting-edit', params: {id: item.id}})">
@@ -39,8 +38,8 @@
                 <v-icon>delete</v-icon>
               </v-btn>
             </span>
-            <hr>
           </p>
+          <hr>
         </div>
       </template>
     </v-list>
@@ -51,14 +50,12 @@
 </template>
 <script>
 import DataView from '@/components/DataView/DataView'
-import Listting from './Listting'
 import { mapActions, mapGetters } from 'vuex'
 import DialogConfirm from '@/components/DialogConfirm'
 export default{
   name: 'settingDetail',
   components: {
     DataView,
-    Listting,
     DialogConfirm
   },
   data () {
@@ -79,7 +76,7 @@ export default{
     ...mapActions('Setting', ['FetchSetting', 'deleteSetting']),
     ...mapActions('Dataview', ['removeDataviewEntry']),
     removeConfirm (item) {
-      console.log('data',item);
+      console.log('data', item)
       swal({
         title: 'Xác nhận',
         text: 'Bạn chắc chắn muốn xóa bản ghi này',
@@ -88,7 +85,7 @@ export default{
       })
         .then((willDelete) => {
           if (willDelete) {
-                  console.log('data 1',item);
+            console.log('data 1', item)
 
             this.deleteSetting({
               id: item.id,
@@ -96,8 +93,7 @@ export default{
                 this.removeDataviewEntry({
                   name: 'setting',
                   data: item,
-                  key: 'id',
-
+                  key: 'id'
 
                 })
                 this.$store.dispatch('showNotify', {

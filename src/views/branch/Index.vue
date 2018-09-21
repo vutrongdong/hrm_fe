@@ -5,7 +5,6 @@
     </v-flex>
   </v-layout>
 </template>
-
 <script>
 import List from './Listting'
 export default{
