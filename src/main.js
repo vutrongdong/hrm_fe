@@ -3,6 +3,7 @@ import Vue from 'vue'
 import './plugins/axios'
 import './plugins/vuetify'
 import './plugins/vee-validate'
+import $ from 'jquery'
 import App from './App'
 import router from './router'
 import store from './store'
@@ -14,6 +15,8 @@ import * as filters from '@/filters'
 import permissionMixin from '@/mixins/permission'
 import formatMixin from '@/mixins/format'
 import FBSignInButton from 'vue-facebook-signin-button'
+window.$ = require('jquery')
+window.JQuery = require('jquery')
 Vue.use(FBSignInButton)
 // custom filters
 Object.keys(filters).forEach(key => {

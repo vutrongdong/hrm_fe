@@ -3,13 +3,19 @@
     <v-container fluid>
       <v-layout row wrap>
         <v-flex xs12>
-          <v-text-field :error-messages="errors.has('name') ? errors.collect('name') : []" v-validate="'required'":data-vv-as="$t('label.name')" name="name":label="$t('label.name') + '*'"v-model="setting.name">
+          <v-text-field
+          :error-messages="errors.has('name') ? errors.collect('name')
+          : []" v-validate="'required'" :data-vv-as="$t('label.name')"
+          name="name" :label="$t('label.name') + '*'" v-model="setting.name">
           </v-text-field>
 
-          <v-text-field v-validate="'required'" :error-messages="errors.has('value') ? errors.collect('value') : []":data-vv-as="$t('label.value')" name="value":label="$t('label.value')" v-model="setting.value">
+          <v-text-field
+          v-validate="'required'"
+          :error-messages="errors.has('value') ? errors.collect('value') : []" :data-vv-as="$t('label.value')"
+          name="value" :label="$t('label.value')" v-model="setting.value">
           </v-text-field>
           <label>Trạng thái</label>
-          <v-checkbox v-validate="'required'"  style="margin-top:0px" :label='status' :error-messages="errors.has('status') ? errors.collect('status') : []":data-vv-as="$t('label.status')" name="status" v-model="setting.status">
+          <v-checkbox v-validate="'required'"  style="margin-top:0px" :label='status' :error-messages="errors.has('status') ? errors.collect('status') : []" :data-vv-as="$t('label.status')" name="status" v-model="setting.status">
           </v-checkbox>
         </v-flex>
         <v-flex xs12 text-xs-center>
@@ -33,7 +39,6 @@
 </template>
 <script>
 import { mapGetters, mapActions } from 'vuex'
-import { map } from 'lodash'
 export default{
   name: 'settingForm',
   components: {

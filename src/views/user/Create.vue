@@ -25,7 +25,6 @@ export default{
       //       color: 'success',
       //       text: 'Thành công'
       //     })
-
       //     this.$router.push({
       //       name: 'user',
       //       query: {

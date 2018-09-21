@@ -44,9 +44,9 @@ export default{
       this.updateBranch({
         id: this.$route.params.id,
         branch: formData,
-        params: {
-          include: 'roles'
-        },
+        // params: {
+        //   include: 'roles'
+        // },
         cb: (response) => {
           this.showNotify({
             color: 'success',

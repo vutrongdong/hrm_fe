@@ -14,7 +14,6 @@
           <h1>{{ $t('title.setting.detail') }} công ty</h1>
           <v-spacer></v-spacer>
           <v-menu :nudge-width="100" offset-y>
-          </v-list>
         </v-menu>
         <v-btn v-if="canAccess('setting.create')" class="mr-3" icon color="primary" @click="$router.push({name: 'setting-create'})">
           <v-icon>add</v-icon>
@@ -28,7 +27,7 @@
         </v-btn>
       </v-toolbar>
       <v-list three-line>
-        <template v-for="(item, index) in items.data">
+        <template v-for="(item) in items.data">
           <div style="padding-left:30px;padding-top:12px;display:block;" :key="item.id">
             <p style="text-transform:capitalize;width:100%">{{ item.name }} : {{ item.value }} : {{item.id}}
               <span>

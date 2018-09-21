@@ -32,7 +32,7 @@
 </template>
 <script>
 import { mapGetters, mapActions } from 'vuex'
-import { map, chain } from 'lodash'
+// import { map, chain } from 'lodash'
 export default{
   name: 'RoleForm',
   computed: {

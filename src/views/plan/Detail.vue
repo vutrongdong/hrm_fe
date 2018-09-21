@@ -41,8 +41,7 @@
       </v-container>
     </v-flex>
         <dialog-confirm v-model="dialogDelete" @input="remove" />
-    </v-layout>
-    </v-flex>
+
     </v-layout>
 </template>
 <script>
