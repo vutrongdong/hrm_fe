@@ -66,6 +66,22 @@ const actions = {
       success: cb,
       error: error
     }, { root: true })
+  },
+  planForCadidate({ commit, dispatch }, payload) {
+    let { positionId, params, error } = payload || {}
+    dispatch(
+      'fetchApi',
+      {
+        url: `plans`,
+        method: 'GET',
+        params: params || {},
+        success: (response) => {
+          commit(SET_PLAN, response.data)
+        },
+        error: error
+      },
+      { root: true }
+    )
   }
 }
 
@@ -85,7 +101,8 @@ const mutations = {
  * getters
  */
 const getters = {
-  planDetail: (state) => state.plan
+  planDetail: (state) => state.plan,
+  planAll: (state) => state.plan
 }
 
 export default {

@@ -24,7 +24,7 @@ export default{
           this.showNotify({
             color: 'success',
             text: 'Thành công'
-          })
+        })
           this.$router.push({
             name: 'branch',
             query: {

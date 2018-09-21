@@ -113,8 +113,9 @@
     "districts_id" : "quận huyện",
     "branch_id" : "chi nhánh",
     "title": "title",
-    "content" : "content"
-
+    "content" : "content",
+    "source" : "source",
+    "plan_id" : "plan"
   },
   "alert": {
     "invalid": "Vui lòng kiểm tra thông tin cần nhập",

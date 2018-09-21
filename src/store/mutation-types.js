@@ -51,3 +51,5 @@ export const SET_PLAN = 'PLAN/SET_PLAN'
 /// setting
 export const REMOVE_SETTING = 'SETTING/REMOVE_SETTING'
 export const SET_SETTING = 'SETTING/SET_SETTING'
+//canditate
+export const SET_CANDIDATE = 'CANDIDATE/SET_CANDIDATE'

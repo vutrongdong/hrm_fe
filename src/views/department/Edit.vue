@@ -71,6 +71,5 @@ export default{
   mounted () {
     this.dataViewHeight = this.$refs.laylout.clientHeight - 48
   }
-
 }
 </script>

@@ -66,9 +66,10 @@ export default{
     }
   }),
   methods: {
-    ...mapActions('Plan', ['setPlan']),
+    ...mapActions('Plan', ['setPlan','getPlan']),
     planDetail (plan) {
-      this.setPlan({ plan })
+       // this.setPlan({ plan })
+      this.getPlan({ planId: plan.id, params: { include: 'Details' } })
       this.$router.push({ name: 'plan-detail', params: { id: plan.id } })
     }
   },

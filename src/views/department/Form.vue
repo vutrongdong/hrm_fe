@@ -81,6 +81,7 @@ export default{
   },
   data () {
     return {
+      menu: false,
       department: {
         name: '',
         status: '',

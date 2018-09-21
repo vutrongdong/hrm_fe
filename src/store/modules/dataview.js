@@ -21,7 +21,8 @@ const initState = () => {
       department: { ...DEFAULT_MODULE_DATA },
       setting: { ...DEFAULT_MODULE_DATA },
       plan: { ...DEFAULT_MODULE_DATA },
-      branch: { ...DEFAULT_MODULE_DATA }
+      branch: { ...DEFAULT_MODULE_DATA },
+      candidate: { ...DEFAULT_MODULE_DATA }
     }
   }
 }

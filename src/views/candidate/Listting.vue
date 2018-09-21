@@ -12,7 +12,7 @@
     <v-flex xs12 class="border-e0-top">
         <data-view
         :name="dataViewName"
-        api-url="departments"
+        api-url="candidates"
         v-if="dataViewHeight"
         :viewHeight="dataViewHeight"
         :params="params"
@@ -24,18 +24,19 @@
               <v-list-tile
                 :key="'item' + item.id"
                 avatar
-                @click="departmentDetail(item)"
+                @click="candidateDetail(item)"
                 :inactive="item.id === $route.params.id"
                 :class="item.id === $route.params.id && 'grey lighten-2'"
               >
                   <v-list-tile-content>
-                      <v-list-tile-title>{{ item.name }}</v-list-tile-title>
+                      <v-list-tile-title>name : {{ item.name }}</v-list-tile-title>
+                      <v-list-tile-title> {{item.email}} - {{item.phone}} </v-list-tile-title>
+                      <v-list-tile-title v-if="item.status ==0">Status : Mới</v-list-tile-title>
+                      <v-list-tile-title v-else-if="item.status ==1">Status : Chờ kết quả</v-list-tile-title>
+                    <v-list-tile-title v-if="item.status ==2">Status : Trượt</v-list-tile-title>
+                      <v-list-tile-title v-if="item.status ==3">Status : Đỗ</v-list-tile-title>
+                        <v-list-tile-title v-if="item.status ==4"> Status : Danh sách đen</v-list-tile-title>
                   </v-list-tile-content>
-                  <v-list-tile-action>
-                      <v-icon v-if="item.status" color="green lighten-1">check</v-icon>
-                      <v-icon v-else color="grey lighten-1">lock</v-icon>
-                  </v-list-tile-action>
-
               </v-list-tile>
             </template>
           </v-list>
@@ -58,15 +59,14 @@ export default{
     dataViewHeight: 0,
     dataViewName: 'candidate',
     params: {
-      q: '',
-      include: 'branch'
+      q: ''
     }
   }),
   methods: {
-    ...mapActions('Department', ['getDepartment']),
-    departmentDetail (department) {
-      this.getDepartment({ departmentId: department.id, params: { include: 'branch' } })
-      this.$router.push({ name: 'candidate-detail', params: { id: department.id } })
+    ...mapActions('Candidate', ['getCandidate']),
+    candidateDetail (candidate) {
+      this.getCandidate({ candidateId: candidate.id})
+      this.$router.push({ name: 'candidate-detail', params: { id: candidate.id } })
     }
   },
   mounted () {
