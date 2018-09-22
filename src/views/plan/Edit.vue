@@ -1,9 +1,9 @@
 <template>
    <v-layout ref="laylout" row fill-height>
-       <v-flex xs4>
+      <!--  <v-flex xs4>
             <listting />
-      </v-flex>
-      <v-flex xs8 class="border-e0-left">
+      </v-flex> -->
+      <v-flex xs12 class="border-e0-left">
           <v-toolbar dense color="white" flat>
             <v-toolbar-title>{{ $t('title.plan.edit') }}: {{planDetail.title}}</v-toolbar-title>
             <v-spacer></v-spacer>
@@ -20,6 +20,7 @@
 <script>
 import PlanForm from './Form'
 import listting from './Listting'
+
 import { mapActions, mapGetters } from 'vuex'
 export default{
   name: 'EditPlan',
@@ -65,7 +66,7 @@ export default{
   created () {
     this.setMiniDrawer(true)
     if (!this.planDetail.id) {
-      this.getPlan({ planId: this.$route.params.id })
+      this.getPlan({ planId: this.$route.params.id,  params: { include: 'details' }})
     }
   },
   mounted () {

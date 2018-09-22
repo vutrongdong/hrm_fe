@@ -71,6 +71,17 @@
                 </v-flex>
         </v-layout>
 
+        <v-flex xs12>
+          <h3 style="margin-bottom:15px">Chi nhánh, phòng ban, vị trí</h3>
+            <children
+          :id="index"
+          :key="index"
+          :plan="plan"
+          v-for="(n, index) in range"
+          @add="Add()"
+          @delete="Remove(index)"
+          v-on:positionAndDepartment="positionAndDepartment($event, index)" v-if="dataPlan" :dataPlan="dataPlan.details.data"> </children>
+        </v-flex>
     <v-flex xs12 text-xs-center>
       <v-btn
       :loading="isFetchingApi"
@@ -88,10 +99,14 @@
     </v-form>
 </template>
 <script>
+import children from './Form_sub'
 import { mapGetters, mapActions } from 'vuex'
 // import { map, chain } from 'lodash'
 export default{
   name: 'PlanForm',
+  components:{
+     children
+  },
   computed: {
     ...mapGetters(['isFetchingApi']),
     isCreate () {
@@ -112,13 +127,22 @@ export default{
   },
   data () {
     return {
+       range: 1,
       menu: null,
       menu1: null,
       plan: {
         title: '',
         content: '',
         date_start: '',
-        date_end: ''
+        date_end: '',
+        details:{
+          data: [
+            {
+              department_id: '',
+              position_id: ''
+            }
+          ]
+        }
       }
     }
   },
@@ -133,6 +157,14 @@ export default{
       let dataPlan = { ...this.dataPlan }
       this.plan = { ...this.plan, ...dataPlan }
     },
+      Add () {
+      this.range += 1
+    },
+    Remove (index) {
+      if (index !== 0) {
+        document.getElementById(index).remove()
+      }
+    },
     validateBeforeSubmit () {
       this.$validator.validateAll().then(result => {
         if (result) {
@@ -145,6 +177,10 @@ export default{
           })
         }
       })
+    },
+     positionAndDepartment (updated, index) {
+      this.departmentPosition = updated
+      // this.user.departments.push(updated)
     },
       save (date) {
       this.$refs.menu.save(date)
