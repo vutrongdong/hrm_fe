@@ -25,7 +25,10 @@ export default{
             color: 'success',
             text: 'Thành công'
           })
+<<<<<<< HEAD
 
+=======
+>>>>>>> origin/dev
           this.$router.push({
             name: 'setting',
             query: {

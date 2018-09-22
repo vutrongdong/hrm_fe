@@ -14,6 +14,7 @@
       "create": "Thêm mới quyền try cập",
       "edit": "Chỉnh sửa quyền try cập"
     },
+<<<<<<< HEAD
     "branch": {
       "index": "Chi nhánh",
       "detail": "Thông tin chi nhánh",
@@ -28,12 +29,60 @@
     },
     "account": {
       "change-password": "Đổi mật khẩu",
+=======
+    "department": {
+        "index": "Phòng ban",
+        "detail": "Chi tiết phòng ban",
+        "create": "Thêm mới phòng ban",
+        "edit": "Chỉnh sửa phòng ban"
+    },
+    "branch": {
+        "index": "Chi nhánh",
+        "detail": "Chi tiết chi nhánh",
+        "create": "Thêm mới chi nhánh",
+        "edit": "Chỉnh sửa chi nhánh"
+    },
+    "candidate": {
+        "index": "Ứng viên",
+        "detail": "Chi tiết ứng viên",
+        "create": "Thêm mới ứng viên",
+        "edit": "Chỉnh sửa ứng viên"
+    },
+      "account": {
+    "change-password": "Đổi mật khẩu",
+>>>>>>> origin/dev
       "change-information": "Thông tin cá nhân"
+    },
+    "position":{
+       "index": "Chức danh",
+       "detail":"Chi tiết chức danh",
+       "create": "Thêm mới chức danh",
+       "edit": "Chỉnh sửa chức danh"
+    },
+    "plan":{
+       "index": "Kế hoạch",
+       "detail":"Chi tiết kế hoạch",
+       "create": "Thêm mới kế hoạch",
+       "edit": "Chỉnh sửa kế hoạch"
+    },
+    "plandetail":{
+       "index": "kế hoạch chi tiết",
+       "detail":"kế hoạch chi tiết",
+       "create":"Thêm kế hoạch chi tiết",
+       "edit": "Chỉnh sửa kế hoạch chi tiết"
+    },
+    "setting":{
+       "index": "Thiết lập",
+       "detail":"Chi tiết thiết lập",
+       "create": "Thêm mới thiết lập",
+       "edit": "Chỉnh sửa thiết lập"
     }
+
   },
   "label": {
     "qualification":"Trình độ",
     "name": "Tên",
+    "status" : "trạng thái",
     "email": "Email",
     "about":"Thông tin",
     "address":"Địa Chỉ",
@@ -55,7 +104,6 @@
     "phone": "Điện thoại",
     "skype": "Skype",
     "website": "Website",
-    "type": "Loại",
     "facebook": "Facebook",
     "twitter": "Twitter",
     "street": "Đường phố",
@@ -79,7 +127,22 @@
     "uuid": "Mã",
     "old_password": "Mật khẩu hiện tại",
     "new_password": "Mật khẩu mới",
-    "new_password_confirmation": "Nhập lại mật khẩu mới"
+    "new_password_confirmation": "Nhập lại mật khẩu mới",
+    "about":"about",
+    "address": "địa chỉ",
+    "instagram":"instagram",
+    "zalo":"zalo",
+    "tax_number":"mã số thuế",
+    "bank":"bank",
+    "type":"type",
+    "branch_status": "branch status",
+    "city_id" : "thành phố ",
+    "districts_id" : "quận huyện",
+    "branch_id" : "chi nhánh",
+    "title": "title",
+    "content" : "content",
+    "source" : "source",
+    "plan_id" : "plan"
   },
   "alert": {
     "invalid": "Vui lòng kiểm tra thông tin cần nhập",

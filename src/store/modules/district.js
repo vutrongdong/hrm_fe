@@ -1,3 +1,7 @@
+<<<<<<< HEAD
+=======
+
+>>>>>>> origin/dev
 // import {
 //   SET_DISTRICTS,
 //   SET_INITIAL_STATE

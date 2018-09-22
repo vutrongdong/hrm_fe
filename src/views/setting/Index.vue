@@ -1,4 +1,7 @@
+<<<<<<< HEAD
 
+=======
+>>>>>>> origin/dev
 <template>
   <v-layout ref="laylout" row fill-height>
     <v-flex xs12 class="border-e0-left">
@@ -50,14 +53,23 @@
 </v-layout>
 </template>
 <script>
+<<<<<<< HEAD
 import Sweetalert from 'sweetalert'
 import DataView from '@/components/DataView/DataView'
+=======
+import DataView from '@/components/DataView/DataView'
+import Listting from './Listting'
+>>>>>>> origin/dev
 import { mapActions, mapGetters } from 'vuex'
 import DialogConfirm from '@/components/DialogConfirm'
 export default{
   name: 'settingDetail',
   components: {
     DataView,
+<<<<<<< HEAD
+=======
+    Listting,
+>>>>>>> origin/dev
     DialogConfirm
   },
   data () {
@@ -88,6 +100,10 @@ export default{
         .then((willDelete) => {
           if (willDelete) {
             console.log('data 1', item)
+<<<<<<< HEAD
+=======
+
+>>>>>>> origin/dev
             this.deleteSetting({
               id: item.id,
               cb: (response) => {
@@ -95,6 +111,10 @@ export default{
                   name: 'setting',
                   data: item,
                   key: 'id'
+<<<<<<< HEAD
+=======
+
+>>>>>>> origin/dev
                 })
                 this.$store.dispatch('showNotify', {
                   text: this.$t('alert.success'),

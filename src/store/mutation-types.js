@@ -17,6 +17,10 @@ export const SET_DELETE_SHOW = 'DELETE_MESSAGE/SET_DELETE_SHOW'
 export const SET_DELETE_TITLE = 'DELETE_MESSAGE/SET_DELETE_TITLE'
 export const SET_DELETE_NAME = 'DELETE_MESSAGE/SET_DELETE_NAME'
 export const SET_DELETE_CALLBACK = 'DELETE_MESSAGE/SET_DELETE_CALLBACK'
+
+/// ///position
+export const SET_POSITION = 'POSITION/SET_POSITION'
+
 // auth
 export const SET_LOGGED = 'AUTH/SET_LOGGED'
 export const SET_PROFILE = 'AUTH/SET_PROFILE'
@@ -39,6 +43,7 @@ export const SET_PERMISSION = 'PERMISSION/REMOVE_SETTING'
 export const SET_ALL_PERMISSION = 'PERMISSION/SET_ALL_PERMISSION'
 // role
 export const SET_ROLE = 'USER/SET_ROLE'
+<<<<<<< HEAD
 
 // branch
 export const SET_BRANCH = 'BRANCH/SET_BRANCH'
@@ -48,3 +53,16 @@ export const SET_DEPARTMENT = 'DEPARTMENT/SET_DEPARTMENT'
 
 // position
 export const SET_POSITION = 'POSITION/SET_POSITION'
+=======
+// department
+export const SET_DEPARTMENT = 'DEPARTMENT/SET_DEPARTMENT'
+/// branch
+export const SET_BRANCH = 'DEPARTMENT/SET_BRANCH'
+/// / plan
+export const SET_PLAN = 'PLAN/SET_PLAN'
+/// setting
+export const REMOVE_SETTING = 'SETTING/REMOVE_SETTING'
+export const SET_SETTING = 'SETTING/SET_SETTING'
+//canditate
+export const SET_CANDIDATE = 'CANDIDATE/SET_CANDIDATE'
+>>>>>>> origin/dev

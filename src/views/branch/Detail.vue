@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <!-- <template>
   <v-layout ref="laylout" row fill-height>
     <v-flex xs4>
@@ -118,13 +119,19 @@ export default{
 
 </script>
 -->
+=======
+>>>>>>> origin/dev
 
 <template>
   <v-layout ref="laylout" row fill-height>
     <v-flex xs4>
       <listting />
     </v-flex>
+<<<<<<< HEAD
     <v-flex xs8 class="border-e0-left">
+=======
+    <v-flex xs12 class="border-e0-left">
+>>>>>>> origin/dev
       <v-toolbar dense color="white" flat>
         <v-toolbar-title>{{ $t('title.branch.detail') }}: {{branchDetail.name}}</v-toolbar-title>
         <v-spacer></v-spacer>
@@ -191,7 +198,11 @@ export default{
   },
   methods: {
     ...mapActions(['setMiniDrawer']),
+<<<<<<< HEAD
     ...mapActions('Branch', ['getBranch', 'deleteBranch']),
+=======
+    ...mapActions('Branch', ['getBranchs', 'deleteBranch']),
+>>>>>>> origin/dev
     ...mapActions('Dataview', ['removeDataviewEntry']),
     removeConfirm () {
       this.dialogDelete = true
@@ -228,7 +239,11 @@ export default{
   created () {
     this.setMiniDrawer(true)
     if (!this.branchDetail.id) {
+<<<<<<< HEAD
       this.getBranch({ branchId: this.$route.params.id })
+=======
+      this.getBranchs({ branchId: this.$route.params.id })
+>>>>>>> origin/dev
     }
   },
   mounted () {

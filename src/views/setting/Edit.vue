@@ -14,13 +14,25 @@
     </v-flex>
   </v-layout>
 </template>
+<<<<<<< HEAD
 <script>
 import settingForm from './Form'
+=======
+
+<script>
+import settingForm from './Form'
+import Listting from './Listting'
+>>>>>>> origin/dev
 import { mapActions, mapGetters } from 'vuex'
 export default{
   name: 'Createsetting',
   components: {
+<<<<<<< HEAD
     settingForm
+=======
+    settingForm,
+    Listting
+>>>>>>> origin/dev
   },
   data () {
     return {
@@ -43,12 +55,22 @@ export default{
             color: 'success',
             text: 'Thành công'
           })
+<<<<<<< HEAD
           this.setSetting({ setting: response.data })
+=======
+
+          this.setSetting({ setting: response.data })
+
+>>>>>>> origin/dev
           this.updateDataviewEntry({
             name: 'setting',
             data: response.data,
             key: 'id'
           })
+<<<<<<< HEAD
+=======
+
+>>>>>>> origin/dev
           this.$router.push({
             name: 'setting'
           })

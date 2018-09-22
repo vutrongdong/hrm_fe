@@ -112,6 +112,7 @@ export default {
           router: { name: 'home' },
           access_permission: true
         },
+<<<<<<< HEAD
         // {
         //   icon: 'fas fa-object-group',
         //   text: this.$t('title.item.index'),
@@ -126,6 +127,28 @@ export default {
         //   }
         //   ]
         // },
+=======
+        {
+          icon: 'fas fa-object-group',
+          text: this.$t('title.item.index'),
+          access_permission: 'item.view',
+          model: false,
+          children: [
+            {
+              icon: 'fas fa-cube',
+              text: this.$t('title.item.index'),
+              router: { name: 'item' },
+              access_permission: 'item.view'
+            },
+            {
+              icon: 'fas fa-cube',
+              text: this.$t('title.item.index'),
+              router: { name: 'item' },
+              access_permission: 'item.view'
+            }
+          ]
+        },
+>>>>>>> origin/dev
         // {
         //   icon: 'keyboard_arrow_up',
         //   'icon-alt': 'keyboard_arrow_down',
@@ -149,16 +172,64 @@ export default {
           access_permission: 'role.view'
         },
         {
+<<<<<<< HEAD
+=======
+          icon: 'fas fa-map-marker-alt',
+          text: this.$t('title.position.index'),
+          router: { name: 'position' },
+          access_permission: 'position.view'
+        },
+        {
+          icon: 'far fa-building',
+          text: this.$t('title.department.index'),
+          router: { name: 'department' },
+          access_permission: 'department.view'
+        },
+        {
+>>>>>>> origin/dev
           icon: 'fas fa-code-branch',
           text: this.$t('title.branch.index'),
           router: { name: 'branch' },
           access_permission: 'branch.view'
         },
         {
+<<<<<<< HEAD
           icon: 'settings',
           text: this.$t('title.setting.index'),
           router: { name: 'setting' },
           access_permission: 'setting.view'
+=======
+          icon: 'fas fa-cog',
+          text: this.$t('title.setting.index'),
+          router: { name: 'setting' },
+          access_permission: 'setting.view'
+        },
+        {
+          icon: 'far fa-id-card',
+          text: this.$t('title.candidate.index'),
+          router: { name: 'candidate' },
+          access_permission: 'candidate.view'
+        },
+        {
+          icon: 'fas fa-object-group',
+          text: this.$t('title.plan.index'),
+          access_permission: 'plan.view',
+          model: false,
+          children: [
+            {
+              icon: 'fab fa-playstation',
+              text: this.$t('title.plan.index'),
+              router: { name: 'plan' },
+              access_permission: 'plan.view'
+            },
+            {
+              icon: 'fas fa-cube',
+              text: this.$t('title.plandetail.index'),
+              router: { name: 'plandetail' },
+              access_permission: 'plandetail.view'
+            }
+          ]
+>>>>>>> origin/dev
         }
       ]
     }

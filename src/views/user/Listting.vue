@@ -73,7 +73,11 @@ export default{
   methods: {
     ...mapActions('User', ['getUser']),
     userDetail (user) {
+<<<<<<< HEAD
       this.getUser({ userId: user.id, params: { include: 'roles,departments,positions' } })
+=======
+      this.getUser({ userId: user.id, params: { include: 'roles' } })
+>>>>>>> origin/dev
       this.$router.push({ name: 'user-detail', params: { id: user.id } })
     }
   },

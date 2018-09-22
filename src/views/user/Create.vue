@@ -17,6 +17,7 @@ export default{
     ...mapActions(['showNotify', 'setMiniDrawer']),
     ...mapActions('User', ['createUser']),
     submitForm (formData) {
+<<<<<<< HEAD
       console.log(formData)
       return false
       this.createUser({
@@ -34,6 +35,24 @@ export default{
           })
         }
       })
+=======
+      // this.createUser({
+      //   user: formData,
+      //   cb: (response) => {
+      //     this.showNotify({
+      //       color: 'success',
+      //       text: 'Thành công'
+      //     })
+      //     this.$router.push({
+      //       name: 'user',
+      //       query: {
+      //         reload: null
+      //       }
+      //     })
+      //   }
+      // })
+      console.log('data', formData)
+>>>>>>> origin/dev
     }
   },
   created () {
