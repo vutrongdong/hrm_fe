@@ -8,7 +8,6 @@
           hide-details
           single-line
         ></v-text-field>
-
         <!-- <v-menu :nudge-width="100" offset-y>
           <v-toolbar-title slot="activator">
             <v-btn icon slot="activator">
@@ -86,13 +85,16 @@ export default{
     ...mapActions('Role', ['setRole']),
     roleDetail (role) {
       this.setRole({ role })
-      this.$router.push({name: 'role-detail', params: {id: role.id}})
+      this.$router.push({ name: 'role-detail', params: { id: role.id } })
     }
   },
   mounted () {
     this.dataViewHeight = this.$refs.laylout.clientHeight - 49
+<<<<<<< HEAD
 
-    let query = {...this.$route.query}
+=======
+>>>>>>> origin/dev
+    let query = { ...this.$route.query }
     if (query.hasOwnProperty('reload')) {
       this.$nextTick(() => {
         this.$refs[this.dataViewName].$emit('reload')

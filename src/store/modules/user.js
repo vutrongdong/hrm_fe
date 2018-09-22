@@ -39,7 +39,7 @@ const actions = {
       { root: true }
     )
   },
-  createUser ({commit, dispatch}, payload) {
+  createUser ({ commit, dispatch }, payload) {
     let { user, cb, params } = payload
     dispatch('fetchApi', {
       url: 'users',
@@ -47,9 +47,9 @@ const actions = {
       data: user,
       params: params,
       success: cb
-    }, {root: true})
+    }, { root: true })
   },
-  updateUser ({commit, dispatch}, payload) {
+  updateUser ({ commit, dispatch }, payload) {
     let { id, user, cb, params } = payload
     dispatch('fetchApi', {
       url: `users/${id}`,
@@ -57,16 +57,16 @@ const actions = {
       data: user,
       params: params,
       success: cb
-    }, {root: true})
+    }, { root: true })
   },
-  deleteUser ({commit, dispatch}, payload) {
+  deleteUser ({ commit, dispatch }, payload) {
     let { id, cb, error } = payload || {}
     dispatch('fetchApi', {
       url: `users/${id}`,
       method: 'DELETE',
       success: cb,
       error: error
-    }, {root: true})
+    }, { root: true })
   }
 }
 

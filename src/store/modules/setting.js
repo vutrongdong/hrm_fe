@@ -1,6 +1,8 @@
+
 import {
   SET_SETTINGS,
-  SET_INITIAL_STATE
+  SET_INITIAL_STATE,
+  REMOVE_SETTING
 } from '../mutation-types'
 
 const initState = () => {
@@ -20,12 +22,27 @@ const state = {
  * actions
  */
 const actions = {
-  getSetting ({ commit, dispatch }, payload) {
+  FetchSetting ({ commit, dispatch }, payload) {
     let { params } = payload || {}
     dispatch(
       'fetchApi',
       {
         url: 'settings',
+        method: 'GET',
+        params: params || {},
+        success: (response) => {
+          commit(SET_SETTINGS, response.data)
+        }
+      },
+      { root: true }
+    )
+  },
+  getSetting ({ commit, dispatch }, payload) {
+    let { settingId, params } = payload || {}
+    dispatch(
+      'fetchApi',
+      {
+        url: `settings/${settingId}`,
         method: 'GET',
         params: params || {},
         success: (response) => {
@@ -41,14 +58,32 @@ const actions = {
       commit(SET_SETTINGS, settings)
     }
   },
-  updateSetting ({ commit, dispatch }, payload) {
-    let { setting, cb } = payload || {}
+  createSetting ({ commit, dispatch }, payload) {
+    let { setting, cb, params } = payload
     dispatch('fetchApi', {
-      url: '/settings',
-      method: 'PUT',
+      url: 'settings',
+      method: 'POST',
       data: setting,
+      params: params,
       success: cb
     }, { root: true })
+  },
+  updateSetting ({ commit, dispatch }, payload) {
+    let { id, setting, cb, params } = payload
+    dispatch('fetchApi', {
+      url: `settings/${id}`,
+      method: 'PUT',
+      data: setting,
+      params: params,
+      success: cb
+    }, { root: true })
+  },
+  async deleteSetting ({ commit, dispatch }, payload) {
+    const { id, cb, error } = payload || {}
+    let response = await axios.delete('/settings/' + id).then(response => {
+      commit(REMOVE_SETTING, id)
+      cb && cb(response.data)
+    })
   }
 }
 
@@ -61,6 +96,11 @@ const mutations = {
   },
   [SET_INITIAL_STATE]: (state) => {
     state.settings = initState().settings
+  },
+  [REMOVE_SETTING]: (state, id) => {
+    console.log(id)
+    delete state.settings[id]
+    console.log(state.settings[id])
   }
 }
 
@@ -68,7 +108,7 @@ const mutations = {
  * getters
  */
 const getters = {
-  settings: (state) => state.settings
+  settingDetail: (state) => state.settings
 }
 
 export default {

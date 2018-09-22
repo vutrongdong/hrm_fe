@@ -1,6 +1,10 @@
-import * as modules from './auth-modules/'
+import * as modules from './auth-modules'
+<<<<<<< HEAD
 // console.log(modules)
+=======
+>>>>>>> origin/dev
 import { flatten } from 'lodash'
+console.log(modules)
 export default {
   path: '/',
   redirect: '/home',

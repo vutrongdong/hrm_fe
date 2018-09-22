@@ -40,16 +40,16 @@ const actions = {
       { root: true }
     )
   },
-  createRole ({commit, dispatch}, payload) {
+  createRole ({ commit, dispatch }, payload) {
     let { role, cb } = payload || {}
     dispatch('fetchApi', {
       url: 'roles',
       method: 'POST',
       data: role,
       success: cb
-    }, {root: true})
+    }, { root: true })
   },
-  updateRole ({commit, dispatch}, payload) {
+  updateRole ({ commit, dispatch }, payload) {
     let { id, role, cb, error } = payload || {}
     dispatch('fetchApi', {
       url: `roles/${id}`,
@@ -57,16 +57,16 @@ const actions = {
       data: role,
       success: cb,
       error: error
-    }, {root: true})
+    }, { root: true })
   },
-  deleteRole ({commit, dispatch}, payload) {
+  deleteRole ({ commit, dispatch }, payload) {
     let { id, cb, error } = payload || {}
     dispatch('fetchApi', {
       url: `roles/${id}`,
       method: 'DELETE',
       success: cb,
       error: error
-    }, {root: true})
+    }, { root: true })
   }
 }
 

@@ -83,7 +83,7 @@ export default {
                 text: response.data.message
               })
               this.clearLogged()
-              this.$router.push({name: 'login'})
+              this.$router.push({ name: 'login' })
             }
           })
         } else {
