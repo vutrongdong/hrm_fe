@@ -1,4 +1,3 @@
-
 import {
   SET_SETTINGS,
   SET_INITIAL_STATE,
@@ -79,11 +78,15 @@ const actions = {
     }, { root: true })
   },
   async deleteSetting ({ commit, dispatch }, payload) {
-    const { id, cb, error } = payload || {}
-    let response = await axios.delete('/settings/' + id).then(response => {
-      commit(REMOVE_SETTING, id)
-      cb && cb(response.data)
-    })
+    const { id, cb } = payload || {}
+    dispatch('fetchApi', {
+      url: `settings/${id}`,
+      method: 'DETELE',
+      success: response => {
+        commit(REMOVE_SETTING, id)
+        cb && cb(response.data)
+      }
+    }, { root: true })
   }
 }
 

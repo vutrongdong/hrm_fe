@@ -1,11 +1,5 @@
 import {
-<<<<<<< HEAD
   SET_DEPARTMENT
-=======
-  SET_DEPARTMENT,
-  SET_BRANCH,
-  SET_INITIAL_STATE
->>>>>>> origin/dev
 } from '../mutation-types'
 const initState = () => {
   return {
@@ -30,8 +24,6 @@ const actions = {
     let { department } = payload || {}
     commit(SET_DEPARTMENT, department)
   },
-<<<<<<< HEAD
-=======
   getDepartment ({ commit, dispatch }, payload) {
     let { departmentId, params, error } = payload || {}
     dispatch(
@@ -48,27 +40,20 @@ const actions = {
       { root: true }
     )
   },
->>>>>>> origin/dev
   getDepartmentForUser ({ commit, dispatch }, payload) {
-    let { branch_id, cb } = payload
+    let { branchId, cb } = payload
     dispatch(
       'fetchApi',
       {
-        url: `departments/branches/${branch_id}`,
+        url: `departments/branches/${branchId}`,
         method: 'GET',
         success: (response) => {
-<<<<<<< HEAD
           commit(SET_DEPARTMENT, response.data)
-=======
-          commit(SET_DEPARTMENT, response)
->>>>>>> origin/dev
           cb && cb()
         }
       },
       { root: true }
     )
-<<<<<<< HEAD
-=======
   },
   departmentForPlan ({ commit, dispatch }, payload) {
     let { params, error } = payload || {}
@@ -115,7 +100,6 @@ const actions = {
       success: cb,
       error: error
     }, { root: true })
->>>>>>> origin/dev
   }
 }
 
@@ -132,13 +116,9 @@ const mutations = {
  * getters
  */
 const getters = {
-<<<<<<< HEAD
-  departmentByBranch: (state) => state.department
-=======
-  departmentDetail: (state) => state.department,
   departmentByBranch: (state) => state.department,
+  departmentDetail: (state) => state.department,
   departmentAll: (state) => state.department
->>>>>>> origin/dev
 }
 
 export default {

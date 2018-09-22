@@ -66,7 +66,7 @@ export default{
   created () {
     this.setMiniDrawer(true)
     if (!this.planDetail.id) {
-      this.getPlan({ planId: this.$route.params.id,  params: { include: 'details' }})
+      this.getPlan({ planId: this.$route.params.id, params: { include: 'details' } })
     }
   },
   mounted () {

@@ -112,22 +112,6 @@ export default {
           router: { name: 'home' },
           access_permission: true
         },
-<<<<<<< HEAD
-        // {
-        //   icon: 'fas fa-object-group',
-        //   text: this.$t('title.item.index'),
-        //   access_permission: 'item.view',
-        //   model: false,
-        //   children: [
-        //   {
-        //     icon: 'fas fa-cube',
-        //     text: this.$t('title.item.index'),
-        //     router: { name: 'item' },
-        //     access_permission: 'item.view'
-        //   }
-        //   ]
-        // },
-=======
         {
           icon: 'fas fa-object-group',
           text: this.$t('title.item.index'),
@@ -148,17 +132,6 @@ export default {
             }
           ]
         },
->>>>>>> origin/dev
-        // {
-        //   icon: 'keyboard_arrow_up',
-        //   'icon-alt': 'keyboard_arrow_down',
-        //   text: 'Labels',
-        //   model: true,
-        //   children: [
-        //     { icon: 'add',
-        //     text: 'Create label' }
-        //   ]
-        // },
         {
           icon: 'fa-user',
           text: this.$t('title.user.index'),
@@ -172,8 +145,6 @@ export default {
           access_permission: 'role.view'
         },
         {
-<<<<<<< HEAD
-=======
           icon: 'fas fa-map-marker-alt',
           text: this.$t('title.position.index'),
           router: { name: 'position' },
@@ -186,19 +157,12 @@ export default {
           access_permission: 'department.view'
         },
         {
->>>>>>> origin/dev
           icon: 'fas fa-code-branch',
           text: this.$t('title.branch.index'),
           router: { name: 'branch' },
           access_permission: 'branch.view'
         },
         {
-<<<<<<< HEAD
-          icon: 'settings',
-          text: this.$t('title.setting.index'),
-          router: { name: 'setting' },
-          access_permission: 'setting.view'
-=======
           icon: 'fas fa-cog',
           text: this.$t('title.setting.index'),
           router: { name: 'setting' },
@@ -229,7 +193,6 @@ export default {
               access_permission: 'plandetail.view'
             }
           ]
->>>>>>> origin/dev
         }
       ]
     }

@@ -1,7 +1,3 @@
-<<<<<<< HEAD
-=======
-
->>>>>>> origin/dev
 <template>
   <v-layout ref="laylout" column fill-height>
     <v-toolbar dense color="white" flat>
@@ -66,24 +62,14 @@ export default {
     }
   }),
   methods: {
-<<<<<<< HEAD
-    ...mapActions('Branch', ['getBranch']),
-    branchDetail (branch) {
-      this.getBranch({ branchId: branch.id, params: { include: 'branch' } })
-=======
     ...mapActions('Branch', ['getBranchs']),
     branchDetail (branch) {
       this.getBranchs({ branchId: branch.id, params: { include: 'branch' } })
->>>>>>> origin/dev
       this.$router.push({ name: 'branch-detail', params: { id: branch.id } })
     }
   },
   mounted () {
     this.dataViewHeight = this.$refs.laylout.clientHeight - 49
-<<<<<<< HEAD
-
-=======
->>>>>>> origin/dev
     let query = { ...this.$route.query }
     if (query.hasOwnProperty('reload')) {
       this.$nextTick(() => {

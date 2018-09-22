@@ -22,54 +22,54 @@ import CandidateForm from './Form'
 import listting from './Listting'
 import { mapActions, mapGetters } from 'vuex'
 export default{
-    name: "EditCandidate",
-    components: {
-        listting,
-        CandidateForm
-    },
-    data () {
-        return {
-          dataViewHeight: 0
-        }
-    },
-    computed: {
-      ...mapGetters('Candidate', ['candidateDetail'])
-    },
-    methods: {
-        ...mapActions(['showNotify', 'setMiniDrawer']),
-        ...mapActions('Candidate', ['updateCandidate', 'getCandidate', 'setCandidate']),
-        ...mapActions('Dataview', ['updateDataviewEntry']),
-        submitForm(formData){
-            this.updateCandidate({
-                id: this.$route.params.id,
-                candidate: formData,
-                cb: (response) =>{
-                this.showNotify({
-                  color: 'success',
-                  text: 'Thành công'
-                })
-                this.setCandidate({ candidate: response.data })
-                this.updateDataviewEntry({
-                    name: 'candidate',
-                    data: response.data,
-                    key: 'id'
-                })
-                this.$router.push({
-                    name: 'candidate-detail',
-                    params: { id: this.$route.params.id }
-                  })
-                }
-            })
-        }
-    },
-    created(){
-        this.setMiniDrawer(true)
-        if(!this.candidateDetail.id){
-            this.getCandidate({ candidateId: this.$route.params.id })
-        }
-    },
-    mounted () {
-      this.dataViewHeight = this.$refs.laylout.clientHeight - 48
+  name: 'EditCandidate',
+  components: {
+    listting,
+    CandidateForm
+  },
+  data () {
+    return {
+      dataViewHeight: 0
     }
+  },
+  computed: {
+    ...mapGetters('Candidate', ['candidateDetail'])
+  },
+  methods: {
+    ...mapActions(['showNotify', 'setMiniDrawer']),
+    ...mapActions('Candidate', ['updateCandidate', 'getCandidate', 'setCandidate']),
+    ...mapActions('Dataview', ['updateDataviewEntry']),
+    submitForm (formData) {
+      this.updateCandidate({
+        id: this.$route.params.id,
+        candidate: formData,
+        cb: (response) => {
+          this.showNotify({
+            color: 'success',
+            text: 'Thành công'
+          })
+          this.setCandidate({ candidate: response.data })
+          this.updateDataviewEntry({
+            name: 'candidate',
+            data: response.data,
+            key: 'id'
+          })
+          this.$router.push({
+            name: 'candidate-detail',
+            params: { id: this.$route.params.id }
+          })
+        }
+      })
+    }
+  },
+  created () {
+    this.setMiniDrawer(true)
+    if (!this.candidateDetail.id) {
+      this.getCandidate({ candidateId: this.$route.params.id })
+    }
+  },
+  mounted () {
+    this.dataViewHeight = this.$refs.laylout.clientHeight - 48
+  }
 }
 </script>

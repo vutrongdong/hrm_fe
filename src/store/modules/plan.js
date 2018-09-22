@@ -67,8 +67,8 @@ const actions = {
       error: error
     }, { root: true })
   },
-  planForCadidate({ commit, dispatch }, payload) {
-    let { positionId, params, error } = payload || {}
+  planForCadidate ({ commit, dispatch }, payload) {
+    let { params, error } = payload || {}
     dispatch(
       'fetchApi',
       {

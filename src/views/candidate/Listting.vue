@@ -65,7 +65,7 @@ export default{
   methods: {
     ...mapActions('Candidate', ['getCandidate']),
     candidateDetail (candidate) {
-      this.getCandidate({ candidateId: candidate.id})
+      this.getCandidate({ candidateId: candidate.id })
       this.$router.push({ name: 'candidate-detail', params: { id: candidate.id } })
     }
   },

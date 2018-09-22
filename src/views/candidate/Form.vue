@@ -99,32 +99,30 @@
         <v-layout row wrap>
             <v-flex xs6>
                <v-select
-                    v-if="Array.isArray(planAll)"
-                    v-validate="'required'"
-                   :error-messages="errors.has('plan_id') ? errors.collect('plan_id') : []"
-                   :data-vv-as="$t('label.plan_id')"
-                   name="plan_id"
-                   :label="$t('label.plan_id')"
-                    v-model="candidate.plan_id"
-                    :items="planAll"
-                    item-value="id"
-                    label="kế hoạch"
-                    item-text="title">
+                  v-if="Array.isArray(planAll)"
+                  v-validate="'required'"
+                  :error-messages="errors.has('plan_id') ? errors.collect('plan_id') : []"
+                  :data-vv-as="$t('label.plan_id')"
+                  name="plan_id"
+                  :label="$t('label.plan_id')"
+                  v-model="candidate.plan_id"
+                  :items="planAll"
+                  item-value="id"
+                  item-text="title">
                 </v-select>
             </v-flex>
             <v-flex xs6>
                <v-select
-                   v-if="Array.isArray(positionAll)"
-                   v-validate="'required'"
+                  v-if="Array.isArray(positionAll)"
+                  v-validate="'required'"
                   :error-messages="errors.has('position_id') ? errors.collect('position_id') : []"
-                   :data-vv-as="$t('label.position_id')"
-                   name="position_id"
-                   :label="$t('label.position_id')"
-                    v-model="candidate.position_id"
-                    :items="positionAll"
-                    item-value="id"
-                    label="Chức vụ"
-                    item-text="name">
+                  :data-vv-as="$t('label.position_id')"
+                  name="position_id"
+                  :label="$t('label.position_id')"
+                  v-model="candidate.position_id"
+                  :items="positionAll"
+                  item-value="id"
+                  item-text="name">
                 </v-select>
             </v-flex>
         </v-layout>
@@ -149,13 +147,12 @@
 </template>
 <script>
 import { mapGetters, mapActions } from 'vuex'
-import { map, chain } from 'lodash'
 export default{
   name: 'CandidateForm',
   computed: {
-     ...mapGetters(['isFetchingApi']),
-    ...mapGetters('Position',['positionAll']),
-    ...mapGetters('Plan',['planAll']),
+    ...mapGetters(['isFetchingApi']),
+    ...mapGetters('Position', ['positionAll']),
+    ...mapGetters('Plan', ['planAll']),
     isCreate () {
       return this.type === 'create'
     }
@@ -172,22 +169,22 @@ export default{
       }
     }
   },
-  data(){
-    return{
+  data () {
+    return {
       menu: null,
       menu1: null,
-      candidate:{
-            name: '',
-            email: '',
-            phone: '',
-            source: '',
-            date_apply: '',
-            time_interview: '',
-            plan_id: '',
-            position_id: '',
-            status: 0,
-        },
-        items: [
+      candidate: {
+        name: '',
+        email: '',
+        phone: '',
+        source: '',
+        date_apply: '',
+        time_interview: '',
+        plan_id: '',
+        position_id: '',
+        status: 0
+      },
+      items: [
         {
           'id': '',
           'name': '-- Su lua chon ---'
@@ -215,7 +212,7 @@ export default{
       ]
     }
   },
-   watch: {
+  watch: {
     menu (val) {
       val && this.$nextTick(() => (this.$refs.picker.activePicker = 'YEAR'))
     }
@@ -224,35 +221,31 @@ export default{
     ...mapActions(['fetchApi']),
     ...mapActions('Position', ['PositionForUser']),
     ...mapActions('Plan', ['planForCadidate']),
-    setInitData(){
-        let dataCandidate = {...this.dataCandidate}
-        this.candidate = { ...this.candidate, ...dataCandidate }
+    setInitData () {
+      let dataCandidate = {...this.dataCandidate}
+      this.candidate = { ...this.candidate, ...dataCandidate }
     },
-    validateBeforeSubmit(){
-        this.$validator.validateAll().then(result => {
-            if(result){
-              this.$emit('submit', this.candidate)
-            }
-            else{
-                this.$store.dispatch('showNotify', {
-                text: this.$t('alert.invalid'),
-                color: 'warning'
+    validateBeforeSubmit () {
+      this.$validator.validateAll().then(result => {
+        if (result) {
+          this.$emit('submit', this.candidate)
+        } else {
+          this.$store.dispatch('showNotify', {
+            text: this.$t('alert.invalid'),
+            color: 'warning'
           })
-            }
-        })
+        }
+      })
     },
     save (date) {
       this.$refs.menu.save(date)
-    },
+    }
   },
 
-  created(){
-      this.PositionForUser()
-      this.planForCadidate()
-      !!this.dataCandidate && this.setInitData()
+  created () {
+    this.PositionForUser()
+    this.planForCadidate()
+    !!this.dataCandidate && this.setInitData()
   }
 }
 </script>
-
-
-

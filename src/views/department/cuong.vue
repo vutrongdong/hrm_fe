@@ -248,7 +248,6 @@
 </template>
 <script>
 import { mapGetters, mapActions } from 'vuex'
-import { map, chain } from 'lodash'
 export default{
   name: 'DepartmentForm',
   computed: {
@@ -350,7 +349,7 @@ export default{
     },
     changedCity (value) {
       this.getDistrictByCity({
-        city_id: value
+        cityId: value
       })
     },
     validateBeforeSubmit () {

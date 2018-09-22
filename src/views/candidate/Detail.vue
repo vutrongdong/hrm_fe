@@ -71,40 +71,40 @@ export default{
       this.dialogDelete = true
     },
     remove (confirm) {
-        if(confirm){
-          this.deleteCandidate({
-              id: this.$route.params.id,
-              cb: (response) =>{
-                  this.removeDataviewEntry({
-                      name: 'candidate',
-                      data: this.candidateDetail,
-                      key: 'id'
-                  })
-                  this.$store.dispatch('showNotify', {
-                    text: this.$t('alert.success'),
-                    color: 'success'
-                  })
-                  this.dialogDelete = false
-                  this.$router.push({ name: 'candidate' })
-              },
-                 error: (error) => {
-                    if (error.status === 404) {
-                      this.$store.dispatch('showNotify', {
-                        text: this.$t('alert.not-found'),
-                        color: 'warning'
-                      })
-                    }
-               }
-          })
-        }
+      if (confirm) {
+        this.deleteCandidate({
+          id: this.$route.params.id,
+          cb: (response) => {
+            this.removeDataviewEntry({
+              name: 'candidate',
+              data: this.candidateDetail,
+              key: 'id'
+            })
+            this.$store.dispatch('showNotify', {
+              text: this.$t('alert.success'),
+              color: 'success'
+            })
+            this.dialogDelete = false
+            this.$router.push({ name: 'candidate' })
+          },
+          error: (error) => {
+            if (error.status === 404) {
+              this.$store.dispatch('showNotify', {
+                text: this.$t('alert.not-found'),
+                color: 'warning'
+              })
+            }
+          }
+        })
+      }
     }
   },
   created () {
     this.setMiniDrawer(true)
     console.log('id :' + this.candidateDetail.id)
     if (!this.candidateDetail.id) {
-    this.getCandidate({ candidateId: this.$route.params.id})
-     }
+      this.getCandidate({ candidateId: this.$route.params.id })
+    }
   },
   mounted () {
     this.dataViewHeight = this.$refs.laylout.clientHeight - 48

@@ -1,10 +1,5 @@
 import {
-<<<<<<< HEAD
   SET_POSITION
-=======
-  SET_POSITION,
-  SET_INITIAL_STATE
->>>>>>> origin/dev
 } from '../mutation-types'
 
 const initState = () => {
@@ -28,10 +23,22 @@ const actions = {
     let { position } = payload || {}
     commit(SET_POSITION, position)
   },
-<<<<<<< HEAD
   positionForUser ({ commit, dispatch }, payload) {
     let { params, error } = payload || {}
-=======
+    dispatch(
+      'fetchApi',
+      {
+        url: `positions`,
+        method: 'GET',
+        params: params || {},
+        success: (response) => {
+          commit(SET_POSITION, response.data)
+        },
+        error: error
+      },
+      { root: true }
+    )
+  },
   getPosition ({ commit, dispatch }, payload) {
     let { positionId, params, error } = payload || {}
     dispatch(
@@ -75,23 +82,6 @@ const actions = {
       success: cb,
       error: error
     }, { root: true })
-  },
-  PositionForUser ({ commit, dispatch }, payload) {
-    let { positionId, params, error } = payload || {}
->>>>>>> origin/dev
-    dispatch(
-      'fetchApi',
-      {
-        url: `positions`,
-        method: 'GET',
-        params: params || {},
-        success: (response) => {
-          commit(SET_POSITION, response.data)
-        },
-        error: error
-      },
-      { root: true }
-    )
   }
 }
 
@@ -102,25 +92,14 @@ const mutations = {
   [SET_POSITION]: (state, position) => {
     state.position = position
   }
-<<<<<<< HEAD
-=======
-  // [SET_INITIAL_STATE]: (state) => {
-  //   state.role = initState().role
-  // }
->>>>>>> origin/dev
 }
 
 /**
  * getters
  */
 const getters = {
-<<<<<<< HEAD
-  positionAll: (state) => state.position
-=======
   positionDetail: (state) => state.position,
   positionAll: (state) => state.position
-
->>>>>>> origin/dev
 }
 
 export default {

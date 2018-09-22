@@ -1,6 +1,6 @@
 <template>
   <v-container fluid style="margin-top:-35px">
-    <v-layout row wrap align-center v-for="">
+    <v-layout row wrap align-center>
       <v-flex md3>
         <v-select
         v-if="Array.isArray(departmentAll)"
@@ -65,7 +65,7 @@ export default {
   data () {
     return {
       plan: {
-        plan_id:''
+        plan_id: ''
 
       },
       departments: []

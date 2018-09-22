@@ -104,8 +104,8 @@ import { mapGetters, mapActions } from 'vuex'
 // import { map, chain } from 'lodash'
 export default{
   name: 'PlanForm',
-  components:{
-     children
+  components: {
+    children
   },
   computed: {
     ...mapGetters(['isFetchingApi']),
@@ -127,7 +127,7 @@ export default{
   },
   data () {
     return {
-       range: 1,
+      range: 1,
       menu: null,
       menu1: null,
       plan: {
@@ -135,7 +135,7 @@ export default{
         content: '',
         date_start: '',
         date_end: '',
-        details:{
+        details: {
           data: [
             {
               department_id: '',
@@ -157,7 +157,7 @@ export default{
       let dataPlan = { ...this.dataPlan }
       this.plan = { ...this.plan, ...dataPlan }
     },
-      Add () {
+    Add () {
       this.range += 1
     },
     Remove (index) {
@@ -178,20 +178,16 @@ export default{
         }
       })
     },
-     positionAndDepartment (updated, index) {
+    positionAndDepartment (updated, index) {
       this.departmentPosition = updated
       // this.user.departments.push(updated)
     },
-      save (date) {
+    save (date) {
       this.$refs.menu.save(date)
-    },
+    }
   },
   created () {
     !!this.dataPlan && this.setInitData()
   }
 }
 </script>
-
-
-
-

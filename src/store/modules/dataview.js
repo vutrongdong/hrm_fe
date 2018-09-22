@@ -17,20 +17,13 @@ const initState = () => {
   return {
     dataViews: {
       user: { ...DEFAULT_MODULE_DATA },
-<<<<<<< HEAD
-      branch: { ...DEFAULT_MODULE_DATA },
       city: { ...DEFAULT_MODULE_DATA },
-      setting: { ...DEFAULT_MODULE_DATA },
-      position: { ...DEFAULT_MODULE_DATA },
-      department: { ...DEFAULT_MODULE_DATA }
-=======
       position: { ...DEFAULT_MODULE_DATA },
       department: { ...DEFAULT_MODULE_DATA },
       setting: { ...DEFAULT_MODULE_DATA },
       plan: { ...DEFAULT_MODULE_DATA },
       branch: { ...DEFAULT_MODULE_DATA },
       candidate: { ...DEFAULT_MODULE_DATA }
->>>>>>> origin/dev
     }
   }
 }

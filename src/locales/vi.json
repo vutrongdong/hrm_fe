@@ -14,7 +14,6 @@
       "create": "Thêm mới quyền try cập",
       "edit": "Chỉnh sửa quyền try cập"
     },
-<<<<<<< HEAD
     "branch": {
       "index": "Chi nhánh",
       "detail": "Thông tin chi nhánh",
@@ -29,7 +28,8 @@
     },
     "account": {
       "change-password": "Đổi mật khẩu",
-=======
+      "change-information": "Thông tin cá nhân"
+    },
     "department": {
         "index": "Phòng ban",
         "detail": "Chi tiết phòng ban",
@@ -47,11 +47,6 @@
         "detail": "Chi tiết ứng viên",
         "create": "Thêm mới ứng viên",
         "edit": "Chỉnh sửa ứng viên"
-    },
-      "account": {
-    "change-password": "Đổi mật khẩu",
->>>>>>> origin/dev
-      "change-information": "Thông tin cá nhân"
     },
     "position":{
        "index": "Chức danh",

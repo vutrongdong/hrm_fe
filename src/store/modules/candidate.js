@@ -1,6 +1,5 @@
 import {
-  SET_CANDIDATE,
-  SET_INITIAL_STATE
+  SET_CANDIDATE
 } from '../mutation-types'
 const initState = () => {
   return {
@@ -76,7 +75,7 @@ const actions = {
  * mutations
  */
 const mutations = {
-  [SET_CANDIDATE]: (state,candidate) => {
+  [SET_CANDIDATE]: (state, candidate) => {
     state.candidate = candidate
   }
 }

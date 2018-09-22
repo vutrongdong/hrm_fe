@@ -9,29 +9,29 @@
 import CandidateForm from './Form'
 import { mapActions } from 'vuex'
 export default{
- name: 'CreateCandidate',
- components: {
+  name: 'CreateCandidate',
+  components: {
     CandidateForm
   },
   methods: {
     ...mapActions(['showNotify', 'setMiniDrawer']),
     ...mapActions('Candidate', ['createCandidate']),
     submitForm (formData) {
-        this.createCandidate({
-            candidate : formData,
-            cb: (response) =>{
-              this.showNotify({
-                 color: 'success',
-                 text: 'Thành công'
-              })
-              this.$router.push({
-                  name: 'candidate',
-                  query: {
-                    reload: null
-                  }
-              })
-             }
+      this.createCandidate({
+        candidate: formData,
+        cb: (response) => {
+          this.showNotify({
+            color: 'success',
+            text: 'Thành công'
           })
+          this.$router.push({
+            name: 'candidate',
+            query: {
+              reload: null
+            }
+          })
+        }
+      })
     }
   },
   created () {

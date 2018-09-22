@@ -1,10 +1,6 @@
 export default[
   {
-<<<<<<< HEAD
-    path: '/setting',
-=======
     path: 'setting',
->>>>>>> origin/dev
     name: 'setting',
     meta: {
       title: {
@@ -37,8 +33,6 @@ export default[
     component: () => import('@/views/setting/Create')
   },
   {
-<<<<<<< HEAD
-=======
     path: 'setting/:id',
     name: 'setting-detail',
     meta: {
@@ -60,7 +54,6 @@ export default[
     component: () => import('@/views/setting/Detail')
   },
   {
->>>>>>> origin/dev
     path: 'setting/:id/edit',
     name: 'setting-edit',
     meta: {

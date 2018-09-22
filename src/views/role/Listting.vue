@@ -90,10 +90,6 @@ export default{
   },
   mounted () {
     this.dataViewHeight = this.$refs.laylout.clientHeight - 49
-<<<<<<< HEAD
-
-=======
->>>>>>> origin/dev
     let query = { ...this.$route.query }
     if (query.hasOwnProperty('reload')) {
       this.$nextTick(() => {

@@ -3,11 +3,7 @@
     <v-flex xs4>
       <listting />
     </v-flex>
-<<<<<<< HEAD
     <v-flex xs8 class="border-e0-left white">
-=======
-    <v-flex xs12 class="border-e0-left white">
->>>>>>> origin/dev
       <v-toolbar dense color="white" flat>
         <v-toolbar-title>{{ $t('title.branch.edit') }}: {{branchDetail.name}}</v-toolbar-title>
         <v-spacer></v-spacer>
@@ -21,10 +17,6 @@
     </v-flex>
   </v-layout>
 </template>
-<<<<<<< HEAD
-=======
-
->>>>>>> origin/dev
 <script>
 import BranchForm from './Form'
 import Listting from './Listting'
@@ -45,25 +37,15 @@ export default{
   },
   methods: {
     ...mapActions(['showNotify', 'setMiniDrawer']),
-<<<<<<< HEAD
-    ...mapActions('Branch', ['updateBranch', 'getBranch', 'setBranch']),
-=======
-    ...mapActions('Branch', ['updateBranch', 'getBranchs', 'setBranch']),
->>>>>>> origin/dev
+    ...mapActions('Branch', ['updateBranch', 'getBranch', 'getBranchs', 'setBranch']),
     ...mapActions('Dataview', ['updateDataviewEntry']),
     submitForm (formData) {
       this.updateBranch({
         id: this.$route.params.id,
         branch: formData,
-<<<<<<< HEAD
         params: {
           include: 'roles'
         },
-=======
-        // params: {
-        //   include: 'roles'
-        // },
->>>>>>> origin/dev
         cb: (response) => {
           this.showNotify({
             color: 'success',
@@ -86,11 +68,8 @@ export default{
   created () {
     this.setMiniDrawer(true)
     if (!this.branchDetail.id) {
-<<<<<<< HEAD
       this.getBranch({ branchId: this.$route.params.id })
-=======
       this.getBranchs({ branchId: this.$route.params.id })
->>>>>>> origin/dev
     }
   },
   mounted () {
