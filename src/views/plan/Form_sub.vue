@@ -25,8 +25,7 @@
         name="department_id"
         placeholder="Thuộc phòng ban"
         single-line
-        @change="changeDepartment"
-        > </v-select>
+        @change="changeDepartment"> </v-select>
     </v-flex>
     <v-spacer></v-spacer>
 
@@ -47,7 +46,7 @@
         :data-vv-as="$t('label.content')"
          name="content"
         :label="$t('label.content') + ' *'"
-    >
+          >
         </v-text-field>
    </v-flex>
    <v-spacer></v-spacer>
@@ -56,13 +55,6 @@
     <v-icon>add</v-icon>
   </v-btn>
   <v-spacer></v-spacer>
-  {{dataPlan}}
-<!--   <v-flex xs12>
-      {{dataPlan}}
-        <div  v-for="(value, key) of dataPlan.details.data">
-              <p>  {{value.plan_id}} </p>
-        </div>
-  </v-flex> -->
 </v-layout>
 </v-container>
 </template>
