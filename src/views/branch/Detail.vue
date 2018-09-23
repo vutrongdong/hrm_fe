@@ -1,16 +1,13 @@
 <template>
   <v-layout ref="laylout" row fill-height>
     <v-flex xs4>
-      <listting />
+      <listting type="detail" />
     </v-flex>
     <v-flex xs8 class="border-e0-left">
       <v-toolbar dense color="white" flat>
         <v-toolbar-title>{{ $t('title.branch.detail') }}: {{branchDetail.name}}</v-toolbar-title>
         <v-spacer></v-spacer>
         <v-menu :nudge-width="100" offset-y>
-          <v-btn icon slot="activator">
-            <v-icon>more_vert</v-icon>
-          </v-btn>
           <v-list>
             <v-list-tile
             v-for="item in 10"
@@ -25,9 +22,6 @@
       </v-btn>
       <v-btn v-if="canAccess('branch.delete')" icon @click="removeConfirm()">
         <v-icon>delete</v-icon>
-      </v-btn>
-      <v-btn icon @click="$router.push({name: 'branch'})">
-        <v-icon>close</v-icon>
       </v-btn>
     </v-toolbar>
     <v-container fluid class="white scroll-y border-e0-top" :style="{height: dataViewHeight + 'px'}">
@@ -90,7 +84,6 @@ export default{
               color: 'success'
             })
             this.dialogDelete = false
-            this.$router.push({ name: 'branch' })
           },
           error: (error) => {
             if (error.status === 404) {

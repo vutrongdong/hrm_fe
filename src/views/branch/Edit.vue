@@ -1,7 +1,7 @@
 <template>
   <v-layout ref="laylout" row fill-height>
     <v-flex xs4>
-      <listting />
+      <listting type="edit" />
     </v-flex>
     <v-flex xs8 class="border-e0-left white">
       <v-toolbar dense color="white" flat>

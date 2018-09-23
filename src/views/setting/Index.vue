@@ -1,130 +1,213 @@
 <template>
-  <v-layout ref="laylout" row fill-height>
-    <v-flex xs12 class="border-e0-left">
-      <data-view
-      :name="dataViewName"
-      api-url="settings"
-      v-if="dataViewHeight"
-      :viewHeight="dataViewHeight"
-      :params="params"
-      :ref="dataViewName"
-      >
-      <template slot-scope="{items}">
-        <v-toolbar dense color="white" flat>
-          <h1>{{ $t('title.setting.detail') }} công ty</h1>
+  <div id="app">
+    <v-app id="inspire">
+      <div>
+        <v-toolbar flat color="white">
           <v-spacer></v-spacer>
-          <v-menu :nudge-width="100" offset-y>
-        </v-menu>
-        <v-btn v-if="canAccess('setting.create')" class="mr-3" icon color="primary" @click="$router.push({name: 'setting-create'})">
-          <v-icon>add</v-icon>
-        </v-btn>
-        <v-text-field
-        hide-details
-        single-line
-        ></v-text-field>
-        <v-btn icon @click="$router.push({name: 'setting'})">
-          <v-icon>close</v-icon>
-        </v-btn>
+          <h3>Thiết lập thông tin công ty</h3>
+          <v-spacer></v-spacer>
+          <v-dialog v-model="dialog" max-width="500px">
+            <v-btn slot="activator" class="mr-5" icon color="primary">
+              <v-icon>add</v-icon>
+            </v-btn>
+            <v-card>
+              <v-card-title>
+                <span class="headline">{{ formTitle }}</span>
+              </v-card-title>
+              <!-- form edit -->
+              <v-card-text id="formSub">
+                <v-container grid-list-md>
+                  <v-layout wrap>
+                    <!-- name -->
+                    <v-flex xs12 sm6 md12>
+                      <v-text-field
+                      placeholder="nhập tên"
+                      :error-messages="errors.has('name') ? errors.collect('name') : []"
+                      v-validate="'required'"
+                      :data-vv-as="$t('label.name')"
+                      name="name"
+                      :label="$t('label.name') + '*'"
+                      v-model="setting.name"> </v-text-field>
+                    </v-flex>
+                    <!-- value -->
+                    <v-flex xs12 sm6 md12>
+                      <v-text-field
+                      placeholder="nhập gía trị"
+                      v-validate="'required'"
+                      :error-messages="errors.has('value') ? errors.collect('value') : []"
+                      :data-vv-as="$t('label.value')"
+                      name="value"
+                      :label="$t('label.value')+ '*'"
+                      v-model="setting.value"> </v-text-field>
+                    </v-flex>
+                    <!-- status -->
+                    <v-flex xs12 sm6 md12>
+                      <label>Trạng thái</label>
+                      <v-checkbox
+                      v-validate="'required'"
+                      style="margin-top:0px"
+                      :error-messages="errors.has('status') ? errors.collect('status') : []"
+                      :data-vv-as="$t('label.status')"
+                      name="status"
+                      v-model="setting.status">
+                    </v-checkbox>
+                  </v-flex>
+                </v-layout>
+              </v-container>
+            </v-card-text>
+            <!-- end form edit -->
+            <v-card-actions>
+              <v-spacer></v-spacer>
+              <v-btn color="blue darken-1" flat @click.native="close">Hủy bỏ</v-btn>
+              <v-btn color="blue darken-1" flat @click.native="submitForm"><span v-if="editedIndex!==-1">Lưu lại</span><span v-else>Thêm mới</span></v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-dialog>
       </v-toolbar>
-      <v-list three-line>
-        <template v-for="(item) in items.data">
-          <div style="padding-left:30px;padding-top:12px;display:block;" :key="item.id">
-            <p style="text-transform:capitalize;width:100%">{{ item.name }} : {{ item.value }} : {{item.id}}
-              <span>
-               <v-btn v-if="canAccess('setting.update')" icon @click="$router.push({name: 'setting-edit', params: {id: item.id}})">
-                <v-icon style="float:right;position:absolute">edit</v-icon>
-              </v-btn>
-              <v-btn v-if="canAccess('setting.delete')" icon @click="removeConfirm(item)">
-                <v-icon>delete</v-icon>
-              </v-btn>
-            </span>
-          </p>
-        <hr>
-        </div>
+      <v-data-table
+      v-if="Array.isArray(settingDetail)"
+      :headers="headers"
+      :items="settingDetail"
+      hide-actions
+      expand
+      class="elevation-1"
+      >
+      <template slot="items" slot-scope="props">
+        <td> {{ props.index + 1 }}</td>
+        <td style="text-transform: capitalize">{{ props.item.name }}</td>
+        <td style="text-transform: capitalize">{{ props.item.value }}</td>
+        <td>{{ props.item.status_txt }}</td>
+        <td id="action"> <v-icon v-if="canAccess('setting.update')" class="mr-6" @click="editItem(props.item,props.item.id)" color="green"> edit</v-icon></td>
+        <td id="action"><v-icon v-if="canAccess('setting.delete')" icon @click="removeConfirm(props.item.id)" color="red"> delete </v-icon></td>
       </template>
-    </v-list>
-  </template>
-</data-view>
-</v-flex>
-</v-layout>
+    </v-data-table>
+    <dialog-confirm v-model="dialogDelete" @input="remove()" />
+  </div>
+</v-app>
+</div>
 </template>
 <script>
-import DataView from '@/components/DataView/DataView'
-import Listting from './Listting'
-import { mapActions, mapGetters } from 'vuex'
 import DialogConfirm from '@/components/DialogConfirm'
+import { mapActions, mapGetters } from 'vuex'
 export default{
-  name: 'settingDetail',
   components: {
-    DataView,
-    Listting,
     DialogConfirm
   },
-  data () {
-    return {
-      dataViewName: 'setting',
-      dataViewHeight: 0,
-      dialogDelete: false,
-      params: {
-        q: ''
-      }
+  data: () => ({
+    idSetting: null,
+    dialogDelete: false,
+    dialog: false,
+    headers: [
+    { text: 'STT', sortable: false },
+    { text: 'Tên thông tin', sortable: false },
+    { text: 'Giá trị', sortable: false },
+    { text: 'Trạng Thái', sortable: false },
+    { text: 'Sửa', sortable: false },
+    { text: 'Xóa', sortable: false }
+    ],
+    editedIndex: -1,
+    setting: {
+      status: true
+    },
+    defaultItem: {
+      status: true
+    }
+  }),
+  computed: {
+    formTitle () {
+      return this.editedIndex === -1 ? 'Thêm thông tin' : 'Sửa thông tin'
+    },
+    ...mapGetters('Setting', ['settingDetail']),
+    ...mapGetters(['isFetchingApi'])
+  },
+
+  watch: {
+    dialog (val) {
+      val || this.close()
     }
   },
-  computed: {
-    ...mapGetters('Setting', ['settingDetail'])
+
+  created () {
+    this.FetchSetting()
   },
   methods: {
     ...mapActions(['setMiniDrawer']),
-    ...mapActions('Setting', ['FetchSetting', 'deleteSetting']),
-    ...mapActions('Dataview', ['removeDataviewEntry']),
-    removeConfirm (item) {
-      console.log('data', item)
-      // swal({
-      //   title: 'Xác nhận',
-      //   text: 'Bạn chắc chắn muốn xóa bản ghi này',
-      //   buttons: true,
-      //   dangerMode: true
-      // })
-      //   .then((willDelete) => {
-      //     if (willDelete) {
-      //       console.log('data 1', item)
-      //       this.deleteSetting({
-      //         id: item.id,
-      //         cb: (response) => {
-      //           this.removeDataviewEntry({
-      //             name: 'setting',
-      //             data: item,
-      //             key: 'id'
-      //           })
-      //           this.$store.dispatch('showNotify', {
-      //             text: this.$t('alert.success'),
-      //             color: 'success'
-      //           })
-      //         },
-      //         error: (error) => {
-      //           if (error.status === 404) {
-      //             this.$store.dispatch('showNotify', {
-      //               text: this.$t('alert.not-found'),
-      //               color: 'warning'
-      //             })
-      //           }
-      //         }
-      //       })
-      //     }
-      //   })
-    }
-  },
-  mounted () {
-    this.dataViewHeight = this.$refs.laylout.clientHeight - 48
-    let query = { ...this.$route.query }
-    if (query.hasOwnProperty('reload')) {
-      this.$nextTick(() => {
-        this.$refs[this.dataViewName].$emit('reload')
+    ...mapActions('Setting', ['FetchSetting', 'deleteSetting', 'updateSetting']),
+    ...mapActions(['showNotify', 'setMiniDrawer']),
+    ...mapActions('Setting', ['createSetting']),
+    editItem (item, id) {
+      this.idSetting = id
+      this.editedIndex = this.settingDetail.indexOf(item)
+      this.setting = Object.assign({}, item)
+      this.dialog = true
+    },
+    removeConfirm (id) {
+      this.idSetting = id
+      this.dialogDelete = true
+    },
+    remove (confirm) {
+      this.deleteSetting({
+        id: this.idSetting,
+        cb: (response) => {
+          this.$store.dispatch('showNotify', {
+            text: this.$t('alert.success'),
+            color: 'success'
+          })
+          this.dialogDelete = false
+          this.FetchSetting()
+        },
+        error: (error) => {
+          if (error.status === 404) {
+            this.$store.dispatch('showNotify', {
+              text: this.$t('alert.not-found'),
+              color: 'warning'
+            })
+          }
+        }
       })
-      delete query.reload
-      this.$router.replace({
-        query: query
-      })
+    },
+    close () {
+      this.dialog = false
+      setTimeout(() => {
+        this.setting = Object.assign({}, this.defaultItem)
+        this.editedIndex = -1
+      }, 300)
+    },
+    submitForm () {
+      if (this.editedIndex === -1) {
+        this.createSetting({
+          setting: this.setting,
+          cb: (response) => {
+            this.dialog = false
+            setTimeout(() => {
+              this.setting = Object.assign({}, this.defaultItem)
+              this.editedIndex = -1
+            }, 300)
+            this.showNotify({
+              color: 'success',
+              text: 'Thành công'
+            })
+            this.FetchSetting()
+          }
+        })
+      } else {
+        this.updateSetting({
+          id: this.idSetting,
+          setting: this.setting,
+          cb: (response) => {
+            this.FetchSetting()
+            this.showNotify({
+              color: 'success',
+              text: 'Thành công'
+            })
+            this.dialog = false
+            setTimeout(() => {
+              this.setting = Object.assign({}, this.defaultItem)
+              this.editedIndex = -1
+            }, 300)
+          }
+        })
+      }
     }
   }
 }
@@ -138,5 +221,13 @@ p span{
 }
 h3{
   clear:both;
+}
+tr td{
+  padding-left:70px !important;
+}
+tr th{
+  padding-left:70px !important;
+  font-size: 16px !important;
+  color: black !important;
 }
 </style>

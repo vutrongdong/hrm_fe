@@ -222,7 +222,7 @@ export default{
     ...mapActions('Position', ['PositionForUser']),
     ...mapActions('Plan', ['planForCadidate']),
     setInitData () {
-      let dataCandidate = {...this.dataCandidate}
+      let dataCandidate = { ...this.dataCandidate }
       this.candidate = { ...this.candidate, ...dataCandidate }
     },
     validateBeforeSubmit () {

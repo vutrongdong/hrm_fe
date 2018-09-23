@@ -81,7 +81,7 @@ const actions = {
     const { id, cb } = payload || {}
     dispatch('fetchApi', {
       url: `settings/${id}`,
-      method: 'DETELE',
+      method: 'DELETE',
       success: response => {
         commit(REMOVE_SETTING, id)
         cb && cb(response.data)

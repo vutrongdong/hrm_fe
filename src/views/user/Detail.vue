@@ -39,11 +39,6 @@
       <p>Số điện thoại: {{userDetail.phone}}</p>
       <p>Giới tính: {{ userDetail.gender_txt }}</p>
       <p>Ngày sinh:{{ userDetail.date_of_birth }}</p>
-      <!-- <p v-if="userDetail.departments">Thuộc chi nhánh:
-        <v-chip color="green" text-color="white" v-for="branch in userDetail.departments.data.branch.data" :key="'branch' + branch.id">
-          {{branch.name}}
-        </v-chip>
-      </p> -->
       <p v-if="userDetail.departments">Thuộc phòng ban:
         <v-chip color="green" text-color="white" v-for="dm in userDetail.departments.data" :key="'dm' + dm.id">
           {{dm.name}}
