@@ -119,6 +119,7 @@ export default {
   .scroll-container {
     height: calc(100vh - 48px);
     overflow-y: auto;
+    overflow-x: hidden;
     background: #f4f6f9;
   }
 </style>

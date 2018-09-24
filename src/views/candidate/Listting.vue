@@ -1,86 +1,120 @@
- <template ref="laylout" column fill-height>
-  <v-layout ref="laylout" column fill-height>
-    <v-toolbar dense color="white" flat>
-      <v-btn v-if="canAccess('candidate.create')" class="mr-3" icon color="primary" @click="$router.push({name: 'candidate-create'})">
-        <v-icon>add</v-icon>
-      </v-btn>
-      <v-text-field
-        hide-details
-        single-line
-      ></v-text-field>
-    </v-toolbar>
-    <v-flex xs12 class="border-e0-top">
-        <data-view
-        :name="dataViewName"
-        api-url="candidates"
-        v-if="dataViewHeight"
-        :viewHeight="dataViewHeight"
-        :params="params"
-        :ref="dataViewName"
-        >
-        <template slot-scope="{items}">
-          <v-list three-line>
-            <template  v-for="(item) in items.data">
-              <v-list-tile
-                :key="'item' + item.id"
-                avatar
-                @click="candidateDetail(item)"
-                :inactive="item.id === $route.params.id"
-                :class="item.id === $route.params.id && 'grey lighten-2'"
-              >
-                  <v-list-tile-content>
-                      <v-list-tile-title>name : {{ item.name }}</v-list-tile-title>
-                      <v-list-tile-title> {{item.email}} - {{item.phone}} </v-list-tile-title>
-                      <v-list-tile-title v-if="item.status ==0">Status : Mới</v-list-tile-title>
-                      <v-list-tile-title v-else-if="item.status ==1">Status : Chờ kết quả</v-list-tile-title>
-                    <v-list-tile-title v-if="item.status ==2">Status : Trượt</v-list-tile-title>
-                      <v-list-tile-title v-if="item.status ==3">Status : Đỗ</v-list-tile-title>
-                        <v-list-tile-title v-if="item.status ==4"> Status : Danh sách đen</v-list-tile-title>
-                  </v-list-tile-content>
-              </v-list-tile>
+<template>
+     <div id="app">
+      <v-app id="inspire">
+        <div>
+           <v-toolbar flat color="white">
+               <v-spacer></v-spacer>
+               <h3>Danh sách ứng cử viên</h3>
+               <v-spacer></v-spacer>
+            <router-link v-bind:to="{path: '/candidate/create'}">
+               <v-btn  class="mr-5" icon color="primary"  v-if="canAccess('candidate.create')">
+                    <v-icon>add</v-icon>
+               </v-btn>
+            </router-link>
+           </v-toolbar>
+            <v-data-table
+                v-if="Array.isArray(candidateDetail)"
+                :headers="headers"
+                :items="candidateDetail"
+                hide-actions
+                expand
+                class="elevation-1"
+                >
+              <template slot="items" slot-scope="props">
+                  <td style="text-transform: capitalize">{{ props.item.name }}</td>
+                  <td>{{ props.item.email }}</td>
+                  <td>{{props.item.phone}}</td>
+                  <td id="action"><router-link  v-bind:to="{name: 'candidate-edit', params: {id: props.item.id}}"> <v-icon v-if="canAccess('candidate.update')" class="mr-6"  color="green"> edit</v-icon></router-link></td>
+                  <td id="action"><v-icon v-if="canAccess('candidate.delete')" icon @click="removeConfirm(props.item.id)" color="red"> delete </v-icon></td>
             </template>
-          </v-list>
-        </template>
-        </data-view>
-    </v-flex>
-    </v-layout>
- </template>
-<script>
-import DataView from '@/components/DataView/DataView'
-import NoData from '@/components/NoData'
-import { mapActions } from 'vuex'
+            </v-data-table>
+              <dialog-confirm v-model="dialogDelete" @input="remove" />
+        </div>
+      </v-app>
+    </div>
+</template>
+<script type="text/javascript">
+import DialogConfirm from '@/components/DialogConfirm'
+import { mapActions, mapGetters } from 'vuex'
 export default{
-  name: 'candidateListting',
   components: {
-    DataView,
-    NoData
+    DialogConfirm
   },
   data: () => ({
-    dataViewHeight: 0,
-    dataViewName: 'candidate',
-    params: {
-      q: ''
-    }
+    idCandidate: null,
+    dialogDelete: false,
+    dialog: false,
+    headers: [
+      { text: 'Tên ứng viên', sortable: false },
+      { text: 'Email', sortable: false },
+      { text: 'Số điện thoại', sortable: false },
+      { text: 'Sửa', sortable: false },
+      { text: 'Xóa', sortable: false }
+    ],
   }),
-  methods: {
-    ...mapActions('Candidate', ['getCandidate']),
-    candidateDetail (candidate) {
-      this.getCandidate({ candidateId: candidate.id })
-      this.$router.push({ name: 'candidate-detail', params: { id: candidate.id } })
-    }
+  computed: {
+    ...mapGetters('Candidate', ['candidateDetail']),
+    ...mapGetters(['isFetchingApi'])
   },
-  mounted () {
-    this.dataViewHeight = this.$refs.laylout.clientHeight - 49
-    let query = { ...this.$route.query }
-    if (query.hasOwnProperty('reload')) {
-      this.$nextTick(() => {
-        this.$refs[this.dataViewName].$emit('reload')
-      })
-      delete query.reload
-      this.$router.replace({
-        query: query
-      })
-    }
+  created () {
+    this.fetchCandidate()
+  },
+  methods: {
+    ...mapActions(['setMiniDrawer']),
+    ...mapActions('Candidate', ['fetchCandidate','deleteCandidate']),
+    ...mapActions(['showNotify', 'setMiniDrawer']),
+    ...mapActions('Dataview', ['removeDataviewEntry']),
+    removeConfirm (id) {
+      this.idPosition = id
+      this.dialogDelete = true
+    },
+    remove (confirm) {
+      if (confirm) {
+        this.deleteCandidate({
+          id: this.idCandidate,
+          cb: (response) => {
+            this.removeDataviewEntry({
+              name: 'candidate',
+              data: this.candidateDetail,
+              key: 'id'
+            })
+            this.$store.dispatch('showNotify', {
+              text: this.$t('alert.success'),
+              color: 'success'
+            })
+            this.dialogDelete = false
+            this.$router.push({ name: 'candidate' })
+          },
+          error: (error) => {
+            if (error.status === 404) {
+              this.$store.dispatch('showNotify', {
+                text: this.$t('alert.not-found'),
+                color: 'warning'
+              })
+            }
+          }
+        })
+      }
+    },
   }
 }
 </script>
+<style scope>
+p span{
+  padding: 7px;
+  margin-top:-25px;
+  float: right;
+  margin-right:10px;
+}
+h3{
+  clear:both;
+}
+tr td{
+  padding-left:70px !important;
+}
+tr th{
+  padding-left:70px !important;
+  font-size: 16px !important;
+  color: black !important;
+}
+</style>

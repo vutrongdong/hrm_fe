@@ -123,7 +123,7 @@
           v-model="branch.district_id"
           :items="districtByCity.districts.data"
           item-value="id"
-          item-text="name"
+          item-Ftext="name"
           placeholder="Hãy chọn một quận hoặc huyện"> </v-select>
           <!-- district -->
           <v-select

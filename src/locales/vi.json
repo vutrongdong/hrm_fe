@@ -137,7 +137,8 @@
     "title": "title",
     "content" : "content",
     "source" : "source",
-    "plan_id" : "plan"
+    "plan_id" : "kế hoạch tuyển dụng",
+    "position_id" : "tên vị trí"
   },
   "alert": {
     "invalid": "Vui lòng kiểm tra thông tin cần nhập",

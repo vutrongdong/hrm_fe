@@ -1,6 +1,7 @@
 <template>
     <v-form @submit.prevent="validateBeforeSubmit">
-        <v-layout row wrap>
+        <v-container fluid>
+            <v-layout row wrap>
             <v-flex xs6>
                   <v-text-field
                     :error-messages="errors.has('title') ? errors.collect('title') : []"
@@ -22,32 +23,38 @@
                     v-model="plan.content">
                   </v-text-field>
             </v-flex>
-        </v-layout>
-        <v-layout row wrap>
+          </v-layout>
+
+              <v-layout row wrap>
                 <v-flex xs6>
-                <template>
-                  <v-menu
+                   <!-- birth_day -->
+        <template>
+                <v-menu
                   ref="menu"
                   :close-on-content-click="false"
                   v-model="menu"
                   :nudge-right="40"
                   lazy transition="scale-transition"
-                  offset-y full-width min-width="290px">
-                    <v-text-field slot="activator" v-model="plan.date_start" label="ngày bắt đầu" readonly >
-                    </v-text-field>
+                  offset-y
+                  full-width
+                  min-width="290px">
+                  <v-text-field
+                  slot="activator"
+                  v-model="plan.date_start"
+                  label="Ngày sinh"
+                  readonly>
+                  </v-text-field>
 
-                <v-date-picker
-                    ref="picker"
-                    v-model="plan.date_start"
-                    :max="new Date().toISOString().substr(0, 10)"
-                    min="1950-01-01"
-                    @change="save">
-                    </v-date-picker>
-                  </v-menu>
+                  <v-date-picker
+                  ref="picker"
+                  v-model="plan.date_start"
+                  :max="new Date().toISOString().substr(0, 10)"
+                  min="1950-01-01"
+                  @change="save"> </v-date-picker> </v-menu>
                 </template>
                 </v-flex>
 
-                <v-flex xs6>
+                <!-- <v-flex xs6>
                 <template>
                   <v-menu
                   ref="menu"
@@ -68,20 +75,8 @@
                     </v-date-picker>
                   </v-menu>
                 </template>
-                </v-flex>
+                </v-flex> -->
         </v-layout>
-
-        <v-flex xs12>
-          <h3 style="margin-bottom:15px">Chi nhánh, phòng ban, vị trí</h3>
-            <children
-          :id="index"
-          :key="index"
-          :plan="plan"
-          v-for="(n, index) in range"
-          @add="Add()"
-          @delete="Remove(index)"
-          v-on:positionAndDepartment="positionAndDepartment($event, index)" v-if="dataPlan" :dataPlan="dataPlan.details.data"> </children>
-        </v-flex>
     <v-flex xs12 text-xs-center>
       <v-btn
       :loading="isFetchingApi"
@@ -96,6 +91,7 @@
         </template>
         </v-btn>
     </v-flex>
+    </v-container>
     </v-form>
 </template>
 <script>

@@ -40,6 +40,22 @@ const actions = {
       { root: true }
     )
   },
+  fetchDepartment({ commit, dispatch }, payload) {
+    let { params, error } = payload || {}
+    dispatch(
+      'fetchApi',
+      {
+        url: `departments`,
+        method: 'GET',
+        params: params || {},
+        success: (response) => {
+          commit(SET_DEPARTMENT, response.data)
+        },
+        error: error
+      },
+      { root: true }
+    )
+  },
   getDepartmentForUser ({ commit, dispatch }, payload) {
     let { branchId, cb } = payload
     dispatch(
@@ -116,9 +132,9 @@ const mutations = {
  * getters
  */
 const getters = {
-  departmentByBranch: (state) => state.department,
+  // departmentByBranch: (state) => state.department,
   departmentDetail: (state) => state.department,
-  departmentAll: (state) => state.department
+  // departmentAll: (state) => state.department
 }
 
 export default {

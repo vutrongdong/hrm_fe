@@ -1,6 +1,13 @@
 <template>
   <v-layout row wrap>
       <v-flex xs12 pa-5 class="white">
+        <v-toolbar dense color="white" flat>
+          <v-toolbar-title>{{ $t('title.candidate.create') }}</v-toolbar-title>
+          <v-spacer></v-spacer>
+         <v-btn icon @click="$router.push({name: 'candidate'})">
+          <v-icon>close</v-icon>
+        </v-btn>
+      </v-toolbar>
             <candidate-form @submit="submitForm" />
       </v-flex>
   </v-layout>

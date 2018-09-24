@@ -1,87 +1,250 @@
- <template ref="laylout" column fill-height>
-  <v-layout ref="laylout" column fill-height>
-    <v-toolbar dense color="white" flat>
-      <v-btn v-if="canAccess('department.create')" class="mr-3" icon color="primary" @click="$router.push({name: 'department-create'})">
-        <v-icon>add</v-icon>
-      </v-btn>
-      <v-text-field
-        hide-details
-        single-line
-      ></v-text-field>
-    </v-toolbar>
-    <v-flex xs12 class="border-e0-top">
-        <data-view
-        :name="dataViewName"
-        api-url="departments"
-        v-if="dataViewHeight"
-        :viewHeight="dataViewHeight"
-        :params="params"
-        :ref="dataViewName"
-       >
-      <template slot-scope="{items}">
-        <v-list three-line>
-          <template v-for="(item) in items.data">
-              <v-list-tile
-                :key="'item' + item.id"
-                avatar
-                @click="departmentDetail(item)"
-                :inactive="item.id === $route.params.id"
-                :class="item.id === $route.params.id && 'grey lighten-2'"
-              >
-               <v-list-tile-content>
-                  <v-list-tile-title>{{ item.name }}</v-list-tile-title>
-                </v-list-tile-content>
+<template>
+     <div id="app">
+      <v-app id="inspire">
+        <div>
+           <v-toolbar flat color="white">
+               <v-spacer></v-spacer>
+               <h3>Danh sách bộ phận trong công ty</h3>
+               <v-spacer></v-spacer>
+               <v-dialog v-model="dialog" max-width="500px">
+                  <v-btn slot="activator" class="mr-5" icon color="primary" v-if="canAccess('department.create')">
+                    <v-icon>add</v-icon>
+                  </v-btn>
+                   <v-card>
+                      <v-card-title>
+                        <span class="headline">{{ formTitle }}</span>
+                      </v-card-title>
+                        <v-card-text id="formSub">
+                <v-container grid-list-md>
+                  <v-layout wrap>
+                    <!-- name -->
+                    <v-flex xs12 sm6 md12>
+                      <v-text-field
+                      placeholder="nhập tên"
+                      :error-messages="errors.has('name') ? errors.collect('name') : []"
+                      v-validate="'required'"
+                      :data-vv-as="$t('label.name')"
+                      name="name"
+                      :label="$t('label.name') + '*'"
+                      v-model="department.name"> </v-text-field>
+                    </v-flex>
+                    <!-- value -->
+                    <!-- status -->
+                    <v-flex xs12 sm6 md12>
+                      <label>Trạng thái</label>
+                      <v-checkbox
+                      v-validate="'required'"
+                      style="margin-top:0px"
+                      :error-messages="errors.has('status') ? errors.collect('status') : []"
+                      :data-vv-as="$t('label.status')"
+                      name="status"
+                      v-model="department.status">
+                    </v-checkbox>
+                     <span style="position: absolute ; top: 50%; left: 15%;" v-if="department.status">Hiển thị</span>
+                     <span style="position: absolute ; top: 50%; left: 15%;" v-else>Không hiển thị</span>
+                  </v-flex>
 
-                 <v-list-tile-action>
-                  <v-icon v-if="item.status" color="green lighten-1">check</v-icon>
-                  <v-icon v-else color="grey lighten-1">lock</v-icon>
-                </v-list-tile-action>
-              </v-list-tile>
-          </template>
-        </v-list>
-      </template>
-      </data-view>
-    </v-flex>
-  </v-layout>
+                   <!-- branch_id -->
+                    <v-flex xs12 sm6 md12>
+                       <v-select v-validate="'required'"
+                      :error-messages="errors.has('branch_id') ? errors.collect('branch_id') : []"
+                      :data-vv-as="$t('label.branch_id')"
+                      name="branch_id"
+                      v-model="department.branch_id"
+                       :label="$t('label.branch_id')"
+                       :items="branchAll"
+                       v-if="Array.isArray(branchAll)"
+                       item-value="id"
+                       item-text="name"
+                       placeholder="Xin vui lòng nhập vào chi nhánh "
+                 >
+                     </v-select>
+                  </v-flex>
+                </v-layout>
+              </v-container>
+            </v-card-text>
+               <v-card-actions>
+              <v-spacer></v-spacer>
+              <v-btn color="blue darken-1" flat @click.native="close">Hủy bỏ</v-btn>
+              <v-btn color="blue darken-1" flat @click.native="submitForm"><span v-if="editedIndex!==-1">Lưu lại</span><span v-else>Thêm mới</span></v-btn>
+            </v-card-actions>
+                   </v-card>
+               </v-dialog>
+
+           </v-toolbar>
+              <v-data-table
+                v-if="Array.isArray(departmentDetail)"
+                :headers="headers"
+                :items="departmentDetail"
+                hide-actions
+                expand
+                class="elevation-1"
+                >
+              <template slot="items" slot-scope="props">
+                  <td style="text-transform: capitalize">{{ props.item.name }}</td>
+                  <td>{{ props.item.status_txt }}</td>
+                  <td v-for="(branch , index) in branchAll" :key='index' v-if="branch.id === props.item.branch_id"> {{branch.name}} </td>
+                  <td id="action"> <v-icon v-if="canAccess('department.update')" class="mr-6" @click="editItem(props.item,props.item.id)" color="green"> edit</v-icon></td>
+                  <td id="action"><v-icon v-if="canAccess('department.delete')" icon @click="removeConfirm(props.item.id)" color="red"> delete </v-icon></td>
+            </template>
+            </v-data-table>
+             <dialog-confirm v-model="dialogDelete" @input="remove" />
+        </div>
+      </v-app>
+    </div>
 </template>
-
-<script>
-import DataView from '@/components/DataView/DataView'
-import NoData from '@/components/NoData'
-import { mapActions } from 'vuex'
+<script type="text/javascript">
+import DialogConfirm from '@/components/DialogConfirm'
+import { mapActions, mapGetters } from 'vuex'
 export default{
-  name: 'departmentListting',
   components: {
-    DataView,
-    NoData
+    DialogConfirm
   },
   data: () => ({
-    dataViewHeight: 0,
-    dataViewName: 'department',
-    params: {
-      q: '',
-      include: 'branch'
+    idDepartment: null,
+    dialogDelete: false,
+    dialog: false,
+    headers: [
+      { text: 'Tên bộ phận', sortable: false },
+      { text: 'Trạng thái', sortable: false },
+      { text: 'Tên chi nhánh', sortable: false },
+      { text: 'Sửa', sortable: false },
+      { text: 'Xóa', sortable: false }
+    ],
+    editedIndex: -1,
+    department: {
+      name: '',
+      status: true,
+      branch_id: ''
+    },
+    defaultItem: {
+      status: true
     }
   }),
-  methods: {
-    ...mapActions('Department', ['getDepartment']),
-    departmentDetail (department) {
-      this.getDepartment({ departmentId: department.id, params: { include: 'branch' } })
-      this.$router.push({ name: 'department-detail', params: { id: department.id } })
+  computed: {
+    ...mapGetters('Branch', ['branchAll']),
+    formTitle () {
+      return this.editedIndex === -1 ? 'Thêm bộ phận' : 'Sửa bộ phận'
+    },
+    ...mapGetters('Department', ['departmentDetail']),
+    ...mapGetters(['isFetchingApi'])
+  },
+  watch: {
+    dialog (val) {
+      val || this.close()
     }
   },
-  mounted () {
-    this.dataViewHeight = this.$refs.laylout.clientHeight - 49
-    let query = { ...this.$route.query }
-    if (query.hasOwnProperty('reload')) {
-      this.$nextTick(() => {
-        this.$refs[this.dataViewName].$emit('reload')
-      })
-      delete query.reload
-      this.$router.replace({
-        query: query
-      })
+  created () {
+    this.fetchDepartment()
+    this.getBranch()
+  },
+  methods: {
+    ...mapActions(['setMiniDrawer']),
+    ...mapActions('Department', ['fetchDepartment', 'deleteDepartment', 'updateDepartment']),
+    ...mapActions(['showNotify', 'setMiniDrawer']),
+    ...mapActions('Department', ['createDepartment']),
+    ...mapActions('Branch', ['getBranch']),
+    ...mapActions('Dataview', ['removeDataviewEntry']),
+    editItem (item, id) {
+      this.idDepartment = id
+      this.editedIndex = this.departmentDetail.indexOf(item)
+      this.department = Object.assign({}, item)
+      this.dialog = true
+    },
+    removeConfirm (id) {
+      this.idDepartment = id
+      this.dialogDelete = true
+    },
+    remove (confirm) {
+      if (confirm) {
+        this.deleteDepartment({
+          id: this.idDepartment,
+          cb: (response) => {
+            this.removeDataviewEntry({
+              name: 'position',
+              data: this.departmentDetail,
+              key: 'id'
+            })
+            this.$store.dispatch('showNotify', {
+              text: this.$t('alert.success'),
+              color: 'success'
+            })
+            this.dialogDelete = false
+            this.$router.push({ name: 'department' })
+          },
+          error: (error) => {
+            if (error.status === 404) {
+              this.$store.dispatch('showNotify', {
+                text: this.$t('alert.not-found'),
+                color: 'warning'
+              })
+            }
+          }
+        })
+      }
+    },
+    close () {
+      this.dialog = false
+      setTimeout(() => {
+        this.department = Object.assign({}, this.defaultItem)
+        this.editedIndex = -1
+      }, 300)
+    },
+    submitForm () {
+      if (this.editedIndex === -1) {
+        this.createDepartment({
+          department: this.department,
+          cb: (response) => {
+            this.dialog = false
+            setTimeout(() => {
+              this.department = Object.assign({}, this.defaultItem)
+              this.editedIndex = -1
+            }, 300)
+            this.showNotify({
+              color: 'success',
+              text: 'Thành công'
+            })
+            this.fetchDepartment()
+          }
+        })
+      } else {
+        this.updateDepartment({
+          id: this.idDepartment,
+          department: this.department,
+          cb: (response) => {
+            this.fetchDepartment()
+            this.showNotify({
+              color: 'success',
+              text: 'Thành công'
+            })
+            this.dialog = false
+            setTimeout(() => {
+              this.position = Object.assign({}, this.defaultItem)
+              this.editedIndex = -1
+            }, 300)
+          }
+        })
+      }
     }
   }
 }
 </script>
+<style scope>
+p span{
+  padding: 7px;
+  margin-top:-25px;
+  float: right;
+  margin-right:10px;
+}
+h3{
+  clear:both;
+}
+tr td{
+  padding-left:70px !important;
+}
+tr th{
+  padding-left:70px !important;
+  font-size: 16px !important;
+  color: black !important;
+}
+</style>

@@ -48,33 +48,28 @@
             </v-text-field>
           </v-flex>
         </v-layout>
-
-          <v-layout row wrap>
+        <v-layout row wrap>
                 <v-flex xs6>
-                   <template>
-                      <v-menu
-                      ref="menu"
-                      :close-on-content-click="false"
-                      v-model="menu"
-                      :nudge-right="40"
-                      lazy transition="scale-transition"
-                      offset-y
-                      full-width
-                      min-width="290px">
-                      <v-text-field
-                      slot="activator"
-                      v-model="candidate.date_apply"
-                      label="Ngày sinh"
-                      readonly >
-                      </v-text-field>
+                <template>
+                  <v-menu
+                  ref="menu"
+                  :close-on-content-click="false"
+                  v-model="menu"
+                  :nudge-right="40"
+                  lazy transition="scale-transition"
+                  offset-y full-width min-width="290px">
+                    <v-text-field slot="activator" v-model="candidate.date_apply" label="ngày nộp đơn" readonly >
+                    </v-text-field>
 
-                      <v-date-picker
-                      ref="picker"
-                      v-model="candidate.date_apply"
-                      :max="new Date().toISOString().substr(0, 10)"
-                      min="1950-01-01"
-                      @change="save"> </v-date-picker> </v-menu>
-                    </template>
+                    <v-date-picker
+                    ref="picker"
+                    v-model="candidate.date_apply"
+                    :max="new Date().toISOString().substr(0, 10)"
+                    min="1950-01-01"
+                    @change="save">
+                    </v-date-picker>
+                  </v-menu>
+                </template>
                 </v-flex>
 
                 <v-flex xs6>
@@ -100,7 +95,6 @@
                 </template>
                 </v-flex>
         </v-layout>
-
         <v-layout row wrap>
             <v-flex xs6>
                <v-select
@@ -224,7 +218,7 @@ export default{
   },
   methods: {
     ...mapActions(['fetchApi']),
-    ...mapActions('Position', ['fetchPosition']),
+    ...mapActions('Position', ['PositionForUser']),
     ...mapActions('Plan', ['planForCadidate']),
     setInitData () {
       let dataCandidate = {...this.dataCandidate}
@@ -242,13 +236,13 @@ export default{
         }
       })
     },
-   save (date) {
+    save (date) {
       this.$refs.menu.save(date)
-    },
+    }
   },
 
   created () {
-    this.fetchPosition()
+    this.PositionForUser()
     this.planForCadidate()
     !!this.dataCandidate && this.setInitData()
   }

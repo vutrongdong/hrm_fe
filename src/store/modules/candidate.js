@@ -24,6 +24,22 @@ const actions = {
     let { candidate } = payload || {}
     commit(SET_CANDIDATE, candidate)
   },
+  fetchCandidate ({ commit, dispatch }, payload) {
+      let { params, error } = payload || {}
+      dispatch(
+        'fetchApi',
+        {
+          url: `candidates`,
+          method: 'GET',
+          params: params || {},
+          success: (response) => {
+            commit(SET_CANDIDATE, response.data)
+          },
+          error: error
+        },
+        { root: true }
+      )
+    },
   getCandidate ({ commit, dispatch }, payload) {
     let { candidateId, params, error } = payload || {}
     dispatch(
@@ -60,7 +76,7 @@ const actions = {
       success: cb
     }, { root: true })
   },
-  deleteCandidate ({ commit, dispatch }, payload) {
+ deleteCandidate ({ commit, dispatch }, payload) {
     let { id, cb, error } = payload || {}
     dispatch('fetchApi', {
       url: `candidates/${id}`,

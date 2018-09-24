@@ -144,3 +144,17 @@ Client ID: 2
 Client Secret: Wp24oOcwJsk4fk8ACkMzK4bjIwaHrftTNerv6MPW
 nguyenxuancuong@ADMIN ~/Sites/hrmapi (phase2●)$ subl .                                                 [ruby-2.3.1p112]
 nguyenxuancuong@ADMIN ~/Sites/hrmapi (phase2
+
+
+
+
+
+department = []
+
+new department  = { branch_id , position_id }
+
+
+!!department[0]
+
+chinh giao dien position
+menu start

@@ -1,6 +1,6 @@
 <template>
   <v-app>
-    <div class="scroll-container">
+    <div class="">
       <div class="account-pages"></div>
       <v-content>
           <v-container fluid fill-height>

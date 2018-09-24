@@ -1,92 +1,226 @@
 <template>
-   <v-layout ref="laylout" column fill-height>
-    <v-toolbar dense color="white" flat>
-      <v-btn v-if="canAccess('position.create')" class="mr-3" icon color="primary" @click="$router.push({name: 'position-create'})">
-        <v-icon>add</v-icon>
-      </v-btn>
-      <v-text-field
-        hide-details
-        single-line
-      ></v-text-field>
-    </v-toolbar>
-
-     <v-flex xs12 class="border-e0-top">
-        <data-view
-          :name="dataViewName"
-          api-url="positions"
-          v-if="dataViewHeight"
-          :viewHeight="dataViewHeight"
-          :params="params"
-          :ref="dataViewName"
-        >
-          <template slot-scope="{items}">
-            <v-list three-line>
-              <template v-for="(position, index) in items.data">
-                <v-list-tile
-                  :key="'position' + position.id"
-                  avatar
-                  ripple
-                  @click="positionDetail(position)"
-                  :inactive="position.id === $route.params.id"
-                  :class="position.id === $route.params.id && 'grey lighten-2'"
+     <div id="app">
+      <v-app id="inspire">
+        <div>
+           <v-toolbar flat color="white">
+               <v-spacer></v-spacer>
+               <h3>Chức vụ trong công ty</h3>
+               <v-spacer></v-spacer>
+               <v-dialog v-model="dialog" max-width="500px">
+                  <v-btn slot="activator" class="mr-5" icon color="primary">
+                    <v-icon>add</v-icon>
+                  </v-btn>
+                   <v-card>
+                      <v-card-title>
+                        <span class="headline">{{ formTitle }}</span>
+                      </v-card-title>
+                        <v-card-text id="formSub">
+                <v-container grid-list-md>
+                  <v-layout wrap>
+                    <!-- name -->
+                    <v-flex xs12 sm6 md12>
+                      <v-text-field
+                      placeholder="nhập tên"
+                      :error-messages="errors.has('name') ? errors.collect('name') : []"
+                      v-validate="'required'"
+                      :data-vv-as="$t('label.name')"
+                      name="name"
+                      :label="$t('label.name') + '*'"
+                      v-model="position.name"> </v-text-field>
+                    </v-flex>
+                    <!-- value -->
+                    <!-- status -->
+                    <v-flex xs12 sm6 md12>
+                      <label>Trạng thái</label>
+                      <v-checkbox
+                      v-validate="'required'"
+                      style="margin-top:0px"
+                      :error-messages="errors.has('status') ? errors.collect('status') : []"
+                      :data-vv-as="$t('label.status')"
+                      name="status"
+                      v-model="position.status">
+                    </v-checkbox>
+                     <span style="position: absolute ; top: 63%; left: 15%;" v-if="position.status">Hiển thị</span>
+                     <span style="position: absolute ; top: 63%; left: 15%;" v-else>Không hiển thị</span>
+                  </v-flex>
+                </v-layout>
+              </v-container>
+            </v-card-text>
+               <v-card-actions>
+              <v-spacer></v-spacer>
+              <v-btn color="blue darken-1" flat @click.native="close">Hủy bỏ</v-btn>
+              <v-btn color="blue darken-1" flat @click.native="submitForm"><span v-if="editedIndex!==-1">Lưu lại</span><span v-else>Thêm mới</span></v-btn>
+            </v-card-actions>
+                   </v-card>
+               </v-dialog>
+           </v-toolbar>
+            <v-data-table
+                v-if="Array.isArray(positionDetail)"
+                :headers="headers"
+                :items="positionDetail"
+                hide-actions
+                expand
+                class="elevation-1"
                 >
-                  <v-list-tile-content>
-                    <v-list-tile-title>{{ position.name }}</v-list-tile-title>
-                  </v-list-tile-content>
-                <v-list-tile-action>
-                  <v-icon v-if="position.status" color="green lighten-1">check</v-icon>
-                  <v-icon v-else color="grey lighten-1">lock</v-icon>
-                </v-list-tile-action>
-                </v-list-tile>
-                <v-divider
-                  :key="'div' + index + position.id"
-                  v-if="index + 1 < items.data.length"
-                ></v-divider>
-              </template>
-            </v-list>
-          </template>
-        </data-view>
-      </v-flex>
-   </v-layout>
-
+              <template slot="items" slot-scope="props">
+                  <td style="text-transform: capitalize">{{ props.item.name }}</td>
+                  <td>{{ props.item.status_txt }}</td>
+                  <td id="action"> <v-icon v-if="canAccess('position.update')" class="mr-6" @click="editItem(props.item,props.item.id)" color="green"> edit</v-icon></td>
+                  <td id="action"><v-icon v-if="canAccess('position.delete')" icon @click="removeConfirm(props.item.id)" color="red"> delete </v-icon></td>
+            </template>
+            </v-data-table>
+              <dialog-confirm v-model="dialogDelete" @input="remove" />
+        </div>
+      </v-app>
+    </div>
 </template>
-<script>
-import DataView from '@/components/DataView/DataView'
-import { mapActions } from 'vuex'
+<script type="text/javascript">
+import DialogConfirm from '@/components/DialogConfirm'
+import { mapActions, mapGetters } from 'vuex'
 export default{
-  name: 'PositionListting',
   components: {
-    DataView
+    DialogConfirm
   },
   data: () => ({
-    dataViewHeight: 0,
-    dataViewName: 'position',
-    params: {
-      include: 'position',
-      q: ''
+    idPosition: null,
+    dialogDelete: false,
+    dialog: false,
+    headers: [
+      { text: 'Tên chức danh', sortable: false },
+      { text: 'Trạng thái', sortable: false },
+      { text: 'Sửa', sortable: false },
+      { text: 'Xóa', sortable: false }
+    ],
+    editedIndex: -1,
+    position: {
+      status: true,
+      name: ''
+    },
+    defaultItem: {
+      status: true
     }
   }),
-  methods: {
-    ...mapActions('Position', ['setPosition']),
-    positionDetail (position) {
-      this.setPosition({ position })
-      this.$router.push({ name: 'position-detail', params: { id: position.id } })
+  computed: {
+    formTitle () {
+      return this.editedIndex === -1 ? 'Thêm chức danh' : 'Sửa chức danh'
+    },
+    ...mapGetters('Position', ['positionDetail']),
+    ...mapGetters(['isFetchingApi'])
+  },
+  watch: {
+    dialog (val) {
+      val || this.close()
     }
   },
-  mounted () {
-    this.dataViewHeight = this.$refs.laylout.clientHeight - 49
-    console.log(this.dataViewHeight)
-    console.log(this.$refs)
-    let query = { ...this.$route.query }
-    if (query.hasOwnProperty('reload')) {
-      this.$nextTick(() => {
-        this.$refs[this.dataViewName].$emit('reload')
-      })
-      delete query.reload
-      this.$router.replace({
-        query: query
-      })
+  created () {
+    this.fetchPosition()
+  },
+  methods: {
+    ...mapActions(['setMiniDrawer']),
+    ...mapActions('Position', ['fetchPosition', 'deletePosition', 'updatePosition']),
+    ...mapActions(['showNotify', 'setMiniDrawer']),
+    ...mapActions('Position', ['createPosition']),
+    ...mapActions('Dataview', ['removeDataviewEntry']),
+    editItem (item, id) {
+      this.idPosition = id
+      this.editedIndex = this.positionDetail.indexOf(item)
+      this.position = Object.assign({}, item)
+      this.dialog = true
+    },
+    removeConfirm (id) {
+      this.idPosition = id
+      this.dialogDelete = true
+    },
+    remove (confirm) {
+      if (confirm) {
+        this.deletePosition({
+          id: this.idPosition,
+          cb: (response) => {
+            this.removeDataviewEntry({
+              name: 'position',
+              data: this.positionDetail,
+              key: 'id'
+            })
+            this.$store.dispatch('showNotify', {
+              text: this.$t('alert.success'),
+              color: 'success'
+            })
+            this.dialogDelete = false
+            this.$router.push({ name: 'position' })
+          },
+          error: (error) => {
+            if (error.status === 404) {
+              this.$store.dispatch('showNotify', {
+                text: this.$t('alert.not-found'),
+                color: 'warning'
+              })
+            }
+          }
+        })
+      }
+    },
+    close () {
+      this.dialog = false
+      setTimeout(() => {
+        this.position = Object.assign({}, this.defaultItem)
+        this.editedIndex = -1
+      }, 300)
+    },
+    submitForm () {
+      if (this.editedIndex === -1) {
+        this.createPosition({
+          position: this.position,
+          cb: (response) => {
+            this.dialog = false
+            setTimeout(() => {
+              this.position = Object.assign({}, this.defaultItem)
+              this.editedIndex = -1
+            }, 300)
+            this.showNotify({
+              color: 'success',
+              text: 'Thành công'
+            })
+            this.fetchPosition()
+          }
+        })
+      } else {
+        this.updatePosition({
+          id: this.idPosition,
+          position: this.position,
+          cb: (response) => {
+            this.fetchPosition()
+            this.showNotify({
+              color: 'success',
+              text: 'Thành công'
+            })
+            this.dialog = false
+            setTimeout(() => {
+              this.setting = Object.assign({}, this.defaultItem)
+              this.editedIndex = -1
+            }, 300)
+          }
+        })
+      }
     }
   }
 }
 </script>
+<style scope>
+p span{
+  padding: 7px;
+  margin-top:-25px;
+  float: right;
+  margin-right:10px;
+}
+h3{
+  clear:both;
+}
+tr td{
+  padding-left:70px !important;
+}
+tr th{
+  padding-left:70px !important;
+  font-size: 16px !important;
+  color: black !important;
+}
+</style>

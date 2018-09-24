@@ -23,7 +23,7 @@ const actions = {
     let { position } = payload || {}
     commit(SET_POSITION, position)
   },
-  positionForUser ({ commit, dispatch }, payload) {
+  fetchPosition ({ commit, dispatch }, payload) {
     let { params, error } = payload || {}
     dispatch(
       'fetchApi',

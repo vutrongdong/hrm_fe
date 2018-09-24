@@ -8,11 +8,21 @@
       :label="$t('label.name') + ' *'"
       v-model="position.name">
     </v-text-field>
-    <v-select v-validate="'required'"
+   <!--  <v-select v-validate="'required'"
               :error-messages="errors.has('status') ? errors.collect('status') : []"
                :data-vv-as="$t('label.status')" name="status" :label="$t('label.status')"
                 v-model="position.status" :items="items" item-value="id" item-text="name">
-    </v-select>
+    </v-select> -->
+     <label>Trạng thái</label>
+          <v-checkbox
+          style="margin-top:0px"
+          :label='status'
+          :error-messages="errors.has('status') ? errors.collect('status') : []"
+          :data-vv-as="$t('label.status')"
+          v-model="position.status"> </v-checkbox>
+          <span v-if="position.status">Hien thi</span>
+          <span v-else>Khong hien thi</span>
+
     <v-flex xs12 text-xs-center>
       <v-btn
         :loading="isFetchingApi"
@@ -55,6 +65,7 @@ export default{
   },
   data () {
     return {
+      status: '',
       position: {
         name: '',
         status: ''
@@ -84,7 +95,9 @@ export default{
     validateBeforeSubmit () {
       this.$validator.validateAll().then(result => {
         if (result) {
-          let submitData = { ...this.position }
+          let position = Object.assign({}, this.position)
+          position.status = position.status ? 1 : 0
+          let submitData = { ...position }
           this.$emit('submit', submitData)
         } else {
           this.$store.dispatch('showNotify', {

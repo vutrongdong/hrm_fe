@@ -23,6 +23,22 @@ const actions = {
     let { plan } = payload || {}
     commit(SET_PLAN, plan)
   },
+  fetchPlan ({ commit, dispatch }, payload) {
+    let { params, error } = payload || {}
+    dispatch(
+      'fetchApi',
+      {
+        url: `plans`,
+        method: 'GET',
+        params: params || {},
+        success: (response) => {
+          commit(SET_PLAN, response.data)
+        },
+        error: error
+      },
+      { root: true }
+    )
+  },
   getPlan ({ commit, dispatch }, payload) {
     let { planId, params, error } = payload || {}
     dispatch(
@@ -67,22 +83,6 @@ const actions = {
       error: error
     }, { root: true })
   },
-  planForCadidate ({ commit, dispatch }, payload) {
-    let { params, error } = payload || {}
-    dispatch(
-      'fetchApi',
-      {
-        url: `plans`,
-        method: 'GET',
-        params: params || {},
-        success: (response) => {
-          commit(SET_PLAN, response.data)
-        },
-        error: error
-      },
-      { root: true }
-    )
-  }
 }
 
 /**
