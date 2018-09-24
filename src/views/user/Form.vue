@@ -2,7 +2,8 @@
   <v-form @submit.prevent="validateBeforeSubmit">
     <v-container fluid>
       <v-layout row wrap>
-        <v-flex xs6>
+        <v-spacer></v-spacer>
+        <v-flex md5>
           <h3>Thông tin tài khoản</h3>
           <!-- name -->
           <v-text-field
@@ -28,9 +29,8 @@
           :label="$t('label.email') + '*'"
           type="email"
           :disabled="!isCreate"
-          v-model="user.email">
-          </v-text-field>
-
+          v-model="user.email"> </v-text-field>
+          <!-- password -->
           <v-text-field
           v-if="isCreate"
           :error-messages="errors.has('password') ? errors.collect('password') : []" v-validate="'required|min:6'"
@@ -38,9 +38,8 @@
           name="password"
           :label="$t('label.password') + '*'"
           type="password"
-          v-model="user.password">
-          </v-text-field>
-
+          v-model="user.password"> </v-text-field>
+          <!-- password confirm -->
           <v-text-field
           v-if="isCreate"
           :error-messages="errors.has('password_confirmation') ? errors.collect('password_confirmation') : []"
@@ -50,91 +49,95 @@
           :label="$t('label.password_confirmation') + '*'"
           type="password"
           v-model="user.password_confirmation">
-          </v-text-field>
-
-          <h3>Quyền truy cập</h3>
-          <v-autocomplete
-          multiple
-          v-model="user.roles"
-          :items="roles"
-          chips
-          item-text="name"
-          item-value="id"
-          color="white"
-          hide-no-data
-          hide-selected
-          placeholder="tìm kiếm"
-          prepend-icon="mdi-database-search"
-          style="margin-top:-5px; margin-left:-33px">
-          <template slot="selection" slot-scope="data">
-            <v-chip
-            :selected="data.selected"
-            close class="chip--select-multi"
-            @input="data.parent.selectItem(data.item)">
-            {{ data.item.name }}
-          </v-chip></template></v-autocomplete>
-        </v-flex>
-        <v-flex xs6>
-          <h3>Thông tin nhân sự</h3>
-          <!-- qualification -->
+        </v-text-field>
+        <!-- permission - role -->
+        <h3>Quyền truy cập</h3>
+        <v-autocomplete
+        multiple
+        v-model="user.roles"
+        :items="roles"
+        chips
+        item-text="name"
+        item-value="id"
+        color="white"
+        hide-no-data
+        hide-selected
+        placeholder="tìm kiếm"
+        prepend-icon="mdi-database-search"
+        style="margin-top:-5px; margin-left:-33px">
+        <template slot="selection" slot-scope="data">
+          <v-chip
+          :selected="data.selected"
+          close class="chip--select-multi"
+          @input="data.parent.selectItem(data.item)">
+          {{ data.item.name }}
+        </v-chip></template></v-autocomplete>
+      </v-flex>
+      <v-spacer></v-spacer>
+      <v-flex md5>
+        <h3>Thông tin nhân sự</h3>
+        <!-- qualification -->
+        <v-text-field
+        :error-messages="errors.has('qualification') ? errors.collect('qualification') : []"
+        :data-vv-as="$t('label.qualification')"
+        name="qualification"
+        :label="$t('label.qualification')"
+        v-model="user.qualification"></v-text-field>
+        <!-- address -->
+        <v-text-field
+        :error-messages="errors.has('address') ? errors.collect('address') : []"
+        :data-vv-as="$t('label.address')"
+        name="address"
+        :label="$t('label.address')"
+        v-model="user.address"> </v-text-field>
+        <!-- birth_day -->
+        <template>
+          <v-menu
+          ref="menu"
+          :close-on-content-click="false"
+          v-model="menu"
+          :nudge-right="40"
+          lazy transition="scale-transition"
+          offset-y
+          full-width
+          min-width="290px">
           <v-text-field
-          :error-messages="errors.has('qualification') ? errors.collect('qualification') : []"
-          :data-vv-as="$t('label.qualification')"
-          name="qualification"
-          :label="$t('label.qualification')"
-          v-model="user.qualification"></v-text-field>
-          <!-- address -->
-          <v-text-field
-          :error-messages="errors.has('address') ? errors.collect('address') : []"
-          :data-vv-as="$t('label.address')"
-          name="address"
-          :label="$t('label.address')"
-          v-model="user.address"> </v-text-field>
-          <!-- birth_day -->
-          <template>
-            <v-menu
-            ref="menu"
-            :close-on-content-click="false"
-            v-model="menu"
-            :nudge-right="40"
-            lazy transition="scale-transition"
-            offset-y
-            full-width
-            min-width="290px">
-            <v-text-field
-            slot="activator"
-            v-model="user.date_of_birth"
-            label="Ngày sinh"
-            readonly > </v-text-field>
-            <v-date-picker
-            ref="picker"
-            v-model="user.date_of_birth"
-            :max="new Date().toISOString().substr(0, 10)"
-            min="1950-01-01"
-            @change="save"> </v-date-picker> </v-menu>
-          </template>
-          <!-- gender -->
-          <v-flex xs12 row>
-            <v-flex xs5 style="margin-left:20px">
-              <label style="margin-top:10px">Giới tính</label>
-              <v-radio-group style="margin-top:-2px" v-model="user.gender" row>
-                <v-radio value='0' label="Nam"></v-radio>
-                <v-radio value='1' label="Nữ"></v-radio>
-              </v-radio-group>
-            </v-flex>
-            <v-spacer></v-spacer>
-            <!-- status -->
-            <v-flex xs5>
-              <label style="margin-top:10px">Trạng Thái</label>
-              <v-radio-group style="margin-top:-2px" v-model="user.status" row>
-                <v-radio value='0' label="Ân"></v-radio>
-                <v-radio value='1' label="Hiện"></v-radio>
-              </v-radio-group>
-            </v-flex>
+          slot="activator"
+          v-model="user.date_of_birth"
+          label="Ngày sinh"
+          readonly > </v-text-field>
+          <v-date-picker
+          ref="picker"
+          v-model="user.date_of_birth"
+          :max="new Date().toISOString().substr(0, 10)"
+          min="1950-01-01"
+          @change="save"> </v-date-picker> </v-menu>
+        </template>
+        <!-- gender -->
+        <v-flex xs12 row>
+          <v-flex xs5 style="margin-left:20px">
+            <label style="margin-top:10px">Giới tính</label>
+            <v-radio-group style="margin-top:-2px" v-model="user.gender" row>
+              <v-radio value='0' label="Nam"></v-radio>
+              <v-radio value='1' label="Nữ"></v-radio>
+            </v-radio-group>
+          </v-flex>
+          <v-spacer></v-spacer>
+          <!-- status -->
+          <v-flex xs5>
+            <label style="margin-top:10px">Trạng Thái</label>
+            <v-radio-group style="margin-top:-2px" v-model="user.status" row>
+              <v-radio value='0' label="Ân"></v-radio>
+              <v-radio value='1' label="Hiện"></v-radio>
+            </v-radio-group>
           </v-flex>
         </v-flex>
-        <!-- branch,department,position -->
-        <v-flex xs12 id="children">
+      </v-flex>
+      <v-spacer></v-spacer>
+      <!-- branch,department,position -->
+      <v-flex md12 id="children">
+      <v-spacer></v-spacer>
+        <v-flex md-10>
           <h3 style="margin-bottom:15px">Chi nhánh, phòng ban, vị trí</h3>
           <children
           :id="index"
@@ -145,24 +148,25 @@
           @delete="Remove(index)"
           v-on:positionAndDepartment="positionAndDepartment($event, index)"> </children>
         </v-flex>
-        <!-- button create or update -->
-        <v-flex xs12 text-xs-center>
-          <v-btn
-          :loading="isFetchingApi"
-          :disabled="isFetchingApi"
-          color="primary"
-          type="submit"
-          >
-          <template v-if="isCreate">
-            <v-icon left>add</v-icon> {{$t('control.create')}}
-          </template>
-          <template v-else>
-            <v-icon left>save</v-icon> {{$t('control.save')}}
-          </template>
-        </v-btn>
       </v-flex>
-    </v-layout>
-  </v-container>
+      <!-- button create or update -->
+      <v-flex xs12 text-xs-center>
+        <v-btn
+        :loading="isFetchingApi"
+        :disabled="isFetchingApi"
+        color="primary"
+        type="submit"
+        >
+        <template v-if="isCreate">
+          <v-icon left>add</v-icon> {{$t('control.create')}}
+        </template>
+        <template v-else>
+          <v-icon left>save</v-icon> {{$t('control.save')}}
+        </template>
+      </v-btn>
+    </v-flex>
+  </v-layout>
+</v-container>
 </v-form>
 </template>
 <script>
@@ -206,9 +210,7 @@ export default{
         date_of_birth: null,
         password_confirmation: '111111',
         roles: [],
-        departments: [],
-        department_id: [],
-        position_id: []
+        departments: []
       },
       roles: [],
       departmentPosition: []
@@ -232,6 +234,7 @@ export default{
       this.range += 1
     },
     Remove (index) {
+      this.departmentPosition.splice(index, 1)
       if (index !== 0) {
         document.getElementById(index).remove()
       }
@@ -239,7 +242,7 @@ export default{
     validateBeforeSubmit () {
       this.$validator.validateAll().then(result => {
         if (result) {
-          this.user.departments.push(this.departmentPosition)
+          this.user.departments = this.departmentPosition
           this.$emit('submit', this.user)
         } else {
           this.$store.dispatch('showNotify', {
@@ -250,8 +253,7 @@ export default{
       })
     },
     positionAndDepartment (updated, index) {
-      this.departmentPosition = updated
-      // this.user.departments.push(updated)
+      this.departmentPosition[index] = updated
     }
   },
   mounted () {

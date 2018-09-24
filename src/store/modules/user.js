@@ -12,17 +12,32 @@ const initState = () => {
 /**
  * state
  */
-const state = {
+ const state = {
   user: initState().user
 }
 
 /**
  * actions
  */
-const actions = {
+ const actions = {
   setUser ({ commit }, payload) {
     let { user } = payload
     commit(SET_USER, user)
+  },
+  getUsers ({ commit, dispatch }, payload) {
+    let { params } = payload
+    dispatch(
+      'fetchApi',
+      {
+        url: `users`,
+        method: 'GET',
+        params: params || {},
+        success: (response) => {
+          commit(SET_USER, response.data)
+        }
+      },
+      { root: true }
+      )
   },
   getUser ({ commit, dispatch }, payload) {
     let { userId, params } = payload
@@ -37,7 +52,7 @@ const actions = {
         }
       },
       { root: true }
-    )
+      )
   },
   createUser ({ commit, dispatch }, payload) {
     let { user, cb, params } = payload
@@ -73,7 +88,7 @@ const actions = {
 /**
  * mutations
  */
-const mutations = {
+ const mutations = {
   [SET_USER]: (state, user) => {
     state.user = user
   },
@@ -85,7 +100,7 @@ const mutations = {
 /**
  * getters
  */
-const getters = {
+ const getters = {
   userDetail: (state) => state.user
 }
 

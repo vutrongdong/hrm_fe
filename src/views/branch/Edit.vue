@@ -1,9 +1,6 @@
 <template>
   <v-layout ref="laylout" row fill-height>
-    <v-flex xs4>
-      <listting type="edit" />
-    </v-flex>
-    <v-flex xs8 class="border-e0-left white">
+    <v-flex xs12 class="border-e0-left white">
       <v-toolbar dense color="white" flat>
         <v-toolbar-title>{{ $t('title.branch.edit') }}: {{branchDetail.name}}</v-toolbar-title>
         <v-spacer></v-spacer>
@@ -19,13 +16,11 @@
 </template>
 <script>
 import BranchForm from './Form'
-import Listting from './Listting'
 import { mapActions, mapGetters } from 'vuex'
 export default{
   name: 'CreateBranch',
   components: {
-    BranchForm,
-    Listting
+    BranchForm
   },
   data () {
     return {

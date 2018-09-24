@@ -1,10 +1,8 @@
 <template>
   <v-layout ref="laylout" row fill-height>
-    <v-flex xs3>
-      <listting />
-    </v-flex>
-    <v-flex xs9 class="border-e0-left white">
+    <v-flex xs12 class="border-e0-left white">
       <v-toolbar dense color="white" flat>
+        <v-spacer></v-spacer>
         <v-toolbar-title>{{ $t('title.user.edit') }}: {{userDetail.name}}</v-toolbar-title>
         <v-spacer></v-spacer>
         <v-btn icon @click="$router.push({name: 'user-detail', params: {id: $route.params.id}})">
@@ -60,11 +58,7 @@ export default{
             data: response.data,
             key: 'id'
           })
-
-          this.$router.push({
-            name: 'user-detail',
-            params: { id: this.$route.params.id }
-          })
+          this.$router.push({name: 'user'})
         }
       })
     }

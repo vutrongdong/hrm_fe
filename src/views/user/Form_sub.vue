@@ -63,6 +63,9 @@ export default {
   name: 'UserFormSub',
   data () {
     return {
+      object: {
+        id: Date.now()
+      },
       departments: [],
       departmentActive: false,
       positionActive: false,
@@ -107,10 +110,9 @@ export default {
     },
     changePosition (value) {
       this.valPosition = value
-      let object = {}
-      object['department_id'] = this.valDepartment
-      object['position_id'] = this.valPosition
-      this.$emit('positionAndDepartment', object)
+      this.object['department_id'] = this.valDepartment
+      this.object['position_id'] = this.valPosition
+      this.$emit('positionAndDepartment', this.object)
     },
     setInitData () {
       let dataUser = { ...this.dataUser }

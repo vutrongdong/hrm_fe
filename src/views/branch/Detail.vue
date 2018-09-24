@@ -24,23 +24,50 @@
         <v-icon>delete</v-icon>
       </v-btn>
     </v-toolbar>
-    <v-container fluid class="white scroll-y border-e0-top" :style="{height: dataViewHeight + 'px'}">
-      <p>Tên: {{branchDetail.name}}</p>
-      <p>Mô tả : {{branchDetail.description }}</p>
-      <p>Thông tin : {{branchDetail.about }}</p>
-      <p>Số điện thoại: {{branchDetail.phone}}</p>
-      <p>Địa chỉ: {{branchDetail.address}}</p>
-      <p>Website: {{branchDetail.website}}</p>
-      <p>Email: {{branchDetail.email}}</p>
-      <p>Facebook: {{branchDetail.facebook}}</p>
-      <p>Zalo: {{branchDetail.zalo}}</p>
-      <p>Mã số thuế: {{branchDetail.tax_number}}</p>
-      <p>Ngân hàng: {{branchDetail.bank}}</p>
-      <p>Chi nhánh chính <v-icon color="green" v-if="branchDetail.type_txt==='Chi nhánh chính'">done_outline</v-icon><v-icon v-else color="red">
-      highlight_off</v-icon></p>
-    </v-container>
-  </v-flex>
-  <dialog-confirm v-model="dialogDelete" @input="remove" />
+    <v-container>
+      <v-layout row wrap>
+        <v-flex md12>
+          <v-list-tile-title>Tên chi nhánh</v-list-tile-title>
+          <v-list-tile-title>Email</v-list-tile-title>
+        </v-flex>
+       <!--  <v-list-tile-title>Mô tả</v-list-tile-title>
+       <v-list-tile-title>Số điện thoại</v-list-tile-title>
+       <v-list-tile-title>Địa chỉ</v-list-tile-title>
+       <v-list-tile-title>Website</v-list-tile-title>
+       <v-list-tile-title>Facebook</v-list-tile-title>
+       <v-list-tile-title>Zalo</v-list-tile-title>
+       <v-list-tile-title>Mã số thuế</v-list-tile-title>
+       <v-list-tile-title>Ngân hàng</v-list-tile-title>
+       <v-list-tile-title>Loại chi nhánh</v-list-tile-title>
+             </v-flex> -->
+<!--       <v-flex md5>
+        <v-list-tile-title>{{branchDetail.name}}</v-list-tile-title>
+        <v-list-tile-title>{{branchDetail.email}}</v-list-tile-title>
+        <v-list-tile-title>{{branchDetail.description}}</v-list-tile-title>
+        <v-list-tile-title>{{branchDetail.phone}}</v-list-tile-title>
+        <v-list-tile-title>{{branchDetail.name}}</v-list-tile-title>
+        <v-list-tile-title>{{branchDetail.name}}</v-list-tile-title>
+        <v-list-tile-title>{{branchDetail.name}}</v-list-tile-title>
+      </v-flex> -->
+    </v-layout>
+  </v-container>
+  <v-container fluid class="white scroll-y border-e0-top" :style="{height: dataViewHeight + 'px'}">
+    <p>Tên: {{branchDetail.name}}</p>
+    <p>Mô tả : {{branchDetail.description }}</p>
+    <p>Thông tin : {{branchDetail.about }}</p>
+    <p>Số điện thoại: {{branchDetail.phone}}</p>
+    <p>Địa chỉ: {{branchDetail.address}}</p>
+    <p>Website: {{branchDetail.website}}</p>
+    <p>Website: {{branchDetail.email}}</p>
+    <p>Facebook: {{branchDetail.facebook}}</p>
+    <p>Zalo: {{branchDetail.zalo}}</p>
+    <p>Mã số thuế: {{branchDetail.tax_number}}</p>
+    <p>Ngân hàng: {{branchDetail.bank}}</p>
+    <p>Chi nhánh chính <v-icon color="green" v-if="branchDetail.type_txt==='Chi nhánh chính'">done_outline</v-icon><v-icon v-else color="red">
+    highlight_off</v-icon></p>
+  </v-container>
+</v-flex>
+<dialog-confirm v-model="dialogDelete" @input="remove" />
 </v-layout>
 </template>
 <script>
@@ -109,3 +136,9 @@ export default{
   }
 }
 </script>
+<style scoped>
+.v-list__tile__title{
+  padding: 25px;
+  border: 1px solid red;
+}
+</style>
