@@ -1,22 +1,24 @@
 <template>
   <section>
-    <v-toolbar flat class="black">
+    <v-toolbar flat class="transparent">
       <v-list class="pa-0">
         <v-list-tile
         avatar
         :to="{name: 'account-change-information'}"
         >
         <v-list-tile-avatar>
-          <v-icon style="margin-left:-17px">gavel</v-icon>
+          <v-icon style="margin-left:-17px">fa-address-book</v-icon>
           <!-- <img :src="userProfile.avatar_url" alt=".name"> -->
         </v-list-tile-avatar>
 
         <v-list-tile-content>
           <v-list-tile-title>
-            <span slot="activator" style="text-transform: capitalize;color:#fff;">
-              {{ userName }}
-            </span>
-            <!-- <span>{{userProfile.name}}</span> -->
+            <v-tooltip bottom>
+              <span slot="activator" style="color:green">
+                {{ userName }}
+              </span>
+              <span>{{userProfile.name}}</span>
+            </v-tooltip>
           </v-list-tile-title>
         </v-list-tile-content>
 
@@ -32,7 +34,7 @@
   </v-list>
 </v-toolbar>
 
-<v-list dense color="red">
+<v-list dense>
   <template v-for="(item, index) in items" v-if="canAccess(item.access_permission)">
     <v-layout
     v-if="item.heading"
@@ -75,18 +77,18 @@
     <v-icon>{{ child.icon }}</v-icon>
   </v-list-tile-action>
   <v-list-tile-content>
-    <v-list-tile-title >
+    <v-list-tile-title>
       {{ child.text }}
     </v-list-tile-title>
   </v-list-tile-content>
 </v-list-tile>
 </v-list-group>
-<v-list-tile v-else ripple :key="item.text" @click="$router.push(item.router)" :class="item.router.name === $route.name && 'blue-grey'">
+<v-list-tile v-else ripple :key="item.text" @click="$router.push(item.router)" :class="item.router.name === $route.name && 'grey lighten-2'">
   <v-list-tile-action>
     <v-icon>{{ item.icon }}</v-icon>
   </v-list-tile-action>
   <v-list-tile-content>
-    <v-list-tile-title style="text-transform: capitalize;font-weight: 600">
+    <v-list-tile-title>
       {{ item.text }}
     </v-list-tile-title>
   </v-list-tile-content>

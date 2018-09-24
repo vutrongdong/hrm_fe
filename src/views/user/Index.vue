@@ -3,12 +3,12 @@
       <v-toolbar dense color="white" flat>
         <v-spacer></v-spacer>
         <h3>Danh sách nhân viên</h3>
+        <v-spacer></v-spacer>
         <v-btn v-if="canAccess('user.create')"
-        class="mr-0" icon color="primary"
+        class="mr-5" icon color="primary"
         @click="$router.push({name: 'user-create'})">
         <v-icon>add</v-icon>
       </v-btn>
-      <v-spacer></v-spacer>
     </v-toolbar>
     <v-flex xs12 class="border-e0-top">
       <v-container>
@@ -56,22 +56,22 @@ export default{
     idUser: null,
     dialogDelete: false,
     title: [
-    { text: 'Tên', sortable: false },
-    { text: 'Mã nhân viên', sortable: false },
-    { text: 'Email', sortable: false },
-    { text: 'Địa chỉ', sortable: false },
-    { text: 'Giới tính', sortable: false },
-    { text: 'Trạng thái', sortable: false },
-    { text: 'Hành động', sortable: false }
+      { text: 'Tên', sortable: false },
+      { text: 'Mã nhân viên', sortable: false },
+      { text: 'Email', sortable: false },
+      { text: 'Địa chỉ', sortable: false },
+      { text: 'Giới tính', sortable: false },
+      { text: 'Trạng thái', sortable: false },
+      { text: 'Hành động', sortable: false }
     ]
   }),
-  computed:{
-    ...mapGetters('User',['userDetail'])
+  computed: {
+    ...mapGetters('User', ['userDetail'])
   },
   methods: {
     ...mapActions(['setMiniDrawer']),
     ...mapActions(['showNotify', 'setMiniDrawer']),
-    ...mapActions('User', ['getUsers','deleteUser']),
+    ...mapActions('User', ['getUsers', 'deleteUser']),
     removeConfirm (id) {
       this.idUser = id
       this.dialogDelete = true
@@ -100,8 +100,8 @@ export default{
       }
     }
   },
-  created(){
-    this.getUsers({params: { include: 'departments.branch' }})
+  created () {
+    this.getUsers({ params: { include: 'departments.branch' } })
   }
 }
 </script>

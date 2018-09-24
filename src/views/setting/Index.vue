@@ -3,20 +3,20 @@
     <v-app id="inspire">
       <div>
         <v-toolbar flat color="white">
-          <h3 style="margin-left:300px">Thiết lập thông tin công ty</h3>
+          <v-spacer></v-spacer>
+          <h3>Thiết lập thông tin công ty</h3>
+          <v-spacer></v-spacer>
           <v-dialog v-model="dialog" max-width="500px">
-            <v-spacer></v-spacer>
             <v-btn slot="activator" class="mr-5" icon color="primary">
               <v-icon>add</v-icon>
             </v-btn>
-            <v-spacer></v-spacer>
             <v-card>
               <v-card-title>
                 <span class="headline">{{ formTitle }}</span>
               </v-card-title>
               <!-- form edit -->
               <v-card-text id="formSub">
-                <v-container grid-list-md class="white scroll-y border-e0-top" :style="{height: dataViewHeight + 'px'}">
+                <v-container grid-list-md class="white scroll-y border-e0-top">
                   <v-layout wrap>
                     <!-- name -->
                     <v-flex xs12 sm6 md12>
@@ -43,14 +43,16 @@
                     <!-- status -->
                     <v-flex xs12 sm6 md12>
                       <label>Trạng thái</label>
-                      <v-checkbox
-                      v-validate="'required'"
-                      style="margin-top:0px"
-                      :error-messages="errors.has('status') ? errors.collect('status') : []"
-                      :data-vv-as="$t('label.status')"
-                      name="status"
-                      v-model="setting.status">
-                    </v-checkbox>
+                        <v-checkbox
+                        v-validate="'required'"
+                        style="margin-top:0px"
+                        :error-messages="errors.has('status') ? errors.collect('status') : []"
+                        :data-vv-as="$t('label.status')"
+                        name="status"
+                        v-model="setting.status">
+                      </v-checkbox>
+                      <span v-if="setting.status" class='status'>Hiển thị</span>
+                      <span v-else class='status'>Không hiển thị</span>
                   </v-flex>
                 </v-layout>
               </v-container>
@@ -84,7 +86,7 @@
         </template>
       </v-data-table>
     </v-container>
-    <dialog-confirm v-model="dialogDelete" @input="remove()" />
+    <dialog-confirm v-model="dialogDelete" @input="remove" />
   </div>
 </v-app>
 </div>
@@ -97,16 +99,15 @@ export default{
     DialogConfirm
   },
   data: () => ({
-    dataViewHeight: 0,
     idSetting: null,
     dialogDelete: false,
     dialog: false,
     headers: [
-    { text: 'STT', sortable: false },
-    { text: 'Tên thông tin', sortable: false },
-    { text: 'Giá trị', sortable: false },
-    { text: 'Trạng Thái', sortable: false },
-    { text: 'Hành động', sortable: false }
+      { text: 'STT', sortable: false },
+      { text: 'Tên thông tin', sortable: false },
+      { text: 'Giá trị', sortable: false },
+      { text: 'Trạng Thái', sortable: false },
+      { text: 'Hành động', sortable: false }
     ],
     editedIndex: -1,
     setting: {
@@ -130,7 +131,6 @@ export default{
   },
   created () {
     this.FetchSetting()
-    this.setMiniDrawer(true)
   },
   mounted () {
     this.dataViewHeight = this.$refs.laylout.clientHeight - 48
@@ -219,3 +219,10 @@ export default{
   }
 }
 </script>
+<style scoped>
+  span.status{
+    position: absolute;
+    bottom: 118px;
+    left:70px;
+  }
+</style>

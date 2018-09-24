@@ -3,12 +3,12 @@
     <v-toolbar dense color="white" flat>
       <v-spacer></v-spacer>
       <h3>Danh sách chi nhánh</h3>
+      <v-spacer></v-spacer>
       <v-btn v-if="canAccess('branch.create')"
-      class="mr-0" icon color="primary"
+      class="mr-5" icon color="primary"
       @click="$router.push({name: 'branch-create'})">
       <v-icon>add</v-icon>
     </v-btn>
-    <v-spacer></v-spacer>
   </v-toolbar>
   <v-flex xs12 class="border-e0-top">
     <v-container>
@@ -50,12 +50,12 @@ export default {
     idBranch: null,
     dialogDelete: false,
     title: [
-    { text: 'Tên chi nhánh', sortable: false },
-    { text: 'Email', sortable: false },
-    { text: 'Mã sô thuế', sortable: false },
-    { text: 'Địa chỉ', sortable: false },
-    { text: 'Trạng thái', sortable: false },
-    { text: 'Hành động', sortable: false }
+      { text: 'Tên chi nhánh', sortable: false },
+      { text: 'Email', sortable: false },
+      { text: 'Mã sô thuế', sortable: false },
+      { text: 'Địa chỉ', sortable: false },
+      { text: 'Trạng thái', sortable: false },
+      { text: 'Hành động', sortable: false }
     ]
   }),
   computed: {

@@ -3,14 +3,11 @@
     <v-navigation-drawer
       width="230"
       fixed
-      dark
-      touchless
       v-model="drawer"
       app
-      class="grey darken-4"
       :mini-variant.sync="miniDrawerState"
     >
-      <navigation/>
+      <navigation />
     </v-navigation-drawer>
     <v-toolbar
       class="primary header-background"
@@ -28,7 +25,11 @@
         >
         <span class="hidden-sm-and-down">Gostore</span>
       </v-toolbar-title>
+      <breadcrumb class="hidden-sm-and-down" />
       <v-spacer></v-spacer>
+      <!-- <v-btn icon>
+        <v-icon>notifications</v-icon>
+      </v-btn> -->
       <v-menu offset-y>
         <v-btn icon slot="activator">
           <v-icon>settings</v-icon>
@@ -79,7 +80,6 @@ import { mapActions, mapGetters } from 'vuex'
 import Navigation from './Navigation'
 import Breadcrumb from './Breadcrumb'
 import DeleteMessage from './DeleteMessage'
-
 export default {
   components: {
     Navigation,
@@ -118,6 +118,5 @@ export default {
   .scroll-container {
     height: calc(100vh - 48px);
     overflow-y: auto;
-    background: #f4f6f9;
   }
 </style>

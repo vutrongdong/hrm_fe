@@ -1,8 +1,8 @@
 <template>
-  <v-container fluid style="margin-top:-35px">
+  <v-container style="margin-top:-35px">
     <v-layout row wrap align-center>
       <!-- branch -->
-      <v-flex md3>
+      <v-flex md4>
         <v-select
         v-if="Array.isArray(branchAll)"
         :items="branchAll"
@@ -17,7 +17,7 @@
       </v-flex>
       <v-spacer></v-spacer>
       <!-- department -->
-      <v-flex md3>
+      <v-flex md4>
         <v-select
         :disabled="!departmentActive"
         :items="departments"
@@ -42,18 +42,10 @@
         placeholder="Vị trí"
         single-line
         @change="changePosition"></v-select></v-flex>
-        <v-spacer></v-spacer>
         <v-btn style="margin-top:-5px;"
         icon color="error"
         @click="$emit('delete')">
         <v-icon>delete</v-icon></v-btn>
-        <v-btn class="mr-3"
-        style="margin-top:-5px;"
-        icon color="primary"
-        @click="add">
-        <v-icon>add</v-icon>
-      </v-btn>
-      <v-spacer></v-spacer>
     </v-layout>
   </v-container>
 </template>
@@ -117,9 +109,6 @@ export default {
     setInitData () {
       let dataUser = { ...this.dataUser }
       this.user = { ...this.user, ...dataUser }
-    },
-    add () {
-      this.$emit('add')
     }
   },
   mounted () {

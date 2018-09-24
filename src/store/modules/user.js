@@ -12,14 +12,14 @@ const initState = () => {
 /**
  * state
  */
- const state = {
+const state = {
   user: initState().user
 }
 
 /**
  * actions
  */
- const actions = {
+const actions = {
   setUser ({ commit }, payload) {
     let { user } = payload
     commit(SET_USER, user)
@@ -37,7 +37,7 @@ const initState = () => {
         }
       },
       { root: true }
-      )
+    )
   },
   getUser ({ commit, dispatch }, payload) {
     let { userId, params } = payload
@@ -52,7 +52,7 @@ const initState = () => {
         }
       },
       { root: true }
-      )
+    )
   },
   createUser ({ commit, dispatch }, payload) {
     let { user, cb, params } = payload
@@ -88,7 +88,7 @@ const initState = () => {
 /**
  * mutations
  */
- const mutations = {
+const mutations = {
   [SET_USER]: (state, user) => {
     state.user = user
   },
@@ -100,7 +100,7 @@ const initState = () => {
 /**
  * getters
  */
- const getters = {
+const getters = {
   userDetail: (state) => state.user
 }
 
