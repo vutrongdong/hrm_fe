@@ -12,6 +12,7 @@ import i18n from './i18n'
 import * as filters from '@/filters'
 import permissionMixin from '@/mixins/permission'
 import formatMixin from '@/mixins/format'
+<<<<<<< HEAD
 import Datetime from 'vue-datetime'
 // You need a specific loader for CSS files
 import 'vue-datetime/dist/vue-datetime.css'
@@ -21,6 +22,7 @@ import 'vue-datetime/dist/vue-datetime.css'
 import FBSignInButton from 'vue-facebook-signin-button'
 // Vue.use(BootstrapVue)
 Vue.use(Datetime)
+
 Vue.use(FBSignInButton)
 // custom filters
 Object.keys(filters).forEach(key => {

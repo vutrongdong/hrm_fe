@@ -107,30 +107,10 @@ export default {
     return {
       items: [
         {
-          icon: 'fas fa-object-group',
+          icon: 'home',
           text: this.$t('title.home'),
           router: { name: 'home' },
           access_permission: true
-        },
-        {
-          icon: 'fas fa-object-group',
-          text: this.$t('title.item.index'),
-          access_permission: 'item.view',
-          model: false,
-          children: [
-            {
-              icon: 'fas fa-cube',
-              text: this.$t('title.item.index'),
-              router: { name: 'item' },
-              access_permission: 'item.view'
-            },
-            {
-              icon: 'fas fa-cube',
-              text: this.$t('title.item.index'),
-              router: { name: 'item' },
-              access_permission: 'item.view'
-            }
-          ]
         },
         {
           icon: 'fa-user',

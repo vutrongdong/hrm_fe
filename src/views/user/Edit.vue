@@ -1,23 +1,20 @@
 <template>
-  <v-layout ref="laylout" row fill-height>
-    <v-flex xs3>
-      <listting />
-    </v-flex>
-    <v-flex xs9 class="border-e0-left white">
+  <v-layout ref="laylout" fill-height>
+    <v-flex xs12 class="border-e0-left white">
       <v-toolbar dense color="white" flat>
-        <v-toolbar-title>{{ $t('title.user.edit') }}: {{userDetail.name}}</v-toolbar-title>
         <v-spacer></v-spacer>
-        <v-btn icon @click="$router.push({name: 'user-detail', params: {id: $route.params.id}})">
+        <v-toolbar-title>Chỉnh sửa người dùng: {{userDetail.name}}</v-toolbar-title>
+        <v-spacer></v-spacer>
+        <v-btn icon @click="$router.push({name: 'user'})">
           <v-icon>close</v-icon>
         </v-btn>
       </v-toolbar>
-      <v-container fluid class="white scroll-y border-e0-top" :style="{height: dataViewHeight + 'px'}">
+      <v-container>
         <user-form v-if="userDetail.id" @submit="submitForm" type="edit" :dataUser="userDetail" />
       </v-container>
     </v-flex>
   </v-layout>
 </template>
-
 <script>
 import UserForm from './Form'
 import Listting from './Listting'
@@ -41,6 +38,8 @@ export default{
     ...mapActions('User', ['updateUser', 'getUser', 'setUser']),
     ...mapActions('Dataview', ['updateDataviewEntry']),
     submitForm (formData) {
+      // console.log(formData)
+      // return false
       this.updateUser({
         id: this.$route.params.id,
         user: formData,
@@ -52,28 +51,17 @@ export default{
             color: 'success',
             text: 'Thành công'
           })
-
           this.setUser({ user: response.data })
-
-          this.updateDataviewEntry({
-            name: 'user',
-            data: response.data,
-            key: 'id'
-          })
-
-          this.$router.push({
-            name: 'user-detail',
-            params: { id: this.$route.params.id }
-          })
+          // this.$router.push({ name: 'user' })
         }
       })
     }
   },
   created () {
-    this.setMiniDrawer(true)
-    if (!this.userDetail.id) {
-      this.getUser({ userId: this.$route.params.id, params: { include: 'roles' } })
-    }
+    // this.setMiniDrawer(true)
+    // if (!this.userDetail.id) {
+    this.getUser({ userId: this.$route.params.id, params: { include: 'roles,departments' } })
+    // }
   },
   mounted () {
     this.dataViewHeight = this.$refs.laylout.clientHeight - 48

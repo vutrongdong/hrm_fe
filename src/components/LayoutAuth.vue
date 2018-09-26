@@ -80,7 +80,6 @@ import { mapActions, mapGetters } from 'vuex'
 import Navigation from './Navigation'
 import Breadcrumb from './Breadcrumb'
 import DeleteMessage from './DeleteMessage'
-
 export default {
   components: {
     Navigation,
@@ -115,12 +114,11 @@ export default {
   }
 }
 </script>
-<style lang="css" scoped>
+ <style lang="css" scoped>
   .scroll-container {
     height: calc(100vh - 48px);
     overflow-y: auto;
     overflow-x: hidden;
     background: #f4f6f9;
   }
-
 </style>

@@ -1,10 +1,12 @@
 import {
   SET_USER,
+  SET_USERS,
   SET_INITIAL_STATE
 } from '../mutation-types'
 
 const initState = () => {
   return {
+    users: {},
     user: {}
   }
 }
@@ -13,6 +15,7 @@ const initState = () => {
  * state
  */
 const state = {
+  users: initState().users,
   user: initState().user
 }
 
@@ -21,8 +24,23 @@ const state = {
  */
 const actions = {
   setUser ({ commit }, payload) {
-    let { user } = payload
-    commit(SET_USER, user)
+    let { users } = payload
+    commit(SET_USER, users)
+  },
+  getUsers ({ commit, dispatch }, payload) {
+    let { params } = payload
+    dispatch(
+      'fetchApi',
+      {
+        url: `users`,
+        method: 'GET',
+        params: params || {},
+        success: (response) => {
+          commit(SET_USERS, response.data)
+        }
+      },
+      { root: true }
+    )
   },
   getUser ({ commit, dispatch }, payload) {
     let { userId, params } = payload
@@ -90,11 +108,14 @@ const actions = {
  * mutations
  */
 const mutations = {
+  [SET_USERS]: (state, users) => {
+    state.users = users
+  },
   [SET_USER]: (state, user) => {
     state.user = user
   },
   [SET_INITIAL_STATE]: (state) => {
-    state.user = initState().user
+    state.users = initState().users
   }
 }
 
@@ -102,7 +123,8 @@ const mutations = {
  * getters
  */
 const getters = {
-  userDetail: (state) => state.user
+  userDetail: (state) => state.user,
+  userAll: (state) => state.users
 }
 
 export default {

@@ -1,13 +1,11 @@
 <template>
   <v-layout ref="laylout" row fill-height>
-    <v-flex xs4>
-      <listting />
-    </v-flex>
-    <v-flex xs8 class="border-e0-left white">
+    <v-flex xs12 class="border-e0-left white">
       <v-toolbar dense color="white" flat>
+        <v-spacer></v-spacer>
         <v-toolbar-title>{{ $t('title.branch.edit') }}: {{branchDetail.name}}</v-toolbar-title>
         <v-spacer></v-spacer>
-        <v-btn icon @click="$router.push({name: 'branch-detail', params: {id: $route.params.id}})">
+        <v-btn icon @click="$router.push({name: 'branch'})">
           <v-icon>close</v-icon>
         </v-btn>
       </v-toolbar>
@@ -19,13 +17,11 @@
 </template>
 <script>
 import BranchForm from './Form'
-import Listting from './Listting'
 import { mapActions, mapGetters } from 'vuex'
 export default{
   name: 'CreateBranch',
   components: {
-    BranchForm,
-    Listting
+    BranchForm
   },
   data () {
     return {
@@ -44,7 +40,6 @@ export default{
         id: this.$route.params.id,
         branch: formData,
         params: {
-          include: 'roles'
         },
         cb: (response) => {
           this.showNotify({
@@ -58,7 +53,7 @@ export default{
             key: 'id'
           })
           this.$router.push({
-            name: 'branch-detail',
+            name: 'branch',
             params: { id: this.$route.params.id }
           })
         }
@@ -67,10 +62,8 @@ export default{
   },
   created () {
     this.setMiniDrawer(true)
-    if (!this.branchDetail.id) {
-      this.getBranch({ branchId: this.$route.params.id })
-      this.getBranchs({ branchId: this.$route.params.id })
-    }
+    this.getBranch({ branchId: this.$route.params.id })
+    this.getBranchs()
   },
   mounted () {
     this.dataViewHeight = this.$refs.laylout.clientHeight - 48

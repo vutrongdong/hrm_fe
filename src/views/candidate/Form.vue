@@ -232,7 +232,7 @@ export default{
     ...mapActions('Position', ['fetchPosition']),
     ...mapActions('Plan', ['fetchPlan']),
     setInitData () {
-      let dataCandidate = {...this.dataCandidate}
+      let dataCandidate = { ...this.dataCandidate }
       this.candidate = { ...this.candidate, ...dataCandidate }
     },
     validateBeforeSubmit () {

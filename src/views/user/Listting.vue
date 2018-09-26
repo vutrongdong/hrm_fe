@@ -4,10 +4,6 @@
       <v-btn v-if="canAccess('user.create')" class="mr-3" icon color="primary" @click="$router.push({name: 'user-create'})">
         <v-icon>add</v-icon>
       </v-btn>
-      <v-text-field
-      hide-details
-      single-line
-      ></v-text-field>
     </v-toolbar>
     <v-flex xs12 class="border-e0-top">
       <data-view

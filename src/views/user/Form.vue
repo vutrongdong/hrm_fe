@@ -1,91 +1,153 @@
 <template>
   <v-form @submit.prevent="validateBeforeSubmit">
-    <v-container fluid>
-      <v-layout row wrap>
-        <v-flex xs6>
-          <h3>Thông tin tài khoản</h3>
-          <!-- name -->
-          <v-text-field
-          :error-messages="errors.has('name') ? errors.collect('name') : []"
-          v-validate="'required|min:3'"
-          :data-vv-as="$t('label.name')"
-          name="name"
-          :label="$t('label.name') + '*'"
-          v-model="user.name"></v-text-field>
+    <v-tabs centered color="cyan" dark icons-and-text >
+      <v-tabs-slider color="yellow"></v-tabs-slider>
+      <!-- thông tin tài khoản -->
+      <v-tab href="#tab-1">
+        Thông tin tài khoản
+        <v-icon>phone</v-icon>
+      </v-tab>
+      <!-- Thông tin cá nhân -->
+      <v-tab href="#tab-2">
+        Thông tin cá nhân
+        <v-icon>account_box</v-icon>
+      </v-tab>
+      <!-- công việc -->
+      <v-tab href="#tab-3">
+        Công việc
+        <v-icon>favorite</v-icon>
+      </v-tab>
+      <!-- tab1 -->
+      <v-tab-item id="tab-1" style="margin:30px 0px">
+        <v-card flat row>
+         <h3>Thông tin tài khoản</h3>
+         <v-layout>
+          <v-flex md6 style="margin-right:10px">
+            <!-- email -->
+            <v-text-field
+            placeholder="Nhập email"
+            :error-messages="errors.has('email') ? errors.collect('email') : []"
+            v-validate="'required|email'"
+            :data-vv-as="$t('label.email')"
+            name="email"
+            :label="$t('label.email') + '*'"
+            type="email"
+            :disabled="!isCreate"
+            v-model="user.email"> </v-text-field>
+            <!-- password -->
+            <v-text-field
+            placeholder="Nhập mật khẩu"
+            v-if="isCreate"
+            :error-messages="errors.has('password') ? errors.collect('password') : []" v-validate="'required|min:6'"
+            :data-vv-as="$t('label.password')"
+            name="password"
+            :label="$t('label.password') + '*'"
+            type="password"
+            v-model="user.password"> </v-text-field>
+            <!-- status -->
+            <v-flex style="margin-top:12px;">
+              <label>Trạng Thái</label>
+              <v-flex row>
+                <v-checkbox
+                style="margin-top:0px"
+                @change="status_txt"
+                :label="status"
+                class="checkbox"
+                name="status"
+                v-model="user.status">
+              </v-checkbox>
+            </v-flex></v-flex>
+          </v-flex>
+          <v-spacer></v-spacer>
+          <v-flex md6 style="margin-left:10px">
+            <!-- name -->
+            <v-text-field
+            placeholder="Nhập vào tên"
+            :error-messages="errors.has('name') ? errors.collect('name') : []"
+            v-validate="'required|min:3'"
+            :data-vv-as="$t('label.name')"
+            name="name"
+            :label="$t('label.name') + '*'"
+            v-model="user.name"></v-text-field>
+            <!-- password confirm -->
+            <v-text-field
+            placeholder="Nhập lại password"
+            v-if="isCreate"
+            :error-messages="errors.has('password_confirmation') ? errors.collect('password_confirmation') : []"
+            v-validate="'required|min:6'"
+            :data-vv-as="$t('label.password_confirmation')"
+            name="password_confirmation"
+            :label="$t('label.password_confirmation') + '*'"
+            type="password"
+            v-model="user.password_confirmation"> </v-text-field>
+            <!-- quyền truy cập -->
+            <v-autocomplete
+            multiple
+            label="Quyền truy cập"
+            v-model="user.roles"
+            :items="roles"
+            chips
+            item-text="name"
+            item-value="id"
+            color="white"
+            hide-no-data
+            hide-selected
+            placeholder="tìm kiếm"
+            style="margin-left:-30px"
+            prepend-icon="mdi-database-search">
+            <template slot="selection" slot-scope="data">
+              <v-chip
+              :selected="data.selected"
+              close class="chip--select-multi"
+              @input="data.parent.selectItem(data.item)">
+              {{ data.item.name }}
+            </v-chip></template></v-autocomplete>
+          </v-flex>
+        </v-layout>
+      </v-card>
+    </v-tab-item>
+    <!-- tab2 -->
+    <v-tab-item id="tab-2" style="margin-top:30px">
+      <h3>Thông tin cá nhân</h3>
+      <v-layout>
+        <v-flex md6 style="margin-right:10px">
           <!-- phone -->
           <v-text-field
+          placeholder="nhập số điện thoại"
           :error-messages="errors.has('phone') ? errors.collect('phone') : []"
           :data-vv-as="$t('label.phone')"
           name="phone"
           :label="$t('label.phone')"
           v-model="user.phone"></v-text-field>
-          <!-- email -->
-          <v-text-field
-          :error-messages="errors.has('email') ? errors.collect('email') : []"
-          v-validate="'required|email'"
-          :data-vv-as="$t('label.email')"
-          name="email"
-          :label="$t('label.email') + '*'"
-          type="email"
-          :disabled="!isCreate"
-          v-model="user.email">
-          </v-text-field>
-
-          <v-text-field
-          v-if="isCreate"
-          :error-messages="errors.has('password') ? errors.collect('password') : []" v-validate="'required|min:6'"
-          :data-vv-as="$t('label.password')"
-          name="password"
-          :label="$t('label.password') + '*'"
-          type="password"
-          v-model="user.password">
-          </v-text-field>
-
-          <v-text-field
-          v-if="isCreate"
-          :error-messages="errors.has('password_confirmation') ? errors.collect('password_confirmation') : []"
-          v-validate="'required|min:6'"
-          :data-vv-as="$t('label.password_confirmation')"
-          name="password_confirmation"
-          :label="$t('label.password_confirmation') + '*'"
-          type="password"
-          v-model="user.password_confirmation">
-          </v-text-field>
-
-          <h3>Quyền truy cập</h3>
-          <v-autocomplete
-          multiple
-          v-model="user.roles"
-          :items="roles"
-          chips
-          item-text="name"
-          item-value="id"
-          color="white"
-          hide-no-data
-          hide-selected
-          placeholder="tìm kiếm"
-          prepend-icon="mdi-database-search"
-          style="margin-top:-5px; margin-left:-33px">
-          <template slot="selection" slot-scope="data">
-            <v-chip
-            :selected="data.selected"
-            close class="chip--select-multi"
-            @input="data.parent.selectItem(data.item)">
-            {{ data.item.name }}
-          </v-chip></template></v-autocomplete>
-        </v-flex>
-        <v-flex xs6>
-          <h3>Thông tin nhân sự</h3>
           <!-- qualification -->
           <v-text-field
+          placeholder="nhập trình độ học vấn"
           :error-messages="errors.has('qualification') ? errors.collect('qualification') : []"
           :data-vv-as="$t('label.qualification')"
           name="qualification"
           :label="$t('label.qualification')"
           v-model="user.qualification"></v-text-field>
+
+          <!-- gender -->
+          <v-flex md12 row>
+            <v-flex style="margin-top:12px">
+              <label style="margin-top:10px">Giới tính</label>
+              <v-checkbox
+              @change="gender_txt"
+              :label="gender"
+              class="checkbox"
+              style="margin-top:0px;"
+              name="gender"
+              v-model="user.gender">
+            </v-checkbox>
+          </v-flex> </v-flex>
+        </v-flex>
+        <!--right  thông tin bổ sung -->
+        <v-flex md6 style="margin-left:10px">
           <!-- address -->
           <v-text-field
           :error-messages="errors.has('address') ? errors.collect('address') : []"
+          placeholder="Nhập địa chỉ"
           :data-vv-as="$t('label.address')"
           name="address"
           :label="$t('label.address')"
@@ -102,6 +164,7 @@
             full-width
             min-width="290px">
             <v-text-field
+            placeholder="Nhập ngày sinh"
             slot="activator"
             v-model="user.date_of_birth"
             label="Ngày sinh"
@@ -113,40 +176,45 @@
             min="1950-01-01"
             @change="save"> </v-date-picker> </v-menu>
           </template>
-          <!-- gender -->
-          <v-flex xs12 row>
-            <v-flex xs5 style="margin-left:20px">
-              <label style="margin-top:10px">Giới tính</label>
-              <v-radio-group style="margin-top:-2px" v-model="user.gender" row>
-                <v-radio value='0' label="Nam"></v-radio>
-                <v-radio value='1' label="Nữ"></v-radio>
-              </v-radio-group>
-            </v-flex>
-            <v-spacer></v-spacer>
-            <!-- status -->
-            <v-flex xs5>
-              <label style="margin-top:10px">Trạng Thái</label>
-              <v-radio-group style="margin-top:-2px" v-model="user.status" row>
-                <v-radio value='0' label="Ân"></v-radio>
-                <v-radio value='1' label="Hiện"></v-radio>
-              </v-radio-group>
-            </v-flex>
-          </v-flex>
-        </v-flex>
-        <!-- branch,department,position -->
-        <v-flex xs12 id="children">
-          <h3 style="margin-bottom:15px">Chi nhánh, phòng ban, vị trí</h3>
-          <children
-          :id="index"
-          :key="index"
-          :user="user"
-          v-for="(n, index) in range"
-          @add="Add()"
-          @delete="Remove(index)"
-          v-on:positionAndDepartment="positionAndDepartment($event, index)"> </children>
-        </v-flex>
+          <!-- image -->
+          <v-flex>
+            <link href='https://fonts.googleapis.com/css?family=Material+Icons' rel="stylesheet" type="text/css">
+            <v-text-field placeholder="Chọn một ảnh" label="Hình ảnh" @click='pickFile' v-model='user.avatar'></v-text-field>
+            <input
+            type="file"
+            style="display: none"
+            ref="image"
+            accept="image/*"
+            @change="onFilePicked"
+            >
+            <img :src="imageUrl" width="100%" v-if="imageUrl"/>
+          </v-flex> </v-flex>
+        </v-layout>
+      </v-tab-item>
+      <v-tab-item id="tab-3" style="margin-top:30px">
+        <v-flex md-11>
+          <!-- branch,department,position -->
+          <h3>Chi nhánh, phòng ban, vị trí
+            <v-btn class="mr-3"
+            icon color="primary"
+            @click="Add">
+            <v-icon>add</v-icon> </v-btn> </h3>
+            <!-- form sub -->
+            <children
+            :id="index"
+            :index = "index"
+            :key="index"
+            :user="user"
+            v-for="(n, index) in range"
+            :dataUser="user"
+            v-on:positionAndDepartment="positionAndDepartment($event, index)"
+            @delete="Remove(index)"> </children> </v-flex>
+            <!-- tab3 -->
+          </v-tab-item>
+        </v-tabs>
+        <!-- end tab -->
         <!-- button create or update -->
-        <v-flex xs12 text-xs-center>
+        <v-flex md12 text-md-center>
           <v-btn
           :loading="isFetchingApi"
           :disabled="isFetchingApi"
@@ -161,10 +229,8 @@
           </template>
         </v-btn>
       </v-flex>
-    </v-layout>
-  </v-container>
-</v-form>
-</template>
+    </v-form>
+  </template>
 <script>
 import { mapGetters, mapActions } from 'vuex'
 import { map } from 'lodash'
@@ -197,18 +263,18 @@ export default{
   },
   data () {
     return {
+      imageUrl: '',
+      imageFile: '',
+      gender: 'Nam',
+      status: 'Kích hoạt',
       range: 1,
       menu: false,
       user: {
-        name: 'fgdhfgjh',
-        email: 'gdfhfgh@gmail.com',
-        password: '111111',
-        date_of_birth: null,
-        password_confirmation: '111111',
+        avatar: '',
+        gender: true,
+        status: true,
         roles: [],
-        departments: [],
-        department_id: [],
-        position_id: []
+        departments: []
       },
       roles: [],
       departmentPosition: []
@@ -228,18 +294,28 @@ export default{
     save (date) {
       this.$refs.menu.save(date)
     },
-    Add () {
+    // add chidrent
+    Add (index) {
       this.range += 1
     },
+    // remove childrent
     Remove (index) {
-      if (index !== 0) {
-        document.getElementById(index).remove()
+      this.departmentPosition.splice(index, 1)
+      document.getElementById(index).remove()
+      if(this.dataUser.id){
+        this.dataUser.departments.splice(index,1)
       }
+    },
+    status_txt () {
+      if (this.user.status) { this.status = 'Kích hoạt' } else { this.status = 'Không kích hoạt' }
+    },
+    gender_txt () {
+      if (this.user.gender) { this.gender = 'Nam' } else { this.gender = 'Nữ' }
     },
     validateBeforeSubmit () {
       this.$validator.validateAll().then(result => {
         if (result) {
-          this.user.departments.push(this.departmentPosition)
+          this.user.departments = this.departmentPosition
           this.$emit('submit', this.user)
         } else {
           this.$store.dispatch('showNotify', {
@@ -249,9 +325,32 @@ export default{
         }
       })
     },
+    // upload image
+    pickFile () {
+      this.$refs.image.click()
+    },
+    onFilePicked (e) {
+      const files = e.target.files
+      if (files[0] !== undefined) {
+        this.user.avatar = files[0].name
+        if (this.user.avatar.lastIndexOf('.') <= 0) {
+          return
+        }
+        const fr = new FileReader()
+        fr.readAsDataURL(files[0])
+        fr.addEventListener('load', () => {
+          this.imageUrl = fr.result
+          this.imageFile = files[0] // this is an image file that can be sent to server...
+        })
+      } else {
+        this.user.avatar = ''
+        this.imageFile = ''
+        this.imageUrl = ''
+      }
+    },
+    // end upload image
     positionAndDepartment (updated, index) {
-      this.departmentPosition = updated
-      // this.user.departments.push(updated)
+      this.departmentPosition[index] = updated
     }
   },
   mounted () {
@@ -267,11 +366,14 @@ export default{
     })
   },
   created () {
+    if (this.dataUser.id) {
+      this.range = this.dataUser.departments.data.length
+    }
     !!this.dataUser && this.setInitData()
   }
 }
 </script>
-<style>
+<style coped>
 label{
   color: #5b5a5a;
   font-size:15px;

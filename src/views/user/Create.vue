@@ -1,7 +1,17 @@
 <template>
-  <v-layout ref="laylout" row fill-height>
-    <v-flex xs12 pa-5 class="white">
-      <user-form @submit="submitForm" />
+  <v-layout ref="laylout" row>
+    <v-flex xs12 class="border-e0-left white">
+      <v-toolbar dense color="white" flat>
+        <v-spacer></v-spacer>
+        <v-toolbar-title>{{ $t('title.user.create') }}</v-toolbar-title>
+        <v-spacer></v-spacer>
+        <v-btn icon @click="$router.push({name: 'user'})">
+          <v-icon>close</v-icon>
+        </v-btn>
+      </v-toolbar>
+      <v-container>
+        <user-form @submit="submitForm" />
+      </v-container>
     </v-flex>
   </v-layout>
 </template>

@@ -37,7 +37,7 @@ const actions = {
     )
   },
   getDistrictByCity ({ commit, dispatch }, payload) {
-    let { cityId } = payload
+    let { cityId, cb } = payload
     dispatch(
       'fetchApi',
       {
@@ -45,6 +45,7 @@ const actions = {
         method: 'GET',
         success: (response) => {
           commit(SET_DISTRICTS, response.data)
+          cb && cb(response.data)
         }
       },
       { root: true }
