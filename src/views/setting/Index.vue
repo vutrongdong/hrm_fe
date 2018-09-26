@@ -76,43 +76,43 @@ export default{
   methods: {
     ...mapActions(['setMiniDrawer']),
     ...mapActions('Setting', ['FetchSetting', 'deleteSetting']),
-    ...mapActions('Dataview', ['removeDataviewEntry']),
-    removeConfirm (item) {
-      console.log('data', item)
-      // swal({
-      //   title: 'Xác nhận',
-      //   text: 'Bạn chắc chắn muốn xóa bản ghi này',
-      //   buttons: true,
-      //   dangerMode: true
-      // })
-      //   .then((willDelete) => {
-      //     if (willDelete) {
-      //       console.log('data 1', item)
-      //       this.deleteSetting({
-      //         id: item.id,
-      //         cb: (response) => {
-      //           this.removeDataviewEntry({
-      //             name: 'setting',
-      //             data: item,
-      //             key: 'id'
-      //           })
-      //           this.$store.dispatch('showNotify', {
-      //             text: this.$t('alert.success'),
-      //             color: 'success'
-      //           })
-      //         },
-      //         error: (error) => {
-      //           if (error.status === 404) {
-      //             this.$store.dispatch('showNotify', {
-      //               text: this.$t('alert.not-found'),
-      //               color: 'warning'
-      //             })
-      //           }
-      //         }
-      //       })
-      //     }
-      //   })
-    }
+    ...mapActions('Dataview', ['removeDataviewEntry'])
+    // removeConfirm (item) {
+    //   console.log('data', item)
+    //   swal({
+    //     title: 'Xác nhận',
+    //     text: 'Bạn chắc chắn muốn xóa bản ghi này',
+    //     buttons: true,
+    //     dangerMode: true
+    //   })
+    //     .then((willDelete) => {
+    //       if (willDelete) {
+    //         console.log('data 1', item)
+    //         this.deleteSetting({
+    //           id: item.id,
+    //           cb: (response) => {
+    //             this.removeDataviewEntry({
+    //               name: 'setting',
+    //               data: item,
+    //               key: 'id'
+    //             })
+    //             this.$store.dispatch('showNotify', {
+    //               text: this.$t('alert.success'),
+    //               color: 'success'
+    //             })
+    //           },
+    //           error: (error) => {
+    //             if (error.status === 404) {
+    //               this.$store.dispatch('showNotify', {
+    //                 text: this.$t('alert.not-found'),
+    //                 color: 'warning'
+    //               })
+    //             }
+    //           }
+    //         })
+    //       }
+    //     })
+    // }
   },
   mounted () {
     this.dataViewHeight = this.$refs.laylout.clientHeight - 48

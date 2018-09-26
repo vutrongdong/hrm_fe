@@ -39,6 +39,22 @@ const actions = {
       { root: true }
     )
   },
+   fetchUser ({ commit, dispatch }, payload) {
+      let { params, error } = payload || {}
+    dispatch(
+      'fetchApi',
+      {
+        url: `users`,
+        method: 'GET',
+        params: params || {},
+        success: (response) => {
+          commit(SET_USER, response.data)
+        },
+        error: error
+      },
+      { root: true }
+    )
+  },
   createUser ({ commit, dispatch }, payload) {
     let { user, cb, params } = payload
     dispatch('fetchApi', {

@@ -49,11 +49,13 @@
                <v-card-actions>
               <v-spacer></v-spacer>
               <v-btn color="blue darken-1" flat @click.native="close">Hủy bỏ</v-btn>
-              <v-btn color="blue darken-1" flat @click.native="submitForm"><span v-if="editedIndex!==-1">Lưu lại</span><span v-else>Thêm mới</span></v-btn>
+              <v-btn color="blue darken-1" flat @click.native="submitForm">
+              <span v-if="editedIndex!==-1">Lưu lại</span><span v-else>Thêm mới</span></v-btn>
             </v-card-actions>
                    </v-card>
                </v-dialog>
            </v-toolbar>
+            <v-container>
             <v-data-table
                 v-if="Array.isArray(positionDetail)"
                 :headers="headers"
@@ -63,13 +65,17 @@
                 class="elevation-1"
                 >
               <template slot="items" slot-scope="props">
+                  <td>{{props.index + 1}} </td>
                   <td style="text-transform: capitalize">{{ props.item.name }}</td>
                   <td>{{ props.item.status_txt }}</td>
-                  <td id="action"> <v-icon v-if="canAccess('position.update')" class="mr-6" @click="editItem(props.item,props.item.id)" color="green"> edit</v-icon></td>
-                  <td id="action"><v-icon v-if="canAccess('position.delete')" icon @click="removeConfirm(props.item.id)" color="red"> delete </v-icon></td>
+                  <td id="action">
+                  <v-icon v-if="canAccess('position.update')" style="margin-right: 15px" class="mr-6" @click="editItem(props.item,props.item.id)" color="green"> edit</v-icon>
+                  <v-icon v-if="canAccess('position.delete')" icon @click="removeConfirm(props.item.id)" color="red"> delete </v-icon>
+                  </td>
             </template>
             </v-data-table>
-              <dialog-confirm v-model="dialogDelete" @input="remove" />
+            </v-container>
+             <dialog-confirm v-model="dialogDelete" @input="remove" />
         </div>
       </v-app>
     </div>
@@ -86,18 +92,18 @@ export default{
     dialogDelete: false,
     dialog: false,
     headers: [
+      { text: 'STT', sortable: false },
       { text: 'Tên chức danh', sortable: false },
       { text: 'Trạng thái', sortable: false },
-      { text: 'Sửa', sortable: false },
-      { text: 'Xóa', sortable: false }
+      { text: 'Hành động', sortable: false }
     ],
     editedIndex: -1,
     position: {
-      status: true,
+      status: false,
       name: ''
     },
     defaultItem: {
-      status: true
+      status: false
     }
   }),
   computed: {
@@ -132,32 +138,30 @@ export default{
       this.dialogDelete = true
     },
     remove (confirm) {
-      if (confirm) {
-        this.deletePosition({
-          id: this.idPosition,
-          cb: (response) => {
-            this.removeDataviewEntry({
-              name: 'position',
-              data: this.positionDetail,
-              key: 'id'
-            })
+      this.deletePosition({
+        id: this.idPosition,
+        cb: (response) => {
+          this.removeDataviewEntry({
+            name: 'position',
+            data: this.positionDetail,
+            key: 'id'
+          })
+          this.$store.dispatch('showNotify', {
+            text: this.$t('alert.success'),
+            color: 'success'
+          })
+          this.dialogDelete = false
+          this.fetchPosition()
+        },
+        error: (error) => {
+          if (error.status === 404) {
             this.$store.dispatch('showNotify', {
-              text: this.$t('alert.success'),
-              color: 'success'
+              text: this.$t('alert.not-found'),
+              color: 'warning'
             })
-            this.dialogDelete = false
-            this.$router.push({ name: 'position' })
-          },
-          error: (error) => {
-            if (error.status === 404) {
-              this.$store.dispatch('showNotify', {
-                text: this.$t('alert.not-found'),
-                color: 'warning'
-              })
-            }
           }
-        })
-      }
+        }
+      })
     },
     close () {
       this.dialog = false
@@ -214,6 +218,7 @@ p span{
 }
 h3{
   clear:both;
+  font-size: 28px;
 }
 tr td{
   padding-left:70px !important;

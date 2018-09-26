@@ -77,7 +77,7 @@
                     </template>
                 </v-flex>
 
-                <v-flex xs6>
+            <v-flex xs6>
                 <template>
                   <v-menu
                   ref="menu"
@@ -86,10 +86,12 @@
                   :nudge-right="40"
                   lazy transition="scale-transition"
                   offset-y full-width min-width="290px">
-                    <v-text-field slot="activator" v-model="candidate.time_interview" label="thời gian phỏng vấn" readonly >
-                    </v-text-field>
+                  <v-text-field slot="activator"
+                  v-model="candidate.time_interview"
+                  label="thời gian phỏng vấn" readonly >
+                  </v-text-field>
 
-                    <v-date-picker
+                  <v-date-picker
                     ref="picker"
                     v-model="candidate.time_interview"
                     :max="new Date().toISOString().substr(0, 10)"
@@ -220,12 +222,15 @@ export default{
   watch: {
     menu (val) {
       val && this.$nextTick(() => (this.$refs.picker.activePicker = 'YEAR'))
+    },
+    menu1 (val) {
+      val && this.$nextTick(() => (this.$refs.picker.activePicker = 'YEAR'))
     }
   },
   methods: {
     ...mapActions(['fetchApi']),
     ...mapActions('Position', ['fetchPosition']),
-    ...mapActions('Plan', ['planForCadidate']),
+    ...mapActions('Plan', ['fetchPlan']),
     setInitData () {
       let dataCandidate = {...this.dataCandidate}
       this.candidate = { ...this.candidate, ...dataCandidate }
@@ -242,16 +247,26 @@ export default{
         }
       })
     },
-   save (date) {
+    save (date) {
       this.$refs.menu.save(date)
     },
+    save1 (date){
+        this.$refs.menu1.save(date)
+    }
   },
 
   created () {
     this.fetchPosition()
-    this.planForCadidate()
+    this.fetchPlan()
     !!this.dataCandidate && this.setInitData()
   }
 }
 </script>
-
+<style>
+  tr th{
+padding-left: 50px !important;
+  }
+  tr td {
+    padding-left: 40px !important;
+}
+</style>

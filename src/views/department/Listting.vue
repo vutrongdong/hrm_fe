@@ -31,19 +31,18 @@
                     <!-- value -->
                     <!-- status -->
                     <v-flex xs12 sm6 md12>
-                      <label>Trạng thái</label>
-                      <v-checkbox
-                      v-validate="'required'"
-                      style="margin-top:0px"
-                      :error-messages="errors.has('status') ? errors.collect('status') : []"
-                      :data-vv-as="$t('label.status')"
-                      name="status"
-                      v-model="department.status">
-                    </v-checkbox>
-                     <span style="position: absolute ; top: 50%; left: 15%;" v-if="department.status">Hiển thị</span>
-                     <span style="position: absolute ; top: 50%; left: 15%;" v-else>Không hiển thị</span>
-                  </v-flex>
-
+                        <label style="margin-top:10px">Trạng Thái</label>
+                        <v-flex row>
+                          <v-checkbox
+                          @change="status_txt"
+                          :label="status"
+                          class="checkbox"
+                          style="margin-left:20px;margin-top:0px"
+                          name="status"
+                          v-model="department.status">
+                        </v-checkbox>
+                            </v-flex>
+                      </v-flex>
                    <!-- branch_id -->
                     <v-flex xs12 sm6 md12>
                        <v-select v-validate="'required'"
@@ -72,22 +71,27 @@
                </v-dialog>
 
            </v-toolbar>
-              <v-data-table
-                v-if="Array.isArray(departmentDetail)"
-                :headers="headers"
-                :items="departmentDetail"
-                hide-actions
-                expand
-                class="elevation-1"
-                >
-              <template slot="items" slot-scope="props">
-                  <td style="text-transform: capitalize">{{ props.item.name }}</td>
-                  <td>{{ props.item.status_txt }}</td>
-                  <td v-for="(branch , index) in branchAll" :key='index' v-if="branch.id === props.item.branch_id"> {{branch.name}} </td>
-                  <td id="action"> <v-icon v-if="canAccess('department.update')" class="mr-6" @click="editItem(props.item,props.item.id)" color="green"> edit</v-icon></td>
-                  <td id="action"><v-icon v-if="canAccess('department.delete')" icon @click="removeConfirm(props.item.id)" color="red"> delete </v-icon></td>
-            </template>
-            </v-data-table>
+              <v-container>
+                  <v-data-table
+                    v-if="Array.isArray(departmentDetail)"
+                    :headers="headers"
+                    :items="departmentDetail"
+                    hide-actions
+                    expand
+                    class="elevation-1"
+                    >
+                  <template slot="items" slot-scope="props">
+                      <td> {{props.index + 1}} </td>
+                      <td style="text-transform: capitalize">{{ props.item.name }}</td>
+                      <td>{{ props.item.status_txt }}</td>
+                      <td v-for="(branch , index) in branchAll" :key='index' v-if="branch.id === props.item.branch_id"> {{branch.name}} </td>
+                      <td id="action">
+                      <v-icon v-if="canAccess('department.update')" class="mr-6" @click="editItem(props.item,props.item.id)" color="green"> edit</v-icon>
+                      <v-icon v-if="canAccess('department.delete')" icon @click="removeConfirm(props.item.id)" color="red"> delete </v-icon>
+                      </td>
+                </template>
+                </v-data-table>
+                </v-container>
              <dialog-confirm v-model="dialogDelete" @input="remove" />
         </div>
       </v-app>
@@ -103,13 +107,14 @@ export default{
   data: () => ({
     idDepartment: null,
     dialogDelete: false,
+    status: 'Hiển thị',
     dialog: false,
     headers: [
+      { text: 'STT', sortable: false },
       { text: 'Tên bộ phận', sortable: false },
       { text: 'Trạng thái', sortable: false },
       { text: 'Tên chi nhánh', sortable: false },
-      { text: 'Sửa', sortable: false },
-      { text: 'Xóa', sortable: false }
+      { text: 'Action', sortable: false }
     ],
     editedIndex: -1,
     department: {
@@ -118,7 +123,7 @@ export default{
       branch_id: ''
     },
     defaultItem: {
-      status: true
+      status: ''
     }
   }),
   computed: {
@@ -170,7 +175,7 @@ export default{
               color: 'success'
             })
             this.dialogDelete = false
-            this.$router.push({ name: 'department' })
+            this.fetchDepartment()
           },
           error: (error) => {
             if (error.status === 404) {
@@ -181,6 +186,13 @@ export default{
             }
           }
         })
+      }
+    },
+    status_txt () {
+      if (this.department.status) {
+        this.status = 'Hiển thị'
+      } else {
+        this.status = 'Không hiển thị'
       }
     },
     close () {

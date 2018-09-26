@@ -1,10 +1,10 @@
 import {
-  SET_PLAN
+  SET_CONTRACTS
 } from '../mutation-types'
 
 const initState = () => {
   return {
-    plan: {}
+    contract: {}
   }
 }
 
@@ -12,72 +12,72 @@ const initState = () => {
  * state
  */
 const state = {
-  plan: initState().plan
+  contract: initState().contract
 }
 
 /**
  * actions
  */
 const actions = {
-  setPlan ({ commit }, payload) {
-    let { plan } = payload || {}
-    commit(SET_PLAN, plan)
+  setContract ({ commit }, payload) {
+    let { contract } = payload || {}
+    commit(SET_CONTRACTS, contract)
   },
-  fetchPlan ({ commit, dispatch }, payload) {
+  fetchContract ({ commit, dispatch }, payload) {
     let { params, error } = payload || {}
     dispatch(
       'fetchApi',
       {
-        url: `plans`,
+        url: `contracts`,
         method: 'GET',
         params: params || {},
         success: (response) => {
-          commit(SET_PLAN, response.data)
+          commit(SET_CONTRACTS, response.data)
         },
         error: error
       },
       { root: true }
     )
   },
-  getPlan ({ commit, dispatch }, payload) {
-    let { planId, params, error } = payload || {}
+  getContract ({ commit, dispatch }, payload) {
+    let { contractId, params, error } = payload || {}
     dispatch(
       'fetchApi',
       {
-        url: `plans/${planId}`,
+        url: `contracts/${contractId}`,
         method: 'GET',
         params: params || {},
         success: (response) => {
-          commit(SET_PLAN, response.data)
+          commit(SET_CONTRACTS, response.data)
         },
         error: error
       },
       { root: true }
     )
   },
-  createPlan ({ commit, dispatch }, payload) {
-    let { plan, cb } = payload || {}
+   createContract ({ commit, dispatch }, payload) {
+    let { contract, cb } = payload || {}
     dispatch('fetchApi', {
-      url: 'plans',
+      url: 'contracts',
       method: 'POST',
-      data: plan,
+      data: contract,
       success: cb
     }, { root: true })
   },
-  updatePlan ({ commit, dispatch }, payload) {
-    let { id, plan, cb, error } = payload || {}
+  updateContract ({ commit, dispatch }, payload) {
+    let { id, contract, cb, error } = payload || {}
     dispatch('fetchApi', {
-      url: `plans/${id}`,
+      url: `contracts/${id}`,
       method: 'PUT',
-      data: plan,
+      data: contract,
       success: cb,
       error: error
     }, { root: true })
   },
-  deletePlan ({ commit, dispatch }, payload) {
+  deleteContract ({ commit, dispatch }, payload) {
     let { id, cb, error } = payload || {}
     dispatch('fetchApi', {
-      url: `plans/${id}`,
+      url: `contracts/${id}`,
       method: 'DELETE',
       success: cb,
       error: error
@@ -89,20 +89,13 @@ const actions = {
  * mutations
  */
 const mutations = {
-  [SET_PLAN]: (state, plan) => {
-    state.plan = plan
+  [SET_CONTRACTS]: (state, contract) => {
+    state.contract = contract
   }
-  // [SET_INITIAL_STATE]: (state) => {
-  //   state.role = initState().role
-  // }
 }
 
-/**
- * getters
- */
 const getters = {
-  planDetail: (state) => state.plan,
-  planAll: (state) => state.plan
+  contractDetail: (state) => state.contract
 }
 
 export default {

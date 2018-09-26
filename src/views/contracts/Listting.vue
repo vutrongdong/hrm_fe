@@ -1,91 +1,95 @@
 <template>
-     <div id="app">
+  <div id="app">
       <v-app id="inspire">
         <div>
-           <v-toolbar flat color="white">
+          <v-toolbar flat color="white">
                <v-spacer></v-spacer>
-               <h3>Danh sách ứng cử viên</h3>
+               <h3>Danh sách hợp đồng</h3>
                <v-spacer></v-spacer>
-            <router-link v-bind:to="{path: '/candidate/create'}">
-               <v-btn class="mr-5" icon color="primary" v-if="canAccess('candidate.create')">
+            <router-link v-bind:to="{path: '/contract/create'}">
+               <v-btn class="mr-5" icon color="primary" v-if="canAccess('contract.create')">
                     <v-icon>add</v-icon>
                </v-btn>
             </router-link>
-           </v-toolbar>
-               <v-container>
+          </v-toolbar>
                 <v-data-table
-                    v-if="Array.isArray(candidateDetail)"
+                   v-if="Array.isArray(contractDetail)"
                     :headers="headers"
-                    :items="candidateDetail"
+                    :items="contractDetail"
                     hide-actions
                     expand
                     class="elevation-1"
                 >
-                  <template slot="items" slot-scope="props">
-                      <td style="text-transform: capitalize">{{ props.item.name }}</td>
-                      <td>{{ props.item.email }}</td>
-                      <td>{{props.item.phone}}</td>
-                      <td id="action">
-                      <router-link  v-bind:to="{name: 'candidate-edit', params: {id: props.item.id}}">
-                      <v-icon v-if="canAccess('candidate.update')" class="mr-6" style="margin-right:15px;" color="green">
+               <template slot="items" slot-scope="props">
+                  <td>{{ props.index + 1 }}</td>
+                  <td style="width: 200px"> {{props.item.title}} </td>
+                  <td> {{props.item.type_txt}} </td>
+                  <td> {{ props.item.status_txt }} </td>
+                  <td> {{props.item.user_name}} </td>
+                  <td id="action">
+                      <router-link  v-bind:to="{name: 'contract-edit', params: {id: props.item.id}}">
+                      <v-icon
+                      v-if="canAccess('contract.update')"
+                      class="mr-6" style="margin-right:15px;" color="green">
                        edit
                       </v-icon>
                       </router-link>
-                      <v-icon v-if="canAccess('candidate.delete')" icon @click="removeConfirm(props.item.id)" color="red">
+                      <v-icon v-if="canAccess('contract.delete')"
+                       icon @click="removeConfirm(props.item.id)" color="red">
                       delete
                       </v-icon>
-                      <v-icon v-if="canAccess('candidate.view')" class="mr-6" @click="editItem(props.item,props.item.id)" color="green">view</v-icon>
-                      </td>
-                </template>
-                </v-data-table>
-              </v-container>
-              <dialog-confirm v-model="dialogDelete" @input="remove" />
+                  </td>
+               </template>
+              </v-data-table>
         </div>
+          <dialog-confirm v-model="dialogDelete" @input="remove" />
       </v-app>
     </div>
 </template>
-<script type="text/javascript">
+<script>
 import DialogConfirm from '@/components/DialogConfirm'
 import { mapActions, mapGetters } from 'vuex'
-export default{
-  components: {
-    DialogConfirm
+  export default{
+    components: {
+      DialogConfirm
   },
   data: () => ({
-    idCandidate: null,
+    idContract: null,
     dialogDelete: false,
     dialog: false,
     headers: [
-      { text: 'Tên ứng viên', sortable: false },
-      { text: 'Email', sortable: false },
-      { text: 'Số điện thoại', sortable: false },
+      { text: 'STT', sortable: false },
+      { text: 'Tiêu đề', sortable: false },
+      { text: 'Loại hợp đồng', sortable: false },
+      { text: 'Trạng thái', sortable: false},
+      { text: 'Tên nhân viên', sortable: false},
       { text: 'Hành động', sortable: false }
     ]
   }),
   computed: {
-    ...mapGetters('Candidate', ['candidateDetail']),
+    ...mapGetters('Contracts', ['contractDetail']),
     ...mapGetters(['isFetchingApi'])
   },
   created () {
-    this.fetchCandidate()
+    this.fetchContract()
   },
-  methods: {
+   methods: {
     ...mapActions(['setMiniDrawer']),
-    ...mapActions('Candidate', ['fetchCandidate', 'deleteCandidate']),
+    ...mapActions('Contracts', ['fetchContract', 'deleteContract']),
     ...mapActions(['showNotify', 'setMiniDrawer']),
     ...mapActions('Dataview', ['removeDataviewEntry']),
     removeConfirm (id) {
-      this.idPosition = id
+      this.idContract = id
       this.dialogDelete = true
     },
     remove (confirm) {
       if (confirm) {
-        this.deleteCandidate({
-          id: this.idCandidate,
+        this.deleteContract({
+          id: this.idContract,
           cb: (response) => {
             this.removeDataviewEntry({
-              name: 'candidate',
-              data: this.candidateDetail,
+              name: 'contract',
+              data: this.contractDetail,
               key: 'id'
             })
             this.$store.dispatch('showNotify', {
@@ -93,7 +97,7 @@ export default{
               color: 'success'
             })
             this.dialogDelete = false
-            this.$router.push({ name: 'candidate' })
+            this.fetchContract()
           },
           error: (error) => {
             if (error.status === 404) {
@@ -106,8 +110,8 @@ export default{
         })
       }
     }
+   }
   }
-}
 </script>
 <style scope>
 p span{

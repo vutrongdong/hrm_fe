@@ -12,11 +12,15 @@ import i18n from './i18n'
 import * as filters from '@/filters'
 import permissionMixin from '@/mixins/permission'
 import formatMixin from '@/mixins/format'
-import BootstrapVue from 'bootstrap-vue'
-import 'bootstrap/dist/css/bootstrap.css'
-import 'bootstrap-vue/dist/bootstrap-vue.css'
+import Datetime from 'vue-datetime'
+// You need a specific loader for CSS files
+import 'vue-datetime/dist/vue-datetime.css'
+// import BootstrapVue from 'bootstrap-vue'
+// import 'bootstrap/dist/css/bootstrap.css'
+// import 'bootstrap-vue/dist/bootstrap-vue.css'
 import FBSignInButton from 'vue-facebook-signin-button'
-Vue.use(BootstrapVue)
+// Vue.use(BootstrapVue)
+Vue.use(Datetime)
 Vue.use(FBSignInButton)
 // custom filters
 Object.keys(filters).forEach(key => {

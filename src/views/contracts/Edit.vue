@@ -2,71 +2,68 @@
   <v-layout ref="laylout" row fill-height>
       <v-flex  xs12 class="border-e0-left white">
       <v-toolbar dense color="white" flat>
-          <v-toolbar-title>{{ $t('title.candidate.edit') }}: {{ candidateDetail.name }}</v-toolbar-title>
+          <v-toolbar-title>{{ $t('title.candidate.edit') }} : {{contractDetail.title}} </v-toolbar-title>
           <v-spacer></v-spacer>
          <v-btn icon @click="$router.push({name: 'candidate-detail', params: {id: $route.params.id}})">
           <v-icon>close</v-icon>
         </v-btn>
       </v-toolbar>
-      <v-container fluid class="white scroll-y border-e0-top" :style="{height: dataViewHeight + 'px'}">
-          <candidate-form v-if="candidateDetail.id" @submit="submitForm" type="edit" :dataCandidate="candidateDetail" />
+      <v-container fluid>
+          <ContractForm v-if="contractDetail.id" @submit="submitForm" type="edit" :dataContract="contractDetail"/>
       </v-container>
       </v-flex>
   </v-layout>
 </template>
-<script>
-import CandidateForm from './Form'
+<script type="text/javascript">
+import ContractForm from './Form'
 import listting from './Listting'
 import { mapActions, mapGetters } from 'vuex'
-export default{
-  name: 'EditCandidate',
+  export default{
+  name: 'EditContract',
   components: {
-    listting,
-    CandidateForm
+    ContractForm
   },
   data () {
     return {
-      dataViewHeight: 0
     }
   },
   computed: {
-    ...mapGetters('Candidate', ['candidateDetail'])
+    ...mapGetters('Contracts', ['contractDetail'])
   },
   methods: {
     ...mapActions(['showNotify', 'setMiniDrawer']),
-    ...mapActions('Candidate', ['updateCandidate', 'getCandidate', 'setCandidate']),
+    ...mapActions('Contracts', ['updateContract', 'getContract', 'setContract']),
     ...mapActions('Dataview', ['updateDataviewEntry']),
     submitForm (formData) {
-      this.updateCandidate({
+      this.updateContract({
         id: this.$route.params.id,
-        candidate: formData,
+        contract: formData,
         cb: (response) => {
           this.showNotify({
             color: 'success',
             text: 'Thành công'
           })
-          this.setCandidate({ candidate: response.data })
+          this.setContract({ contract: response.data })
           this.updateDataviewEntry({
-            name: 'candidate',
+            name: 'contract',
             data: response.data,
             key: 'id'
           })
           this.$router.push({
-            name: 'candidate'
+            name: 'contract',
+            query: {
+              reload: null
+            }
           })
         }
       })
-
     }
   },
   created () {
     this.setMiniDrawer(true)
-    if (!this.candidateDetail.id) {
-      this.getCandidate({ candidateId: this.$route.params.id })
+    if (!this.contractDetail.id) {
+      this.getContract({ contractId: this.$route.params.id })
     }
   },
-  mounted () {
-    this.dataViewHeight = this.$refs.laylout.clientHeight - 48
   }
-}
 </script>

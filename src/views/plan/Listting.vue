@@ -50,7 +50,7 @@ export default{
       { text: 'Trạng thái', sortable: false },
       { text: 'Sửa', sortable: false },
       { text: 'Xóa', sortable: false }
-    ],
+    ]
   }),
   computed: {
     ...mapGetters('Plan', ['planDetail']),
@@ -61,7 +61,7 @@ export default{
   },
   methods: {
     ...mapActions(['setMiniDrawer']),
-    ...mapActions('Plan', ['fetchPlan','deletePlan']),
+    ...mapActions('Plan', ['fetchPlan', 'deletePlan']),
     ...mapActions(['showNotify', 'setMiniDrawer']),
     ...mapActions('Dataview', ['removeDataviewEntry']),
     removeConfirm (id) {
@@ -95,7 +95,7 @@ export default{
           }
         })
       }
-    },
+    }
   }
 }
 </script>

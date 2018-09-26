@@ -54,7 +54,7 @@
                 </template>
                 </v-flex>
 
-                <!-- <v-flex xs6>
+                <v-flex xs6>
                 <template>
                   <v-menu
                   ref="menu"
@@ -75,8 +75,27 @@
                     </v-date-picker>
                   </v-menu>
                 </template>
-                </v-flex> -->
+                </v-flex>
         </v-layout>
+
+        <v-layout row wrap>
+            <v-flex md-12>
+          <!-- branch,department,position -->
+          <h3>Chi nhánh, phòng ban, vị trí
+            <v-btn class="mr-3"
+            icon color="primary"
+            @click="Add">
+            <v-icon>add</v-icon> </v-btn> </h3>
+            <!-- form sub -->
+            <children
+            :id="index"
+            :key="index"
+            :plan="plan"
+            v-for="(n, index) in range"
+            v-on:positionAndDepartment="positionAndDepartment($event, index)"
+            @delete="Remove(index)"> </children> </v-flex>
+        </v-layout>
+
     <v-flex xs12 text-xs-center>
       <v-btn
       :loading="isFetchingApi"
@@ -131,15 +150,9 @@ export default{
         content: '',
         date_start: '',
         date_end: '',
-        details: {
-          data: [
-            {
-              department_id: '',
-              position_id: ''
-            }
-          ]
-        }
-      }
+        departments: []
+      },
+      departmentPosition: []
     }
   },
   watch: {
@@ -164,6 +177,7 @@ export default{
     validateBeforeSubmit () {
       this.$validator.validateAll().then(result => {
         if (result) {
+          this.plan.departments = this.departmentPosition
           let submitData = { ...this.plan }
           this.$emit('submit', submitData)
         } else {
@@ -175,8 +189,7 @@ export default{
       })
     },
     positionAndDepartment (updated, index) {
-      this.departmentPosition = updated
-      // this.user.departments.push(updated)
+      this.departmentPosition[index] = updated
     },
     save (date) {
       this.$refs.menu.save(date)

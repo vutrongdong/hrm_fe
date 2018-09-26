@@ -40,7 +40,7 @@ const actions = {
       { root: true }
     )
   },
-  fetchDepartment({ commit, dispatch }, payload) {
+  fetchDepartment ({ commit, dispatch }, payload) {
     let { params, error } = payload || {}
     dispatch(
       'fetchApi',
@@ -67,22 +67,6 @@ const actions = {
           commit(SET_DEPARTMENT, response.data)
           cb && cb()
         }
-      },
-      { root: true }
-    )
-  },
-  departmentForPlan ({ commit, dispatch }, payload) {
-    let { params, error } = payload || {}
-    dispatch(
-      'fetchApi',
-      {
-        url: `departments`,
-        method: 'GET',
-        params: params || {},
-        success: (response) => {
-          commit(SET_DEPARTMENT, response.data)
-        },
-        error: error
       },
       { root: true }
     )
@@ -133,7 +117,7 @@ const mutations = {
  */
 const getters = {
   // departmentByBranch: (state) => state.department,
-  departmentDetail: (state) => state.department,
+  departmentDetail: (state) => state.department
   // departmentAll: (state) => state.department
 }
 

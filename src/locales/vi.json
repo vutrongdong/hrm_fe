@@ -14,6 +14,12 @@
       "create": "Thêm mới quyền try cập",
       "edit": "Chỉnh sửa quyền try cập"
     },
+    "contract":{
+      "index" : "Danh sách hợp đồng",
+       "listting": "Hợp đồng",
+       "create": "Thêm mới hợp đồng",
+       "edit": "Chỉnh sửa hợp đồng"
+    },
     "branch": {
       "index": "Chi nhánh",
       "detail": "Thông tin chi nhánh",

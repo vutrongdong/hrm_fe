@@ -139,6 +139,12 @@ export default {
           access_permission: 'user.view'
         },
         {
+          icon: 'fas fa-file-contract',
+          text: this.$t('title.contract.listting'),
+          router: { name: 'contract' },
+          access_permission: 'contract.view'
+        },
+        {
           icon: 'fa-key',
           text: this.$t('title.role.index'),
           router: { name: 'role' },

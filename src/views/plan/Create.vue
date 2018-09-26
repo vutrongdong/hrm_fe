@@ -17,21 +17,22 @@ export default{
     ...mapActions(['showNotify', 'setMiniDrawer']),
     ...mapActions('Plan', ['createPlan']),
     submitForm (formData) {
-      this.createPlan({
-        plan: formData,
-        cb: (response) => {
-          this.showNotify({
-            color: 'success',
-            text: 'Thành công'
-          })
-          this.$router.push({
-            name: 'plan',
-            query: {
-              reload: null
-            }
-          })
-        }
-      })
+      // this.createPlan({
+      //   plan: formData,
+      //   cb: (response) => {
+      //     this.showNotify({
+      //       color: 'success',
+      //       text: 'Thành công'
+      //     })
+      //     this.$router.push({
+      //       name: 'plan',
+      //       query: {
+      //         reload: null
+      //       }
+      //     })
+      //   }
+      // })
+      console.log('data :', formData)
     }
   }
 

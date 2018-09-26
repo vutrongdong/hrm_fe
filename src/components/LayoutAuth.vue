@@ -122,4 +122,5 @@ export default {
     overflow-x: hidden;
     background: #f4f6f9;
   }
+
 </style>
