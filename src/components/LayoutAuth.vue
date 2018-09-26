@@ -120,5 +120,7 @@ export default {
     overflow-y: auto;
     overflow-x: hidden;
     background: #f4f6f9;
+    overflow-x: hidden;
+    background: #f4f6f9;
   }
 </style>

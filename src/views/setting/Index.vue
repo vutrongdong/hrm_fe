@@ -124,7 +124,6 @@ export default{
     ...mapGetters('Setting', ['settingDetail']),
     ...mapGetters(['isFetchingApi'])
   },
-<<<<<<< HEAD
   methods: {
     ...mapActions(['setMiniDrawer']),
     ...mapActions('Setting', ['FetchSetting', 'deleteSetting']),

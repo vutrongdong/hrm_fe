@@ -202,9 +202,7 @@
       </v-btn>
     </v-flex>
   </v-form>
-
 </v-container>
->>>>>>> 81210e50cbaada84db39f8db541e0d29c8a950f5
 </template>
 <script>
 import { mapGetters, mapActions } from 'vuex'
