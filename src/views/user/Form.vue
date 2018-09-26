@@ -44,17 +44,19 @@
             :label="$t('label.password') + '*'"
             type="password"
             v-model="user.password"> </v-text-field>
-            <!-- password confirm -->
-            <v-text-field
-            placeholder="Nhập lại password"
-            v-if="isCreate"
-            :error-messages="errors.has('password_confirmation') ? errors.collect('password_confirmation') : []"
-            v-validate="'required|min:6'"
-            :data-vv-as="$t('label.password_confirmation')"
-            name="password_confirmation"
-            :label="$t('label.password_confirmation') + '*'"
-            type="password"
-            v-model="user.password_confirmation"> </v-text-field>
+            <!-- status -->
+            <v-flex style="margin-top:12px;">
+              <label>Trạng Thái</label>
+              <v-flex row>
+                <v-checkbox
+                style="margin-top:0px"
+                @change="status_txt"
+                :label="status"
+                class="checkbox"
+                name="status"
+                v-model="user.status">
+              </v-checkbox>
+            </v-flex></v-flex>
           </v-flex>
           <v-spacer></v-spacer>
           <v-flex md6 style="margin-left:10px">
@@ -67,19 +69,17 @@
             name="name"
             :label="$t('label.name') + '*'"
             v-model="user.name"></v-text-field>
-            <!-- status -->
-            <v-flex>
-              <label style="margin-top:10px">Trạng Thái</label>
-              <v-flex row>
-                <v-checkbox
-                @change="status_txt"
-                :label="status"
-                class="checkbox"
-                style="margin-left:20px;margin-top:0px"
-                name="status"
-                v-model="user.status">
-              </v-checkbox>
-            </v-flex> </v-flex>
+            <!-- password confirm -->
+            <v-text-field
+            placeholder="Nhập lại password"
+            v-if="isCreate"
+            :error-messages="errors.has('password_confirmation') ? errors.collect('password_confirmation') : []"
+            v-validate="'required|min:6'"
+            :data-vv-as="$t('label.password_confirmation')"
+            name="password_confirmation"
+            :label="$t('label.password_confirmation') + '*'"
+            type="password"
+            v-model="user.password_confirmation"> </v-text-field>
             <!-- quyền truy cập -->
             <v-autocomplete
             multiple
@@ -130,7 +130,7 @@
 
           <!-- gender -->
           <v-flex md12 row>
-            <v-flex style="margin-left:20px">
+            <v-flex style="margin-top:12px">
               <label style="margin-top:10px">Giới tính</label>
               <v-checkbox
               @change="gender_txt"
@@ -202,19 +202,19 @@
             <!-- form sub -->
             <children
             :id="index"
+            :index = "index"
             :key="index"
             :user="user"
             v-for="(n, index) in range"
+            :dataUser="user"
             v-on:positionAndDepartment="positionAndDepartment($event, index)"
             @delete="Remove(index)"> </children> </v-flex>
             <!-- tab3 -->
           </v-tab-item>
         </v-tabs>
         <!-- end tab -->
-        <v-flex md12>
-        </v-flex>
         <!-- button create or update -->
-        <v-flex md12 text-md-center style="position:absolute;bottom: 50px;right:47%;">
+        <v-flex md12 text-md-center>
           <v-btn
           :loading="isFetchingApi"
           :disabled="isFetchingApi"
@@ -231,95 +231,100 @@
       </v-flex>
     </v-form>
   </template>
-  <script>
-  import { mapGetters, mapActions } from 'vuex'
-  import { map } from 'lodash'
-  import children from './Form_sub'
-  export default{
-    name: 'UserForm',
-    components: { children },
-    computed: {
-      ...mapGetters(['isFetchingApi']),
-      isCreate () {
-        return this.type === 'create'
-      }
+<script>
+import { mapGetters, mapActions } from 'vuex'
+import { map } from 'lodash'
+import children from './Form_sub'
+export default{
+  name: 'UserForm',
+  components: { children },
+  computed: {
+    ...mapGetters(['isFetchingApi']),
+    isCreate () {
+      return this.type === 'create'
+    }
+  },
+  props: {
+    type: {
+      type: String,
+      default: 'create'
     },
-    props: {
-      type: {
-        type: String,
-        default: 'create'
-      },
-      dataUser: {
-        type: Object,
-        default: () => {
-          return {}
-        }
+    dataUser: {
+      type: Object,
+      default: () => {
+        return {}
       }
-    },
-    watch: {
-      menu (val) {
-        val && this.$nextTick(() => (this.$refs.picker.activePicker = 'YEAR'))
-      }
-    },
-    data () {
-      return {
-        imageUrl: '',
-        imageFile: '',
-        gender: 'Nam',
-        status: 'Kích hoạt',
-        range: 1,
-        menu: false,
-        user: {
-          avatar: '',
-          gender: true,
-          status: true,
-          roles: [],
-          departments: []
-        },
+    }
+  },
+  watch: {
+    menu (val) {
+      val && this.$nextTick(() => (this.$refs.picker.activePicker = 'YEAR'))
+    }
+  },
+  data () {
+    return {
+      imageUrl: '',
+      imageFile: '',
+      gender: 'Nam',
+      status: 'Kích hoạt',
+      range: 1,
+      menu: false,
+      user: {
+        avatar: '',
+        gender: true,
+        status: true,
         roles: [],
-        departmentPosition: []
+        departments: []
+      },
+      roles: [],
+      departmentPosition: []
+    }
+  },
+  methods: {
+    ...mapActions(['fetchApi']),
+    setInitData () {
+      let dataUser = { ...this.dataUser }
+      if (dataUser.roles) {
+        dataUser.roles = map(dataUser.roles.data, (role) => {
+          return role.id
+        })
+      }
+      this.user = { ...this.user, ...dataUser }
+    },
+    save (date) {
+      this.$refs.menu.save(date)
+    },
+    // add chidrent
+    Add (index) {
+      this.range += 1
+    },
+    // remove childrent
+    Remove (index) {
+      this.departmentPosition.splice(index, 1)
+      document.getElementById(index).remove()
+      if(this.dataUser.id){
+        this.dataUser.departments.splice(index,1)
       }
     },
-    methods: {
-      ...mapActions(['fetchApi']),
-      setInitData () {
-        let dataUser = { ...this.dataUser }
-        if (dataUser.roles) {
-          dataUser.roles = map(dataUser.roles.data, (role) => {
-            return role.id
-          })
-        }
-        this.user = { ...this.user, ...dataUser }
-      },
-      save (date) {
-        this.$refs.menu.save(date)
-      },
-      Add (index) {
-        this.range += 1
-      },
-      Remove (index) {
-        this.departmentPosition.splice(index, 1)
-        document.getElementById(index).remove()
-      },
-      status_txt () {
-        if (this.user.status) { this.status = 'Kích hoạt' } else { this.status = 'Không kích hoạt' }
-      },
+    status_txt () {
+      if (this.user.status) { this.status = 'Kích hoạt' } else { this.status = 'Không kích hoạt' }
+    },
     gender_txt () {
       if (this.user.gender) { this.gender = 'Nam' } else { this.gender = 'Nữ' }
     },
-  validateBeforeSubmit () {
-    this.$validator.validateAll().then(result => {
-      if (result) {
-        this.user.departments = this.departmentPosition
-        this.$emit('submit', this.user)
-      } else {
-        this.$store.dispatch('showNotify', {
-          text: this.$t('alert.invalid'),
-          color: 'warning'
-        })
-      }
-    })
-  },
+    validateBeforeSubmit () {
+      this.$validator.validateAll().then(result => {
+        if (result) {
+          this.user.departments = this.departmentPosition
+          this.$emit('submit', this.user)
+        } else {
+          this.$store.dispatch('showNotify', {
+            text: this.$t('alert.invalid'),
+            color: 'warning'
+          })
+        }
+      })
+    },
     // upload image
     pickFile () {
       this.$refs.image.click()
@@ -361,6 +366,9 @@
     })
   },
   created () {
+    if (this.dataUser.id) {
+      this.range = this.dataUser.departments.data.length
+    }
     !!this.dataUser && this.setInitData()
   }
 }

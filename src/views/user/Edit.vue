@@ -1,11 +1,11 @@
 <template>
-  <v-layout ref="laylout" row fill-height>
+  <v-layout ref="laylout" fill-height>
     <v-flex xs12 class="border-e0-left white">
       <v-toolbar dense color="white" flat>
         <v-spacer></v-spacer>
-        <v-toolbar-title>{{ $t('title.user.edit') }}: {{userDetail.name}}</v-toolbar-title>
+        <v-toolbar-title>Chỉnh sửa người dùng: {{userDetail.name}}</v-toolbar-title>
         <v-spacer></v-spacer>
-        <v-btn icon @click="$router.push({name: 'user-detail', params: {id: $route.params.id}})">
+        <v-btn icon @click="$router.push({name: 'user'})">
           <v-icon>close</v-icon>
         </v-btn>
       </v-toolbar>
@@ -38,6 +38,8 @@ export default{
     ...mapActions('User', ['updateUser', 'getUser', 'setUser']),
     ...mapActions('Dataview', ['updateDataviewEntry']),
     submitForm (formData) {
+      // console.log(formData)
+      // return false
       this.updateUser({
         id: this.$route.params.id,
         user: formData,
@@ -50,21 +52,16 @@ export default{
             text: 'Thành công'
           })
           this.setUser({ user: response.data })
-          this.updateDataviewEntry({
-            name: 'user',
-            data: response.data,
-            key: 'id'
-          })
-          this.$router.push({ name: 'user' })
+          // this.$router.push({ name: 'user' })
         }
       })
     }
   },
   created () {
     // this.setMiniDrawer(true)
-    if (!this.userDetail.id) {
-      this.getUser({ userId: this.$route.params.id, params: { include: 'roles' } })
-    }
+    // if (!this.userDetail.id) {
+    this.getUser({ userId: this.$route.params.id, params: { include: 'roles,departments' } })
+    // }
   },
   mounted () {
     this.dataViewHeight = this.$refs.laylout.clientHeight - 48

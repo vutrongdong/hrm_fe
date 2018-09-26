@@ -29,6 +29,7 @@ export const SET_DATA_VIEW = 'DATA_VIEW/SET_DATA_VIEW'
 export const UPDATE_DATA_VIEW_ENTRY = 'DATA_VIEW/UPDATE_DATA_VIEW_ENTRY'
 export const REMOVE_DATA_VIEW_ENTRY = 'DATA_VIEW/REMOVE_DATA_VIEW_ENTRY'
 // user
+export const SET_USERS = 'USER/SET_USERS'
 export const SET_USER = 'USER/SET_USER'
 // city
 export const SET_CITIES = 'DATA_RAW/SET_CITIES'
@@ -45,7 +46,8 @@ export const SET_ROLE = 'USER/SET_ROLE'
 // department
 export const SET_DEPARTMENT = 'DEPARTMENT/SET_DEPARTMENT'
 /// branch
-export const SET_BRANCH = 'DEPARTMENT/SET_BRANCH'
+export const SET_BRANCH = 'BRANCH/SET_BRANCH'
+export const SET_BRANCHS = 'BRANCH/SET_BRANCHS'
 /// / plan
 export const SET_PLAN = 'PLAN/SET_PLAN'
 // canditate

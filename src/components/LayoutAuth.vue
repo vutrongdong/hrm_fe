@@ -114,9 +114,9 @@ export default {
   }
 }
 </script>
-<style lang="css" scoped>
+{{-- <style lang="css" scoped>
   .scroll-container {
     height: calc(100vh - 48px);
     overflow-y: auto;
   }
-</style>
+</style> --}}

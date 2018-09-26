@@ -1,7 +1,14 @@
 <template>
   <v-layout ref="laylout" row fill-height>
     <v-flex xs12>
-      <h3 style="padding:15px;text-align:center">Thêm Chi Nhánh</h3>
+      <v-toolbar dense color="white" flat>
+        <v-spacer></v-spacer>
+        <v-toolbar-title>{{ $t('title.branch.create') }}</v-toolbar-title>
+        <v-spacer></v-spacer>
+        <v-btn icon @click="$router.push({name: 'branch'})">
+          <v-icon>close</v-icon>
+        </v-btn>
+      </v-toolbar>
       <branch-form @submit="submitForm"/>
     </v-flex>
   </v-layout>

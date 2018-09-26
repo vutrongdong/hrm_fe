@@ -3,7 +3,7 @@
     "login": "Đăng nhập",
     "home": "Trang chủ",
     "user": {
-      "index": "User",
+      "index": "Người dùng",
       "detail": "Chi tiết user",
       "create": "Thêm mới user",
       "edit": "Chỉnh sửa user"
