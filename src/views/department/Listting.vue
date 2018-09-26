@@ -119,11 +119,11 @@ export default{
     editedIndex: -1,
     department: {
       name: '',
-      status: true,
+      status:0,
       branch_id: ''
     },
     defaultItem: {
-      status: ''
+      status: 0
     }
   }),
   computed: {
@@ -141,14 +141,14 @@ export default{
   },
   created () {
     this.fetchDepartment()
-    this.getBranch()
+    this.getBranchs()
   },
   methods: {
     ...mapActions(['setMiniDrawer']),
     ...mapActions('Department', ['fetchDepartment', 'deleteDepartment', 'updateDepartment']),
     ...mapActions(['showNotify', 'setMiniDrawer']),
     ...mapActions('Department', ['createDepartment']),
-    ...mapActions('Branch', ['getBranch']),
+    ...mapActions('Branch', ['getBranchs']),
     ...mapActions('Dataview', ['removeDataviewEntry']),
     editItem (item, id) {
       this.idDepartment = id
@@ -241,22 +241,5 @@ export default{
   }
 }
 </script>
-<style scope>
-p span{
-  padding: 7px;
-  margin-top:-25px;
-  float: right;
-  margin-right:10px;
-}
-h3{
-  clear:both;
-}
-tr td{
-  padding-left:70px !important;
-}
-tr th{
-  padding-left:70px !important;
-  font-size: 16px !important;
-  color: black !important;
-}
+<style>
 </style>

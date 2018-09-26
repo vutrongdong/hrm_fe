@@ -99,11 +99,11 @@ export default{
     ],
     editedIndex: -1,
     position: {
-      status: false,
+      status: 0,
       name: ''
     },
     defaultItem: {
-      status: false
+      status: 0
     }
   }),
   computed: {
@@ -187,6 +187,7 @@ export default{
             this.fetchPosition()
           }
         })
+
       } else {
         this.updatePosition({
           id: this.idPosition,
@@ -209,23 +210,5 @@ export default{
   }
 }
 </script>
-<style scope>
-p span{
-  padding: 7px;
-  margin-top:-25px;
-  float: right;
-  margin-right:10px;
-}
-h3{
-  clear:both;
-  font-size: 28px;
-}
-tr td{
-  padding-left:70px !important;
-}
-tr th{
-  padding-left:70px !important;
-  font-size: 16px !important;
-  color: black !important;
-}
+<style>
 </style>

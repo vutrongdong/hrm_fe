@@ -99,22 +99,4 @@ export default{
   }
 }
 </script>
-<style scope>
-p span{
-  padding: 7px;
-  margin-top:-25px;
-  float: right;
-  margin-right:10px;
-}
-h3{
-  clear:both;
-}
-tr td{
-  padding-left:70px !important;
-}
-tr th{
-  padding-left:70px !important;
-  font-size: 16px !important;
-  color: black !important;
-}
-</style>
+
