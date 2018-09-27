@@ -255,8 +255,8 @@ export default{
       }
     }
   },
-  watch:{
-    dataBranch(val){
+  watch: {
+    dataBranch (val) {
       this.branch = val
     }
   },
@@ -302,6 +302,7 @@ export default{
   },
   created () {
     !!this.dataBranch && this.setInitData()
+    console.log(this.dataBranch.city_id)
     if (this.$route.params.id) {
       this.districtActive = true
       this.getDistrictByCity({
@@ -310,10 +311,17 @@ export default{
           this.districtAll = this.districtByCity
         }
       })
+    }else{
+      this.getDistrictByCity({
+        cityId: 1,
+        cb: () => {
+          this.districtAll = this.districtByCity
+        }
+      })
     }
     this.getCity()
-    this.statusBranch ()
-    this.typeBranch ()
+    this.statusBranch()
+    this.typeBranch()
   }
 }
 </script>

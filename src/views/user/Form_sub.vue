@@ -86,8 +86,8 @@ export default {
       }
     }
   },
-  watch:{
-    dataUser(val){
+  watch: {
+    dataUser (val) {
       console.log(val)
       this.user = val
     }
@@ -147,7 +147,7 @@ export default {
     })
   },
   created () {
-    this.getBranchForUser()
+    // this.getBranchForUser()
     this.fetchPosition()
     !!this.dataUser && this.setInitData()
     if (this.$route.params.id) {

@@ -25,8 +25,8 @@ export default{
     ...mapActions(['showNotify', 'setMiniDrawer']),
     ...mapActions('Branch', ['createBranch']),
     submitForm (formData) {
-      console.log(formData)
-      return false
+      // console.log(formData)
+      // return false
       this.createBranch({
         branch: formData,
         cb: (response) => {
