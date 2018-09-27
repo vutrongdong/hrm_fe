@@ -107,7 +107,7 @@ export default{
   data: () => ({
     idDepartment: null,
     dialogDelete: false,
-    status: 'Hiển thị',
+    status: 'Không hiển thị',
     dialog: false,
     headers: [
       { text: 'STT', sortable: false },

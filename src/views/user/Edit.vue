@@ -59,12 +59,20 @@ export default{
   },
   created () {
     // this.setMiniDrawer(true)
-    // if (!this.userDetail.id) {
-    this.getUser({ userId: this.$route.params.id, params: { include: 'roles,departments' } })
-    // }
+     if (!this.userDetail.id) {
+    this.getUser({ userId: this.$route.params.id, params: { include: 'departments' } })
+    }
   },
   mounted () {
     this.dataViewHeight = this.$refs.laylout.clientHeight - 48
   }
 }
 </script>
+////////////////////////////////////
+git checkout -b checkddev
+git add -A
+git status
+git commit -m "cuongw"
+
+git checkout dev
+git

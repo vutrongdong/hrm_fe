@@ -52,6 +52,8 @@ const actions = {
         params: params || {},
         success: (response) => {
           commit(SET_USER, response.data)
+           console.log("id and user :", userId);
+          console.log("data user ",response);
         }
       },
       { root: true }

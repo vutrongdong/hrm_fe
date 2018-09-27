@@ -193,25 +193,20 @@
       </v-tab-item>
       <v-tab-item id="tab-3" style="margin-top:30px">
         <v-flex md-11>
-          <!-- branch,department,position -->
-          <h3>Chi nhánh, phòng ban, vị trí
-            <v-btn class="mr-3"
-            icon color="primary"
-            @click="Add">
-            <v-icon>add</v-icon> </v-btn> </h3>
             <!-- form sub -->
             <children
             :id="index"
             :index = "index"
             :key="index"
             :user="user"
-            v-for="(n, index) in range"
             :dataUser="user"
             v-on:positionAndDepartment="positionAndDepartment($event, index)"
             @delete="Remove(index)"> </children> </v-flex>
             <!-- tab3 -->
           </v-tab-item>
         </v-tabs>
+
+        {{dataUser.departments}}
         <!-- end tab -->
         <!-- button create or update -->
         <v-flex md12 text-md-center>
