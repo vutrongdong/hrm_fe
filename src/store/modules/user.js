@@ -57,8 +57,8 @@ const actions = {
       { root: true }
     )
   },
-   fetchUser ({ commit, dispatch }, payload) {
-      let { params, error } = payload || {}
+  fetchUser ({ commit, dispatch }, payload) {
+    let { params, error } = payload || {}
     dispatch(
       'fetchApi',
       {

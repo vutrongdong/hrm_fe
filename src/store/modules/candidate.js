@@ -50,6 +50,7 @@ const actions = {
         params: params || {},
         success: (response) => {
           commit(SET_CANDIDATE, response.data)
+          console.log('data SET_CANDIDATE', response)
         },
         error: error
       },
@@ -100,7 +101,8 @@ const mutations = {
  * getters
  */
 const getters = {
-  candidateDetail: (state) => state.candidate
+  candidateDetail: (state) => state.candidate,
+  candidateAll: (state) => state.candidate
 }
 
 export default {

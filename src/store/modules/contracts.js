@@ -55,7 +55,7 @@ const actions = {
       { root: true }
     )
   },
-   createContract ({ commit, dispatch }, payload) {
+  createContract ({ commit, dispatch }, payload) {
     let { contract, cb } = payload || {}
     dispatch('fetchApi', {
       url: 'contracts',

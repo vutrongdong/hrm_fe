@@ -16,9 +16,8 @@
 </template>
 <script type="text/javascript">
 import ContractForm from './Form'
-import listting from './Listting'
 import { mapActions, mapGetters } from 'vuex'
-  export default{
+export default{
   name: 'EditContract',
   components: {
     ContractForm
@@ -60,10 +59,11 @@ import { mapActions, mapGetters } from 'vuex'
     }
   },
   created () {
-    this.setMiniDrawer(true)
+    this.setMiniDrawer(false)
     if (!this.contractDetail.id) {
       this.getContract({ contractId: this.$route.params.id })
+      console.log('data contract :', this.$route.params.id)
     }
-  },
   }
+}
 </script>

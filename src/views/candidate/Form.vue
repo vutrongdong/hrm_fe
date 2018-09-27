@@ -232,7 +232,7 @@ export default{
     ...mapActions('Position', ['fetchPosition']),
     ...mapActions('Plan', ['fetchPlan']),
     setInitData () {
-      let dataCandidate = {...this.dataCandidate}
+      let dataCandidate = { ...this.dataCandidate }
       this.candidate = { ...this.candidate, ...dataCandidate }
     },
     validateBeforeSubmit () {
@@ -250,11 +250,10 @@ export default{
     save (date) {
       this.$refs.menu.save(date)
     },
-    save1 (date){
-        this.$refs.menu1.save(date)
+    save1 (date) {
+      this.$refs.menu1.save(date)
     }
   },
-
   created () {
     this.fetchPosition()
     this.fetchPlan()
@@ -262,11 +261,3 @@ export default{
   }
 }
 </script>
-<style>
-  tr th{
-padding-left: 50px !important;
-  }
-  tr td {
-    padding-left: 40px !important;
-}
-</style>

@@ -56,13 +56,13 @@ export default{
           })
         }
       })
-
     }
   },
   created () {
     this.setMiniDrawer(true)
     if (!this.candidateDetail.id) {
       this.getCandidate({ candidateId: this.$route.params.id })
+      console.log('data getCandidate ', this.$route.params.id)
     }
   },
   mounted () {

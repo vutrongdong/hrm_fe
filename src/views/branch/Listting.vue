@@ -37,6 +37,7 @@
             <td style="text-transform: capitalize">{{ props.item.tax_number }}</td>
             <td style="text-transform: capitalize">{{ props.item.address }}</td>
             <td style="text-transform: capitalize">{{ props.item.status_txt }}</td>
+            {{branchDetail}}
             <td id="action">
              <v-icon v-if="canAccess('branch.update')" class="mr-6" @click="$router.push({name: 'branch-edit', params: {id: props.item.id}})" color="green"> edit</v-icon>
              <v-icon style="margin-left:10px" v-if="canAccess('branch.delete')" icon @click="removeConfirm(props.item.id)" color="red"> delete </v-icon>

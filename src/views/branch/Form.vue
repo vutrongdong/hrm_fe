@@ -1,5 +1,4 @@
 <template>
-
   <v-container>
     <v-form @submit.prevent="validateBeforeSubmit">
       <v-tabs centered color="cyan" dark icons-and-text md12>
@@ -186,6 +185,7 @@
           </v-card>
         </v-tab-item>
       </v-tabs>
+      {{dataBranch}}
       <v-flex xs12 text-xs-center>
         <v-btn
         :loading="isFetchingApi"
@@ -254,6 +254,11 @@ export default{
         district_id: '',
         status: true
       }
+    }
+  },
+  watch: {
+    dataBranch (val) {
+      this.branch = val
     }
   },
   methods: {

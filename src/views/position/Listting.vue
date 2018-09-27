@@ -32,16 +32,14 @@
                     <!-- status -->
                     <v-flex xs12 sm6 md12>
                       <label>Trạng thái</label>
-                      <v-checkbox
-                      v-validate="'required'"
-                      style="margin-top:0px"
-                      :error-messages="errors.has('status') ? errors.collect('status') : []"
-                      :data-vv-as="$t('label.status')"
-                      name="status"
-                      v-model="position.status">
-                    </v-checkbox>
-                     <span style="position: absolute ; top: 63%; left: 15%;" v-if="position.status">Hiển thị</span>
-                     <span style="position: absolute ; top: 63%; left: 15%;" v-else>Không hiển thị</span>
+                       <v-checkbox
+                          @change="status_txt"
+                          :label="status"
+                          class="checkbox"
+                          style="margin-top:0px"
+                          name="status"
+                          v-model="position.status">
+                        </v-checkbox>
                   </v-flex>
                 </v-layout>
               </v-container>
@@ -90,6 +88,7 @@ export default{
   data: () => ({
     idPosition: null,
     dialogDelete: false,
+    status: 'Không hiển thị',
     dialog: false,
     headers: [
       { text: 'STT', sortable: false },
@@ -103,7 +102,6 @@ export default{
       name: ''
     },
     defaultItem: {
-      status: 0
     }
   }),
   computed: {
@@ -170,6 +168,13 @@ export default{
         this.editedIndex = -1
       }, 300)
     },
+    status_txt () {
+      if (this.position.status) {
+        this.status = 'Hiển thị'
+      } else {
+        this.status = 'Không hiển thị'
+      }
+    },
     submitForm () {
       if (this.editedIndex === -1) {
         this.createPosition({
@@ -177,7 +182,9 @@ export default{
           cb: (response) => {
             this.dialog = false
             setTimeout(() => {
-              this.position = Object.assign({}, this.defaultItem)
+              let position = Object.assign({}, this.position)
+              position.status = position.status ? 1 : 0
+              console.log('data position :', position)
               this.editedIndex = -1
             }, 300)
             this.showNotify({
@@ -187,7 +194,6 @@ export default{
             this.fetchPosition()
           }
         })
-
       } else {
         this.updatePosition({
           id: this.idPosition,
@@ -200,7 +206,9 @@ export default{
             })
             this.dialog = false
             setTimeout(() => {
-              this.setting = Object.assign({}, this.defaultItem)
+              let position = Object.assign({}, this.position)
+              position.status = position.status ? 1 : 0
+              console.log('data position :', position)
               this.editedIndex = -1
             }, 300)
           }

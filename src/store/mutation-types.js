@@ -32,7 +32,7 @@ export const REMOVE_DATA_VIEW_ENTRY = 'DATA_VIEW/REMOVE_DATA_VIEW_ENTRY'
 // user
 export const SET_USERS = 'USER/SET_USERS'
 export const SET_USER = 'USER/SET_USER'
-//contracts
+// contracts
 export const SET_CONTRACTS = 'CONTRACTS/SET_CONTRACTS'
 // city
 export const SET_CITIES = 'DATA_RAW/SET_CITIES'

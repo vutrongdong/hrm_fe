@@ -14,9 +14,9 @@
 </template>
 <script type="text/javascript">
 import ContractForm from './Form'
-import { mapActions, mapGetters } from 'vuex'
-  export default{
- name: 'CreateContract',
+import { mapActions } from 'vuex'
+export default{
+  name: 'CreateContract',
   components: {
     ContractForm
   },
@@ -32,17 +32,17 @@ import { mapActions, mapGetters } from 'vuex'
             text: 'Thành công'
           })
           this.$router.push({
-            name: 'contract',
+            name: 'contract'
             // query: {
             //   reload: null
             // }
           })
         }
       })
-   }
+    }
   },
   created () {
     this.setMiniDrawer(false)
   }
-  }
+}
 </script>

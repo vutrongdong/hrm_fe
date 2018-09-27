@@ -140,11 +140,13 @@
     "city_id" : "Thành phố ",
     "districts_id" : "Quận huyện",
     "branch_id" : "Chi nhánh",
-    "title": "Title",
-    "content" : "Content",
+    "title": "Tiêu đề",
+    "content" : "Nội dung",
     "source" : "Source",
     "plan_id" : "Kế hoạch tuyển dụng",
-    "position_id" : "Tên vị trí"
+    "position_id" : "Tên vị trí",
+    "user_id" : "Tên nhân viên",
+    "type" : "Loại hợp đồng"
   },
   "alert": {
     "invalid": "Vui lòng kiểm tra thông tin cần nhập",

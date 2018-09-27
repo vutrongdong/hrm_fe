@@ -62,8 +62,10 @@ export default{
   },
   created () {
     this.setMiniDrawer(true)
-    this.getBranch({ branchId: this.$route.params.id })
-    this.getBranchs()
+    if (!this.branchDetail.id) {
+      this.getBranch({ branchId: this.$route.params.id })
+      this.getBranchs()
+    }
   },
   mounted () {
     this.dataViewHeight = this.$refs.laylout.clientHeight - 48

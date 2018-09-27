@@ -302,8 +302,8 @@ export default{
     Remove (index) {
       this.departmentPosition.splice(index, 1)
       document.getElementById(index).remove()
-      if(this.dataUser.id){
-        this.dataUser.departments.splice(index,1)
+      if (this.dataUser.id) {
+        this.dataUser.departments.splice(index, 1)
       }
     },
     status_txt () {
