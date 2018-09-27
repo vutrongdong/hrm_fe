@@ -27,8 +27,8 @@ export default{
     ...mapActions(['showNotify', 'setMiniDrawer']),
     ...mapActions('User', ['createUser']),
     submitForm (formData) {
-      // console.log(formData)
-      // return false
+      console.log(formData)
+      return false
       this.createUser({
         user: formData,
         cb: (response) => {

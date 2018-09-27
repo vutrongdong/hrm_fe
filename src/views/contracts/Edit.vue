@@ -18,7 +18,7 @@
 import ContractForm from './Form'
 import listting from './Listting'
 import { mapActions, mapGetters } from 'vuex'
-  export default{
+export default{
   name: 'EditContract',
   components: {
     ContractForm
@@ -64,6 +64,6 @@ import { mapActions, mapGetters } from 'vuex'
     if (!this.contractDetail.id) {
       this.getContract({ contractId: this.$route.params.id })
     }
-  },
   }
+}
 </script>

@@ -25,7 +25,7 @@ const state = {
 const actions = {
   setUser ({ commit }, payload) {
     let { users } = payload
-    commit(SET_USER, users)
+    commit(SET_USERS, users)
   },
   getUsers ({ commit, dispatch }, payload) {
     let { params } = payload
@@ -57,8 +57,8 @@ const actions = {
       { root: true }
     )
   },
-   fetchUser ({ commit, dispatch }, payload) {
-      let { params, error } = payload || {}
+  fetchUser ({ commit, dispatch }, payload) {
+    let { params, error } = payload || {}
     dispatch(
       'fetchApi',
       {

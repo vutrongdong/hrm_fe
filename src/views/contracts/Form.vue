@@ -1,4 +1,4 @@
- <template>
+@ <template>
 <v-form  @submit.prevent="validateBeforeSubmit">
         <v-container fluid>
           <v-layout row wrap>
@@ -235,16 +235,16 @@ export default{
       ],
       types: [
         {
-          'id' : 0,
-          'name':'Tiêu chuẩn'
+          'id': 0,
+          'name': 'Tiêu chuẩn'
         },
         {
-          'id' : 1,
-          'name':'Chấm dứt'
+          'id': 1,
+          'name': 'Chấm dứt'
         },
-         {
-          'id' : 2,
-          'name':'Gia hạn'
+        {
+          'id': 2,
+          'name': 'Gia hạn'
         }
       ]
     }
@@ -258,15 +258,15 @@ export default{
     },
     menu2 (val) {
       val && this.$nextTick(() => (this.$refs.picker.activePicker = 'YEAR'))
-    },
+    }
 
   },
   methods: {
     ...mapActions(['fetchApi']),
-    ...mapActions('User',['fetchUser']),
-     setInitData () {
-      let dataContract = {...this.dataContract}
-      this.contract = { ...this.contract, ...dataContract}
+    ...mapActions('User', ['fetchUser']),
+    setInitData () {
+      let dataContract = { ...this.dataContract }
+      this.contract = { ...this.contract, ...dataContract }
     },
     validateBeforeSubmit () {
       this.$validator.validateAll().then(result => {
@@ -293,14 +293,6 @@ export default{
   created () {
     this.fetchUser()
     !!this.dataContract && this.setInitData()
-  },
+  }
 }
 </script>
-<style>
-  tr th{
-padding-left: 50px !important;
-  }
-  tr td {
-    padding-left: 40px !important;
-}
-</style>

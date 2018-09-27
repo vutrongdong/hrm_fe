@@ -207,6 +207,7 @@
             :user="user"
             v-for="(n, index) in range"
             :dataUser="user"
+            v-if="user.id"
             v-on:positionAndDepartment="positionAndDepartment($event, index)"
             @delete="Remove(index)"> </children> </v-flex>
             <!-- tab3 -->
@@ -231,126 +232,132 @@
       </v-flex>
     </v-form>
   </template>
-<script>
-import { mapGetters, mapActions } from 'vuex'
-import { map } from 'lodash'
-import children from './Form_sub'
-export default{
-  name: 'UserForm',
-  components: { children },
-  computed: {
-    ...mapGetters(['isFetchingApi']),
-    isCreate () {
-      return this.type === 'create'
-    }
-  },
-  props: {
-    type: {
-      type: String,
-      default: 'create'
-    },
-    dataUser: {
-      type: Object,
-      default: () => {
-        return {}
+  <script>
+  import { mapGetters, mapActions } from 'vuex'
+  import { map } from 'lodash'
+  import children from './Form_sub'
+  export default{
+    name: 'UserForm',
+    components: { children },
+    computed: {
+      ...mapGetters(['isFetchingApi']),
+      isCreate () {
+        return this.type === 'create'
       }
-    }
-  },
-  watch: {
-    menu (val) {
-      val && this.$nextTick(() => (this.$refs.picker.activePicker = 'YEAR'))
-    }
-  },
-  data () {
-    return {
-      imageUrl: '',
-      imageFile: '',
-      gender: 'Nam',
-      status: 'Kích hoạt',
-      range: 1,
-      menu: false,
-      user: {
-        avatar: '',
-        gender: true,
-        status: true,
-        roles: [],
-        departments: []
+    },
+    props: {
+      type: {
+        type: String,
+        default: 'create'
       },
-      roles: [],
-      departmentPosition: []
-    }
-  },
-  methods: {
-    ...mapActions(['fetchApi']),
-    setInitData () {
-      let dataUser = { ...this.dataUser }
-      if (dataUser.roles) {
-        dataUser.roles = map(dataUser.roles.data, (role) => {
-          return role.id
-        })
-      }
-      this.user = { ...this.user, ...dataUser }
-    },
-    save (date) {
-      this.$refs.menu.save(date)
-    },
-    // add chidrent
-    Add (index) {
-      this.range += 1
-    },
-    // remove childrent
-    Remove (index) {
-      this.departmentPosition.splice(index, 1)
-      document.getElementById(index).remove()
-      if(this.dataUser.id){
-        this.dataUser.departments.splice(index,1)
+      dataUser: {
+        type: Object,
+        default: () => {
+          return {}
+        }
       }
     },
-    status_txt () {
-      if (this.user.status) { this.status = 'Kích hoạt' } else { this.status = 'Không kích hoạt' }
+    watch: {
+      menu (val) {
+        val && this.$nextTick(() => (this.$refs.picker.activePicker = 'YEAR'))
+      },
+
+      dataUser (val) {
+        this.user = val
+      }
     },
+    data () {
+      return {
+        imageUrl: '',
+        imageFile: '',
+        gender: '',
+        status: 'Kích hoạt',
+        range: 1,
+        menu: false,
+        user: {
+          avatar: '',
+          gender: true,
+          status: true,
+          roles: [],
+          departments: []
+        },
+        roles: [],
+        departmentPosition: []
+      }
+    },
+    methods: {
+      ...mapActions(['fetchApi']),
+      setInitData () {
+        let dataUser = { ...this.dataUser }
+        if (dataUser.roles) {
+          dataUser.roles = map(dataUser.roles.data, (role) => {
+            return role.id
+          })
+        }
+        this.user = { ...this.user, ...dataUser }
+      },
+      save (date) {
+        this.$refs.menu.save(date)
+      },
+      Add (index) {
+        this.range += 1
+      },
+      Remove (index) {
+        this.departmentPosition.splice(index, 1)
+        document.getElementById(index).remove()
+        if (this.dataUser.id)
+        {
+          this.user.departments.data.splice(index, 1)
+        }
+      },
+      status_txt ()
+      {
+        if (this.user.status) { this.status = 'Kích hoạt' } else { this.status = 'Không kích hoạt' }
+      },
     gender_txt () {
       if (this.user.gender) { this.gender = 'Nam' } else { this.gender = 'Nữ' }
     },
-    validateBeforeSubmit () {
-      this.$validator.validateAll().then(result => {
-        if (result) {
-          this.user.departments = this.departmentPosition
-          this.$emit('submit', this.user)
-        } else {
-          this.$store.dispatch('showNotify', {
-            text: this.$t('alert.invalid'),
-            color: 'warning'
-          })
-        }
-      })
-    },
-    // upload image
-    pickFile () {
-      this.$refs.image.click()
-    },
-    onFilePicked (e) {
-      const files = e.target.files
-      if (files[0] !== undefined) {
-        this.user.avatar = files[0].name
-        if (this.user.avatar.lastIndexOf('.') <= 0) {
-          return
-        }
-        const fr = new FileReader()
-        fr.readAsDataURL(files[0])
-        fr.addEventListener('load', () => {
-          this.imageUrl = fr.result
-          this.imageFile = files[0] // this is an image file that can be sent to server...
-        })
+  validateBeforeSubmit () {
+    this.$validator.validateAll().then(result => {
+      if (result) {
+        let user = Object.assign({}, this.user)
+        user.gender = user.gender ? 1 : 0
+        user.status = user.status ? 1 : 0
+        this.$emit('submit', this.user)
       } else {
-        this.user.avatar = ''
-        this.imageFile = ''
-        this.imageUrl = ''
+        this.$store.dispatch('showNotify', {
+          text: this.$t('alert.invalid'),
+          color: 'warning'
+        })
       }
-    },
+    })
+  },
+  pickFile () {
+    this.$refs.image.click()
+  },
+  onFilePicked (e) {
+    const files = e.target.files
+    if (files[0] !== undefined) {
+      this.user.avatar = files[0].name
+      if (this.user.avatar.lastIndexOf('.') <= 0) {
+        return
+      }
+      const fr = new FileReader()
+      fr.readAsDataURL(files[0])
+      fr.addEventListener('load', () => {
+        this.imageUrl = fr.result
+              this.imageFile = files[0] // this is an image file that can be sent to server...
+            })
+    } else {
+      this.user.avatar = ''
+      this.imageFile = ''
+      this.imageUrl = ''
+    }
+  },
     // end upload image
     positionAndDepartment (updated, index) {
       this.departmentPosition[index] = updated
+      this.user.departments = this.departmentPosition
     }
   },
   mounted () {
@@ -369,7 +376,9 @@ export default{
     if (this.dataUser.id) {
       this.range = this.dataUser.departments.data.length
     }
-    !!this.dataUser && this.setInitData()
+    this.dataUser && this.setInitData()
+    this.status_txt ()
+    this.gender_txt()
   }
 }
 </script>

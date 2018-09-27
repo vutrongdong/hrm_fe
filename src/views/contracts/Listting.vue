@@ -49,9 +49,9 @@
 <script>
 import DialogConfirm from '@/components/DialogConfirm'
 import { mapActions, mapGetters } from 'vuex'
-  export default{
-    components: {
-      DialogConfirm
+export default{
+  components: {
+    DialogConfirm
   },
   data: () => ({
     idContract: null,
@@ -61,8 +61,8 @@ import { mapActions, mapGetters } from 'vuex'
       { text: 'STT', sortable: false },
       { text: 'Tiêu đề', sortable: false },
       { text: 'Loại hợp đồng', sortable: false },
-      { text: 'Trạng thái', sortable: false},
-      { text: 'Tên nhân viên', sortable: false},
+      { text: 'Trạng thái', sortable: false },
+      { text: 'Tên nhân viên', sortable: false },
       { text: 'Hành động', sortable: false }
     ]
   }),
@@ -73,7 +73,7 @@ import { mapActions, mapGetters } from 'vuex'
   created () {
     this.fetchContract()
   },
-   methods: {
+  methods: {
     ...mapActions(['setMiniDrawer']),
     ...mapActions('Contracts', ['fetchContract', 'deleteContract']),
     ...mapActions(['showNotify', 'setMiniDrawer']),
@@ -110,6 +110,6 @@ import { mapActions, mapGetters } from 'vuex'
         })
       }
     }
-   }
   }
+}
 </script>

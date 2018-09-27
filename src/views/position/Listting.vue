@@ -187,7 +187,6 @@ export default{
             this.fetchPosition()
           }
         })
-
       } else {
         this.updatePosition({
           id: this.idPosition,

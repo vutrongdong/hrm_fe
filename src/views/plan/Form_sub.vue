@@ -108,8 +108,8 @@ export default{
       this.$emit('positionAndDepartment', this.object)
     },
     setInitData () {
-      let dataPlan = {...this.dataPlan}
-      this.plan = {...this.plan, ...dataPlan}
+      let dataPlan = { ...this.dataPlan }
+      this.plan = { ...this.plan, ...dataPlan }
     }
 
   },

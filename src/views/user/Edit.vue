@@ -9,7 +9,7 @@
           <v-icon>close</v-icon>
         </v-btn>
       </v-toolbar>
-      <v-container>
+      <v-container class="white scroll-y border-e0-top" :style="{height: dataViewHeight + 'px'}">
         <user-form v-if="userDetail.id" @submit="submitForm" type="edit" :dataUser="userDetail" />
       </v-container>
     </v-flex>
@@ -20,7 +20,7 @@ import UserForm from './Form'
 import Listting from './Listting'
 import { mapActions, mapGetters } from 'vuex'
 export default{
-  name: 'CreateUser',
+  name: 'EditUser',
   components: {
     UserForm,
     Listting
@@ -52,16 +52,18 @@ export default{
             text: 'Thành công'
           })
           this.setUser({ user: response.data })
-          // this.$router.push({ name: 'user' })
+          this.updateDataviewEntry({
+            name: 'user',
+            data: response.data,
+            key: 'id'
+          })
+          this.$router.push({ name: 'user', params: { id: this.$route.params.id } })
         }
       })
     }
   },
   created () {
-    // this.setMiniDrawer(true)
-    // if (!this.userDetail.id) {
     this.getUser({ userId: this.$route.params.id, params: { include: 'roles,departments' } })
-    // }
   },
   mounted () {
     this.dataViewHeight = this.$refs.laylout.clientHeight - 48

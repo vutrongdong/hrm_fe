@@ -119,7 +119,7 @@ export default{
     editedIndex: -1,
     department: {
       name: '',
-      status:0,
+      status: 0,
       branch_id: ''
     },
     defaultItem: {

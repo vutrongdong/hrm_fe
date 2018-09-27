@@ -1,5 +1,4 @@
 <template>
-
   <v-container>
     <v-form @submit.prevent="validateBeforeSubmit">
       <v-tabs centered color="cyan" dark icons-and-text md12>
@@ -75,7 +74,7 @@
                 placeholder="Chọn một thành phố" > </v-select>
                 <!-- district -->
                 <v-select
-                v-if="districtAll.districts.data"
+                v-if="Array.isArray(districtAll)"
                 :disabled = "!districtActive"
                 v-validate="'required'"
                 :error-messages="errors.has('district_id') ? errors.collect('district_id') : []"
@@ -83,7 +82,7 @@
                 name="district_id"
                 :label="$t('label.district_id')+ '*'"
                 v-model="branch.district_id"
-                :items="districtAll.districts.data"
+                :items="districtAll"
                 item-value="id"
                 item-text="name"
                 placeholder="Hãy chọn một quận hoặc huyện"> </v-select>
@@ -233,8 +232,8 @@ export default{
   data () {
     return {
       districtActive: false,
-      type_branch: 'Chi nhánh Chính',
-      status: 'Hoạt động',
+      type_branch: '',
+      status: '',
       districtAll: {},
       branch: {
         name: '',
@@ -254,6 +253,11 @@ export default{
         district_id: '',
         status: true
       }
+    }
+  },
+  watch:{
+    dataBranch(val){
+      this.branch = val
     }
   },
   methods: {
@@ -284,6 +288,8 @@ export default{
           let branch = Object.assign({}, this.branch)
           branch.status = branch.status ? 1 : 0
           branch.type = branch.type ? 1 : 0
+          // console.log("status",branch.status)
+          // return false
           this.$emit('submit', branch)
         } else {
           this.$store.dispatch('showNotify', {
@@ -304,15 +310,10 @@ export default{
           this.districtAll = this.districtByCity
         }
       })
-    } else {
-      this.getDistrictByCity({
-        cityId: 1,
-        cb: () => {
-          this.districtAll = this.districtByCity
-        }
-      })
     }
     this.getCity()
+    this.statusBranch ()
+    this.typeBranch ()
   }
 }
 </script>
