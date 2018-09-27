@@ -8,7 +8,7 @@
       <v-icon>add</v-icon> </v-btn> </h3>
       <v-layout row wrap :key="index" v-for="(department, index) in user.departments">
         <v-flex md4>
-          <label>Chi nhánh {{ department }}</label>
+          <label>Chi nhánh</label>
           <v-select
           v-model="user.departments[index].branch_id"
           label="Chi nhánh"

@@ -23,7 +23,7 @@
           src="../assets/logo.png"
           alt="Gostore"
         >
-        <span class="hidden-sm-and-down">Gostore</span>
+        <span class="hidden-sm-and-down">HRM</span>
       </v-toolbar-title>
       <breadcrumb class="hidden-sm-and-down" />
       <v-spacer></v-spacer>

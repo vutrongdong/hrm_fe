@@ -19,8 +19,8 @@
       </v-tab>
       <!-- tab1 -->
       <v-tab-item id="tab-1" style="margin:30px 0px">
-        <v-card flat row>{{ dataUser.departments.data }}
-         <h3>Thông tin tài khoản</h3>{{ dataUser }}
+        <v-card flat row>
+         <h3>Thông tin tài khoản</h3>
          <v-layout>
           <v-flex md6 style="margin-right:10px">
             <!-- email -->
