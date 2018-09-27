@@ -14,7 +14,7 @@
 </template>
 <script type="text/javascript">
 import ContractForm from './Form'
-import { mapActions, mapGetters } from 'vuex'
+import { mapActions } from 'vuex'
 export default{
   name: 'CreateContract',
   components: {

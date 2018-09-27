@@ -150,7 +150,6 @@ export default {
     this.getBranchForUser()
     this.fetchPosition()
     !!this.dataUser && this.setInitData()
-
     if (this.$route.params.id) {
       if (this.dataUser.departments.data[this.index]) {
         this.departmentActive = true

@@ -161,24 +161,10 @@ export default {
           access_permission: 'candidate.view'
         },
         {
-          icon: 'fas fa-object-group',
+          icon: 'fab fa-playstation',
           text: this.$t('title.plan.index'),
-          access_permission: 'plan.view',
-          model: false,
-          children: [
-            {
-              icon: 'fab fa-playstation',
-              text: this.$t('title.plan.index'),
-              router: { name: 'plan' },
-              access_permission: 'plan.view'
-            },
-            {
-              icon: 'fas fa-cube',
-              text: this.$t('title.plandetail.index'),
-              router: { name: 'plandetail' },
-              access_permission: 'plandetail.view'
-            }
-          ]
+          router: { name: 'plan' },
+          access_permission: 'plan.view'
         }
       ]
     }

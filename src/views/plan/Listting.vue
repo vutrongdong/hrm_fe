@@ -6,12 +6,12 @@
                <v-spacer></v-spacer>
                <h3>Danh sách kế hoạch tuyển dụng</h3>
                <v-spacer></v-spacer>
-            <router-link v-bind:to="{path: '/plan/create'}">
-               <v-btn  class="mr-5" icon color="primary"  v-if="canAccess('plan.create')">
+               <v-btn  class="mr-5" @click="$router.push({name: 'plan-create'})"
+               icon color="primary"  v-if="canAccess('plan.create')">
                     <v-icon>add</v-icon>
                </v-btn>
-            </router-link>
            </v-toolbar>
+           <v-container>
             <v-data-table
                 v-if="Array.isArray(planDetail)"
                 :headers="headers"
@@ -24,11 +24,19 @@
                   <td style="text-transform: capitalize">{{ props.item.title }}</td>
                   <td>{{ props.item.content }}</td>
                   <td>{{props.item.status_txt }}</td>
-                  <td id="action"><router-link  v-bind:to="{name: 'plan-edit', params: {id: props.item.id}}"> <v-icon v-if="canAccess('candidate.update')" class="mr-6"  color="green"> edit</v-icon></router-link></td>
-                  <td id="action"><v-icon v-if="canAccess('plan.delete')" icon @click="removeConfirm(props.item.id)" color="red"> delete </v-icon></td>
+                  <td id="action">
+                   <v-icon style="margin-right: 15px" v-if="canAccess('candidate.update')" class="mr-6"
+                         @click="$router.push({name: 'plan-edit', params: {id: props.item.id}})"
+                     color="green"> edit</v-icon>
+
+                <v-icon v-if="canAccess('plan.delete')"
+                 icon @click="removeConfirm(props.item.id)"
+                 color="red"> delete </v-icon>
+                  </td>
             </template>
             </v-data-table>
-              <dialog-confirm v-model="dialogDelete" @input="remove" />
+            </v-container>
+            <dialog-confirm v-model="dialogDelete" @input="remove" />
         </div>
       </v-app>
     </div>
@@ -48,8 +56,7 @@ export default{
       { text: 'Tên kế hoạch', sortable: false },
       { text: 'Nội dung', sortable: false },
       { text: 'Trạng thái', sortable: false },
-      { text: 'Sửa', sortable: false },
-      { text: 'Xóa', sortable: false }
+      { text: 'Hành động', sortable: false }
     ]
   }),
   computed: {

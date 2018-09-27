@@ -31,13 +31,13 @@
                     <!-- value -->
                     <!-- status -->
                     <v-flex xs12 sm6 md12>
-                        <label style="margin-top:10px">Trạng Thái</label>
+                        <label style="margin-top:10px">Trạng thái</label>
                         <v-flex row>
                           <v-checkbox
                           @change="status_txt"
                           :label="status"
                           class="checkbox"
-                          style="margin-left:20px;margin-top:0px"
+                          style="margin-top:0px"
                           name="status"
                           v-model="department.status">
                         </v-checkbox>
@@ -83,10 +83,10 @@
                   <template slot="items" slot-scope="props">
                       <td> {{props.index + 1}} </td>
                       <td style="text-transform: capitalize">{{ props.item.name }}</td>
+                       <td v-for="(branch , index) in branchAll" :key='index' v-if="branch.id === props.item.branch_id"> {{branch.name}} </td>
                       <td>{{ props.item.status_txt }}</td>
-                      <td v-for="(branch , index) in branchAll" :key='index' v-if="branch.id === props.item.branch_id"> {{branch.name}} </td>
                       <td id="action">
-                      <v-icon v-if="canAccess('department.update')" class="mr-6" @click="editItem(props.item,props.item.id)" color="green"> edit</v-icon>
+                      <v-icon v-if="canAccess('department.update')" class="mr-6" @click="editItem(props.item,props.item.id)" style="margin-right: 15px" color="green"> edit</v-icon>
                       <v-icon v-if="canAccess('department.delete')" icon @click="removeConfirm(props.item.id)" color="red"> delete </v-icon>
                       </td>
                 </template>
@@ -112,9 +112,9 @@ export default{
     headers: [
       { text: 'STT', sortable: false },
       { text: 'Tên bộ phận', sortable: false },
-      { text: 'Trạng thái', sortable: false },
       { text: 'Tên chi nhánh', sortable: false },
-      { text: 'Action', sortable: false }
+      { text: ' Trạng thái', sortable: false },
+      { text: 'Hành động', sortable: false }
     ],
     editedIndex: -1,
     department: {
@@ -209,7 +209,9 @@ export default{
           cb: (response) => {
             this.dialog = false
             setTimeout(() => {
-              this.department = Object.assign({}, this.defaultItem)
+              let department = Object.assign({}, this.department)
+              department.status = department.status ? 1 : 0
+              console.log('department :', department)
               this.editedIndex = -1
             }, 300)
             this.showNotify({
@@ -231,7 +233,9 @@ export default{
             })
             this.dialog = false
             setTimeout(() => {
-              this.position = Object.assign({}, this.defaultItem)
+              let department = Object.assign({}, this.department)
+              department.status = department.status ? 1 : 0
+              console.log('department :', department)
               this.editedIndex = -1
             }, 300)
           }

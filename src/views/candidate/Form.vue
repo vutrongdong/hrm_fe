@@ -254,7 +254,6 @@ export default{
       this.$refs.menu1.save(date)
     }
   },
-
   created () {
     this.fetchPosition()
     this.fetchPlan()
@@ -262,11 +261,3 @@ export default{
   }
 }
 </script>
-<style>
-  tr th{
-padding-left: 50px !important;
-  }
-  tr td {
-    padding-left: 40px !important;
-}
-</style>

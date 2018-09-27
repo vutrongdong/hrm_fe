@@ -1,18 +1,7 @@
-@ <template>
+ <template>
 <v-form  @submit.prevent="validateBeforeSubmit">
         <v-container fluid>
           <v-layout row wrap>
-          <v-flex xs6>
-              <v-text-field
-              :error-messages="errors.has('code') ? errors.collect('code') : []"
-              v-validate="'required|min:3'"
-              :data-vv-as="$t('label.code')"
-              name="code"
-              :label="$t('label.code') + '*'"
-              v-model="contract.code">
-            </v-text-field>
-          </v-flex>
-
             <v-flex xs6>
                <v-text-field
               :error-messages="errors.has('title') ? errors.collect('title') : []"
@@ -23,10 +12,7 @@
               v-model="contract.title">
             </v-text-field>
             </v-flex>
-        </v-layout>
-
-        <v-layout row wrap>
-          <v-flex xs6>
+        <v-flex xs6>
              <v-select
                   v-validate="'required'"
                   :error-messages="errors.has('type') ? errors.collect('type') : []"
@@ -40,7 +26,9 @@
                   item-text="name">
             </v-select>
           </v-flex>
+        </v-layout>
 
+        <v-layout row wrap>
             <v-flex xs6>
                  <v-select
                   v-validate="'required'"
@@ -54,10 +42,8 @@
                   item-text="name">
             </v-select>
             </v-flex>
-        </v-layout>
 
-         <v-layout row wrap>
-                <v-flex xs6>
+            <v-flex xs6>
                    <template>
                       <v-menu
                       ref="menu"
@@ -71,7 +57,7 @@
                       <v-text-field
                       slot="activator"
                       v-model="contract.date_sign"
-                      label="date_sign"
+                      label="Ngày ký"
                       readonly >
                       </v-text-field>
 
@@ -83,7 +69,9 @@
                       @change="save"> </v-date-picker> </v-menu>
                     </template>
                 </v-flex>
+        </v-layout>
 
+         <v-layout row wrap>
             <v-flex xs6>
                 <template>
                   <v-menu
@@ -95,7 +83,7 @@
                   offset-y full-width min-width="290px">
                   <v-text-field slot="activator"
                   v-model="contract.date_effective"
-                  label="date_effective" readonly >
+                  label="Ngày có hiệu lực" readonly >
                   </v-text-field>
 
                   <v-date-picker
@@ -108,9 +96,8 @@
                   </v-menu>
                 </template>
                 </v-flex>
-        </v-layout>
-         <v-layout row wrap>
-                <v-flex xs6>
+
+                 <v-flex xs6>
                    <template>
                       <v-menu
                       ref="menu2"
@@ -124,7 +111,7 @@
                       <v-text-field
                       slot="activator"
                       v-model="contract.date_expiration"
-                      label="date_expiration"
+                      label="Ngày hết hạn"
                       readonly >
                       </v-text-field>
                       <v-date-picker
@@ -135,6 +122,8 @@
                       @change="save2"> </v-date-picker> </v-menu>
                     </template>
                 </v-flex>
+        </v-layout>
+         <v-layout row wrap>
               <v-flex xs6>
                  <v-select
                   v-validate="'required'"
@@ -207,7 +196,7 @@ export default{
         date_expiration: '',
         user_id: 1
       },
-      status: [
+      types: [
         {
           'id': 0,
           'name': 'Học việc'
@@ -233,7 +222,7 @@ export default{
           'name': 'Khác'
         }
       ],
-      types: [
+      status: [
         {
           'id': 0,
           'name': 'Tiêu chuẩn'
@@ -259,7 +248,6 @@ export default{
     menu2 (val) {
       val && this.$nextTick(() => (this.$refs.picker.activePicker = 'YEAR'))
     }
-
   },
   methods: {
     ...mapActions(['fetchApi']),
