@@ -19,8 +19,8 @@
       </v-tab>
       <!-- tab1 -->
       <v-tab-item id="tab-1" style="margin:30px 0px">
-        <v-card flat row>
-         <h3>Thông tin tài khoản</h3>
+        <v-card flat row>{{ dataUser.departments.data }}
+         <h3>Thông tin tài khoản</h3>{{ dataUser }}
          <v-layout>
           <v-flex md6 style="margin-right:10px">
             <!-- email -->
@@ -193,23 +193,10 @@
       </v-tab-item>
       <v-tab-item id="tab-3" style="margin-top:30px">
         <v-flex md-11>
-          <!-- branch,department,position -->
-          <h3>Chi nhánh, phòng ban, vị trí
-            <v-btn class="mr-3"
-            icon color="primary"
-            @click="Add">
-            <v-icon>add</v-icon> </v-btn> </h3>
             <!-- form sub -->
-            <children
-            :id="index"
-            :index = "index"
-            :key="index"
-            :user="user"
-            v-for="(n, index) in range"
+            <form_Sub
             :dataUser="user"
-            v-if="user.id"
-            v-on:positionAndDepartment="positionAndDepartment($event, index)"
-            @delete="Remove(index)"> </children> </v-flex>
+            v-on:positionAndDepartment="positionAndDepartment($event)"> </form_Sub> </v-flex>
             <!-- tab3 -->
           </v-tab-item>
         </v-tabs>
@@ -235,10 +222,10 @@
   <script>
   import { mapGetters, mapActions } from 'vuex'
   import { map } from 'lodash'
-  import children from './Form_sub'
+  import form_Sub from './Form_sub'
   export default{
     name: 'UserForm',
-    components: { children },
+    components: { form_Sub },
     computed: {
       ...mapGetters(['isFetchingApi']),
       isCreate () {
@@ -288,6 +275,7 @@
       ...mapActions(['fetchApi']),
       setInitData () {
         let dataUser = { ...this.dataUser }
+        console.log('let',dataUser)
         if (dataUser.roles) {
           dataUser.roles = map(dataUser.roles.data, (role) => {
             return role.id
@@ -297,17 +285,6 @@
       },
       save (date) {
         this.$refs.menu.save(date)
-      },
-      Add (index) {
-        this.range += 1
-      },
-      Remove (index) {
-        this.departmentPosition.splice(index, 1)
-        document.getElementById(index).remove()
-        if (this.dataUser.id)
-        {
-          this.user.departments.data.splice(index, 1)
-        }
       },
       status_txt ()
       {
@@ -372,9 +349,6 @@
     })
   },
   created () {
-    if (this.dataUser.id) {
-      this.range = this.dataUser.departments.data.length
-    }
     this.dataUser && this.setInitData()
     this.status_txt ()
     this.gender_txt()

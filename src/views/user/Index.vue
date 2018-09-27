@@ -37,7 +37,7 @@
         </template>
       </v-data-table>
       <div class="text-xs-center">
-        <v-dialog v-model="dialogDetail" width="500">
+        <v-dialog v-model="dialogDetail" width="550">
           <v-card>
             <v-card-title style="text-transform:uppercase" class="headline grey lighten-2" primary-title >
               <p style="width:100%;"  class="text-md-center" v-if="userDetail.name">{{ userDetail.name }}</p>

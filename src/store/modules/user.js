@@ -51,6 +51,7 @@ const actions = {
         method: 'GET',
         params: params || {},
         success: (response) => {
+          console.log(response.data)
           commit(SET_USER, response.data)
         }
       },
