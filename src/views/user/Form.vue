@@ -310,7 +310,7 @@ export default{
     pickFile () {
       this.$refs.image.click()
     },
-    //upload image
+    // upload image
     onFilePicked (e) {
       const files = e.target.files
       if (files[0] !== undefined) {

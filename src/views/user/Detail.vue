@@ -36,13 +36,13 @@
       </v-layout>{{ userDetail.departments.data[0].name }}
       <v-layout row v-if="userDetail.departments">
         <v-flex style="margin-top:40px;">
-          <p row style="margin-top:-20px;">
+          <!-- <p row style="margin-top:-20px;">
               <p v-for='department in userDetail.departments.data' style="margin-left:15px;" :key="'department' + department.id">
-                <!-- <p color="green" text-color="white" v-if="department.branch">{{ department.branch.data.name }}</p>
+                <p color="green" text-color="white" v-if="department.branch">{{ department.branch.data.name }}</p>
                 <p color="orange" text-color="white">{{ department.name }}</p>
-                <p color="teal" text-color="white">{{ department.position_name }} --></p>
+                <p color="teal" text-color="white">{{ department.position_name }}</p>
               </p>
-          </p>
+          </p> -->
         </v-flex>
       </v-layout>
     </v-container>

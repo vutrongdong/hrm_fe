@@ -2,17 +2,62 @@
   <v-layout ref="laylout" column fill-height>
     <div ref="header">
       <v-toolbar dense color="white" flat>
-        <v-btn v-if="canAccess('user.create')" class="mr-3" icon color="primary" @click="$router.push({name: 'user-create'})">
+        <v-btn v-if="canAccess('user.create')" class="mr-3 mt-3" icon color="primary" @click="$router.push({name: 'user-create'})">
           <v-icon>add</v-icon>
         </v-btn>
-        <v-text-field
-        hide-details
-        single-line
-        placeholder="Tìm kiếm"
-        v-model="params.q"
-        @keypress="changeSearch"
-        clearable
-        ></v-text-field>
+        <v-flex xs3>
+          <v-text-field
+          hide-details
+          single-line
+          placeholder="Nhập tên, sđt, email ..."
+          v-model="params.q"
+          @keyup="changeSearch"
+          clearable
+          ></v-text-field>
+        </v-flex>
+        <v-flex xs3>
+          <v-select
+          class='ml-2'
+          @change="changeBranch"
+          placeholder="Chi nhánh"
+          :items="branchAll"
+          item-text="name"
+          item-value="id"
+          v-model="params.branch_id"
+          menu-props="auto"
+          hide-details
+          single-line
+          ></v-select>
+        </v-flex>
+        <v-flex xs3>
+          <v-select
+          :disabled = "!departmentActiveByBranch"
+          class='ml-2'
+          @change="filter"
+          placeholder="Phòng ban"
+          :items="departments"
+          item-text="name"
+          item-value="id"
+          v-model="params.department_id"
+          menu-props="auto"
+          hide-details
+          single-line
+          ></v-select>
+        </v-flex>
+        <v-flex xs3>
+          <v-select
+          class='ml-2'
+          @change="filter"
+          placeholder="Chức vụ"
+          :items="branchAll"
+          item-text="name"
+          item-value="id"
+          v-model="params.position"
+          menu-props="auto"
+          hide-details
+          single-line
+          ></v-select>
+        </v-flex>
         <v-layout slot="extension" v-if="!isMini">
           <v-flex sm1 class="text-bold text-uppercase">
             STT
@@ -108,8 +153,9 @@
 </template>
 
 <script>
+import { debounce } from 'lodash'
 import DataView from '@/components/DataView/DataView'
-import { mapActions } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
 export default{
   name: 'UserListting',
   props: {
@@ -122,20 +168,47 @@ export default{
     DataView
   },
   data: () => ({
+    departmentActiveByBranch: false,
     dataViewHeight: 0,
     dataViewName: 'user',
+    departments: [],
     params: {
       q: '',
+      branch_id: '',
+      department_id: '',
+      position_id: '',
       include: 'roles,departments'
     }
   }),
+  computed:{
+    ...mapGetters('Branch', ['branchAll']),
+    ...mapGetters('Department', ['departmentByBranch'])
+  },
   methods: {
     ...mapActions('User', ['getUser']),
+    ...mapActions('Branch', ['getBranchForUser']),
+    ...mapActions('Department', ['getDepartmentForUser']),
     userDetail (user) {
       this.getUser({ userId: user.id, params: { include: 'roles,departments' } })
       this.$router.push({name: 'user-detail', params: {id: user.id}})
     },
-    changeSearch () {
+    changeSearch: debounce(function () {
+      this.filter()
+    }, 500),
+    // lọc chi phòng ban theo chi nhánh
+    changeBranch: debounce(function (value) {
+      this.departmentActiveByBranch = true
+      this.getDepartmentForUser({
+        branchId: value,
+        params: { include: 'departments' },
+        cb: () => {
+          console.log(this.departments)
+          this.departments = this.departmentByBranch
+        }
+      })
+      this.filter()
+    }, 500),
+    filter () {
       this.$refs[this.dataViewName].$emit('reload')
     }
   },
@@ -151,11 +224,9 @@ export default{
         query: query
       })
     }
+  },
+  created(){
+    this.getBranchForUser()
   }
 }
 </script>
-<style scoped>
-#stt.sm1{
- flex-basis:50px;
-}
-</style>

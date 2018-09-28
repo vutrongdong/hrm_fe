@@ -63,7 +63,7 @@
       </v-layout>
     </template>
 <script>
-import { filter } from 'lodash'
+// import { filter } from 'lodash'
 import { mapGetters, mapActions } from 'vuex'
 export default {
   name: 'UserFormSub',
@@ -117,9 +117,9 @@ export default {
       this.user.departments.splice(index, 1)
     },
     changeBranch (value) {
-      let array = [...this.user.departments]
-      let filters = filter(array, function (object) { return object.branch_id = value })
-      return filters
+      // let array = [...this.user.departments]
+      // let filters = filter(array, function (object) { return object.branch_id = value })
+      // return filters
       // this.getDepartmentForUser({
       //   branchId: value,
       //   params: { include: 'departments' },
@@ -129,9 +129,9 @@ export default {
       // })
     },
     getBranch (value) {
-      let array = [...this.user.departments]
-      let filters = filter(array, function (object) { return object.branch_id = value })
-      return filters
+      // let array = [...this.user.departments]
+      // let filters = filter(array, function (object) { return object.branch_id = value })
+      // return filters
     },
     changeDepartment (value) {
       // this.valDepartment = value

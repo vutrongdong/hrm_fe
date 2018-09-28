@@ -108,12 +108,12 @@ export default {
     dialogDetail: false,
     dialogDelete: false,
     title: [
-    { text: 'Tên chi nhánh', sortable: false },
-    { text: 'Email', sortable: false },
-    { text: 'Mã sô thuế', sortable: false },
-    { text: 'Địa chỉ', sortable: false },
-    { text: 'Trạng thái', sortable: false },
-    { text: 'Các hành động', sortable: false }
+      { text: 'Tên chi nhánh', sortable: false },
+      { text: 'Email', sortable: false },
+      { text: 'Mã sô thuế', sortable: false },
+      { text: 'Địa chỉ', sortable: false },
+      { text: 'Trạng thái', sortable: false },
+      { text: 'Các hành động', sortable: false }
     ]
   }),
   computed: {
@@ -161,7 +161,7 @@ export default {
   created () {
     this.getBranchs()
   },
-  mounted(){
+  mounted () {
     this.dataViewHeight = this.$refs.laylout.clientHeight - 49
     let query = {...this.$route.query}
     if (query.hasOwnProperty('reload')) {
