@@ -41,7 +41,7 @@ const actions = {
     dispatch(
       'fetchApi',
       {
-        url: `cities/${cityId}?include=districts`,
+        url: `districts/cities/${cityId}`,
         method: 'GET',
         success: (response) => {
           commit(SET_DISTRICTS, response.data)

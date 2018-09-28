@@ -25,7 +25,7 @@ const state = {
 const actions = {
   setUser ({ commit }, payload) {
     let { users } = payload
-    commit(SET_USER, users)
+    commit(SET_USERS, users)
   },
   getUsers ({ commit, dispatch }, payload) {
     let { params } = payload
@@ -51,6 +51,7 @@ const actions = {
         method: 'GET',
         params: params || {},
         success: (response) => {
+          console.log(response.data)
           commit(SET_USER, response.data)
            console.log("id and user :", userId);
           console.log("data user ",response);

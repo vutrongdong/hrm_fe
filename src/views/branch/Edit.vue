@@ -19,7 +19,7 @@
 import BranchForm from './Form'
 import { mapActions, mapGetters } from 'vuex'
 export default{
-  name: 'CreateBranch',
+  name: 'EditBranch',
   components: {
     BranchForm
   },
@@ -61,11 +61,8 @@ export default{
     }
   },
   created () {
-    this.setMiniDrawer(true)
-    if (!this.branchDetail.id) {
-      this.getBranch({ branchId: this.$route.params.id })
-      this.getBranchs()
-    }
+    // this.setMiniDrawer(true)
+    this.getBranch({ branchId: this.$route.params.id })
   },
   mounted () {
     this.dataViewHeight = this.$refs.laylout.clientHeight - 48

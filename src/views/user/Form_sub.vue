@@ -1,4 +1,4 @@
-<template>
+ <template>
   <v-layout row wrap align-center style="margin-top: 20px;">
     <!-- branch,department,position -->
     <h3>Chi nhánh, phòng ban, vị trí
@@ -105,8 +105,8 @@
         ...mapActions('Branch', ['getBranchForUser']),
         ...mapActions('Department', ['getDepartmentForUser']),
         Add(){
-          this.user.departments.push({})
-        },
+           this.user.departments.push({})
+         },
         Delete(index){
           this.user.departments.splice(index, 1)
         },
@@ -114,14 +114,14 @@
           let array = [...this.user.departments]
           let filters = filter(array, function(object) { return object.branch_id = value })
           return filters
-      this.getDepartmentForUser({
-          branchId: value,
-          params: { include: 'departments' },
-          cb: () => {
-            this.departments = this.departmentByBranch
-          }
-        })
-      },
+        // this.getDepartmentForUser({
+        //   branchId: value,
+        //   params: { include: 'departments' },
+        //   cb: () => {
+        //     this.departments = this.departmentByBranch
+        //   }
+        // })
+              },
       getBranch(value){
         let array = [...this.user.departments]
         let filters = filter(array, function(object) { return object.branch_id = value })
@@ -170,7 +170,7 @@
         if (this.dataUser.departments.data[this.index]) {
           this.departmentActive = true
           this.positionActive = true
-          console.log("objectdong",this.objectDepartment['department_id'])
+
         }
       }
     }

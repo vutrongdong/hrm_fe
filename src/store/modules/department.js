@@ -119,6 +119,7 @@ const getters = {
   departmentByBranch: (state) => state.department,
   departmentDetail: (state) => state.department
   // departmentAll: (state) => state.department
+
 }
 
 export default {

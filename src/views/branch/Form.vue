@@ -74,7 +74,7 @@
                 placeholder="Chọn một thành phố" > </v-select>
                 <!-- district -->
                 <v-select
-                v-if="districtAll.districts.data"
+                v-if="Array.isArray(districtAll)"
                 :disabled = "!districtActive"
                 v-validate="'required'"
                 :error-messages="errors.has('district_id') ? errors.collect('district_id') : []"
@@ -82,7 +82,7 @@
                 name="district_id"
                 :label="$t('label.district_id')+ '*'"
                 v-model="branch.district_id"
-                :items="districtAll.districts.data"
+                :items="districtAll"
                 item-value="id"
                 item-text="name"
                 placeholder="Hãy chọn một quận hoặc huyện"> </v-select>
@@ -185,7 +185,6 @@
           </v-card>
         </v-tab-item>
       </v-tabs>
-      {{dataBranch}}
       <v-flex xs12 text-xs-center>
         <v-btn
         :loading="isFetchingApi"
@@ -233,8 +232,8 @@ export default{
   data () {
     return {
       districtActive: false,
-      type_branch: 'Chi nhánh Chính',
-      status: 'Hoạt động',
+      type_branch: '',
+      status: '',
       districtAll: {},
       branch: {
         name: '',
@@ -289,6 +288,8 @@ export default{
           let branch = Object.assign({}, this.branch)
           branch.status = branch.status ? 1 : 0
           branch.type = branch.type ? 1 : 0
+          // console.log("status",branch.status)
+          // return false
           this.$emit('submit', branch)
         } else {
           this.$store.dispatch('showNotify', {
@@ -301,6 +302,7 @@ export default{
   },
   created () {
     !!this.dataBranch && this.setInitData()
+    console.log(this.dataBranch.city_id)
     if (this.$route.params.id) {
       this.districtActive = true
       this.getDistrictByCity({
@@ -309,7 +311,7 @@ export default{
           this.districtAll = this.districtByCity
         }
       })
-    } else {
+    }else{
       this.getDistrictByCity({
         cityId: 1,
         cb: () => {
@@ -318,6 +320,8 @@ export default{
       })
     }
     this.getCity()
+    this.statusBranch()
+    this.typeBranch()
   }
 }
 </script>

@@ -125,8 +125,3 @@ export default{
 
 }
 </script>
-<style type="text/css" scope>
-  .v-input.v-text-field{
-        margin-top: -3px;
-  }
-</style>
