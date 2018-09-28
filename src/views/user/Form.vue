@@ -19,8 +19,8 @@
       </v-tab>
       <!-- tab1 -->
       <v-tab-item id="tab-1" style="margin:30px 0px">
-        <v-card flat row>{{ dataUser.departments.data }}
-         <h3>Thông tin tài khoản</h3>{{ dataUser }}
+        <v-card flat row>
+         <h3>Thông tin tài khoản</h3>
          <v-layout>
           <v-flex md6 style="margin-right:10px">
             <!-- email -->
@@ -194,17 +194,15 @@
       <v-tab-item id="tab-3" style="margin-top:30px">
         <v-flex md-11>
             <!-- form sub -->
-<<<<<<< HEAD
             <children
             :id="index"
             :index = "index"
             :key="index"
             :user="user"
-=======
-            <form_Sub
->>>>>>> fea244b400bbaf24ecebfc964e855756721e76a3
             :dataUser="user"
-            v-on:positionAndDepartment="positionAndDepartment($event)"> </form_Sub> </v-flex>
+            v-on:positionAndDepartment="positionAndDepartment($event)">
+            </children>
+             </v-flex>
             <!-- tab3 -->
           </v-tab-item>
         </v-tabs>

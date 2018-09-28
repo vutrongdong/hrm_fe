@@ -11,7 +11,6 @@
       </v-toolbar>
       <v-container class="white scroll-y border-e0-top" :style="{height: dataViewHeight + 'px'}">
         <user-form v-if="userDetail.id" @submit="submitForm" type="edit" :dataUser="userDetail" />
-        {{ userDetail }}
       </v-container>
     </v-flex>
   </v-layout>
@@ -39,8 +38,8 @@ export default{
     ...mapActions('User', ['updateUser', 'getUser', 'setUser']),
     ...mapActions('Dataview', ['updateDataviewEntry']),
     submitForm (formData) {
-      console.log(formData)
-      return false
+      // console.log(formData)
+      // return false
       this.updateUser({
         id: this.$route.params.id,
         user: formData,

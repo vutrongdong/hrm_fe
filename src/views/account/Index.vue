@@ -9,7 +9,7 @@
                 <v-card class="card-box">
                   <div v-if="tab === 'login'">
                     <div class="panel-heading">
-                      <h4 class="text-center"> Đăng nhập vào <strong>Gostore</strong></h4>
+                      <h4 class="text-center"> Đăng nhập vào <strong>HRM</strong></h4>
                     </div>
                     <v-card flat>
                       <v-card-text class="p-20">
@@ -19,7 +19,7 @@
                   </div>
                   <div v-else>
                     <div class="panel-heading">
-                      <h4 class="text-center"> Đăng ký đến <strong>Gostore</strong></h4>
+                      <h4 class="text-center"> Đăng ký đến <strong>HRM</strong></h4>
                     </div>
                     <v-card flat>
                       <v-card-text class="p-20">
