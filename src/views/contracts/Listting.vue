@@ -27,6 +27,8 @@
                   <td> {{props.item.type_txt}} </td>
                   <td> {{ props.item.status_txt }} </td>
                   <td> {{props.item.user_name}} </td>
+                  <td> {{props.item.date_sign}} </td>
+                  <td> {{props.item.date_expiration}} </td>
                   <td id="action">
                       <v-icon
                       v-if="canAccess('contract.update')"
@@ -66,6 +68,8 @@ export default{
       { text: 'Loại hợp đồng', sortable: false },
       { text: 'Trạng thái', sortable: false },
       { text: 'Tên nhân viên', sortable: false },
+      { text: 'Ngày ký hợp đồng', sortable: false },
+      { text: 'Ngày hết hạn hợp đồng', sortable: false},
       { text: 'Hành động', sortable: false }
     ]
   }),

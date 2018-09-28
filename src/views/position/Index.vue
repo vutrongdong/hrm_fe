@@ -7,10 +7,17 @@
 </template>
 <script>
 import listting from './Listting'
+import { mapActions } from 'vuex'
 export default{
   name: 'Position',
   components: {
     listting
+  },
+  methods:{
+     ...mapActions(['setMiniDrawer'])
+  },
+  created () {
+    this.setMiniDrawer(true)
   }
 }
 </script>

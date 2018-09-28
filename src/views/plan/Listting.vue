@@ -23,6 +23,8 @@
               <template slot="items" slot-scope="props">
                   <td style="text-transform: capitalize">{{ props.item.title }}</td>
                   <td>{{ props.item.content }}</td>
+                  <td> {{props.item.date_start}} </td>
+                  <td> {{props.item.date_end}} </td>
                   <td>{{props.item.status_txt }}</td>
                   <td id="action">
                    <v-icon style="margin-right: 15px" v-if="canAccess('candidate.update')" class="mr-6"
@@ -55,6 +57,8 @@ export default{
     headers: [
       { text: 'Tên kế hoạch', sortable: false },
       { text: 'Nội dung', sortable: false },
+      { text: 'Ngày bắt đầu', sortable: false},
+      {text: 'Ngày kết thúc', sortable: false},
       { text: 'Trạng thái', sortable: false },
       { text: 'Hành động', sortable: false }
     ]

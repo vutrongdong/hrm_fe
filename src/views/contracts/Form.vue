@@ -1,14 +1,14 @@
  <template>
 <v-form  @submit.prevent="validateBeforeSubmit">
         <v-container fluid>
-          <v-layout row wrap>
+          <v-layout row wrap class="marTop-22">
             <v-flex xs6>
                <v-text-field
               :error-messages="errors.has('title') ? errors.collect('title') : []"
               v-validate="'required|min:3'"
               :data-vv-as="$t('label.title')"
               name="title"
-              :label="$t('label.title') + '*'"
+              :label="$t('label.title') + ' * '"
               v-model="contract.title">
             </v-text-field>
             </v-flex>
@@ -20,7 +20,6 @@
                   name="type"
                   :label="$t('label.type')"
                   v-model="contract.type"
-
                   :items="types"
                   item-value="id"
                   item-text="name">
@@ -28,7 +27,7 @@
           </v-flex>
         </v-layout>
 
-        <v-layout row wrap>
+        <v-layout row wrap class="marTop-22">
             <v-flex xs6>
                  <v-select
                   v-validate="'required'"
@@ -57,7 +56,7 @@
                       <v-text-field
                       slot="activator"
                       v-model="contract.date_sign"
-                      label="Ngày ký"
+                      label="Ngày ký hợp đồng"
                       readonly >
                       </v-text-field>
 
@@ -71,7 +70,7 @@
                 </v-flex>
         </v-layout>
 
-         <v-layout row wrap>
+         <v-layout row wrap class="marTop-22">
             <v-flex xs6>
                 <template>
                   <v-menu
@@ -123,23 +122,33 @@
                     </template>
                 </v-flex>
         </v-layout>
-         <v-layout row wrap>
+
+      <v-layout row wrap class="marTop-22" id="fix-top">
               <v-flex xs6>
-                 <v-select
-                  v-validate="'required'"
-                  :error-messages="errors.has('user_id') ? errors.collect('user_id') : []"
-                  :data-vv-as="$t('label.user_id')"
-                  name="user_id"
-                  :label="$t('label.user_id')"
-                  v-model="contract.user_id"
-                  :items="userDetail"
-                  v-if="Array.isArray(userDetail)"
-                  item-value="id"
-                  item-text="name">
-            </v-select>
+        <v-combobox
+            v-model="contract.user_id"
+            v-if="Array.isArray(userDetail)"
+            :items="userDetail"
+            item-text="name"
+            item-value="id"
+            @change="test"
+          ></v-combobox>
+        </v-flex>
+        {{userDetail}}
+
+        <!--     <template slot="selection" slot-scope="data">
+              <v-chip
+                :selected="data.selected"
+                :disabled="data.disabled"
+                class="v-chip--select-multi "
+                @input="data.parent.selectItem(data.item.id)"
+              >
+
+              </v-chip>
+            </template> -->
             </v-flex>
         </v-layout>
-        <v-flex xs12 text-xs-center>
+        <v-flex xs12 text-xs-center class="marTop-22">
           <v-btn
             :loading="isFetchingApi"
             :disabled="isFetchingApi"
@@ -183,6 +192,8 @@ export default{
   },
   data () {
     return {
+      chips: [],
+      items: ['Streaming', 'Eating'],
       menu: null,
       menu1: null,
       menu2: null,
@@ -194,7 +205,7 @@ export default{
         date_sign: '',
         date_effective: '',
         date_expiration: '',
-        user_id: 1
+        user_id: ''
       },
       types: [
         {
@@ -268,6 +279,13 @@ export default{
         }
       })
     },
+    test(value){
+      console.log("data value ", value);
+    },
+    remove (item) {
+      this.chips.splice(this.chips.indexOf(item), 1)
+      this.chips = [...this.chips]
+    },
     save (date) {
       this.$refs.menu.save(date)
     },
@@ -284,3 +302,11 @@ export default{
   }
 }
 </script>
+<style scoped>
+  .marTop-22{
+       margin-top: -22px !important;
+  }
+  #fix-top{
+    padding-top: 30px;
+  }
+</style>
