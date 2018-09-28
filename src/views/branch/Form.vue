@@ -311,7 +311,7 @@ export default{
           this.districtAll = this.districtByCity
         }
       })
-    }else{
+    } else {
       this.getDistrictByCity({
         cityId: 1,
         cb: () => {

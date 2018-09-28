@@ -12,13 +12,21 @@
   </v-toolbar>
   <v-flex xs12 class="border-e0-top">
     <v-container>
-     <v-data-table
+<!--      <v-data-table
      v-if="Array.isArray(branchAll)"
      :items="branchAll"
      hide-actions
      expand
      :headers="title"
      class="elevation-1"
+     > -->
+     <DataView
+     :name="dataViewName"
+     api-url="branches"
+     v-if="dataViewHeight"
+     :viewHeight="dataViewHeight"
+     :params="params"
+     :ref="dataViewName"
      >
      <template slot="items" slot-scope="props">
       <tr>
@@ -34,7 +42,8 @@
         </td>
       </tr>
     </template>
-  </v-data-table>
+  </DataView>
+  <!--   </v-data-table> -->
   <v-dialog v-model="dialogDetail" width="700">
     <v-card>
       <v-card-title class="headline grey lighten-2" primary-title >
@@ -48,18 +57,18 @@
               <img style="border:1px solid gray" width="100%" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSkzg43WKhLRqXMgK81QQilVmHO0qcC2pu424_k5cAUV0TasgY3-Q" alt="">
             </v-flex>
             <v-flex sm7 id="info-branch" style="padding-left:10px;">
-                <p> - Tên : {{ branchDetail.name }}</p>
-                <p v-if="branchDetail.address"> - Địa chỉ : {{ branchDetail.address }}</p>
-                <p v-if="branchDetail.phone"> - Số điện thoại : {{ branchDetail.phone }}</p>
-                <p v-if="branchDetail.tax_number"> - Mã số thuế : {{ branchDetail.tax_number }}</p>
-                <p v-if="branchDetail.website"> - Website : {{ branchDetail.website }}</p>
-                <p v-if="branchDetail.email"> - Email : {{ branchDetail.email }}</p>
-                <p v-if="branchDetail.facebook"> - Facebook : {{ branchDetail.facebook }}</p>
-                <p v-if="branchDetail.instagram"> - Instagram : {{ branchDetail.instagram }}</p>
-                <p v-if="branchDetail.zalo"> - Zalo : {{ branchDetail.zalo }}</p>
-                <p v-if="branchDetail.description"> - Mô tả : {{ branchDetail.description }}</p>
-                <p v-if="branchDetail.about"> - Thông tin : {{ branchDetail.about }}</p>
-                <p v-if="branchDetail.bank"> - Tài khoản ngân hàng : {{ branchDetail.bank }}</p>
+              <p> - Tên : {{ branchDetail.name }}</p>
+              <p v-if="branchDetail.address"> - Địa chỉ : {{ branchDetail.address }}</p>
+              <p v-if="branchDetail.phone"> - Số điện thoại : {{ branchDetail.phone }}</p>
+              <p v-if="branchDetail.tax_number"> - Mã số thuế : {{ branchDetail.tax_number }}</p>
+              <p v-if="branchDetail.website"> - Website : {{ branchDetail.website }}</p>
+              <p v-if="branchDetail.email"> - Email : {{ branchDetail.email }}</p>
+              <p v-if="branchDetail.facebook"> - Facebook : {{ branchDetail.facebook }}</p>
+              <p v-if="branchDetail.instagram"> - Instagram : {{ branchDetail.instagram }}</p>
+              <p v-if="branchDetail.zalo"> - Zalo : {{ branchDetail.zalo }}</p>
+              <p v-if="branchDetail.description"> - Mô tả : {{ branchDetail.description }}</p>
+              <p v-if="branchDetail.about"> - Thông tin : {{ branchDetail.about }}</p>
+              <p v-if="branchDetail.bank"> - Tài khoản ngân hàng : {{ branchDetail.bank }}</p>
             </v-flex>
           </v-layout>
         </v-container>
@@ -80,23 +89,31 @@
 </v-layout>
 </template>
 <script>
+import DataView from '@/components/DataView/DataView'
 import DialogConfirm from '@/components/DialogConfirm'
 import { mapActions, mapGetters } from 'vuex'
 export default {
   components: {
+    DataView,
     DialogConfirm
   },
   data: () => ({
+    dataViewHeight: 0,
+    dataViewName: 'branch',
+    params: {
+      q: '',
+      include: ''
+    },
     idBranch: null,
     dialogDetail: false,
     dialogDelete: false,
     title: [
-      { text: 'Tên chi nhánh', sortable: false },
-      { text: 'Email', sortable: false },
-      { text: 'Mã sô thuế', sortable: false },
-      { text: 'Địa chỉ', sortable: false },
-      { text: 'Trạng thái', sortable: false },
-      { text: 'Các hành động', sortable: false }
+    { text: 'Tên chi nhánh', sortable: false },
+    { text: 'Email', sortable: false },
+    { text: 'Mã sô thuế', sortable: false },
+    { text: 'Địa chỉ', sortable: false },
+    { text: 'Trạng thái', sortable: false },
+    { text: 'Các hành động', sortable: false }
     ]
   }),
   computed: {
@@ -143,6 +160,19 @@ export default {
   },
   created () {
     this.getBranchs()
+  },
+  mounted(){
+    this.dataViewHeight = this.$refs.laylout.clientHeight - 49
+    let query = {...this.$route.query}
+    if (query.hasOwnProperty('reload')) {
+      this.$nextTick(() => {
+        this.$refs[this.dataViewName].$emit('reload')
+      })
+      delete query.reload
+      this.$router.replace({
+        query: query
+      })
+    }
   }
 }
 </script>

@@ -66,7 +66,7 @@ export default{
     if (!this.userDetail.id) {
       this.getUser({ userId: this.$route.params.id, params: { include: 'roles,departments' } })
     }
-    console.log("userDetail",this.userDetail)
+    console.log('userDetail', this.userDetail)
   },
   mounted () {
     this.dataViewHeight = this.$refs.laylout.clientHeight - 48

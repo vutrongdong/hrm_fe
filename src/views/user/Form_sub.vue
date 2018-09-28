@@ -62,122 +62,122 @@
         </v-layout>
       </v-layout>
     </template>
-    <script>
-    import { filter } from "lodash"
-    import { mapGetters, mapActions } from 'vuex'
-    export default {
-      name: 'UserFormSub',
-      data () {
-        return {
-          objectDepartment: {
-            branch_id: null,
-            department_id: null,
-            position_id: null
-          },
-          departments: [],
-          departmentActive: false,
-          positionActive: false,
-          valDepartment: null,
-          valPosition: null,
-          user: {
-            departments:[]
-          }
-        }
+<script>
+import { filter } from 'lodash'
+import { mapGetters, mapActions } from 'vuex'
+export default {
+  name: 'UserFormSub',
+  data () {
+    return {
+      objectDepartment: {
+        branch_id: null,
+        department_id: null,
+        position_id: null
       },
-      props: {
-        index: {
-          type: Number,
-          default: 0
-        },
-        dataUser: {
-          type: Object,
-          default: () => {
-            return {}
-          }
-        }
-      },
-      computed: {
-        ...mapGetters('Branch', ['branchAll']),
-        ...mapGetters('Department', ['departmentByBranch']),
-        ...mapGetters('Position', ['positionAll'])
-      },
-      methods: {
-        ...mapActions(['fetchApi']),
-        ...mapActions('Position', ['fetchPosition']),
-        ...mapActions('Branch', ['getBranchForUser']),
-        ...mapActions('Department', ['getDepartmentForUser']),
-        Add(){
-          this.user.departments.push({
-            branch_id:null,
-            department_id: null,
-            position_id: null
-          })
-        },
-        Delete(index){
-          this.user.departments.splice(index, 1)
-        },
-        changeBranch (value) {
-          let array = [...this.user.departments]
-          let filters = filter(array, function(object) { return object.branch_id = value })
-          return filters
-        // this.getDepartmentForUser({
-        //   branchId: value,
-        //   params: { include: 'departments' },
-        //   cb: () => {
-        //     this.departments = this.departmentByBranch
-        //   }
-        // })
-      },
-      getBranch(value){
-        let array = [...this.user.departments]
-        let filters = filter(array, function(object) { return object.branch_id = value })
-        return filters
-      },
-      changeDepartment (value) {
-        // this.valDepartment = value
-        // this.positionActive = true
-      },
-      changePosition (value) {
-        // this.valPosition = value
-        // this.objectDepartment['department_id'] = this.valDepartment
-        // this.objectDepartment['position_id'] = this.valPosition
-        // this.$emit('positionAndDepartment', this.objectDepartment)
-      },
-      setInitData () {
-        let dataUser = { ...this.dataUser }
-        this.user = { ...this.user, ...dataUser }
-        this.user.departments = this.dataUser.departments.data
+      departments: [],
+      departmentActive: false,
+      positionActive: false,
+      valDepartment: null,
+      valPosition: null,
+      user: {
+        departments: []
       }
+    }
+  },
+  props: {
+    index: {
+      type: Number,
+      default: 0
     },
-    mounted () {
-      this.fetchApi({
-        url: 'departments',
-        method: 'GET',
-        params: {
-          limit: -1
-        },
-        success: (response) => {
-          this.departments = response.data
-        }
-      })
-      this.getDepartmentForUser({
-        branchId: 5,
-        params: { include: 'departments' },
-        cb: () => {
-          this.departments = this.departmentByBranch
-        }
+    dataUser: {
+      type: Object,
+      default: () => {
+        return {}
+      }
+    }
+  },
+  computed: {
+    ...mapGetters('Branch', ['branchAll']),
+    ...mapGetters('Department', ['departmentByBranch']),
+    ...mapGetters('Position', ['positionAll'])
+  },
+  methods: {
+    ...mapActions(['fetchApi']),
+    ...mapActions('Position', ['fetchPosition']),
+    ...mapActions('Branch', ['getBranchForUser']),
+    ...mapActions('Department', ['getDepartmentForUser']),
+    Add () {
+      this.user.departments.push({
+        branch_id: null,
+        department_id: null,
+        position_id: null
       })
     },
-    created () {
-      this.getBranchForUser()
-      this.fetchPosition()
-      !!this.dataUser && this.setInitData()
-      if (this.$route.params.id) {
-        if (this.dataUser.departments.data[this.index]) {
-          this.departmentActive = true
-          this.positionActive = true
-        }
+    Delete (index) {
+      this.user.departments.splice(index, 1)
+    },
+    changeBranch (value) {
+      let array = [...this.user.departments]
+      let filters = filter(array, function (object) { return object.branch_id = value })
+      return filters
+      // this.getDepartmentForUser({
+      //   branchId: value,
+      //   params: { include: 'departments' },
+      //   cb: () => {
+      //     this.departments = this.departmentByBranch
+      //   }
+      // })
+    },
+    getBranch (value) {
+      let array = [...this.user.departments]
+      let filters = filter(array, function (object) { return object.branch_id = value })
+      return filters
+    },
+    changeDepartment (value) {
+      // this.valDepartment = value
+      // this.positionActive = true
+    },
+    changePosition (value) {
+      // this.valPosition = value
+      // this.objectDepartment['department_id'] = this.valDepartment
+      // this.objectDepartment['position_id'] = this.valPosition
+      // this.$emit('positionAndDepartment', this.objectDepartment)
+    },
+    setInitData () {
+      let dataUser = { ...this.dataUser }
+      this.user = { ...this.user, ...dataUser }
+      this.user.departments = this.dataUser.departments.data
+    }
+  },
+  mounted () {
+    this.fetchApi({
+      url: 'departments',
+      method: 'GET',
+      params: {
+        limit: -1
+      },
+      success: (response) => {
+        this.departments = response.data
+      }
+    })
+    this.getDepartmentForUser({
+      branchId: 5,
+      params: { include: 'departments' },
+      cb: () => {
+        this.departments = this.departmentByBranch
+      }
+    })
+  },
+  created () {
+    this.getBranchForUser()
+    this.fetchPosition()
+    !!this.dataUser && this.setInitData()
+    if (this.$route.params.id) {
+      if (this.dataUser.departments.data[this.index]) {
+        this.departmentActive = true
+        this.positionActive = true
       }
     }
   }
-  </script>
+}
+</script>

@@ -194,9 +194,9 @@
       <v-tab-item id="tab-3" style="margin-top:30px">
         <v-flex md-11>
             <!-- form sub -->
-            <form_Sub
+            <formSub
             :dataUser="user"
-            v-on:positionAndDepartment="positionAndDepartment($event)"> </form_Sub> </v-flex>
+            v-on:positionAndDepartment="positionAndDepartment($event)"> </formSub> </v-flex>
             <!-- tab3 -->
           </v-tab-item>
         </v-tabs>
@@ -219,117 +219,117 @@
       </v-flex>
     </v-form>
   </template>
-  <script>
-  import { mapGetters, mapActions } from 'vuex'
-  import { map } from 'lodash'
-  import form_Sub from './Form_sub'
-  export default{
-    name: 'UserForm',
-    components: { form_Sub },
-    computed: {
-      ...mapGetters(['isFetchingApi']),
-      isCreate () {
-        return this.type === 'create'
-      }
+<script>
+import { mapGetters, mapActions } from 'vuex'
+import { map } from 'lodash'
+import formSub from './Form_sub'
+export default{
+  name: 'UserForm',
+  components: { formSub },
+  computed: {
+    ...mapGetters(['isFetchingApi']),
+    isCreate () {
+      return this.type === 'create'
+    }
+  },
+  props: {
+    type: {
+      type: String,
+      default: 'create'
     },
-    props: {
-      type: {
-        type: String,
-        default: 'create'
-      },
-      dataUser: {
-        type: Object,
-        default: () => {
-          return {}
-        }
+    dataUser: {
+      type: Object,
+      default: () => {
+        return {}
       }
+    }
+  },
+  watch: {
+    menu (val) {
+      val && this.$nextTick(() => (this.$refs.picker.activePicker = 'YEAR'))
     },
-    watch: {
-      menu (val) {
-        val && this.$nextTick(() => (this.$refs.picker.activePicker = 'YEAR'))
-      },
-      dataUser (val) {
-        this.user = val
-      }
-    },
-    data () {
-      return {
-        imageUrl: '',
-        imageFile: '',
-        gender: '',
-        status: 'Kích hoạt',
-        range: 1,
-        menu: false,
-        user: {
-          avatar: '',
-          gender: true,
-          status: true,
-          roles: [],
-          departments: []
-        },
+    dataUser (val) {
+      this.user = val
+    }
+  },
+  data () {
+    return {
+      imageUrl: '',
+      imageFile: '',
+      gender: '',
+      status: 'Kích hoạt',
+      range: 1,
+      menu: false,
+      user: {
+        avatar: '',
+        gender: true,
+        status: true,
         roles: [],
-        departmentPosition: []
+        departments: []
+      },
+      roles: [],
+      departmentPosition: []
+    }
+  },
+  methods: {
+    ...mapActions(['fetchApi']),
+    setInitData () {
+      let dataUser = { ...this.dataUser }
+      console.log('let', dataUser)
+      if (dataUser.roles) {
+        dataUser.roles = map(dataUser.roles.data, (role) => {
+          return role.id
+        })
       }
+      this.user = { ...this.user, ...dataUser }
     },
-    methods: {
-      ...mapActions(['fetchApi']),
-      setInitData () {
-        let dataUser = { ...this.dataUser }
-        console.log('let',dataUser)
-        if (dataUser.roles) {
-          dataUser.roles = map(dataUser.roles.data, (role) => {
-            return role.id
-          })
-        }
-        this.user = { ...this.user, ...dataUser }
-      },
-      save (date) {
-        this.$refs.menu.save(date)
-      },
-      status_txt ()
-      {
-        if (this.user.status) { this.status = 'Kích hoạt' } else { this.status = 'Không kích hoạt' }
-      },
+    save (date) {
+      this.$refs.menu.save(date)
+    },
+    status_txt () {
+      if (this.user.status) { this.status = 'Kích hoạt' } else { this.status = 'Không kích hoạt' }
+    },
     gender_txt () {
       if (this.user.gender) { this.gender = 'Nam' } else { this.gender = 'Nữ' }
     },
-  validateBeforeSubmit () {
-    this.$validator.validateAll().then(result => {
-      if (result) {
-        let user = Object.assign({}, this.user)
-        user.gender = user.gender ? 1 : 0
-        user.status = user.status ? 1 : 0
-        this.$emit('submit', this.user)
-      } else {
-        this.$store.dispatch('showNotify', {
-          text: this.$t('alert.invalid'),
-          color: 'warning'
+    validateBeforeSubmit () {
+      this.$validator.validateAll().then(result => {
+        if (result) {
+          let user = Object.assign({}, this.user)
+          user.gender = user.gender ? 1 : 0
+          user.status = user.status ? 1 : 0
+          this.$emit('submit', this.user)
+        } else {
+          this.$store.dispatch('showNotify', {
+            text: this.$t('alert.invalid'),
+            color: 'warning'
+          })
+        }
+      })
+    },
+    pickFile () {
+      this.$refs.image.click()
+    },
+    //upload image
+    onFilePicked (e) {
+      const files = e.target.files
+      if (files[0] !== undefined) {
+        this.user.avatar = files[0].name
+        if (this.user.avatar.lastIndexOf('.') <= 0) {
+          return
+        }
+        const fr = new FileReader()
+        fr.readAsDataURL(files[0])
+        fr.addEventListener('load', () => {
+          this.imageUrl = fr.result
+          this.imageFile = files[0] // this is an image file that can be sent to server...
         })
+      } else {
+        this.user.avatar = ''
+        this.imageFile = ''
+        this.imageUrl = ''
       }
-    })
-  },
-  pickFile () {
-    this.$refs.image.click()
-  },
-  onFilePicked (e) {
-    const files = e.target.files
-    if (files[0] !== undefined) {
-      this.user.avatar = files[0].name
-      if (this.user.avatar.lastIndexOf('.') <= 0) {
-        return
-      }
-      const fr = new FileReader()
-      fr.readAsDataURL(files[0])
-      fr.addEventListener('load', () => {
-        this.imageUrl = fr.result
-              this.imageFile = files[0] // this is an image file that can be sent to server...
-            })
-    } else {
-      this.user.avatar = ''
-      this.imageFile = ''
-      this.imageUrl = ''
-    }
-  },
+    },
     // end upload image
     positionAndDepartment (updated, index) {
       this.departmentPosition[index] = updated
@@ -350,7 +350,7 @@
   },
   created () {
     this.dataUser && this.setInitData()
-    this.status_txt ()
+    this.status_txt()
     this.gender_txt()
   }
 }
