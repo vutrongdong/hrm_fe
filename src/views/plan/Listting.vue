@@ -57,8 +57,8 @@ export default{
     headers: [
       { text: 'Tên kế hoạch', sortable: false },
       { text: 'Nội dung', sortable: false },
-      { text: 'Ngày bắt đầu', sortable: false},
-      {text: 'Ngày kết thúc', sortable: false},
+      { text: 'Ngày bắt đầu', sortable: false },
+      { text: 'Ngày kết thúc', sortable: false },
       { text: 'Trạng thái', sortable: false },
       { text: 'Hành động', sortable: false }
     ]

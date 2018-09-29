@@ -1,13 +1,10 @@
 <template>
    <v-layout ref="laylout" row fill-height>
-      <v-flex xs4>
-            <listting></listting>
-      </v-flex>
-      <v-flex xs8 class="border-e0-left">
+      <v-flex xs12 class="border-e0-left">
           <v-toolbar dense color="white" flat>
             <v-toolbar-title>{{ $t('title.position.edit') }}: {{positionDetail.name}}</v-toolbar-title>
             <v-spacer></v-spacer>
-            <v-btn icon @click="$router.push({name: 'position-detail', params: {id: $route.params.id}})">
+            <v-btn icon @click="$router.push({name: 'position'})">
                <v-icon>close</v-icon>
             </v-btn>
           </v-toolbar>

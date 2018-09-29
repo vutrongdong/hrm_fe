@@ -24,22 +24,22 @@ export default{
     ...mapActions(['showNotify', 'setMiniDrawer']),
     ...mapActions('Contracts', ['createContract']),
     submitForm (formData) {
-      // this.createContract({
-      //   contract: formData,
-      //   cb: (response) => {
-      //     this.showNotify({
-      //       color: 'success',
-      //       text: 'Thành công'
-      //     })
-      //     this.$router.push({
-      //       name: 'contract'
-      //       // query: {
-      //       //   reload: null
-      //       // }
-      //     })
-      //   }
-      // })
-      console.log("form data contract :", formData);
+      this.createContract({
+        contract: formData,
+        cb: (response) => {
+          this.showNotify({
+            color: 'success',
+            text: 'Thành công'
+          })
+          this.$router.push({
+            name: 'contract'
+            // query: {
+            //   reload: null
+            // }
+          })
+        }
+      })
+      console.log('form data contract :', formData)
     }
   },
   created () {

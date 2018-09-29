@@ -69,7 +69,7 @@ export default{
       { text: 'Trạng thái', sortable: false },
       { text: 'Tên nhân viên', sortable: false },
       { text: 'Ngày ký hợp đồng', sortable: false },
-      { text: 'Ngày hết hạn hợp đồng', sortable: false},
+      { text: 'Ngày hết hạn hợp đồng', sortable: false },
       { text: 'Hành động', sortable: false }
     ]
   }),

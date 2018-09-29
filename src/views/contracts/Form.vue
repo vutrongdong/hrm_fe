@@ -123,29 +123,16 @@
                 </v-flex>
         </v-layout>
 
-      <v-layout row wrap class="marTop-22" id="fix-top">
+        <v-layout row wrap class="marTop-22">
               <v-flex xs6>
-        <v-combobox
-            v-model="contract.user_id"
-            v-if="Array.isArray(userDetail)"
-            :items="userDetail"
-            item-text="name"
-            item-value="id"
-            @change="test"
-          ></v-combobox>
-        </v-flex>
-        {{userDetail}}
-
-        <!--     <template slot="selection" slot-scope="data">
-              <v-chip
-                :selected="data.selected"
-                :disabled="data.disabled"
-                class="v-chip--select-multi "
-                @input="data.parent.selectItem(data.item.id)"
-              >
-
-              </v-chip>
-            </template> -->
+                 <v-autocomplete
+                v-model="contract.user_id"
+                :items="userDetail"
+                item-value="id"
+                label="Tên nhân viên"
+                item-text="name"
+                  >
+                </v-autocomplete>
             </v-flex>
         </v-layout>
         <v-flex xs12 text-xs-center class="marTop-22">
@@ -279,8 +266,8 @@ export default{
         }
       })
     },
-    test(value){
-      console.log("data value ", value);
+    test (value) {
+      console.log('data value ', value)
     },
     remove (item) {
       this.chips.splice(this.chips.indexOf(item), 1)
@@ -305,8 +292,5 @@ export default{
 <style scoped>
   .marTop-22{
        margin-top: -22px !important;
-  }
-  #fix-top{
-    padding-top: 30px;
   }
 </style>

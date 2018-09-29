@@ -1,23 +1,24 @@
 <template>
     <v-layout ref="laylout" row fill-height>
-     <v-flex xs12>
-         <listting></listting>
+      <v-flex xs12>
+        <listting />
       </v-flex>
     </v-layout>
 </template>
+
 <script>
-import listting from './Listting'
+import Listting from './Listting'
 import { mapActions } from 'vuex'
 export default{
-  name: 'Position',
+  name: 'User',
   components: {
-    listting
+    Listting
   },
-  methods:{
-     ...mapActions(['setMiniDrawer'])
+  methods: {
+    ...mapActions(['setMiniDrawer'])
   },
   created () {
-    this.setMiniDrawer(true)
+    this.setMiniDrawer(false)
   }
 }
 </script>
