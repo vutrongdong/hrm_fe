@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-text-field prepend-icon="attach_file" single-line
+    <v-text-field single-line
       v-model="filename" :label="label" :required="required"
       @click.native="onFocus"
       :disabled="disabled" ref="fileTextField"
@@ -24,7 +24,7 @@ export default{
     },
     label: {
       type: String,
-      default: 'Please choose...'
+      default: 'Chọn một ảnh...'
     },
     required: {
       type: Boolean,

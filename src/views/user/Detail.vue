@@ -7,15 +7,24 @@
     <v-toolbar dense color="white" flat>
       <v-toolbar-title>{{ $t('title.user.detail') }}: {{userDetail.name}}</v-toolbar-title>
       <v-spacer></v-spacer>
-      <v-btn  v-if="canAccess('user.update')" icon @click="$router.push({name: 'user-edit', params: {id: $route.params.id}})">
-        <v-icon>edit</v-icon>
-      </v-btn>
-      <v-btn v-if="canAccess('user.delete')" icon @click="removeConfirm">
-        <v-icon>delete</v-icon>
-      </v-btn>
-      <v-btn icon @click="$router.push({name: 'user'})">
-        <v-icon>close</v-icon>
-      </v-btn>
+      <v-tooltip bottom>
+        <v-btn slot='activator' v-if="canAccess('user.update')" icon @click="$router.push({name: 'user-edit', params: {id: $route.params.id}})">
+          <v-icon>edit</v-icon>
+        </v-btn>
+        <span>Sửa</span>
+      </v-tooltip>
+      <v-tooltip bottom>
+        <v-btn slot="activator" v-if="canAccess('user.delete')" icon @click="removeConfirm">
+          <v-icon>delete</v-icon>
+        </v-btn>
+        <span>Xóa</span>
+      </v-tooltip>
+      <v-tooltip bottom>
+        <v-btn slot="activator" icon @click="$router.push({name: 'user'})">
+          <v-icon>close</v-icon>
+        </v-btn>
+        <span>Đóng</span>
+      </v-tooltip>
     </v-toolbar>
     <v-container fluid class="white scroll-y border-e0-top" :style="{height: dataViewHeight + 'px'}">
       <v-layout row>
@@ -26,6 +35,7 @@
         <v-flex md7 sm7 xs7 style="padding-left:10px;" id="info-user">
           <p v-if="userDetail.code"> - Mã nhân viên : {{ userDetail.code }}</p>
           <p v-if="userDetail.name"> - Tên nhân viên : {{ userDetail.name }}</p>
+          <p> - Thư điện tử : {{ userDetail.email }}</p>
           <p v-if='userDetail.qualification'> - Trình độ chuyên môn : {{ userDetail.qualification }}</p>
           <p v-if='userDetail.address'> - Địa chỉ : {{ userDetail.address }}</p>
           <p v-if="userDetail.phone"> - Số điện thoại: {{ userDetail.phone }}</p>
@@ -33,21 +43,42 @@
           <p v-if="userDetail.date_of_birth"> - Ngày sinh: {{ userDetail.date_of_birth }}</p>
           <p v-if="userDetail.status_txt"> - Trạng thái: {{ userDetail.status_txt }}</p>
         </v-flex>
-      </v-layout>{{ userDetail.departments.data[0].name }}
-      <v-layout row v-if="userDetail.departments">
-        <v-flex style="margin-top:40px;">
-          <!-- <p row style="margin-top:-20px;">
-              <p v-for='department in userDetail.departments.data' style="margin-left:15px;" :key="'department' + department.id">
-                <p color="green" text-color="white" v-if="department.branch">{{ department.branch.data.name }}</p>
-                <p color="orange" text-color="white">{{ department.name }}</p>
-                <p color="teal" text-color="white">{{ department.position_name }}</p>
-              </p>
-          </p> -->
-        </v-flex>
       </v-layout>
-    </v-container>
-  </v-flex>
-  <dialog-confirm v-model="dialogDelete" @input="remove" />
+      <v-flex xs12 v-if="userDetail.departments">
+        <h3>Vị trí , chức vụ của nhân viên</h3>
+        <v-data-table
+        :headers="headersPosition"
+        :items="userDetail.departments.data"
+        hide-actions
+        class="elevation-1 mt-2"
+        >
+        <template slot="items" slot-scope="props">
+          <td>{{ props.item.name }}</td>
+          <td>{{ props.item.branch_name }}</td>
+          <td>{{ props.item.position_name }}</td>
+        </template>
+      </v-data-table>
+    </v-flex>
+    <v-flex class="mt-4" xs12 v-if="userDetail.contracts">
+      <h3>Hợp đồng nhân viên</h3>
+      <v-data-table
+      :headers="headersContract"
+      :items="userDetail.contracts.data"
+      hide-actions
+      class="elevation-1 mt-2"
+      >
+      <template slot="items" slot-scope="props">
+        <td>{{ props.item.title }}</td>
+        <td>{{ props.item.type_txt }}</td>
+        <td>{{ props.item.status_txt }}</td>
+        <td>{{ props.item.date_sign }}</td>
+        <td>{{ props.item.date_effective }}</td>
+        <td>{{ props.item.date_expiration }}</td>
+      </template>
+    </v-data-table> </v-flex>
+  </v-container>
+</v-flex>
+<dialog-confirm v-model="dialogDelete" @input="remove" />
 </v-layout>
 </template>
 
@@ -63,6 +94,21 @@ export default{
   },
   data () {
     return {
+      // tiêu đề của bảng chi nhánh phòng ban , chức vụ
+      headersPosition: [
+      { text: 'Chi nhánh', value: 'branch', sortable: false },
+      { text: 'Phòng ban', value: 'department', sortable: false },
+      { text: 'Chức vụ', value: 'position', sortable: false }
+      ],
+      //tiêu đề của bảng hợp đồng
+      headersContract: [
+      { text: 'Tên hợp đồng', value: 'title', sortable: false },
+      { text: 'Loại hợp đồng', value: 'type', sortable: false },
+      { text: 'Trạng thái', value: 'status', sortable: false },
+      { text: 'Ngày đăng kí', value: 'status', sortable: false },
+      { text: 'Ngày bắt đầu', value: 'status', sortable: false },
+      { text: 'Ngày kêt thúc', value: 'status', sortable: false },
+      ],
       dataViewHeight: 0,
       dialogDelete: false
     }
@@ -92,7 +138,7 @@ export default{
               color: 'success'
             })
             this.dialogDelete = false
-            this.$router.push({name: 'user'})
+            this.$router.push({ name: 'user' })
           },
           error: (error) => {
             if (error.status === 404) {
@@ -107,13 +153,14 @@ export default{
     }
   },
   created () {
+    console.log(this.userDetail.departments)
     this.setMiniDrawer(true)
     if (!this.userDetail.id) {
-      this.getUser({ userId: this.$route.params.id, params: { include: 'roles,departments' } })
+      this.getUser({ userId: this.$route.params.id, params: { include: 'roles,departments,contracts' } })
     }
   },
   mounted () {
-    this.dataViewHeight = this.$refs.laylout.clientHeight - 48
+    this.dataViewHeight = this.$refs.laylout.clientHeight - 96
   }
 }
 </script>

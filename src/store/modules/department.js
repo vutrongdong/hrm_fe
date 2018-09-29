@@ -3,7 +3,7 @@ import {
 } from '../mutation-types'
 const initState = () => {
   return {
-    department: {}
+    department: []
   }
 }
 

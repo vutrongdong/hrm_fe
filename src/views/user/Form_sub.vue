@@ -1,11 +1,16 @@
  <template>
   <v-layout row wrap align-center style="margin-top: 20px;">
     <!-- branch,department,position -->
-    <h3>Chi nhánh, phòng ban, vị trí
-      <v-btn class="mr-3"
-      icon color="primary"
-      @click="Add">
-      <v-icon>add</v-icon> </v-btn> </h3>
+    <v-flex row wrap sm12>
+      <h3>Chi nhánh, phòng ban, chức vụ
+        <v-tooltip right>
+          <v-btn slot="activator" class="mr-3"
+          icon color="primary"
+          @click="addDepartment">
+          <v-icon>add</v-icon> </v-btn>
+          <span>Thêm chức vụ</span>
+        </v-tooltip></h3>
+      </v-flex>
       <v-layout row wrap :key="index" v-for="(department, index) in user.departments">
         <v-flex md4>
           <label>Chi nhánh</label>
@@ -20,18 +25,19 @@
           name="branch_id"
           placeholder="Thuộc chi nhánh"
           single-line
-
+          @change= "changeBranch"
           ></v-select>
         </v-flex>
         <v-spacer></v-spacer>
         <!-- department -->
+        <!-- :items="getBranch(user.departments[index].branch_id)" -->
         <v-flex md4>
           <label>Phòng ban</label>
           <v-select
           v-model="user.departments[index].id"
           label="Phòng ban"
           :disabled="!departmentActive"
-          :items="getBranch(user.departments[index].branch_id)"
+          :items="departmentByBranch"
           item-text="name"
           item-value="id"
           :error-messages="errors.has ('department_id') ? errors.collect('department_id') : []"
@@ -42,10 +48,9 @@
         </v-flex>
         <v-spacer></v-spacer><v-flex md3>
           <!-- postion -->
-          <label>Vị trí</label>
+          <label>Chức vụ</label>
           <v-select
           v-model="user.departments[index].position_id"
-          v-if="Array.isArray(positionAll)"
           :items="positionAll"
           :disabled="!positionActive"
           item-text="name"
@@ -55,15 +60,18 @@
           placeholder="Vị trí"
           single-line
           @change="changePosition"></v-select></v-flex>
-          <v-btn style="margin-top:35px;"
-          icon color="error"
-          @click="Delete(index)">
-          <v-icon>delete</v-icon></v-btn>
+          <v-tooltip bottom>
+            <v-btn slot="activator" style="margin-top:35px;"
+            icon color="error"
+            @click="deleteDepartment(index)">
+            <v-icon>delete</v-icon></v-btn>
+            <span>Xóa</span>
+          </v-tooltip>
         </v-layout>
       </v-layout>
     </template>
 <script>
-// import { filter } from 'lodash'
+import { filter } from 'lodash'
 import { mapGetters, mapActions } from 'vuex'
 export default {
   name: 'UserFormSub',
@@ -80,7 +88,13 @@ export default {
       valDepartment: null,
       valPosition: null,
       user: {
-        departments: []
+        departments: [
+          {
+            branch_id: null,
+            department_id: null,
+            position_id: null
+          }
+        ]
       }
     }
   },
@@ -106,47 +120,65 @@ export default {
     ...mapActions('Position', ['fetchPosition']),
     ...mapActions('Branch', ['getBranchForUser']),
     ...mapActions('Department', ['getDepartmentForUser']),
-    Add () {
+    addDepartment () {
+      console.log(1223, this.user)
       this.user.departments.push({
         branch_id: null,
         department_id: null,
         position_id: null
       })
     },
-    Delete (index) {
+    deleteDepartment (index) {
       this.user.departments.splice(index, 1)
     },
     changeBranch (value) {
-      // let array = [...this.user.departments]
-      // let filters = filter(array, function (object) { return object.branch_id = value })
-      // return filters
-      // this.getDepartmentForUser({
-      //   branchId: value,
-      //   params: { include: 'departments' },
-      //   cb: () => {
-      //     this.departments = this.departmentByBranch
-      //   }
-      // })
+      // nếu branch thay đổi thì select box của department không bị disable
+      this.departmentActive = true
+      if (this.dataUser.departments.data) {
+        let array = [...this.user.departments]
+        let filters = filter(array, function (object) { return object.branch_id = value })
+        return filters
+      } else {
+        this.getDepartmentForUser({
+          branchId: value,
+          params: { include: 'departments' },
+          cb: () => {
+            this.departments = this.departmentByBranch
+          }
+        })
+      }
     },
     getBranch (value) {
-      // let array = [...this.user.departments]
-      // let filters = filter(array, function (object) { return object.branch_id = value })
-      // return filters
+      let array = [...this.user.departments]
+      let filters = filter(array, function (object) { return object.branch_id = value })
+      return filters
     },
     changeDepartment (value) {
-      // this.valDepartment = value
-      // this.positionActive = true
+      this.valDepartment = value
+      this.positionActive = true
     },
     changePosition (value) {
-      // this.valPosition = value
-      // this.objectDepartment['department_id'] = this.valDepartment
-      // this.objectDepartment['position_id'] = this.valPosition
-      // this.$emit('positionAndDepartment', this.objectDepartment)
+      this.valPosition = value
+      this.objectDepartment['department_id'] = this.valDepartment
+      this.objectDepartment['position_id'] = this.valPosition
+      this.$emit('positionAndDepartment', this.objectDepartment)
     },
     setInitData () {
+      // nếu department thay đổi thì select box của //
       let dataUser = { ...this.dataUser }
       this.user = { ...this.user, ...dataUser }
-      this.user.departments = this.dataUser.departments.data
+      // nếu mảng dataUser.departments không có gía trị thì push thêm một mảng rỗng
+      if (this.dataUser.departments.data) {
+        this.user.departments = this.dataUser.departments.data.length ? this.user.departments.data : [
+          {
+            branch_id: null,
+            department_id: null,
+            position_id: null
+          }
+        ]
+      } else {
+        this.user.departments.push({})
+      }
     }
   },
   mounted () {

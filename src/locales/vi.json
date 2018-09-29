@@ -3,10 +3,10 @@
     "login": "Đăng nhập",
     "home": "Trang chủ",
     "user": {
-      "index": "Người dùng",
-      "detail": "Chi tiết user",
-      "create": "Thêm mới user",
-      "edit": "Chỉnh sửa user"
+      "index": "Nhân viên",
+      "detail": "Chi tiết nhân viên",
+      "create": "Thêm mới  nhân viên",
+      "edit": "Chỉnh sửa  nhân viên"
     },
     "role": {
       "index": "Quyền truy cập",

@@ -4,7 +4,7 @@ import {
 
 const initState = () => {
   return {
-    contract: {}
+    contract: []
   }
 }
 

@@ -130,7 +130,7 @@ export default {
       type: Array,
       default: () => {
         return [
-          {key: 'created_at', name: 'Ngày tạo'}
+          { key: 'created_at', name: 'Ngày tạo' }
         ]
       }
     },
@@ -188,7 +188,7 @@ export default {
     },
     filter: debounce(function () {
       if (this.q !== this.tableQueries[this.tableName]) {
-        this.setTableQuery({table_name: this.tableName, value: this.q})
+        this.setTableQuery({ table_name: this.tableName, value: this.q })
         this.fetchData()
       }
     }, 500),
@@ -210,12 +210,12 @@ export default {
       ls.set('sorteds', lsSorteds)
     },
     removeFilter () {
-      this.setTableQuery({table_name: this.tableName, value: null})
+      this.setTableQuery({ table_name: this.tableName, value: null })
       this.q = null
       this.$emit('remove-filter')
     },
     pageChange (page) {
-      this.setPaginator({table_name: this.tableName, key: 'current_page', value: page})
+      this.setPaginator({ table_name: this.tableName, key: 'current_page', value: page })
       if (this.dataParams.page !== page) {
         this.fetchData()
       }
@@ -248,7 +248,7 @@ export default {
   created () {
     this.$on('reload-table', () => {
       if (typeof this.dataPaginations[this.tableName] !== 'undefined') {
-        this.setPaginator({table_name: this.tableName, key: 'current_page', value: 1})
+        this.setPaginator({ table_name: this.tableName, key: 'current_page', value: 1 })
       }
       if (typeof this.dataTables[this.tableName] !== 'undefined') {
         this.fetchData()
@@ -261,8 +261,8 @@ export default {
         let sortTxt = ''
         forEach(this.dataSorted, (value, key) => {
           if (value) {
-            if (findIndex(this.dataSorts, {key: key}) > -1) {
-              sortTxt += this.dataSorts[findIndex(this.dataSorts, {key: key})]['name'] + `: ${value === 1 ? 'tăng' : 'giảm'}, `
+            if (findIndex(this.dataSorts, { key: key }) > -1) {
+              sortTxt += this.dataSorts[findIndex(this.dataSorts, { key: key })]['name'] + `: ${value === 1 ? 'tăng' : 'giảm'}, `
             } else {
               sortTxt += `${key}: ${value === 1 ? 'tăng' : 'giảm'}, `
             }
