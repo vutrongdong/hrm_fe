@@ -1,7 +1,7 @@
 <template>
   <v-layout ref="laylout" column fill-height>
    <div ref="header">
-    <v-toolbar color="white" flat>
+    <v-toolbar height="50px" color="white" flat>
       <v-layout row wrap>
         <v-flex xs2>
           <v-tooltip bottom>
@@ -112,7 +112,7 @@
         ></v-divider>
       </template>
     </v-list>
-    <dialog-confirm v-model="dialogDelete" @input="remove()" />
+    <dialog-confirm v-model="dialogDelete" @input="remove" />
   </v-list>
 </template>
 </data-view>
@@ -167,7 +167,8 @@ export default {
   },
   methods: {
     ...mapActions(['setMiniDrawer']),
-    ...mapActions('Branch', ['getBranch', 'deleteBranch']),
+    ...mapActions('Dataview', ['removeDataviewEntry']),
+    ...mapActions('Branch', ['getBranch','getBranchs', 'deleteBranch']),
     ...mapActions(['showNotify', 'setMiniDrawer']),
     branchDetail (branch) {
       this.getBranch({ branchId: branch.id })
@@ -193,7 +194,7 @@ export default {
               color: 'success'
             })
             this.dialogDelete = false
-            this.FetchSetting()
+            this.$refs[this.dataViewName].$emit('reload')
           },
           error: (error) => {
             if (error.status === 404) {

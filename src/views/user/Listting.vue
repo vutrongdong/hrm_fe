@@ -289,7 +289,7 @@ export default{
               color: 'success'
             })
             this.dialogDelete = false
-            this.filter()
+            this.$refs[this.dataViewName].$emit('reload')
           },
           error: (error) => {
             if (error.status === 404) {

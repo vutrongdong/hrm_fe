@@ -61,7 +61,6 @@ export default{
     }
   },
   created () {
-    // this.setMiniDrawer(true)
     this.getBranch({ branchId: this.$route.params.id })
   },
   mounted () {

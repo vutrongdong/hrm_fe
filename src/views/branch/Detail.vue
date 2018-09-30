@@ -17,12 +17,24 @@
           </v-list-tile>
         </v-list>
       </v-menu>
-      <v-btn v-if="canAccess('branch.update')" icon @click="$router.push({name: 'branch-edit', params: {id: $route.params.id}})">
-        <v-icon>edit</v-icon>
-      </v-btn>
-      <v-btn v-if="canAccess('branch.delete')" icon @click="removeConfirm()">
-        <v-icon>delete</v-icon>
-      </v-btn>
+      <v-tooltip bottom>
+        <v-btn slot="activator" v-if="canAccess('branch.update')" icon @click="$router.push({name: 'branch-edit', params: {id: $route.params.id}})">
+          <v-icon>edit</v-icon>
+        </v-btn>
+        <span>Sửa</span>
+      </v-tooltip>
+      <v-tooltip bottom>
+        <v-btn slot="activator" v-if="canAccess('branch.delete')" icon @click="removeConfirm()">
+          <v-icon>delete</v-icon>
+        </v-btn>
+        <span>Xóa</span>
+      </v-tooltip>
+      <v-tooltip bottom>
+        <v-btn slot="activator" icon @click="$router.push({name: 'branch'})" >
+          <v-icon>close</v-icon>
+        </v-btn>
+        <span>Đóng</span>
+      </v-tooltip>
     </v-toolbar>
     <v-container fluid class="white scroll-y border-e0-top" :style="{height: dataViewHeight + 'px'}">
       <v-layout row wrap>
@@ -52,72 +64,72 @@
 </v-layout>
 </template>
 <script>
-import Listting from './Listting'
-import { mapActions, mapGetters } from 'vuex'
-import DialogConfirm from '@/components/DialogConfirm'
-export default{
-  name: 'BranchDetail',
-  components: {
-    Listting,
-    DialogConfirm
-  },
-  data () {
-    return {
-      dataViewHeight: 0,
-      dialogDelete: false
-    }
-  },
-  computed: {
-    ...mapGetters('Branch', ['branchDetail'])
-  },
-  methods: {
-    ...mapActions(['setMiniDrawer']),
-    ...mapActions('Branch', ['getBranch', 'deleteBranch']),
-    ...mapActions('Dataview', ['removeDataviewEntry']),
-    removeConfirm () {
-      this.dialogDelete = true
+  import Listting from './Listting'
+  import { mapActions, mapGetters } from 'vuex'
+  import DialogConfirm from '@/components/DialogConfirm'
+  export default{
+    name: 'BranchDetail',
+    components: {
+      Listting,
+      DialogConfirm
     },
-    remove (confirm) {
-      if (confirm) {
-        this.deleteBranch({
-          id: this.$route.params.id,
-          cb: (response) => {
-            this.removeDataviewEntry({
-              name: 'branch',
-              data: this.branchDetail,
-              key: 'id'
-            })
-            this.$store.dispatch('showNotify', {
-              text: this.$t('alert.success'),
-              color: 'success'
-            })
-            this.dialogDelete = false
-          },
-          error: (error) => {
-            if (error.status === 404) {
-              this.$store.dispatch('showNotify', {
-                text: this.$t('alert.not-found'),
-                color: 'warning'
-              })
-            }
-          }
-        })
+    data () {
+      return {
+        dataViewHeight: 0,
+        dialogDelete: false
       }
+    },
+    computed: {
+      ...mapGetters('Branch', ['branchDetail'])
+    },
+    methods: {
+      ...mapActions(['setMiniDrawer']),
+      ...mapActions('Branch', ['getBranch', 'deleteBranch']),
+      ...mapActions('Dataview', ['removeDataviewEntry']),
+      removeConfirm () {
+        this.dialogDelete = true
+      },
+      remove (confirm) {
+        if (confirm) {
+          this.deleteBranch({
+            id: this.$route.params.id,
+            cb: (response) => {
+              this.removeDataviewEntry({
+                name: 'branch',
+                data: this.branchDetail,
+                key: 'id'
+              })
+              this.$store.dispatch('showNotify', {
+                text: this.$t('alert.success'),
+                color: 'success'
+              })
+              this.dialogDelete = false
+            },
+            error: (error) => {
+              if (error.status === 404) {
+                this.$store.dispatch('showNotify', {
+                  text: this.$t('alert.not-found'),
+                  color: 'warning'
+                })
+              }
+            }
+          })
+        }
+      }
+    },
+    created () {
+      this.setMiniDrawer(true)
+      if (!this.branchDetail.id) {
+        this.getBranch({ branchId: this.$route.params.id })
+      }
+    },
+    mounted () {
+      this.dataViewHeight = this.$refs.laylout.clientHeight - 48
     }
-  },
-  created () {
-    this.setMiniDrawer(true)
-    if (!this.branchDetail.id) {
-      this.getBranch({ branchId: this.$route.params.id })
-    }
-  },
-  mounted () {
-    this.dataViewHeight = this.$refs.laylout.clientHeight - 48
   }
-}
 </script>
 <style>
-  #infoBranch p{
-      margin-bottom: 10px;
-  }
+#infoBranch p{
+  margin-bottom: 10px;
+}
 </style>
