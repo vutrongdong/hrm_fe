@@ -1,9 +1,9 @@
 <template>
   <v-layout ref="laylout" column fill-height>
     <div ref="header">
-      <v-toolbar height="90px" color="white" flat>
+      <v-toolbar height="50px" color="white" flat>
         <v-layout row wrap>
-          <v-flex md1 xs3 :class="isMini">
+          <v-flex xs2 :class="isMini">
             <v-tooltip bottom>
               <v-btn slot="activator" v-if="canAccess('user.create')" class="mr-3 mt-3" icon color="primary" @click="$router.push({name: 'user-create'})">
                 <v-icon>add</v-icon>
@@ -11,7 +11,7 @@
               <span>Thêm mới</span>
             </v-tooltip>
           </v-flex>
-          <v-flex xs6 class="mt-1" :class="isMini && 'full-flex-basic'">
+          <v-flex xs5 class="mt-1" :class="isMini && 'full-flex-basic'">
             <v-text-field
             hide-details
             single-line
@@ -35,6 +35,8 @@
             single-line
             ></v-select>
           </v-flex>
+        </v-layout>
+        <v-layout slot="extension" row wrap v-if="!isMini">
           <v-flex xs4 class="pt-0" :class="isMini && 'd-none'">
             <v-select
             class='ml-2'
@@ -80,7 +82,9 @@
             ></v-select>
           </v-flex>
         </v-layout>
-        <v-layout slot="extension" v-if="!isMini">
+      </v-toolbar>
+      <v-toolbar height="45px" color="white" flat v-if="!isMini">
+        <v-layout>
           <v-flex sm1 class="text-bold text-uppercase">
             STT
           </v-flex>
@@ -324,7 +328,7 @@ export default{
 }
 </script>
 <style scoped>
-.v-toolbar__extension{
-  height: 66px !important;
+.v-toolbar__content{
+  height: 80px !important;
 }
 </style>
