@@ -117,6 +117,14 @@
           name="phone"
           :label="$t('label.phone')"
           v-model="user.phone"></v-text-field>
+          <!-- address -->
+          <v-text-field
+          :error-messages="errors.has('address') ? errors.collect('address') : []"
+          placeholder="Nhập địa chỉ"
+          :data-vv-as="$t('label.address')"
+          name="address"
+          :label="$t('label.address')"
+          v-model="user.address"> </v-text-field>
           <!-- qualification -->
           <v-text-field
           placeholder="nhập trình độ học vấn"
@@ -125,7 +133,6 @@
           name="qualification"
           :label="$t('label.qualification')"
           v-model="user.qualification"></v-text-field>
-
           <!-- gender -->
           <v-flex md12 row>
             <v-flex style="margin-top:12px">
@@ -138,16 +145,7 @@
               ></v-select>
             </v-flex> </v-flex>
           </v-flex>
-          <!--right  thông tin bổ sung -->
           <v-flex md6 style="margin-left:10px">
-            <!-- address -->
-            <v-text-field
-            :error-messages="errors.has('address') ? errors.collect('address') : []"
-            placeholder="Nhập địa chỉ"
-            :data-vv-as="$t('label.address')"
-            name="address"
-            :label="$t('label.address')"
-            v-model="user.address"> </v-text-field>
             <!-- birth_day -->
             <template>
               <v-menu
@@ -173,39 +171,95 @@
               @change="save"> </v-date-picker> </v-menu>
             </template>
             <!-- image -->
-            <v-flex>
+            <v-flex class="mt-3">
+              <label style="color: #7f8c91;">Ảnh đại diện</label>
               <imageUpload/>
             </v-flex> </v-flex>
           </v-layout>
         </v-tab-item>
         <v-tab-item id="tab-3" style="margin-top:30px">
-          <v-flex md-11>
+          <h3>Hợp đồng</h3>
+          <v-layout row wrap>
+            <v-flex xs6 class="pr-2">
+              <!-- title contract -->
+              <v-text-field
+              placeholder="Nhập tiêu đề hợp đồng"
+              :error-messages="errors.has('title') ? errors.collect('title') : []"
+              :data-vv-as="$t('label.title')"
+              name="title"
+              :label="$t('label.title') + ' * '"
+              v-model="user.contracts.title"> </v-text-field>
+              <!-- type contract -->
+              <v-select
+              v-validate="'required'"
+              :error-messages="errors.has('type') ? errors.collect('type') : []"
+              :data-vv-as="$t('label.type')"
+              name="type"
+              :label="$t('label.type')"
+              v-model="user.contracts.type"
+              :items="contractDetail"
+              item-value="type"
+              item-text="type_txt"> </v-select>
+              <!-- status contract-->
+              <v-select
+              v-validate="'required'"
+              :error-messages="errors.has('status') ? errors.collect('status') : []"
+              :data-vv-as="$t('label.status')"
+              name="status"
+              :label="$t('label.status')"
+              v-model="user.contracts.status"
+              :items="contractDetail"
+              item-value="status"
+              item-text="status_txt"> </v-select>
+            </v-flex>
+            <v-flex xs6 class="pl-2">
+              <!-- date_sign -->
+              <v-datetime-picker
+              label="Ngày đăng kí"
+              v-model="user.contracts.date_sign"
+              ></v-datetime-picker>
+              <!-- date_efective -->
+              <v-datetime-picker
+              label="Ngày có hiệu lực"
+              v-model="user.contracts.date_efective"
+              ></v-datetime-picker>
+              <!-- date_expiration -->
+              <v-datetime-picker
+              label="Ngày kết thúc"
+              v-model="user.contracts.date_expiration"
+              ></v-datetime-picker>
+            </v-flex>
+
+          </v-layout>
+          <v-layout row wrap>
             <!-- form sub -->
             <formSub
             :dataUser="user"
-            v-on:positionAndDepartment="positionAndDepartment($event)"> </formSub> </v-flex>
-            <!-- tab3 -->
-          </v-tab-item>
-        </v-tabs>
-        <!-- end tab -->
-        <!-- button create or update -->
-        <v-flex md12 text-md-center>
-          <v-btn
-          :loading="isFetchingApi"
-          :disabled="isFetchingApi"
-          color="primary"
-          type="submit"
-          >
-          <template v-if="isCreate">
-            <v-icon left>add</v-icon> {{$t('control.create')}}
-          </template>
-          <template v-else>
-            <v-icon left>save</v-icon> {{$t('control.save')}}
-          </template>
-        </v-btn>
-      </v-flex>
-    </v-form>
-  </template>
+            v-on:positionAndDepartment="positionAndDepartment($event)">
+          </formSub> </v-flex>
+        </v-layout>
+        <!-- tab3 -->
+      </v-tab-item>
+    </v-tabs>
+    <!-- end tab -->
+    <!-- button create or update -->
+    <v-flex md12 text-md-center>
+      <v-btn
+      :loading="isFetchingApi"
+      :disabled="isFetchingApi"
+      color="primary"
+      type="submit"
+      >
+      <template v-if="isCreate">
+        <v-icon left>add</v-icon> {{$t('control.create')}}
+      </template>
+      <template v-else>
+        <v-icon left>save</v-icon> {{$t('control.save')}}
+      </template>
+    </v-btn>
+  </v-flex>
+</v-form>
+</template>
 <script>
 import { mapGetters, mapActions } from 'vuex'
 import { map } from 'lodash'
@@ -216,6 +270,7 @@ export default{
   components: { formSub, imageUpload },
   computed: {
     ...mapGetters(['isFetchingApi']),
+    ...mapGetters('Contracts', ['contractDetail']),
     isCreate () {
       return this.type === 'create'
     }
@@ -230,11 +285,6 @@ export default{
       default: () => {
         return {}
       }
-    }
-  },
-  watch: {
-    menu (val) {
-      val && this.$nextTick(() => (this.$refs.picker.activePicker = 'YEAR'))
     }
   },
   data () {
@@ -252,14 +302,30 @@ export default{
         gender: 1,
         status: true,
         roles: [],
-        departments: []
+        departments: [],
+        contracts:
+        {
+          status: 0,
+          type: 0,
+          date_sign: null,
+          date_efective: null,
+          date_expiration: null
+        }
       },
-      roles: [],
-      departmentPosition: []
+      roles: []
+    }
+  },
+  watch: {
+    menu (val) {
+      val && this.$nextTick(() => (this.$refs.picker.activePicker = 'YEAR'))
+    },
+    dataUser (val) {
+      this.user = val
     }
   },
   methods: {
     ...mapActions(['fetchApi']),
+    ...mapActions('Contracts', ['fetchContract']),
     setInitData () {
       let dataUser = { ...this.dataUser }
       console.log('let', dataUser)
@@ -276,11 +342,22 @@ export default{
     status_txt () {
       if (this.user.status) { this.status = 'Kích hoạt' } else { this.status = 'Không kích hoạt' }
     },
+    // thời gian đăng kí , có hiệu lực hợp đồng
+    dateConstract () {
+      let date = new Date()
+      this.user.contracts.date_sign = date
+      this.user.contracts.date_efective = date
+    },
+    // thời gian kết thúc hợp đồng
+    dateExpirationConstract () {
+      let date = new Date()
+      date.setMonth(date.getMonth() + 2)
+      this.user.contracts.date_expiration = date
+    },
     validateBeforeSubmit () {
       this.$validator.validateAll().then(result => {
         if (result) {
           let user = Object.assign({}, this.user)
-          user.gender = user.gender ? 1 : 0
           user.status = user.status ? 1 : 0
           this.$emit('submit', this.user)
         } else {
@@ -291,9 +368,8 @@ export default{
         }
       })
     },
-    positionAndDepartment (updated, index) {
-      this.departmentPosition[index] = updated
-      this.user.departments = this.departmentPosition
+    positionAndDepartment (updated) {
+      this.user.departments = updated
     }
   },
   mounted () {
@@ -309,6 +385,9 @@ export default{
     })
   },
   created () {
+    this.dateExpirationConstract()
+    this.dateConstract()
+    this.fetchContract()
     this.dataUser && this.setInitData()
     this.status_txt()
   }

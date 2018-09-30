@@ -96,18 +96,18 @@ export default{
     return {
       // tiêu đề của bảng chi nhánh phòng ban , chức vụ
       headersPosition: [
-      { text: 'Chi nhánh', value: 'branch', sortable: false },
-      { text: 'Phòng ban', value: 'department', sortable: false },
-      { text: 'Chức vụ', value: 'position', sortable: false }
+        { text: 'Chi nhánh', value: 'branch', sortable: false },
+        { text: 'Phòng ban', value: 'department', sortable: false },
+        { text: 'Chức vụ', value: 'position', sortable: false }
       ],
-      //tiêu đề của bảng hợp đồng
+      // tiêu đề của bảng hợp đồng
       headersContract: [
-      { text: 'Tên hợp đồng', value: 'title', sortable: false },
-      { text: 'Loại hợp đồng', value: 'type', sortable: false },
-      { text: 'Trạng thái', value: 'status', sortable: false },
-      { text: 'Ngày đăng kí', value: 'status', sortable: false },
-      { text: 'Ngày bắt đầu', value: 'status', sortable: false },
-      { text: 'Ngày kêt thúc', value: 'status', sortable: false },
+        { text: 'Tên hợp đồng', value: 'title', sortable: false },
+        { text: 'Loại hợp đồng', value: 'type', sortable: false },
+        { text: 'Trạng thái', value: 'status', sortable: false },
+        { text: 'Ngày đăng kí', value: 'status', sortable: false },
+        { text: 'Ngày bắt đầu', value: 'status', sortable: false },
+        { text: 'Ngày kêt thúc', value: 'status', sortable: false }
       ],
       dataViewHeight: 0,
       dialogDelete: false

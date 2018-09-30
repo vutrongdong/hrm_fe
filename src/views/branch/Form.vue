@@ -88,7 +88,7 @@
                 placeholder="Hãy chọn một quận hoặc huyện"> </v-select>
                 <!-- email -->
                 <v-text-field
-                placeholder="Nhập email"
+                placeholder="vd: https://mail.google.com/myMail"
                 :error-messages="errors.has('email') ? errors.collect('email') : []"
                 :data-vv-as="$t('label.email')"
                 name="email"
@@ -124,7 +124,7 @@
                 v-model="branch.phone"> </v-text-field>
                 <!-- facebook -->
                 <v-text-field
-                placeholder="Nhập link facebook"
+                placeholder="vd: https://www.facebook.com/tienlee.ask"
                 :error-messages="errors.has('facebook') ? errors.collect('facebook') : []"
                 :data-vv-as="$t('label.facebook')"
                 name="facebook"
@@ -132,76 +132,81 @@
                 v-model="branch.facebook"> </v-text-field>
                 <!-- website -->
                 <v-text-field
-                placeholder="Nhập link website"
+                placeholder="vd: https://vnexpress.net"
                 :error-messages="errors.has('website') ? errors.collect('website') : []"
                 :data-vv-as="$t('label.website')"
                 name="website"
                 :label="$t('label.website')"
                 v-model="branch.website"> </v-text-field>
                 <!-- description -->
-                <v-text-field
+                <label>Mô tả</label>
+                <tinymce
+                id="d1"
                 placeholder="Nhập mô tả"
                 :error-messages="errors.has('description') ? errors.collect('description') : []"
                 :data-vv-as="$t('label.description')"
                 name="description"
                 :label="$t('label.description')"
-                v-model="branch.description"> </v-text-field>
-              </v-flex>
-              <v-flex md6 xs6 style="margin-left:10px">
-                <!-- about -->
-                <v-text-field
-                placeholder="Nhập thông tin"
-                :error-messages="errors.has('about') ? errors.collect('about') : []"
-                :data-vv-as="$t('label.about')"
-                name="about"
-                :label="$t('label.about')"
-                v-model="branch.about"> </v-text-field>
-                <!-- instagram -->
-                <v-text-field
-                placeholder="Nhập instagram"
-                :error-messages="errors.has('instagram') ? errors.collect('instagram') : []"
-                :data-vv-as="$t('label.instagram')"
-                name="instagram"
-                :label="$t('label.instagram')"
-                v-model="branch.instagram"> </v-text-field>
-                <!-- zalo -->
-                <v-text-field
-                placeholder="Nhập zalo"
-                :error-messages="errors.has('zalo') ? errors.collect('zalo') : []"
-                :data-vv-as="$t('label.zalo')"
-                name="zalo"
-                :label="$t('label.zalo')"
-                v-model="branch.zalo"> </v-text-field>
-                <!-- bank -->
-                <v-text-field
-                placeholder="Nhập tài khoản ngân hàng"
-                :error-messages="errors.has('bank') ? errors.collect('bank') : []"
-                :data-vv-as="$t('label.bank')"
-                name="bank"
-                :label="$t('label.bank')"
-                v-model="branch.bank"> </v-text-field>
-              </v-flex>
-            </v-layout>
-          </v-card>
-        </v-tab-item>
-      </v-tabs>
-      <v-flex xs12 text-xs-center>
-        <v-btn
-        :loading="isFetchingApi"
-        :disabled="isFetchingApi"
-        color="primary"
-        type="submit"
-        >
-        <template v-if="isCreate">
-          <v-icon left>add</v-icon> {{$t('control.create')}}
-        </template>
-        <template v-else>
-          <v-icon left>save</v-icon> {{$t('control.save')}}
-        </template>
-      </v-btn>
-    </v-flex>
-  </v-form>
-</v-container>
+                v-model="branch.description"
+                ></tinymce>
+                </v-flex>
+                <v-flex md6 xs6 style="margin-left:10px">
+                  <!-- bank -->
+                  <v-text-field
+                  placeholder="Nhập tài khoản ngân hàng"
+                  :error-messages="errors.has('bank') ? errors.collect('bank') : []"
+                  :data-vv-as="$t('label.bank')"
+                  name="bank"
+                  :label="$t('label.bank')"
+                  v-model="branch.bank"> </v-text-field>
+                  <!-- instagram -->
+                  <v-text-field
+                  placeholder="vd: https://www.instagram.com/nht"
+                  :error-messages="errors.has('instagram') ? errors.collect('instagram') : []"
+                  :data-vv-as="$t('label.instagram')"
+                  name="instagram"
+                  :label="$t('label.instagram')"
+                  v-model="branch.instagram"> </v-text-field>
+                  <!-- zalo -->
+                  <v-text-field
+                  placeholder="vd: https://oa.zalo.me/home"
+                  :error-messages="errors.has('zalo') ? errors.collect('zalo') : []"
+                  :data-vv-as="$t('label.zalo')"
+                  name="zalo"
+                  :label="$t('label.zalo')"
+                  v-model="branch.zalo"> </v-text-field>
+                  <!-- about -->
+                  <label>Thông tin</label>
+                  <tinymce
+                  id="d2"
+                  :error-messages="errors.has('about') ? errors.collect('about') : []"
+                  :data-vv-as="$t('label.about')"
+                  name="about"
+                  :label="$t('label.about')"
+                  v-model="branch.about"
+                  ></tinymce>
+                </v-flex>
+              </v-layout>
+            </v-card>
+          </v-tab-item>
+        </v-tabs>
+        <v-flex xs12 text-xs-center>
+          <v-btn
+          :loading="isFetchingApi"
+          :disabled="isFetchingApi"
+          color="primary"
+          type="submit"
+          >
+          <template v-if="isCreate">
+            <v-icon left>add</v-icon> {{$t('control.create')}}
+          </template>
+          <template v-else>
+            <v-icon left>save</v-icon> {{$t('control.save')}}
+          </template>
+        </v-btn>
+      </v-flex>
+    </v-form>
+  </v-container>
 </template>
 <script>
 import { mapGetters, mapActions } from 'vuex'
@@ -288,8 +293,6 @@ export default{
           let branch = Object.assign({}, this.branch)
           branch.status = branch.status ? 1 : 0
           branch.type = branch.type ? 1 : 0
-          // console.log("status",branch.status)
-          // return false
           this.$emit('submit', branch)
         } else {
           this.$store.dispatch('showNotify', {

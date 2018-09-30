@@ -1,5 +1,5 @@
 <template>
-  <v-layout ref="laylout" row fill-height>
+  <v-card flat>
     <v-flex xs12>
       <v-toolbar dense color="white" flat>
         <v-spacer></v-spacer>
@@ -11,7 +11,7 @@
       </v-toolbar>
       <branch-form @submit="submitForm"/>
     </v-flex>
-  </v-layout>
+  </v-card>
 </template>
 <script>
 import BranchForm from './Form'

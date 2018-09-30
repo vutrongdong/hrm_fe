@@ -158,7 +158,7 @@
               </v-flex>
               <v-flex>
                 <v-flex v-if='item.contracts' sm2 :class="isMini && 'd-none'" >
-                  <v-flex v-for="contract in item.contracts.data">
+                  <v-flex :key="index" v-for="(contract, index) in item.contracts.data">
                     {{ contract.title }}
                   </v-flex>
                 </v-flex>
@@ -193,60 +193,60 @@
 </template>
 
 <script>
-  import DialogConfirm from '@/components/DialogConfirm'
-  import { debounce } from 'lodash'
-  import DataView from '@/components/DataView/DataView'
-  import { mapActions, mapGetters } from 'vuex'
-  export default{
-    name: 'UserListting',
-    props: {
-      isMini: {
-        type: Boolean,
-        default: false
-      }
+import DialogConfirm from '@/components/DialogConfirm'
+import { debounce } from 'lodash'
+import DataView from '@/components/DataView/DataView'
+import { mapActions, mapGetters } from 'vuex'
+export default{
+  name: 'UserListting',
+  props: {
+    isMini: {
+      type: Boolean,
+      default: false
+    }
+  },
+  components: {
+    DataView,
+    DialogConfirm
+  },
+  data: () => ({
+    placeholderPosition: 'Chọn phòng ban trước !',
+    placeholderDepartment: 'Chọn chi nhánh trước !',
+    departmentActiveByBranch: false,
+    positionActiveByDepartment: false,
+    dialogDelete: false,
+    dataViewHeight: 0,
+    dataViewName: 'user',
+    departments: [],
+    idUser: null,
+    params: {
+      q: '',
+      branch_id: '',
+      department_id: '',
+      position_id: '',
+      include: 'roles,departments,contracts'
+    }
+  }),
+  computed: {
+    ...mapGetters('Branch', ['branchAll']),
+    ...mapGetters('Department', ['departmentByBranch']),
+    ...mapGetters('Position', ['positionAll']),
+    ...mapGetters('Contracts', ['contractDetail'])
+  },
+  methods: {
+    ...mapActions('Dataview', ['removeDataviewEntry']),
+    ...mapActions('User', ['getUser', 'deleteUser']),
+    ...mapActions('Branch', ['getBranchForUser']),
+    ...mapActions('Department', ['getDepartmentForUser']),
+    ...mapActions('Contracts', ['fetchContract']),
+    ...mapActions('Position', ['fetchPosition']),
+    userDetail (user) {
+      this.getUser({ userId: user.id, params: { include: 'roles,departments' } })
+      this.$router.push({ name: 'user-detail', params: { id: user.id } })
     },
-    components: {
-      DataView,
-      DialogConfirm
-    },
-    data: () => ({
-      placeholderPosition:'Chọn phòng ban trước !',
-      placeholderDepartment: 'Chọn chi nhánh trước !',
-      departmentActiveByBranch: false,
-      positionActiveByDepartment: false,
-      dialogDelete: false,
-      dataViewHeight: 0,
-      dataViewName: 'user',
-      departments: [],
-      idUser: null,
-      params: {
-        q: '',
-        branch_id: '',
-        department_id: '',
-        position_id: '',
-        include: 'roles,departments,contracts'
-      }
-    }),
-    computed: {
-      ...mapGetters('Branch', ['branchAll']),
-      ...mapGetters('Department', ['departmentByBranch']),
-      ...mapGetters('Position', ['positionAll']),
-      ...mapGetters('Contracts', ['contractDetail'])
-    },
-    methods: {
-      ...mapActions('Dataview', ['removeDataviewEntry']),
-      ...mapActions('User', ['getUser','deleteUser']),
-      ...mapActions('Branch', ['getBranchForUser']),
-      ...mapActions('Department', ['getDepartmentForUser']),
-      ...mapActions('Contracts', ['fetchContract']),
-      ...mapActions('Position', ['fetchPosition']),
-      userDetail (user) {
-        this.getUser({ userId: user.id, params: { include: 'roles,departments' } })
-        this.$router.push({ name: 'user-detail', params: { id: user.id } })
-      },
-      changeSearch: debounce(function () {
-        this.filter()
-      }, 500),
+    changeSearch: debounce(function () {
+      this.filter()
+    }, 500),
     // lọc chi phòng ban theo chi nhánh
     changeBranch: debounce(function (value) {
       this.placeholderDepartment = 'Chọn phòng ban'
@@ -261,7 +261,7 @@
       })
       this.filter()
     }, 500),
-    ChangeDepartment:debounce(function () {
+    ChangeDepartment: debounce(function () {
       this.placeholderPosition = 'Chọn chức vụ'
       this.positionActiveByDepartment = true
       this.filter()

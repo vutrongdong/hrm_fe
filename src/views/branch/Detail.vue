@@ -1,7 +1,7 @@
 <template>
   <v-layout ref="laylout" row fill-height>
     <v-flex xs4>
-      <listting type="detail" />
+      <listting type="detail" :is-mini="true" />
     </v-flex>
     <v-flex xs8 class="border-e0-left">
       <v-toolbar dense color="white" flat>
@@ -24,50 +24,31 @@
         <v-icon>delete</v-icon>
       </v-btn>
     </v-toolbar>
-    <v-container>
+    <v-container fluid class="white scroll-y border-e0-top" :style="{height: dataViewHeight + 'px'}">
       <v-layout row wrap>
-        <v-flex md12>
-          <v-list-tile-title>Tên chi nhánh</v-list-tile-title>
-          <v-list-tile-title>Email</v-list-tile-title>
+        <v-flex sm5>
+          <img style="border:1px solid gray" width="100%" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSkzg43WKhLRqXMgK81QQilVmHO0qcC2pu424_k5cAUV0TasgY3-Q" alt="">
         </v-flex>
-       <!--  <v-list-tile-title>Mô tả</v-list-tile-title>
-       <v-list-tile-title>Số điện thoại</v-list-tile-title>
-       <v-list-tile-title>Địa chỉ</v-list-tile-title>
-       <v-list-tile-title>Website</v-list-tile-title>
-       <v-list-tile-title>Facebook</v-list-tile-title>
-       <v-list-tile-title>Zalo</v-list-tile-title>
-       <v-list-tile-title>Mã số thuế</v-list-tile-title>
-       <v-list-tile-title>Ngân hàng</v-list-tile-title>
-       <v-list-tile-title>Loại chi nhánh</v-list-tile-title>
-             </v-flex> -->
-<!--       <v-flex md5>
-        <v-list-tile-title>{{branchDetail.name}}</v-list-tile-title>
-        <v-list-tile-title>{{branchDetail.email}}</v-list-tile-title>
-        <v-list-tile-title>{{branchDetail.description}}</v-list-tile-title>
-        <v-list-tile-title>{{branchDetail.phone}}</v-list-tile-title>
-        <v-list-tile-title>{{branchDetail.name}}</v-list-tile-title>
-        <v-list-tile-title>{{branchDetail.name}}</v-list-tile-title>
-        <v-list-tile-title>{{branchDetail.name}}</v-list-tile-title>
-      </v-flex> -->
-    </v-layout>
-  </v-container>
-  <v-container fluid class="white scroll-y border-e0-top" :style="{height: dataViewHeight + 'px'}">
-    <p>Tên: {{branchDetail.name}}</p>
-    <p>Mô tả : {{branchDetail.description }}</p>
-    <p>Thông tin : {{branchDetail.about }}</p>
-    <p>Số điện thoại: {{branchDetail.phone}}</p>
-    <p>Địa chỉ: {{branchDetail.address}}</p>
-    <p>Website: {{branchDetail.website}}</p>
-    <p>Website: {{branchDetail.email}}</p>
-    <p>Facebook: {{branchDetail.facebook}}</p>
-    <p>Zalo: {{branchDetail.zalo}}</p>
-    <p>Mã số thuế: {{branchDetail.tax_number}}</p>
-    <p>Ngân hàng: {{branchDetail.bank}}</p>
-    <p>Chi nhánh chính <v-icon color="green" v-if="branchDetail.type_txt==='Chi nhánh chính'">done_outline</v-icon><v-icon v-else color="red">
-    highlight_off</v-icon></p>
-  </v-container>
-</v-flex>
-<dialog-confirm v-model="dialogDelete" @input="remove" />
+        <v-flex xs7 class="pl-2" id="infoBranch">
+          <p> - Tên: {{branchDetail.name}}</p>
+          <p> - Số điện thoại: {{branchDetail.phone}}</p>
+          <p> - Địa chỉ: {{branchDetail.address}}</p>
+          <p> - Website: {{branchDetail.website}}</p>
+          <p> - Email: {{branchDetail.email}}</p>
+          <p> - Facebook: {{branchDetail.facebook}}</p>
+          <p> - Zalo: {{branchDetail.zalo}}</p>
+          <p> - Mã số thuế: {{branchDetail.tax_number}}</p>
+          <p> - Ngân hàng: {{branchDetail.bank}}</p>
+          <p> - Loại: {{ branchDetail.type_txt }}</p>
+        </v-flex>
+      </v-layout>
+      <v-flex class="mt-4">
+        <h3 class='mr-2'> Mô tả công ty: </h3><p style="margin-top: 3px;clear:both;" v-html="branchDetail.description"></p>
+        <h3 class='mr-2'>Thông tin công ty:</h3><span v-html="branchDetail.about"></span>
+      </v-flex>
+    </v-container>
+  </v-flex>
+  <dialog-confirm v-model="dialogDelete" @input="remove" />
 </v-layout>
 </template>
 <script>
@@ -91,7 +72,7 @@ export default{
   },
   methods: {
     ...mapActions(['setMiniDrawer']),
-    ...mapActions('Branch', ['getBranchs', 'getBranch', 'deleteBranch']),
+    ...mapActions('Branch', ['getBranch', 'deleteBranch']),
     ...mapActions('Dataview', ['removeDataviewEntry']),
     removeConfirm () {
       this.dialogDelete = true
@@ -128,7 +109,6 @@ export default{
     this.setMiniDrawer(true)
     if (!this.branchDetail.id) {
       this.getBranch({ branchId: this.$route.params.id })
-      this.getBranchs({ branchId: this.$route.params.id })
     }
   },
   mounted () {
@@ -136,9 +116,8 @@ export default{
   }
 }
 </script>
-<style scoped>
-.v-list__tile__title{
-  padding: 25px;
-  border: 1px solid red;
-}
+<style>
+  #infoBranch p{
+      margin-bottom: 10px;
+  }
 </style>

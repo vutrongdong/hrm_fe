@@ -17,7 +17,6 @@
           <v-select
           v-model="user.departments[index].branch_id"
           label="Chi nhánh"
-          v-if="Array.isArray(branchAll)"
           :items="branchAll"
           item-text="name"
           item-value="id"
@@ -30,16 +29,15 @@
         </v-flex>
         <v-spacer></v-spacer>
         <!-- department -->
-        <!-- :items="getBranch(user.departments[index].branch_id)" -->
-        <v-flex md4>
+        <v-flex md4 id="position">
           <label>Phòng ban</label>
           <v-select
-          v-model="user.departments[index].id"
+          v-model="user.departments[index].department_id"
           label="Phòng ban"
           :disabled="!departmentActive"
-          :items="departmentByBranch"
+          :items="departments[user.departments[index].branch_id]"
           item-text="name"
-          item-value="id"
+          item-value="department_id"
           :error-messages="errors.has ('department_id') ? errors.collect('department_id') : []"
           name="department_id"
           placeholder="Thuộc phòng ban"
@@ -64,37 +62,24 @@
             <v-btn slot="activator" style="margin-top:35px;"
             icon color="error"
             @click="deleteDepartment(index)">
-            <v-icon>delete</v-icon></v-btn>
-            <span>Xóa</span>
-          </v-tooltip>
-        </v-layout>
+            <v-icon>delete</v-icon>
+          </v-btn>
+          <span>Xóa</span>
+        </v-tooltip>
       </v-layout>
-    </template>
+    </v-layout>
+  </template>
 <script>
-import { filter } from 'lodash'
 import { mapGetters, mapActions } from 'vuex'
 export default {
   name: 'UserFormSub',
   data () {
     return {
-      objectDepartment: {
-        branch_id: null,
-        department_id: null,
-        position_id: null
-      },
-      departments: [],
+      departments: {},
       departmentActive: false,
       positionActive: false,
-      valDepartment: null,
-      valPosition: null,
       user: {
-        departments: [
-          {
-            branch_id: null,
-            department_id: null,
-            position_id: null
-          }
-        ]
+        departments: []
       }
     }
   },
@@ -121,67 +106,41 @@ export default {
     ...mapActions('Branch', ['getBranchForUser']),
     ...mapActions('Department', ['getDepartmentForUser']),
     addDepartment () {
-      console.log(1223, this.user)
-      this.user.departments.push({
-        branch_id: null,
-        department_id: null,
-        position_id: null
-      })
+      this.user.departments.push({})
     },
     deleteDepartment (index) {
       this.user.departments.splice(index, 1)
+      this.emitDepartment()
     },
     changeBranch (value) {
       // nếu branch thay đổi thì select box của department không bị disable
       this.departmentActive = true
-      if (this.dataUser.departments.data) {
-        let array = [...this.user.departments]
-        let filters = filter(array, function (object) { return object.branch_id = value })
-        return filters
-      } else {
-        this.getDepartmentForUser({
-          branchId: value,
-          params: { include: 'departments' },
-          cb: () => {
-            this.departments = this.departmentByBranch
-          }
-        })
-      }
-    },
-    getBranch (value) {
-      let array = [...this.user.departments]
-      let filters = filter(array, function (object) { return object.branch_id = value })
-      return filters
     },
     changeDepartment (value) {
-      this.valDepartment = value
       this.positionActive = true
+      this.emitDepartment()
     },
     changePosition (value) {
-      this.valPosition = value
-      this.objectDepartment['department_id'] = this.valDepartment
-      this.objectDepartment['position_id'] = this.valPosition
-      this.$emit('positionAndDepartment', this.objectDepartment)
+      this.emitDepartment()
+    },
+    // thực hiện emit khi có sự thay đổi về dữ liệu
+    emitDepartment () {
+      this.$emit('positionAndDepartment', this.user.departments)
     },
     setInitData () {
-      // nếu department thay đổi thì select box của //
       let dataUser = { ...this.dataUser }
       this.user = { ...this.user, ...dataUser }
       // nếu mảng dataUser.departments không có gía trị thì push thêm một mảng rỗng
       if (this.dataUser.departments.data) {
-        this.user.departments = this.dataUser.departments.data.length ? this.user.departments.data : [
-          {
-            branch_id: null,
-            department_id: null,
-            position_id: null
-          }
-        ]
+        this.departmentActive = true
+        this.positionActive = true
+        this.user.departments = this.dataUser.departments.data.length ? this.user.departments.data : [{}]
       } else {
         this.user.departments.push({})
       }
     }
   },
-  mounted () {
+  created () {
     this.fetchApi({
       url: 'departments',
       method: 'GET',
@@ -189,27 +148,18 @@ export default {
         limit: -1
       },
       success: (response) => {
-        this.departments = response.data
+        const items = response.data
+        items.forEach(item => {
+          if (!this.departments[item.branch_id]) {
+            this.departments[item.branch_id] = []
+          }
+          this.departments[item.branch_id].push(item)
+        })
       }
     })
-    this.getDepartmentForUser({
-      branchId: 5,
-      params: { include: 'departments' },
-      cb: () => {
-        this.departments = this.departmentByBranch
-      }
-    })
-  },
-  created () {
     this.getBranchForUser()
     this.fetchPosition()
     !!this.dataUser && this.setInitData()
-    if (this.$route.params.id) {
-      if (this.dataUser.departments.data[this.index]) {
-        this.departmentActive = true
-        this.positionActive = true
-      }
-    }
   }
 }
 </script>
