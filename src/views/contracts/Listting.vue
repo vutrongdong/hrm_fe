@@ -41,9 +41,9 @@
               tên nhân viên
             </v-flex>
             <v-flex sm2 class="text-uppercase text-bold">
-              Ngày đăng ký /
-              hiệu lực /
-              kết thúc
+              <v-flex sm12>ngày đăng ký</v-flex>
+              <v-flex sm12>ngày hiệu lực</v-flex>
+              <v-flex sm12>ngày  kết thúc</v-flex>
             </v-flex>
             <v-flex sm2 class="text-bold text-uppercase">
               trạng thái
@@ -65,37 +65,37 @@
         <template slot-scope="{items}">
           <v-list three-line>
             <template v-for="(item, index) in items.data">
-           <!--   <v-list-tile
+             <v-list-tile
              :key="'item' + item.id"
              avatar
              @click="contractDetail(item)"
              :inactive="item.id === $route.params.id"
              :class="item.id === $route.params.id && 'grey lighten-2'"
-             > -->
-             <v-layout class="pa-2" :key="index">
-               <v-flex sm1 class="ml-3" sm1 :class="isMini && 'd-none'">
-                {{ index + 1 }}
+             >
+             <v-layout class="pa-2">
+              <v-flex sm1 :class="isMini && 'd-none'">
+                {{index + 1}}
               </v-flex>
-              <v-flex class="pr-5" sm2 :class="isMini && 'full-flex-basic full-max-width' " v-if="item.title">
+              <v-flex  class="pr-2 " sm2 :class="isMini && 'full-flex-basic full-max-width' " v-if="item.title">
                 {{ item.title }}
               </v-flex>
-              <v-flex xs2  :class="isMini && 'd-none'">
+              <v-flex  sm2  :class="isMini && 'd-none'">
                 {{item.type_txt}}
               </v-flex>
-              <v-flex class="pr-5" sm2 :class="isMini && 'd-none'">
+              <v-flex class="pr-5 pl-2" sm2 :class="isMini && 'd-none'">
                 {{item.user_name}}
               </v-flex>
-              <v-flex xs2  :class="isMini  && 'd-none'">
+              <v-flex xs2  class="pl-2" :class="isMini  && 'd-none'">
                <v-flex xs12> {{item.date_sign}}</v-flex>
                <v-flex xs12> {{item.date_effective}}</v-flex>
                <v-flex xs12> {{item.date_expiration}}</v-flex>
              </v-flex>
-             <v-flex xs2 :class="isMini && 'd-none'">
+             <v-flex xs2 class="pl-2" :class="isMini && 'd-none'">
               {{item.status_txt}}
             </v-flex>
-            <v-flex xs1 :class="isMini && 'd-none'">
+            <v-flex xs1 class="pl-1" :class="isMini && 'd-none'">
              <v-tooltip bottom>
-              <v-btn slot="activator" class="ma-0" v-if="canAccess('contracts.update')" @click icon>
+              <v-btn slot="activator" class="ma-0" v-if="canAccess('contracts.update')" icon @click.stop="$router.push({name: 'contract-edit', params: {id: item.id}})">
                 <v-icon class='theme--light teal--text'>edit</v-icon>
               </v-btn>
               <span>Sửa</span>
@@ -108,7 +108,7 @@
             </v-tooltip>
           </v-flex>
         </v-layout>
-  <!--     </v-list-tile> -->
+      </v-list-tile>
       <v-divider
       :key="'div' + index + item.id"
       v-if="index + 1 < items.data.length"
@@ -154,9 +154,9 @@ export default{
   methods: {
     ...mapActions('Dataview', ['removeDataviewEntry']),
     ...mapActions('Contracts', ['deleteContract', 'getContract']),
-    // ...mapActions('User', ['getUsers']),
+    ...mapActions('User', ['getUsers']),
     contractDetail (contract) {
-      // this.getContract({ contractId: contract.id })
+      this.getContract({ contractId: contract.id })
       // this.$router.push({ name: 'contract-detail', params: { id: contract.id } })
     },
     /// screach
@@ -177,7 +177,7 @@ export default{
           cb: (response) => {
             this.removeDataviewEntry({
               name: 'contract',
-              name: this.contractDetail,
+              data: this.contractDetail,
               key: 'id'
             })
             this.$store.dispatch('showNotify', {
@@ -185,7 +185,7 @@ export default{
               color: 'success'
             })
             this.dialogDelete = false
-            this.filter()
+            this.$refs[this.dataViewName].$emit('reload')
           },
           error: (error) => {
             if (error.status === 404) {
@@ -213,7 +213,6 @@ export default{
     }
   },
   created () {
-    // this.getUsers()
   }
 }
 </script>
