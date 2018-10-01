@@ -124,7 +124,17 @@
             {{ item.value }}
           </v-flex>
           <v-flex sm2 :class="isMini && 'd-none'">
-            {{ item.status_txt }}
+            <v-tooltip bottom sm12>
+              <v-switch
+              @click.native.stop="changeStatus(item.id)"
+              class='ml-3'
+              name="status"
+              slot="activator"
+              v-model="item.status"
+              ></v-switch>
+              <span v-if="item.status">Hiển thị</span>
+              <span v-else>Không hiển thị</span>
+            </v-tooltip>
           </v-flex>
           <v-flex sm2 :class="isMini && 'd-none'">
             <v-tooltip bottom>
@@ -212,7 +222,7 @@ export default{
   },
   methods: {
     ...mapActions(['setMiniDrawer']),
-    ...mapActions('Setting', ['FetchSetting', 'deleteSetting', 'updateSetting']),
+    ...mapActions('Setting', ['FetchSetting', 'deleteSetting', 'updateSetting','updateStatusSetting']),
     ...mapActions(['showNotify', 'setMiniDrawer']),
     ...mapActions('Setting', ['createSetting']),
     addSetting () {
@@ -223,6 +233,11 @@ export default{
       this.editedIndex = 1
       this.setting = Object.assign({}, item)
       this.dialog = true
+    },
+    changeStatus (idSetting) {
+      this.updateStatusSetting({
+        id: idSetting
+      })
     },
     changeSearch: debounce(function () {
       this.filter()
