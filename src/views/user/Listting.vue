@@ -160,12 +160,10 @@
                   {{ department.position_name }}
                 </v-flex>
               </v-flex>
-              <v-flex>
-                <v-flex v-if='item.contracts' sm2 :class="isMini && 'd-none'" >
-                  <v-flex :key="index" v-for="(contract, index) in item.contracts.data">
-                    {{ contract.title }}
+              <v-flex sm2>
+                <v-flex v-if='item.contracts' :class="isMini && 'd-none'" :key="index" v-for="(contract, index) in item.contracts.data" >
+                    {{ contract.type_txt }}
                   </v-flex>
-                </v-flex>
               </v-flex>
               <v-flex sm1 :class="isMini && 'd-none'">
                 <v-tooltip bottom>
