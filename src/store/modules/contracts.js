@@ -76,6 +76,7 @@ const actions = {
   },
   deleteContract ({ commit, dispatch }, payload) {
     let { id, cb, error } = payload || {}
+    console.log('id contracts :', id)
     dispatch('fetchApi', {
       url: `contracts/${id}`,
       method: 'DELETE',

@@ -38,7 +38,7 @@
                   <!-- name -->
                   <v-flex xs12 sm6 md12>
                     <v-text-field
-                    placeholder="nhập tên"
+                    placeholder="Nhập tên"
                     :error-messages="errors.has('name') ? errors.collect('name') : []"
                     v-validate="'required'"
                     :data-vv-as="$t('label.name')"

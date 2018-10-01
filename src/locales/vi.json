@@ -17,6 +17,7 @@
     "contract":{
       "index" : "Hợp đồng",
        "listting": "Danh sách hợp đồng",
+       "detail" : "Chi tiết hợp đồng ",
        "create": "Thêm mới hợp đồng",
        "edit": "Chỉnh sửa hợp đồng"
     },

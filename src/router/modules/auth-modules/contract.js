@@ -51,7 +51,7 @@ export default[
         }
       ]
     },
-    component: () => import('@/views/department/Detail')
+    component: () => import('@/views/contracts/Detail')
   },
   {
     path: 'contract/:id/edit',
