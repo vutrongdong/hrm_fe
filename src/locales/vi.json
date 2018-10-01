@@ -15,8 +15,8 @@
       "edit": "Chỉnh sửa quyền try cập"
     },
     "contract":{
-      "index" : "Danh sách hợp đồng",
-       "listting": "Hợp đồng",
+      "index" : "Hợp đồng",
+       "listting": "Danh sách hợp đồng",
        "create": "Thêm mới hợp đồng",
        "edit": "Chỉnh sửa hợp đồng"
     },

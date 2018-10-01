@@ -120,7 +120,7 @@ export default {
         },
         {
           icon: 'fas fa-file-contract',
-          text: this.$t('title.contract.listting'),
+          text: this.$t('title.contract.index'),
           router: { name: 'contract' },
           access_permission: 'contract.view'
         },
