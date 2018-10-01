@@ -132,7 +132,7 @@
               item-text="name"> </v-select>
             </v-flex>
             <v-flex xs6 class="pl-2">
-              <!-- date_sign -->
+              <!-- date_sign -->{{ contractDetail }}
               <template>
                 <v-menu
                 ref="dateSign"

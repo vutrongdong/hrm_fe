@@ -149,9 +149,9 @@
             <!-- birth_day -->
             <template>
               <v-menu
-              ref="menu"
+              ref="dateOfBirth"
               :close-on-content-click="false"
-              v-model="menu"
+              v-model="dateOfBirth"
               :nudge-right="40"
               lazy transition="scale-transition"
               offset-y
@@ -191,43 +191,98 @@
               v-model="user.contracts.title"> </v-text-field>
               <!-- type contract -->
               <v-select
-              v-validate="'required'"
               :error-messages="errors.has('type') ? errors.collect('type') : []"
               :data-vv-as="$t('label.type')"
               name="type"
               :label="$t('label.type')"
               v-model="user.contracts.type"
-              :items="contractDetail"
-              item-value="type"
-              item-text="type_txt"> </v-select>
+              :items="typeContract"
+              item-value="value"
+              item-text="name"> </v-select>
               <!-- status contract-->
               <v-select
-              v-validate="'required'"
               :error-messages="errors.has('status') ? errors.collect('status') : []"
               :data-vv-as="$t('label.status')"
               name="status"
               :label="$t('label.status')"
               v-model="user.contracts.status"
-              :items="contractDetail"
-              item-value="status"
-              item-text="status_txt"> </v-select>
+              :items="statusContract"
+              item-value="value"
+              item-text="name"> </v-select>
             </v-flex>
             <v-flex xs6 class="pl-2">
               <!-- date_sign -->
-              <v-datetime-picker
-              label="Ngày đăng kí"
-              v-model="user.contracts.date_sign"
-              ></v-datetime-picker>
-              <!-- date_efective -->
-              <v-datetime-picker
-              label="Ngày có hiệu lực"
-              v-model="user.contracts.date_efective"
-              ></v-datetime-picker>
+              <template>
+                <v-menu
+                ref="dateSign"
+                :close-on-content-click="false"
+                v-model="dateSign"
+                :nudge-right="40"
+                lazy transition="scale-transition"
+                offset-y
+                full-width
+                min-width="290px">
+                <v-text-field
+                placeholder="Nhập ngày ký"
+                slot="activator"
+                v-model="user.contracts.date_sign"
+                label="Ngày ký"
+                readonly > </v-text-field>
+                <v-date-picker
+                ref="picker"
+                v-model="user.contracts.date_sign"
+                :max="new Date().toISOString().substr(0, 10)"
+                min="1950-01-01"
+                @change="save"> </v-date-picker> </v-menu>
+              </template>
+              <!-- date_effective -->
+              <template>
+                <v-menu
+                ref="dateEffective"
+                :close-on-content-click="false"
+                v-model="dateEffective"
+                :nudge-right="40"
+                lazy transition="scale-transition"
+                offset-y
+                full-width
+                min-width="290px">
+                <v-text-field
+                placeholder="Ngày có hiệu lực"
+                slot="activator"
+                v-model="user.contracts.date_effective"
+                label="Ngày có hiệu lực"
+                readonly > </v-text-field>
+                <v-date-picker
+                ref="picker"
+                v-model="user.contracts.date_effective"
+                :max="new Date().toISOString().substr(0, 10)"
+                min="1950-01-01"
+                @change="save"> </v-date-picker> </v-menu>
+              </template>
               <!-- date_expiration -->
-              <v-datetime-picker
-              label="Ngày kết thúc"
-              v-model="user.contracts.date_expiration"
-              ></v-datetime-picker>
+              <template>
+                <v-menu
+                ref="dateExpiration"
+                :close-on-content-click="false"
+                v-model="dateExpiration"
+                :nudge-right="40"
+                lazy transition="scale-transition"
+                offset-y
+                full-width
+                min-width="290px">
+                <v-text-field
+                placeholder="Ngày có hết hạn"
+                slot="activator"
+                v-model="user.contracts.date_expiration"
+                label="Ngày có hết hạn"
+                readonly > </v-text-field>
+                <v-date-picker
+                ref="picker"
+                v-model="user.contracts.date_expiration"
+                :max="new Date().toISOString().substr(0, 10)"
+                min="1950-01-01"
+                @change="save"> </v-date-picker> </v-menu>
+              </template>
             </v-flex>
 
           </v-layout>
@@ -262,8 +317,8 @@
 </template>
 <script>
 import { mapGetters, mapActions } from 'vuex'
-import { map } from 'lodash'
-import formSub from './Form_sub'
+import { map, isTypedArray } from 'lodash'
+import formSub from './FormSub'
 import imageUpload from '@/components/UploadMultipleImage/UploadMultipleImage'
 export default{
   name: 'UserForm',
@@ -290,12 +345,27 @@ export default{
   data () {
     return {
       status: 'Kích hoạt',
-      range: 1,
-      menu: false,
+      dateOfBirth: false,
+      dateSign: false,
+      dateEffective: false,
+      dateExpiration: false,
       genderUser: [
-        { name: 'Nam', value: 1 },
-        { name: 'Nữ', value: 2 },
-        { name: 'Khác', value: 3 }
+      { name: 'Nam', value: 1 },
+      { name: 'Nữ', value: 0 },
+      { name: 'Khác', value: 2 }
+      ],
+      typeContract: [
+      { name: 'Học việc', value: 0 },
+      { name: 'Cộng tác viên', value: 1 },
+      { name: 'Thử việc', value: 2 },
+      { name: 'Có thời hạn', value: 3 },
+      { name: 'Không thời hạn', value: 4 },
+      { name: 'Khác', value: 5 }
+      ],
+      statusContract: [
+      { name: 'Tiêu chuẩn', value: 0 },
+      { name: 'Chấm dứt', value: 1 },
+      { name: 'Gia hạn', value: 2 }
       ],
       user: {
         avatar: '',
@@ -308,7 +378,7 @@ export default{
           status: 0,
           type: 0,
           date_sign: null,
-          date_efective: null,
+          date_effective: null,
           date_expiration: null
         }
       },
@@ -316,19 +386,25 @@ export default{
     }
   },
   watch: {
-    menu (val) {
+    dateOfBirth (val) {
       val && this.$nextTick(() => (this.$refs.picker.activePicker = 'YEAR'))
     },
-    dataUser (val) {
-      this.user = val
+    dateSign (val) {
+      val && this.$nextTick(() => (this.$refs.picker.activePicker = 'YEAR'))
+    },
+    dateEffective (val) {
+      val && this.$nextTick(() => (this.$refs.picker.activePicker = 'YEAR'))
+    },
+    dateExpiration (val) {
+      val && this.$nextTick(() => (this.$refs.picker.activePicker = 'YEAR'))
     }
   },
   methods: {
     ...mapActions(['fetchApi']),
-    ...mapActions('Contracts', ['fetchContract']),
     setInitData () {
-      let dataUser = { ...this.dataUser }
-      console.log('let', dataUser)
+      // let dataUser = { ...this.dataUser }
+      let dataUser = Object.assign({}, this.dataUser)
+      dataUser.contracts = dataUser.contracts.data
       if (dataUser.roles) {
         dataUser.roles = map(dataUser.roles.data, (role) => {
           return role.id
@@ -337,22 +413,48 @@ export default{
       this.user = { ...this.user, ...dataUser }
     },
     save (date) {
-      this.$refs.menu.save(date)
+      this.$refs.dateOfBirth.save(date)
+      this.$refs.dateSign.save(date)
+      this.$refs.dateEffective.save(date)
+      this.$refs.dateExpiration.save(date)
     },
     status_txt () {
       if (this.user.status) { this.status = 'Kích hoạt' } else { this.status = 'Không kích hoạt' }
     },
     // thời gian đăng kí , có hiệu lực hợp đồng
     dateConstract () {
-      let date = new Date()
-      this.user.contracts.date_sign = date
-      this.user.contracts.date_efective = date
+      let today = new Date()
+      let dd = today.getDate()
+      let mm = today.getMonth() + 1
+      let yyyy = today.getFullYear()
+
+      if (dd < 10) {
+        dd = '0' + dd
+      }
+
+      if (mm < 10) {
+        mm = '0' + mm
+      }
+      today = yyyy + '-' + mm + '-' + dd
+      this.user.contracts.date_sign = today
+      this.user.contracts.date_effective = today
     },
     // thời gian kết thúc hợp đồng
     dateExpirationConstract () {
-      let date = new Date()
-      date.setMonth(date.getMonth() + 2)
-      this.user.contracts.date_expiration = date
+      let today = new Date()
+      let dd = today.getDate()
+      let mm = today.getMonth() + 3
+      let yyyy = today.getFullYear()
+
+      if (dd < 10) {
+        dd = '0' + dd
+      }
+
+      if (mm < 10) {
+        mm = '0' + mm
+      }
+      today = yyyy + '-' + mm + '-' + dd
+      this.user.contracts.date_expiration = today
     },
     validateBeforeSubmit () {
       this.$validator.validateAll().then(result => {
@@ -387,7 +489,6 @@ export default{
   created () {
     this.dateExpirationConstract()
     this.dateConstract()
-    this.fetchContract()
     this.dataUser && this.setInitData()
     this.status_txt()
   }

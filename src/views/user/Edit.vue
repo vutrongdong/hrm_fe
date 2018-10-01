@@ -38,8 +38,11 @@ export default{
     ...mapActions('User', ['updateUser', 'getUser', 'setUser']),
     ...mapActions('Dataview', ['updateDataviewEntry']),
     submitForm (formData) {
+      console.log(formData)
+      return false
       let submitForm = Object.assign({}, formData)
       submitForm.departments = submitForm.departments.data
+      submitForm.contracts = submitForm.contracts.data
       this.updateUser({
         id: this.$route.params.id,
         user: submitForm,
@@ -64,9 +67,8 @@ export default{
   },
   created () {
     if (!this.userDetail.id) {
-      this.getUser({ userId: this.$route.params.id, params: { include: 'roles,departments' } })
+      this.getUser({ userId: this.$route.params.id, params: { include: 'roles,departments,contracts' } })
     }
-    console.log('userDetail', this.userDetail)
   },
   mounted () {
     this.dataViewHeight = this.$refs.laylout.clientHeight - 48

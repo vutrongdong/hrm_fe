@@ -95,8 +95,8 @@ export default {
       }
     }
   },
-  watch:{
-    dataUser(val){
+  watch: {
+    dataUser (val) {
       this.user = val
     }
   },

@@ -44,7 +44,6 @@ const actions = {
   },
   getUser ({ commit, dispatch }, payload) {
     let { userId, params } = payload
-    console.log(12324, params)
     dispatch(
       'fetchApi',
       {
@@ -52,7 +51,6 @@ const actions = {
         method: 'GET',
         params: params || {},
         success: (response) => {
-          console.log(response.data)
           commit(SET_USER, response.data)
         }
       },
@@ -83,6 +81,14 @@ const actions = {
       data: user,
       params: params,
       success: cb
+    }, { root: true })
+  },
+  updateStatusUser ({ commit, dispatch }, payload) {
+    let { id, user } = payload
+    dispatch('fetchApi', {
+      url: `users/change-status/${id}`,
+      method: 'PUT',
+      data: user
     }, { root: true })
   },
   updateUser ({ commit, dispatch }, payload) {
