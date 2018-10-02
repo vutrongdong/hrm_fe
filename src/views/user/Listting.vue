@@ -27,10 +27,10 @@
               class='ml-2'
               @change="filter"
               placeholder="Hợp đồng"
-              item-text="type"
+              item-text="type_txt"
               item-value="type"
               :items="contractDetail"
-              v-model="params.contract_type"
+              v-model="params.contractType"
               menu-props="auto"
               hide-details
               single-line
@@ -50,7 +50,7 @@
               :items="branchAll"
               item-text="name"
               item-value="id"
-              v-model="params.branch_id"
+              v-model="params.branchId"
               menu-props="auto"
               hide-details
               single-line
@@ -69,7 +69,7 @@
               :items="departments"
               item-text="name"
               item-value="id"
-              v-model="params.department_id"
+              v-model="params.departmentId"
               menu-props="auto"
               hide-details
               single-line
@@ -88,7 +88,7 @@
               :items="positionAll"
               item-text="name"
               item-value="id"
-              v-model="params.position_id"
+              v-model="params.positionId"
               menu-props="auto"
               hide-details
               single-line
@@ -267,10 +267,10 @@ export default{
     },
     params: {
       q: '',
-      branch_id: '',
-      department_id: '',
-      position_id: '',
-      contract_type: '',
+      branchId: '',
+      departmentId: '',
+      positionId: '',
+      contractType: '',
       include: 'roles,departments,contracts'
     }
   }),
@@ -361,7 +361,11 @@ export default{
     }
   },
   mounted () {
-    this.dataViewHeight = this.$refs.laylout.clientHeight - 210
+    if(this.$route.params.id){
+      this.dataViewHeight = this.$refs.laylout.clientHeight - 96
+    }else{
+      this.dataViewHeight = this.$refs.laylout.clientHeight - 210
+    }
     let query = { ...this.$route.query }
     if (query.hasOwnProperty('reload')) {
       this.$nextTick(() => {

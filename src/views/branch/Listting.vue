@@ -1,26 +1,15 @@
 <template>
   <v-layout ref="laylout" column fill-height>
    <div ref="header">
-    <v-toolbar color="white" flat>
+    <v-toolbar height="50px" color="white" flat>
       <v-layout row wrap>
-        <v-flex xs2>
           <v-tooltip bottom>
             <v-btn slot="activator" v-if="canAccess('branch.create')" class="mr-3 mt-2" icon color="primary" @click="$router.push({name: 'branch-create'})">
               <v-icon>add</v-icon>
             </v-btn>
             <span>Thêm mới</span>
           </v-tooltip>
-        </v-flex>
-        <v-flex xs10>
-          <v-text-field
-          hide-details
-          single-line
-          placeholder="Nhập tên, sđt, email ..."
-          v-model="params.q"
-          @keyup="changeSearch"
-          clearable
-          ></v-text-field>
-        </v-flex>
+          <h2 style="margin-top: 10px;">Danh sách chi nhánh</h2>
       </v-layout>
       <v-layout slot="extension" v-if="!isMini">
         <v-flex sm1 class="text-bold text-uppercase">
@@ -79,15 +68,16 @@
               {{ item.address }}
             </v-flex>
             <v-flex sm2 :class="isMini && 'd-none'">
-              <v-tooltip bottom>
+              <v-tooltip bottom sm12>
                 <v-switch
-                @click.stop
-                class="ml-3"
+                @click.native.stop="changeStatus(item.id)"
+                class='ml-3'
+                name="status"
                 slot="activator"
-                v-model="branch.status"
-                color="orange"
+                v-model="item.status"
                 ></v-switch>
-                <span>{{ item.status_txt }}</span>
+                <span v-if="item.status">Chi nhánh chính</span>
+                <span v-else>Chi nhánh phụ</span>
               </v-tooltip>
             </v-flex>
             <v-flex sm2 :class="isMini && 'd-none'">
@@ -112,7 +102,7 @@
         ></v-divider>
       </template>
     </v-list>
-    <dialog-confirm v-model="dialogDelete" @input="remove()" />
+    <dialog-confirm v-model="dialogDelete" @input="remove" />
   </v-list>
 </template>
 </data-view>
@@ -141,18 +131,18 @@ export default {
     }
   },
   data: () => ({
-    branch: {
-      status: 1
+    branch:{
+      status:1
     },
     dialogDelete: false,
     idBranch: null,
     title: [
-      { text: 'Tên chi nhánh', sortable: false },
-      { text: 'Email', sortable: false },
-      { text: 'Mã sô thuế', sortable: false },
-      { text: 'Địa chỉ', sortable: false },
-      { text: 'Trạng thái', sortable: false },
-      { text: 'Hành động', sortable: false }
+    { text: 'Tên chi nhánh', sortable: false },
+    { text: 'Email', sortable: false },
+    { text: 'Mã sô thuế', sortable: false },
+    { text: 'Địa chỉ', sortable: false },
+    { text: 'Trạng thái', sortable: false },
+    { text: 'Hành động', sortable: false }
     ],
     dataViewHeight: 0,
     dataViewName: 'branch',
@@ -167,7 +157,8 @@ export default {
   },
   methods: {
     ...mapActions(['setMiniDrawer']),
-    ...mapActions('Branch', ['getBranch', 'deleteBranch']),
+    ...mapActions('Dataview', ['removeDataviewEntry']),
+    ...mapActions('Branch', ['getBranch','getBranchs', 'deleteBranch','updateStatusBranch']),
     ...mapActions(['showNotify', 'setMiniDrawer']),
     branchDetail (branch) {
       this.getBranch({ branchId: branch.id })
@@ -178,6 +169,11 @@ export default {
     }, 500),
     filter () {
       this.$refs[this.dataViewName].$emit('reload')
+    },
+    changeStatus (idBranch) {
+      this.updateStatusBranch({
+        id: idBranch
+      })
     },
     removeConfirm (id) {
       this.idBranch = id
@@ -193,7 +189,7 @@ export default {
               color: 'success'
             })
             this.dialogDelete = false
-            this.FetchSetting()
+            this.$refs[this.dataViewName].$emit('reload')
           },
           error: (error) => {
             if (error.status === 404) {
