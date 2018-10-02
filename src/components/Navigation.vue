@@ -159,13 +159,13 @@ export default {
           text: this.$t('title.candidate.index'),
           router: { name: 'candidate' },
           access_permission: 'candidate.view'
-        },
-        {
-          icon: 'fab fa-playstation',
-          text: this.$t('title.plan.index'),
-          router: { name: 'plan' },
-          access_permission: 'plan.view'
         }
+        // {
+        //   icon: 'fab fa-playstation',
+        //   text: this.$t('title.plan.index'),
+        //   router: { name: 'plan' },
+        //   access_permission: 'plan.view'
+        // }
       ]
     }
   },

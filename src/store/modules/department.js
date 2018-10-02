@@ -11,7 +11,7 @@ const initState = () => {
  * state
  */
 
- const state = {
+const state = {
   department: initState().department
 }
 
@@ -19,7 +19,7 @@ const initState = () => {
  * actions
  */
 
- const actions = {
+const actions = {
   setDepartment ({ commit }, payload) {
     let { department } = payload || {}
     commit(SET_DEPARTMENT, department)
@@ -38,7 +38,7 @@ const initState = () => {
         error: error
       },
       { root: true }
-      )
+    )
   },
   fetchDepartment ({ commit, dispatch }, payload) {
     let { params, error } = payload || {}
@@ -54,7 +54,7 @@ const initState = () => {
         error: error
       },
       { root: true }
-      )
+    )
   },
   getDepartmentForUser ({ commit, dispatch }, payload) {
     let { branchId, cb } = payload
@@ -69,7 +69,7 @@ const initState = () => {
         }
       },
       { root: true }
-      )
+    )
   },
 
   createDepartment ({ commit, dispatch }, payload) {
@@ -92,28 +92,28 @@ const initState = () => {
       success: cb
     }, { root: true })
   },
-  updateStatusDepartment({ commit, dispatch }, payload){
-   let { id } = payload
-   dispatch('fetchApi', {
-    url: `department/change-status/${id}`,
-    method: 'PUT'
-  }, { root: true })
- },
- deleteDepartment ({ commit, dispatch }, payload) {
-  let { id, cb, error } = payload || {}
-  dispatch('fetchApi', {
-    url: `departments/${id}`,
-    method: 'DELETE',
-    success: cb,
-    error: error
-  }, { root: true })
-}
+  updateStatusDepartment ({ commit, dispatch }, payload) {
+    let { id } = payload
+    dispatch('fetchApi', {
+      url: `departments/change-status/${id}`,
+      method: 'PUT'
+    }, { root: true })
+  },
+  deleteDepartment ({ commit, dispatch }, payload) {
+    let { id, cb, error } = payload || {}
+    dispatch('fetchApi', {
+      url: `departments/${id}`,
+      method: 'DELETE',
+      success: cb,
+      error: error
+    }, { root: true })
+  }
 }
 
 /**
  * mutations
  */
- const mutations = {
+const mutations = {
   [SET_DEPARTMENT]: (state, department) => {
     state.department = department
   }
@@ -122,7 +122,7 @@ const initState = () => {
 /**
  * getters
  */
- const getters = {
+const getters = {
   // departmentByBranch: (state) => state.department,
   departmentDetail: (state) => state.department
   // departmentAll: (state) => state.department

@@ -11,14 +11,14 @@ const initState = () => {
 /**
  * state
  */
- const state = {
+const state = {
   position: initState().position
 }
 
 /**
  * actions
  */
- const actions = {
+const actions = {
   setPosition ({ commit }, payload) {
     let { position } = payload || {}
     commit(SET_POSITION, position)
@@ -37,7 +37,7 @@ const initState = () => {
         error: error
       },
       { root: true }
-      )
+    )
   },
   getPosition ({ commit, dispatch }, payload) {
     let { positionId, params, error } = payload || {}
@@ -53,7 +53,7 @@ const initState = () => {
         error: error
       },
       { root: true }
-      )
+    )
   },
   createPosition ({ commit, dispatch }, payload) {
     let { position, cb } = payload || {}
@@ -74,28 +74,28 @@ const initState = () => {
       error: error
     }, { root: true })
   },
-  updateStatusPosition({ commit, dispatch }, payload){
-   let { id } = payload
-   dispatch('fetchApi', {
-    url: `positions/change-status/${id}`,
-    method: 'PUT'
-  }, { root: true })
- },
- deletePosition ({ commit, dispatch }, payload) {
-  let { id, cb, error } = payload || {}
-  dispatch('fetchApi', {
-    url: `positions/${id}`,
-    method: 'DELETE',
-    success: cb,
-    error: error
-  }, { root: true })
-}
+  updateStatusPosition ({ commit, dispatch }, payload) {
+    let { id } = payload
+    dispatch('fetchApi', {
+      url: `positions/change-status/${id}`,
+      method: 'PUT'
+    }, { root: true })
+  },
+  deletePosition ({ commit, dispatch }, payload) {
+    let { id, cb, error } = payload || {}
+    dispatch('fetchApi', {
+      url: `positions/${id}`,
+      method: 'DELETE',
+      success: cb,
+      error: error
+    }, { root: true })
+  }
 }
 
 /**
  * mutations
  */
- const mutations = {
+const mutations = {
   [SET_POSITION]: (state, position) => {
     state.position = position
   }
@@ -104,7 +104,7 @@ const initState = () => {
 /**
  * getters
  */
- const getters = {
+const getters = {
   positionDetail: (state) => state.position,
   positionAll: (state) => state.position
 }
