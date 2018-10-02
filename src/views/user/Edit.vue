@@ -40,9 +40,8 @@ export default{
     submitForm (formData) {
       let submitForm = Object.assign({}, formData)
       submitForm.departments = submitForm.departments.data
-      console.log("submitForm",submitForm)
-      console.log("submit",formData)
-      return false
+      // console.log('submit', formData)
+      // return false
       submitForm.contracts = submitForm.contracts.data
       this.updateUser({
         id: this.$route.params.id,

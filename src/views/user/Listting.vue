@@ -179,62 +179,65 @@
               </v-flex>
               <!-- end infomation -->
               <v-flex sm2 :class="isMini && 'd-none'" >
+                <v-flex v-if="item.departments">
                 <v-flex :key="index" v-for="(department, index) in item.departments.data">
                   {{ department.name }}
-                  <!-- phòng IT -->
                 </v-flex>
               </v-flex>
-              <v-flex sm2 :class="isMini && 'd-none'" >
+            </v-flex>
+            <v-flex sm2 :class="isMini && 'd-none'" >
+              <v-flex v-if="item.departments">
                 <v-flex :key="index" v-for="(department, index) in item.departments.data">
-                  <!-- Giám đốc -->
                   {{ department.position_name }}
                 </v-flex>
               </v-flex>
-              <v-flex sm2>
-                <v-flex v-if='item.contracts' :class="isMini && 'd-none'" :key="index" v-for="(contract, index) in item.contracts.data" >
+            </v-flex>
+            <v-flex sm2>
+              <v-flex v-if='item.contracts' >
+                <v-flex :class="isMini && 'd-none'" :key="index" v-for="(contract, index) in item.contracts.data" >
                   {{ contract.type_txt }}
                 </v-flex>
               </v-flex>
-              <v-flex sm1 :class="isMini && 'd-none'">
-               <v-tooltip bottom sm6>
-                <v-btn slot="activator" class="ma-0" v-if="canAccess('user.update')" icon @click.stop="editUser(item.id)">
-                  <v-icon class='theme--light teal--text'>edit</v-icon>
-                </v-btn>
-                <span>Sửa</span>
-              </v-tooltip>
-              <v-tooltip bottom sm6>
-                <v-btn slot="activator" class="ma-0" v-if="canAccess('user.delete')" icon @click.stop="removeConfirm(item.id)">
-                  <v-icon class="theme--light pink--text">delete</v-icon>
-                </v-btn>
-                <span>Xóa</span>
-              </v-tooltip>
-              <v-tooltip bottom sm12>
-                <v-switch
-                @click.native.stop="changeStatus(item.id)"
-                class='ml-3'
-                name="status"
-                slot="activator"
-                v-model="item.status"
-                ></v-switch>
-                <span v-if="item.status">Kích hoạt</span>
-                <span v-else>Không kích hoạt</span>
-              </v-tooltip>
             </v-flex>
-          </v-layout>
-        </v-list-tile>
-        <v-divider
-        :key="'div' + index + item.id"
-        v-if="index + 1 < items.data.length"
-        ></v-divider>
-      </template>
-    </v-list>
-  </template>
+            <v-flex sm1 :class="isMini && 'd-none'">
+             <v-tooltip bottom sm6>
+              <v-btn slot="activator" class="ma-0" v-if="canAccess('user.update')" icon @click.stop="editUser(item.id)">
+                <v-icon class='theme--light teal--text'>edit</v-icon>
+              </v-btn>
+              <span>Sửa</span>
+            </v-tooltip>
+            <v-tooltip bottom sm6>
+              <v-btn slot="activator" class="ma-0" v-if="canAccess('user.delete')" icon @click.stop="removeConfirm(item.id)">
+                <v-icon class="theme--light pink--text">delete</v-icon>
+              </v-btn>
+              <span>Xóa</span>
+            </v-tooltip>
+            <v-tooltip bottom sm12>
+              <v-switch
+              @click.native.stop="changeStatus(item.id)"
+              class='ml-3'
+              name="status"
+              slot="activator"
+              v-model="item.status"
+              ></v-switch>
+              <span v-if="item.status">Kích hoạt</span>
+              <span v-else>Không kích hoạt</span>
+            </v-tooltip>
+          </v-flex>
+        </v-layout>
+      </v-list-tile>
+      <v-divider
+      :key="'div' + index + item.id"
+      v-if="index + 1 < items.data.length"
+      ></v-divider>
+    </template>
+  </v-list>
+</template>
 </data-view>
 </v-flex>
 <dialog-confirm v-model="dialogDelete" @input="remove" />
 </v-layout>
 </template>
-
 <script>
 import DialogConfirm from '@/components/DialogConfirm'
 import { debounce } from 'lodash'

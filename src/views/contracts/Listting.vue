@@ -168,7 +168,7 @@ export default{
       q: ''
     }
   }),
-  created: {
+  computed: {
     ...mapGetters('User', ['userDetail']),
     ...mapGetters('Contracts', ['contractDetail'])
   },

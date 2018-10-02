@@ -157,7 +157,6 @@
       </template>
     </v-list>
     <dialog-confirm v-model="dialogDelete" @input="remove" />
-  </v-list>
 </template>
 </data-view>
 </v-flex>
@@ -167,7 +166,7 @@
 import { debounce } from 'lodash'
 import DialogConfirm from '@/components/DialogConfirm'
 import DataView from '@/components/DataView/DataView'
-import { mapActions,mapGetters } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
 export default {
   name: 'BranchListting',
   components: {
@@ -193,33 +192,33 @@ export default {
     dialogDelete: false,
     idBranch: null,
     title: [
-    { text: 'Tên chi nhánh', sortable: false },
-    { text: 'Email', sortable: false },
-    { text: 'Mã sô thuế', sortable: false },
-    { text: 'Địa chỉ', sortable: false },
-    { text: 'Trạng thái', sortable: false },
-    { text: 'Hành động', sortable: false }
+      { text: 'Tên chi nhánh', sortable: false },
+      { text: 'Email', sortable: false },
+      { text: 'Mã sô thuế', sortable: false },
+      { text: 'Địa chỉ', sortable: false },
+      { text: 'Trạng thái', sortable: false },
+      { text: 'Hành động', sortable: false }
     ],
     dataViewHeight: 0,
     dataViewName: 'branch',
     params: {
       q: '',
-      cityId:'',
-      districtId:''
+      cityId: '',
+      districtId: ''
     }
   }),
   computed: {
     isIndex () {
       return this.type === 'index'
     },
-    ...mapGetters('City',['cityAll','districtByCity'])
+    ...mapGetters('City', ['cityAll', 'districtByCity'])
   },
   methods: {
     ...mapActions(['setMiniDrawer']),
     ...mapActions('Dataview', ['removeDataviewEntry']),
     ...mapActions('Branch', ['getBranch', 'getBranchs', 'deleteBranch', 'updateStatusBranch']),
     ...mapActions(['showNotify', 'setMiniDrawer']),
-    ...mapActions('City', ['getCity','getDistrictByCity']),
+    ...mapActions('City', ['getCity', 'getDistrictByCity']),
     branchDetail (branch) {
       this.getBranch({ branchId: branch.id })
       this.$router.push({ name: 'branch-detail', params: { id: branch.id } })
@@ -287,7 +286,7 @@ export default {
       })
     }
   },
-  created(){
+  created () {
     this.getCity()
   }
 }

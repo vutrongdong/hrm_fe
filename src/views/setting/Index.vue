@@ -112,8 +112,8 @@
   >
   <template slot-scope="{items}">
     <v-list three-line>
-      <template v-for="(item, index) in items.data">
-        <v-layout class="pa-2">
+      <template>
+        <v-layout class="pa-2" :key="index" v-for="(item, index) in items.data">
           <v-flex class="ml-3" sm1 :class="isMini && 'd-none'">
             {{ index + 1 }}
           </v-flex>
@@ -222,7 +222,7 @@ export default{
   },
   methods: {
     ...mapActions(['setMiniDrawer']),
-    ...mapActions('Setting', ['FetchSetting', 'deleteSetting', 'updateSetting','updateStatusSetting']),
+    ...mapActions('Setting', ['FetchSetting', 'deleteSetting', 'updateSetting', 'updateStatusSetting']),
     ...mapActions(['showNotify', 'setMiniDrawer']),
     ...mapActions('Setting', ['createSetting']),
     addSetting () {
