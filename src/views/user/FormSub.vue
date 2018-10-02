@@ -95,11 +95,11 @@ export default {
       }
     }
   },
-  // watch: {
-  //   dataUser (val) {
-  //     this.user = val
-  //   }
-  // },
+  watch: {
+    // dataUser (val) {
+    //   this.user = val
+    // }
+  },
   computed: {
     ...mapGetters('Branch', ['branchAll']),
     ...mapGetters('Department', ['departmentByBranch']),
@@ -117,15 +117,15 @@ export default {
       this.user.departments.splice(index, 1)
       this.emitDepartment()
     },
-    changeBranch (value) {
+    changeBranch () {
       // nếu branch thay đổi thì select box của department không bị disable
       this.departmentActive = true
     },
-    changeDepartment (value) {
+    changeDepartment () {
       this.positionActive = true
       this.emitDepartment()
     },
-    changePosition (value) {
+    changePosition () {
       this.emitDepartment()
     },
     // thực hiện emit khi có sự thay đổi về dữ liệu

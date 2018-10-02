@@ -53,8 +53,8 @@
         class="elevation-1 mt-2"
         >
         <template slot="items" slot-scope="props">
-          <td>{{ props.item.name }}</td>
           <td>{{ props.item.branch_name }}</td>
+          <td>{{ props.item.name }}</td>
           <td>{{ props.item.position_name }}</td>
         </template>
       </v-data-table>
@@ -204,7 +204,7 @@
                   full-width
                   min-width="290px">
                   <v-text-field
-                  placeholder="Ngày có hết hạn"
+                  placeholder="Ngày hết hạn"
                   slot="activator"
                   v-model="contracts.date_expiration"
                   label="Ngày có hết hạn"
@@ -248,6 +248,7 @@ export default{
     return {
       contracts:
       {
+        user_id:'',
         status: 0,
         type: 0,
         date_sign: null,

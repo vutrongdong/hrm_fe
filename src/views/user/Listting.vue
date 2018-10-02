@@ -98,9 +98,8 @@
           </v-flex>
         </v-layout>
       </v-toolbar>
-      <v-toolbar height="30px" color="white" flat v-if="!isMini">
-        <v-spacer></v-spacer>
-        <v-spacer></v-spacer>
+      <v-toolbar height="20px" color="white" flat v-if="!isMini">
+        <small style="margin-top: 7px;">Tổng số nhân viên: {{ totalUser.pagination.total }}</small>
       </v-toolbar>
       <v-toolbar height="45px" color="white" flat v-if="!isMini">
         <v-layout>
@@ -139,7 +138,7 @@
       >
       <template slot-scope="{items}">
         <v-list three-line>
-          <template v-for="(item, index) in items.data">
+          <template  v-for="(item, index) in items.data">
             <v-list-tile
             :key="'item' + item.id"
             avatar
@@ -275,6 +274,9 @@ export default{
     }
   }),
   computed: {
+    totalUser () {
+      return this.$store.getters['Dataview/dataViews'](this.dataViewName)
+    },
     ...mapGetters('Branch', ['branchAll']),
     ...mapGetters('Department', ['departmentByBranch']),
     ...mapGetters('Position', ['positionAll']),
