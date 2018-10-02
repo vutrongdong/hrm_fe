@@ -45,7 +45,7 @@
             <!-- name -->
             <v-flex xs12 sm6 md12>
               <v-text-field
-              placeholder="nhập tên"
+              placeholder="Nhập tên"
               :error-messages="errors.has('name') ? errors.collect('name') : []"
               v-validate="'required'"
               :data-vv-as="$t('label.name')"
@@ -56,7 +56,7 @@
             <!-- slug -->
             <v-flex xs12 sm6 md12>
               <v-text-field
-              placeholder="nhập slug"
+              placeholder="Nhập slug"
               v-validate="'required'"
               :error-messages="errors.has('slug') ? errors.collect('slug') : []"
               :data-vv-as="$t('label.slug')"
@@ -67,7 +67,7 @@
             <!-- value -->
             <v-flex xs12 sm6 md12>
               <v-text-field
-              placeholder="nhập giá trị"
+              placeholder="Nhập giá trị"
               v-validate="'required'"
               :error-messages="errors.has('value') ? errors.collect('value') : []"
               :data-vv-as="$t('label.value')"
