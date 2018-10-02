@@ -288,7 +288,7 @@
             <formSub
             :dataUser="user"
             v-on:positionAndDepartment="positionAndDepartment($event)">
-          </formSub> </v-flex>
+          </formSub>
         </v-layout>
         <!-- tab3 -->
       </v-tab-item>
@@ -314,7 +314,7 @@
 </template>
 <script>
 import { mapGetters, mapActions } from 'vuex'
-import { map, isTypedArray } from 'lodash'
+import { map } from 'lodash'
 import formSub from './FormSub'
 import imageUpload from '@/components/UploadMultipleImage/UploadMultipleImage'
 export default{
@@ -347,22 +347,22 @@ export default{
       dateEffective: false,
       dateExpiration: false,
       genderUser: [
-      { name: 'Nam', value: 1 },
-      { name: 'Nữ', value: 0 },
-      { name: 'Khác', value: 2 }
+        { name: 'Nam', value: 1 },
+        { name: 'Nữ', value: 0 },
+        { name: 'Khác', value: 2 }
       ],
       typeContract: [
-      { name: 'Học việc', value: 0 },
-      { name: 'Cộng tác viên', value: 1 },
-      { name: 'Thử việc', value: 2 },
-      { name: 'Có thời hạn', value: 3 },
-      { name: 'Không thời hạn', value: 4 },
-      { name: 'Khác', value: 5 }
+        { name: 'Học việc', value: 0 },
+        { name: 'Cộng tác viên', value: 1 },
+        { name: 'Thử việc', value: 2 },
+        { name: 'Có thời hạn', value: 3 },
+        { name: 'Không thời hạn', value: 4 },
+        { name: 'Khác', value: 5 }
       ],
       statusContract: [
-      { name: 'Tiêu chuẩn', value: 0 },
-      { name: 'Chấm dứt', value: 1 },
-      { name: 'Gia hạn', value: 2 }
+        { name: 'Tiêu chuẩn', value: 0 },
+        { name: 'Chấm dứt', value: 1 },
+        { name: 'Gia hạn', value: 2 }
       ],
       user: {
         avatar: '',
@@ -383,6 +383,10 @@ export default{
     }
   },
   watch: {
+    // dataUser (val) {
+    //   console.log(val)
+    //   this.user = val
+    // },
     dateOfBirth (val) {
       val && this.$nextTick(() => (this.$refs.picker.activePicker = 'YEAR'))
     },
@@ -399,9 +403,9 @@ export default{
   methods: {
     ...mapActions(['fetchApi']),
     setInitData () {
-      // let dataUser = { ...this.dataUser }
-      let dataUser = Object.assign({}, this.dataUser)
-      dataUser.contracts = dataUser.contracts.data
+      let dataUser = { ...this.dataUser }
+      // let dataUser = Object.assign({}, this.dataUser)
+      // dataUser.contracts = dataUser.contracts.data
       if (dataUser.roles) {
         dataUser.roles = map(dataUser.roles.data, (role) => {
           return role.id
@@ -472,6 +476,7 @@ export default{
     }
   },
   mounted () {
+    console.log(this.dataUser)
     this.fetchApi({
       url: 'roles',
       method: 'GET',
@@ -482,11 +487,11 @@ export default{
         this.roles = response.data
       }
     })
+    this.dataUser && this.setInitData()
   },
   created () {
     this.dateExpirationConstract()
     this.dateConstract()
-    this.dataUser && this.setInitData()
     this.status_txt()
   }
 }

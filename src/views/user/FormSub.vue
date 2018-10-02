@@ -96,9 +96,9 @@ export default {
     }
   },
   watch: {
-    dataUser (val) {
-      this.user = val
-    }
+    // dataUser (val) {
+    //   this.user = val
+    // }
   },
   computed: {
     ...mapGetters('Branch', ['branchAll']),

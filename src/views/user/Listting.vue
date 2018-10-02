@@ -11,7 +11,7 @@
               <span>Thêm mới</span>
             </v-tooltip>
           </v-flex>
-          <v-flex xs5 class="mt-1" :class="isMini && 'full-flex-basic'">
+          <v-flex xs5 class="mt-1" :class="isMini && 'full-flex-basic full-max-search'">
             <v-text-field
             hide-details
             single-line
@@ -322,7 +322,7 @@ export default{
         id: idUser
       })
     },
-    editUser(userId){
+    editUser (userId) {
       this.getUser({ userId: userId, params: { include: 'roles,departments,contracts' } })
       this.$router.push({ name: 'user-edit', params: { id: userId } })
     },
@@ -361,9 +361,9 @@ export default{
     }
   },
   mounted () {
-    if(this.$route.params.id){
+    if (this.$route.params.id) {
       this.dataViewHeight = this.$refs.laylout.clientHeight - 55
-    }else{
+    } else {
       this.dataViewHeight = this.$refs.laylout.clientHeight - 210
     }
     let query = { ...this.$route.query }
@@ -387,5 +387,8 @@ export default{
 <style scoped>
 .v-toolbar__content{
   height: 80px !important;
+}
+.full-max-search{
+  width: 80%;
 }
 </style>

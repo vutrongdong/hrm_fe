@@ -60,165 +60,177 @@
       </v-data-table>
     </v-flex>
     <v-flex class="mt-4" xs12 v-if="userDetail.contracts">
-      <h3>Hợp đồng nhân viên</h3>
-      <v-data-table
-      id="tableContract"
-      :headers="headersContract"
-      :items="userDetail.contracts.data"
-      hide-actions
-      class="elevation-1 mt-2"
-      >
-      <template slot="items" slot-scope="props">
-        <td colspan="2">{{ props.item.title }}</td>
-        <td>{{ props.item.type_txt }}</td>
-        <td>{{ props.item.status_txt }}</td>
-        <td>{{ props.item.date_sign }}</td>
-        <td>{{ props.item.date_effective }}</td>
-        <td>{{ props.item.date_expiration }}</td>
-        <td colspan="2" style="padding:2px;">
-          <v-tooltip bottom class="ml-3">
-            <v-btn style="margin:0px;" slot='activator' v-if="canAccess('user.update')" icon @click="editContract(props.item,props.item.id)">
-              <v-icon size="19px">edit</v-icon>
-            </v-btn>
-            <span>Sửa</span>
-          </v-tooltip>
-          <v-tooltip bottom>
-            <v-btn style="margin: 0px;" slot="activator" v-if="canAccess('user.delete')" icon @click="removeConfirm(props.item.id)">
-              <v-icon size="19px">delete</v-icon>
-            </v-btn>
-            <span>Xóa</span>
-          </v-tooltip>
-        </td>
-      </template>
-    </v-data-table> </v-flex>
-  </v-container>
-  <v-dialog v-model="dialogEditContract" max-width="500px">
-    <v-card>
-      <v-card-title>
-        <span class="headline">{{ formTitle }}</span>
-      </v-card-title>
-      <!-- form edit -->
-      <v-card-text id="formSub">
-        <v-container grid-list-md class="white scroll-y border-e0-top">
-          <v-layout row wrap>
-            <v-flex xs6 class="pr-2">
-              <!-- title contract -->
-              <v-text-field
-              placeholder="Nhập tiêu đề hợp đồng"
-              :error-messages="errors.has('title') ? errors.collect('title') : []"
-              :data-vv-as="$t('label.title')"
-              name="title"
-              :label="$t('label.title') + ' * '"
-              v-model="user.contracts.title"> </v-text-field>
-              <!-- type contract -->
-              <v-select
-              :error-messages="errors.has('type') ? errors.collect('type') : []"
-              :data-vv-as="$t('label.type')"
-              name="type"
-              :label="$t('label.type')"
-              v-model="user.contracts.type"
-              :items="typeContract"
-              item-value="value"
-              item-text="name"> </v-select>
-              <!-- status contract-->
-              <v-select
-              :error-messages="errors.has('status') ? errors.collect('status') : []"
-              :data-vv-as="$t('label.status')"
-              name="status"
-              :label="$t('label.status')"
-              v-model="user.contracts.status"
-              :items="statusContract"
-              item-value="value"
-              item-text="name"> </v-select>
-            </v-flex>
-            <v-flex xs6 class="pl-2">
-              <!-- date_sign -->
-              <template>
-                <v-menu
-                ref="dateSign"
-                :close-on-content-click="false"
-                v-model="dateSign"
-                :nudge-right="40"
-                lazy transition="scale-transition"
-                offset-y
-                full-width
-                min-width="290px">
+      <h3>Hợp đồng nhân viên
+        <v-btn v-if="canAccess('user.create')"
+        class="mr-5" icon color="primary"
+        @click="addContract">
+        <v-icon>add</v-icon
+          > </v-btn>
+        </h3>
+        <v-data-table
+        id="tableContract"
+        :headers="headersContract"
+        :items="userDetail.contracts.data"
+        hide-actions
+        class="elevation-1 mt-2"
+        >
+        <template slot="items" slot-scope="props">
+          <td colspan="2">{{ props.item.title }}</td>
+          <td>{{ props.item.type_txt }}</td>
+          <td>{{ props.item.date_sign }}</td>
+          <td>{{ props.item.date_effective }}</td>
+          <td>{{ props.item.date_expiration }}</td>
+          <td>{{ props.item.status_txt }}</td>
+          <td colspan="2" style="padding:2px;">
+            <v-tooltip bottom class="ml-3">
+              <v-btn style="margin:0px;" slot='activator' v-if="canAccess('user.update')" icon @click="editContract(props.item,props.item.id)">
+                <v-icon size="19px">edit</v-icon>
+              </v-btn>
+              <span>Sửa</span>
+            </v-tooltip>
+            <v-tooltip bottom>
+              <v-btn style="margin: 0px;" slot="activator" v-if="canAccess('user.delete')" icon @click="removeConfirm(props.item.id)">
+                <v-icon size="19px">delete</v-icon>
+              </v-btn>
+              <span>Xóa</span>
+            </v-tooltip>
+          </td>
+        </template>
+      </v-data-table> </v-flex>
+    </v-container>
+    <v-dialog v-model="dialogEditContract" max-width="500px">
+      <v-card>
+        <v-card-title>
+          <span class="headline">{{ formTitle }}</span>
+        </v-card-title>
+        <!-- form edit -->
+        <v-card-text id="formSub">
+          <v-container grid-list-md class="white scroll-y border-e0-top">
+            <v-layout row wrap>
+              <v-flex xs6 class="pr-2">
+                <!-- title contract -->
                 <v-text-field
-                placeholder="Nhập ngày ký"
-                slot="activator"
-                v-model="user.contracts.date_sign"
-                label="Ngày ký"
-                readonly > </v-text-field>
-                <v-date-picker
-                ref="picker"
-                v-model="user.contracts.date_sign"
-                :max="new Date().toISOString().substr(0, 10)"
-                min="1950-01-01"
-                @change="save"> </v-date-picker> </v-menu>
-              </template>
-              <!-- date_effective -->
-              <template>
-                <v-menu
-                ref="dateEffective"
-                :close-on-content-click="false"
-                v-model="dateEffective"
-                :nudge-right="40"
-                lazy transition="scale-transition"
-                offset-y
-                full-width
-                min-width="290px">
-                <v-text-field
-                placeholder="Ngày có hiệu lực"
-                slot="activator"
-                v-model="user.contracts.date_effective"
-                label="Ngày có hiệu lực"
-                readonly > </v-text-field>
-                <v-date-picker
-                ref="picker"
-                v-model="user.contracts.date_effective"
-                :max="new Date().toISOString().substr(0, 10)"
-                min="1950-01-01"
-                @change="save"> </v-date-picker> </v-menu>
-              </template>
-              <!-- date_expiration -->
-              <template>
-                <v-menu
-                ref="dateExpiration"
-                :close-on-content-click="false"
-                v-model="dateExpiration"
-                :nudge-right="40"
-                lazy transition="scale-transition"
-                offset-y
-                full-width
-                min-width="290px">
-                <v-text-field
-                placeholder="Ngày có hết hạn"
-                slot="activator"
-                v-model="user.contracts.date_expiration"
-                label="Ngày có hết hạn"
-                readonly > </v-text-field>
-                <v-date-picker
-                ref="picker"
-                v-model="user.contracts.date_expiration"
-                :max="new Date().toISOString().substr(0, 10)"
-                min="1950-01-01"
-                @change="save"> </v-date-picker> </v-menu>
-              </template>
-            </v-flex>
+                v-validate="'required'"
+                placeholder="Nhập tiêu đề hợp đồng"
+                :error-messages="errors.has('title') ? errors.collect('title') : []"
+                :data-vv-as="$t('label.title')"
+                name="title"
+                :label="$t('label.title') + ' * '"
+                v-model="contracts.title"> </v-text-field>
+                <!-- type contract -->
+                <v-select
+                v-validate="'required'"
+                :error-messages="errors.has('type') ? errors.collect('type') : []"
+                :data-vv-as="$t('label.type')"
+                name="type"
+                :label="$t('label.type')"
+                v-model="contracts.type"
+                :items="typeContract"
+                item-value="value"
+                item-text="name"> </v-select>
+                <!-- status contract-->
+                <v-select
+                v-validate="'required'"
+                :error-messages="errors.has('status') ? errors.collect('status') : []"
+                :data-vv-as="$t('label.status')"
+                name="status"
+                :label="$t('label.status')"
+                v-model="contracts.status"
+                :items="statusContract"
+                item-value="value"
+                item-text="name"> </v-select>
+              </v-flex>
+              <v-flex xs6 class="pl-2">
+                <!-- date_sign -->
+                <template>
+                  <v-menu
+                  v-validate="'required'"
+                  ref="dateSign"
+                  :close-on-content-click="false"
+                  v-model="dateSign"
+                  :nudge-right="40"
+                  lazy transition="scale-transition"
+                  offset-y
+                  full-width
+                  min-width="290px">
+                  <v-text-field
+                  placeholder="Nhập ngày ký"
+                  slot="activator"
+                  v-model="contracts.date_sign"
+                  label="Ngày ký"
+                  readonly > </v-text-field>
+                  <v-date-picker
+                  ref="picker"
+                  v-model="contracts.date_sign"
+                  :max="new Date().toISOString().substr(0, 10)"
+                  min="1950-01-01"
+                  @change="save"> </v-date-picker> </v-menu>
+                </template>
+                <!-- date_effective -->
+                <template>
+                  <v-menu
+                  v-validate="'required'"
+                  ref="dateEffective"
+                  :close-on-content-click="false"
+                  v-model="dateEffective"
+                  :nudge-right="40"
+                  lazy transition="scale-transition"
+                  offset-y
+                  full-width
+                  min-width="290px">
+                  <v-text-field
+                  placeholder="Ngày có hiệu lực"
+                  slot="activator"
+                  v-model="contracts.date_effective"
+                  label="Ngày có hiệu lực"
+                  readonly > </v-text-field>
+                  <v-date-picker
+                  ref="picker"
+                  v-model="contracts.date_effective"
+                  :max="new Date().toISOString().substr(0, 10)"
+                  min="1950-01-01"
+                  @change="save"> </v-date-picker> </v-menu>
+                </template>
+                <!-- date_expiration -->
+                <template>
+                  <v-menu
+                  v-validate="'required'"
+                  ref="dateExpiration"
+                  :close-on-content-click="false"
+                  v-model="dateExpiration"
+                  :nudge-right="40"
+                  lazy transition="scale-transition"
+                  offset-y
+                  full-width
+                  min-width="290px">
+                  <v-text-field
+                  placeholder="Ngày có hết hạn"
+                  slot="activator"
+                  v-model="contracts.date_expiration"
+                  label="Ngày có hết hạn"
+                  readonly > </v-text-field>
+                  <v-date-picker
+                  ref="picker"
+                  v-model="contracts.date_expiration"
+                  :max="new Date().toISOString().substr(0, 10)"
+                  min="1950-01-01"
+                  @change="save"> </v-date-picker> </v-menu>
+                </template>
+              </v-flex>
 
-          </v-layout>
-        </v-container>
-      </v-card-text>
-      <!-- end form edit -->
-      <v-card-actions>
-        <v-spacer></v-spacer>
-        <v-btn color="blue darken-1" flat @click.native="close">Hủy bỏ</v-btn>
-        <v-btn color="blue darken-1" flat @click.native="submitForm"><span v-if="editedIndex!==-1">Lưu lại</span><span v-else>Thêm mới</span></v-btn>
-      </v-card-actions>
-    </v-card>
-  </v-dialog>
-</v-flex>
-<dialog-confirm v-model="dialogDelete" @input="remove" />
+            </v-layout>
+          </v-container>
+        </v-card-text>
+        <!-- end form edit -->
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn color="blue darken-1" flat @click.native="closeContract">Hủy bỏ</v-btn>
+          <v-btn color="blue darken-1" flat @click.native="submitForm"><span v-if="editedIndex!==-1">Lưu lại</span><span v-else>Thêm mới</span></v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+  </v-flex>
+  <dialog-confirm v-model="dialogDelete" @input="remove" />
 </v-layout>
 </template>
 
@@ -234,38 +246,43 @@ export default{
   },
   data () {
     return {
-      user:{
-        contracts:''
+      contracts:
+      {
+        status: 0,
+        type: 0,
+        date_sign: null,
+        date_effective: null,
+        date_expiration: null
       },
       typeContract: [
-      { name: 'Học việc', value: 0 },
-      { name: 'Cộng tác viên', value: 1 },
-      { name: 'Thử việc', value: 2 },
-      { name: 'Có thời hạn', value: 3 },
-      { name: 'Không thời hạn', value: 4 },
-      { name: 'Khác', value: 5 }
+        { name: 'Học việc', value: 0 },
+        { name: 'Cộng tác viên', value: 1 },
+        { name: 'Thử việc', value: 2 },
+        { name: 'Có thời hạn', value: 3 },
+        { name: 'Không thời hạn', value: 4 },
+        { name: 'Khác', value: 5 }
       ],
       statusContract: [
-      { name: 'Tiêu chuẩn', value: 0 },
-      { name: 'Chấm dứt', value: 1 },
-      { name: 'Gia hạn', value: 2 }
+        { name: 'Tiêu chuẩn', value: 0 },
+        { name: 'Chấm dứt', value: 1 },
+        { name: 'Gia hạn', value: 2 }
       ],
       // tiêu đề của bảng chi nhánh phòng ban , chức vụ
       headersPosition: [
-      { text: 'Chi nhánh', value: 'branch', sortable: false },
-      { text: 'Phòng ban', value: 'department', sortable: false },
-      { text: 'Chức vụ', value: 'position', sortable: false }
+        { text: 'Chi nhánh', value: 'branch', sortable: false },
+        { text: 'Phòng ban', value: 'department', sortable: false },
+        { text: 'Chức vụ', value: 'position', sortable: false }
       ],
       // tiêu đề của bảng hợp đồng
       headersContract: [
-      { text: 'Tên hợp đồng', value: 'title', sortable: false },
-      { text: '', sortable: false },
-      { text: 'Loại hợp đồng', value: 'type', sortable: false },
-      { text: 'Trạng thái', value: 'status', sortable: false },
-      { text: 'Ngày đăng kí', value: 'date_sign', sortable: false },
-      { text: 'Ngày bắt đầu', value: 'date_effective', sortable: false },
-      { text: 'Ngày kêt thúc', value: 'date_expiration', sortable: false },
-      { text: 'Hành động', value: 'action', sortable: false }
+        { text: 'Tên hợp đồng', value: 'title', sortable: false },
+        { text: '', sortable: false },
+        { text: 'Loại hợp đồng', value: 'type', sortable: false },
+        { text: 'Ngày đăng kí', value: 'date_sign', sortable: false },
+        { text: 'Ngày bắt đầu', value: 'date_effective', sortable: false },
+        { text: 'Ngày kêt thúc', value: 'date_expiration', sortable: false },
+        { text: 'Trạng thái', value: 'status', sortable: false },
+        { text: 'Hành động', value: 'action', sortable: false }
       ],
       dataViewHeight: 0,
       dialogEditContract: false,
@@ -274,15 +291,17 @@ export default{
       dateEffective: false,
       dateExpiration: false,
       editedIndex: -1,
+      defaultItem: {
+        status: true
+      }
     }
   },
   computed: {
-    //title of form Contract modal
+    // title of form Contract modal
     formTitle () {
       return this.editedIndex === -1 ? 'Thêm thông tin' : 'Sửa thông tin'
     },
-    ...mapGetters('User', ['userDetail']),
-    ...mapGetters('Contracts', ['contractDetail'])
+    ...mapGetters('User', ['userDetail'])
   },
   watch: {
     dateSign (val) {
@@ -300,9 +319,10 @@ export default{
   },
   methods: {
     ...mapActions(['setMiniDrawer']),
-    ...mapActions('Contracts', ['getContract','updateContract','deleteContract']),
+    ...mapActions('Contracts', ['createContract', 'updateContract', 'deleteContract']),
     ...mapActions('User', ['getUser', 'deleteUser']),
     ...mapActions('Dataview', ['removeDataviewEntry']),
+    ...mapActions(['showNotify']),
     removeConfirm () {
       this.dialogDelete = true
     },
@@ -339,18 +359,103 @@ export default{
       this.$refs.dateEffective.save(date)
       this.$refs.dateExpiration.save(date)
     },
+    // contract
     editContract (item, id) {
-      this.getContract(
-        {contractId: id}
-        )
-      console.log("contract",contractDetail)
-      // this.idSetting = id
+      this.idContract = id
       this.editedIndex = 1
-      this.setting = Object.assign({}, item)
+      this.contracts = Object.assign({}, item)
       this.dialogEditContract = true
     },
+    addContract () {
+      this.contracts = this.contracts
+      this.dialogEditContract = true
+    },
+    closeContract () {
+      this.dialogEditContract = false
+      setTimeout(() => {
+        if (this.editedIndex === -1) {
+          this.editedIndex = -1
+        } else {
+          this.contracts = Object.assign({}, this.defaultItem)
+          this.editedIndex = -1
+        }
+      }, 300)
+    },
+    submitForm () {
+      if (this.editedIndex === -1) {
+        this.createContract({
+          contract: this.contracts,
+          cb: (response) => {
+            this.dialog = false
+            setTimeout(() => {
+              this.contracts = Object.assign({}, this.defaultItem)
+              this.editedIndex = -1
+            }, 300)
+            this.showNotify({
+              color: 'success',
+              text: 'Thành công'
+            })
+            this.getUser({ userId: this.$route.params.id, params: { include: 'roles,departments,contracts' } })
+          }
+        })
+      } else {
+        this.updateContract({
+          id: this.idContract,
+          contract: this.contracts,
+          cb: (response) => {
+            this.showNotify({
+              color: 'success',
+              text: 'Thành công'
+            })
+            setTimeout(() => {
+              this.contracts = Object.assign({}, this.defaultItem)
+              this.editedIndex = -1
+            }, 300)
+            this.getUser({ userId: this.$route.params.id, params: { include: 'roles,departments,contracts' } })
+            this.dialogEditContract = false
+          }
+        })
+      }
+    },
+    // thời gian đăng kí , có hiệu lực hợp đồng
+    dateConstract () {
+      let today = new Date()
+      let dd = today.getDate()
+      let mm = today.getMonth() + 1
+      let yyyy = today.getFullYear()
+
+      if (dd < 10) {
+        dd = '0' + dd
+      }
+
+      if (mm < 10) {
+        mm = '0' + mm
+      }
+      today = yyyy + '-' + mm + '-' + dd
+      this.contracts.date_sign = today
+      this.contracts.date_effective = today
+    },
+    // thời gian kết thúc hợp đồng
+    dateExpirationConstract () {
+      let today = new Date()
+      let dd = today.getDate()
+      let mm = today.getMonth() + 3
+      let yyyy = today.getFullYear()
+
+      if (dd < 10) {
+        dd = '0' + dd
+      }
+
+      if (mm < 10) {
+        mm = '0' + mm
+      }
+      today = yyyy + '-' + mm + '-' + dd
+      this.contracts.date_expiration = today
+    }
   },
   created () {
+    this.dateExpirationConstract()
+    this.dateConstract()
     this.setMiniDrawer(true)
     if (!this.userDetail.id) {
       this.getUser({ userId: this.$route.params.id, params: { include: 'roles,departments,contracts' } })

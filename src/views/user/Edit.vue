@@ -38,8 +38,8 @@ export default{
     ...mapActions('User', ['updateUser', 'getUser', 'setUser']),
     ...mapActions('Dataview', ['updateDataviewEntry']),
     submitForm (formData) {
-      console.log(formData)
-      return false
+      // console.log(formData)
+      // return false
       let submitForm = Object.assign({}, formData)
       submitForm.departments = submitForm.departments.data
       submitForm.contracts = submitForm.contracts.data

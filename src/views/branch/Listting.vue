@@ -103,7 +103,6 @@
       </template>
     </v-list>
     <dialog-confirm v-model="dialogDelete" @input="remove" />
-  </v-list>
 </template>
 </data-view>
 </v-flex>
@@ -131,18 +130,18 @@ export default {
     }
   },
   data: () => ({
-    branch:{
-      status:1
+    branch: {
+      status: 1
     },
     dialogDelete: false,
     idBranch: null,
     title: [
-    { text: 'Tên chi nhánh', sortable: false },
-    { text: 'Email', sortable: false },
-    { text: 'Mã sô thuế', sortable: false },
-    { text: 'Địa chỉ', sortable: false },
-    { text: 'Trạng thái', sortable: false },
-    { text: 'Hành động', sortable: false }
+      { text: 'Tên chi nhánh', sortable: false },
+      { text: 'Email', sortable: false },
+      { text: 'Mã sô thuế', sortable: false },
+      { text: 'Địa chỉ', sortable: false },
+      { text: 'Trạng thái', sortable: false },
+      { text: 'Hành động', sortable: false }
     ],
     dataViewHeight: 0,
     dataViewName: 'branch',
@@ -158,7 +157,7 @@ export default {
   methods: {
     ...mapActions(['setMiniDrawer']),
     ...mapActions('Dataview', ['removeDataviewEntry']),
-    ...mapActions('Branch', ['getBranch','getBranchs', 'deleteBranch','updateStatusBranch']),
+    ...mapActions('Branch', ['getBranch', 'getBranchs', 'deleteBranch', 'updateStatusBranch']),
     ...mapActions(['showNotify', 'setMiniDrawer']),
     branchDetail (branch) {
       this.getBranch({ branchId: branch.id })

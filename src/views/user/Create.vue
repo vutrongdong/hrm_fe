@@ -27,8 +27,9 @@ export default{
     ...mapActions(['showNotify', 'setMiniDrawer']),
     ...mapActions('User', ['createUser']),
     submitForm (formData) {
-      // console.log(formData)
-      // return false
+      if (formData.departments.length && !formData.departments[0].department_id) {
+        formData.departments = []
+      }
       this.createUser({
         user: formData,
         cb: (response) => {
