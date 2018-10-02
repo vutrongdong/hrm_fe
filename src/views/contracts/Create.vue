@@ -39,6 +39,7 @@ export default{
           })
         }
       })
+      console.log('form data contract :', formData)
     }
   },
   created () {

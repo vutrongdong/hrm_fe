@@ -24,7 +24,7 @@ const initState = () => {
       plan: { ...DEFAULT_MODULE_DATA },
       branch: { ...DEFAULT_MODULE_DATA },
       candidate: { ...DEFAULT_MODULE_DATA },
-      contract: { ...DEFAULT_MODULE_DATA }
+      contract: { ...DEFAULT_MODULE_DATA}
     }
   }
 }

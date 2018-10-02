@@ -64,7 +64,7 @@
                       <v-text-field
                       slot="activator"
                       v-model="candidate.date_apply"
-                      label="Ngày sinh"
+                      label="Ngày nộp đơn"
                       readonly >
                       </v-text-field>
 
@@ -88,9 +88,8 @@
                   offset-y full-width min-width="290px">
                   <v-text-field slot="activator"
                   v-model="candidate.time_interview"
-                  label="thời gian phỏng vấn" readonly >
+                  label="Thời gian phỏng vấn" readonly >
                   </v-text-field>
-
                   <v-date-picker
                     ref="picker"
                     v-model="candidate.time_interview"

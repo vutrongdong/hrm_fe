@@ -1,136 +1,226 @@
 <template>
-     <div id="app">
-      <v-app id="inspire">
-        <div>
-           <v-toolbar flat color="white">
-               <v-spacer></v-spacer>
-               <h3>Danh sách bộ phận trong công ty</h3>
-               <v-spacer></v-spacer>
-               <v-dialog v-model="dialog" max-width="500px">
-                  <v-btn slot="activator" class="mr-5" icon color="primary" v-if="canAccess('department.create')">
-                    <v-icon>add</v-icon>
-                  </v-btn>
-                   <v-card>
-                      <v-card-title>
-                        <span class="headline">{{ formTitle }}</span>
-                      </v-card-title>
-                        <v-card-text id="formSub">
-                <v-container grid-list-md>
-                  <v-layout wrap>
-                    <!-- name -->
-                    <v-flex xs12 sm6 md12>
-                      <v-text-field
-                      placeholder="nhập tên"
-                      :error-messages="errors.has('name') ? errors.collect('name') : []"
-                      v-validate="'required'"
-                      :data-vv-as="$t('label.name')"
-                      name="name"
-                      :label="$t('label.name') + '*'"
-                      v-model="department.name"> </v-text-field>
-                    </v-flex>
-                    <!-- value -->
-                    <!-- status -->
-                    <v-flex xs12 sm6 md12>
-                        <label style="margin-top:10px">Trạng thái</label>
-                        <v-flex row>
-                          <v-checkbox
-                          @change="status_txt"
-                          :label="status"
-                          class="checkbox"
-                          style="margin-top:0px"
-                          name="status"
-                          v-model="department.status">
-                        </v-checkbox>
-                            </v-flex>
-                      </v-flex>
-                   <!-- branch_id -->
-                    <v-flex xs12 sm6 md12>
-                       <v-select v-validate="'required'"
-                      :error-messages="errors.has('branch_id') ? errors.collect('branch_id') : []"
-                      :data-vv-as="$t('label.branch_id')"
-                      name="branch_id"
-                      v-model="department.branch_id"
-                       :label="$t('label.branch_id')"
-                       :items="branchAll"
-                       v-if="Array.isArray(branchAll)"
-                       item-value="id"
-                       item-text="name"
-                       placeholder="Xin vui lòng nhập vào chi nhánh "
-                 >
-                     </v-select>
-                  </v-flex>
-                </v-layout>
-              </v-container>
-            </v-card-text>
-               <v-card-actions>
-              <v-spacer></v-spacer>
-              <v-btn color="blue darken-1" flat @click.native="close">Hủy bỏ</v-btn>
-              <v-btn color="blue darken-1" flat @click.native="submitForm"><span v-if="editedIndex!==-1">Lưu lại</span><span v-else>Thêm mới</span></v-btn>
-            </v-card-actions>
-                   </v-card>
-               </v-dialog>
+  <v-layout ref="laylout" column fill-height>
+    <div ref="header">
+      <v-toolbar height="60px" color="white" flat>
+        <v-layout row wrap>
+          <v-flex md1 xs3 :class="isMini">
+            <!--  <v-tooltip bottom> -->
+            <v-tooltip bottom>
+              <v-btn slot="activator" v-if="canAccess('department.create')"
+              class="mr-3 mt-3" icon color="primary"
+              @click="openDialog">
+              <v-icon>add</v-icon
+                ></v-btn>
+                <span>Thêm mới</span>
+              </v-tooltip>
+              <!--  <span>Thêm mới</span> -->
+              <!-- </v-tooltip> -->
+            </v-flex>
+            <v-flex xs5 class="mt-1 mr-2" :class="isMini && 'full-flex-basic'">
+              <v-text-field
+              hide-details
+              single-line
+              placeholder="Nhập tên phòng ban"
+              v-model="params.q"
+              @keyup="changeSearch"
+              clearable
+              ></v-text-field>
+            </v-flex>
+            <v-flex xs5 class='mt-1' :class="isMini && 'd-none'">
+              <v-autocomplete
+              v-if="Array.isArray(branchAll)"
+              :items="branchAll"
+              item-value="id"
+              item-text="name"
+              v-model="params.branch_id"
+              @change="filter"
+              placeholder="Xin vui lòng nhập tên chi nhánh"
+              >
+            </v-autocomplete>
+          </v-flex>
 
-           </v-toolbar>
-              <v-container>
-                  <v-data-table
-                    v-if="Array.isArray(departmentDetail)"
-                    :headers="headers"
-                    :items="departmentDetail"
-                    hide-actions
-                    expand
-                    class="elevation-1"
-                    >
-                  <template slot="items" slot-scope="props">
-                      <td> {{props.index + 1}} </td>
-                      <td style="text-transform: capitalize">{{ props.item.name }}</td>
-                       <td v-for="(branch , index) in branchAll" :key='index' v-if="branch.id === props.item.branch_id"> {{branch.name}} </td>
-                      <td>{{ props.item.status_txt }}</td>
-                      <td id="action">
-                      <v-icon v-if="canAccess('department.update')" class="mr-6" @click="editItem(props.item,props.item.id)" style="margin-right: 15px" color="green"> edit</v-icon>
-                      <v-icon v-if="canAccess('department.delete')" icon @click="removeConfirm(props.item.id)" color="red"> delete </v-icon>
-                      </td>
-                </template>
-                </v-data-table>
-                </v-container>
-             <dialog-confirm v-model="dialogDelete" @input="remove" />
-        </div>
-      </v-app>
-    </div>
+          <!--dialog-->
+          <v-dialog v-model="dialog" max-width="500px">
+           <v-card>
+            <v-card-title>
+              <span class="headline">{{ formTitle }}</span>
+            </v-card-title>
+            <v-card-text id="formSub">
+              <v-container grid-list-md>
+                <v-layout wrap>
+                  <!-- name -->
+                  <v-flex xs12 sm6 md12>
+                    <v-text-field
+                    placeholder="Nhập tên phòng ban"
+                    :error-messages="errors.has('name') ? errors.collect('name') : []"
+                    v-validate="'required'"
+                    :data-vv-as="$t('label.name')"
+                    name="name"
+                    :label="$t('label.name') + '*'"
+                    v-model="department.name"> </v-text-field>
+                  </v-flex>
+                  <!-- value -->
+                  <!-- status -->
+                  <v-flex xs12 sm6 md12>
+                    <label>Trạng thái</label>
+                    <v-checkbox
+                    @change="status_txt"
+                    :label="status"
+                    class="checkbox"
+                    style="margin-top:0px"
+                    name="status"
+                    v-model="department.status">
+                  </v-checkbox>
+                </v-flex>
+                <!--branch_id-->
+                <v-flex xs12>
+                  <label>Tên chi nhánh</label>
+                  <v-autocomplete
+                  v-if="Array.isArray(branchAll)"
+                  :items="branchAll"
+                  item-value="id"
+                  item-text="name"
+                  v-model="department.branch_id"
+                  placeholder="Xin vui lòng nhập tên chi nhánh"
+                  >
+                </v-autocomplete>
+              </v-flex>
+            </v-layout>
+          </v-container>
+        </v-card-text>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn color="blue darken-1" flat @click.native="close">Hủy bỏ</v-btn>
+          <v-btn color="blue darken-1" flat @click.native="submitForm">
+            <span v-if="editTitle==-2">Lưu lại</span><span v-else>Thêm mới</span></v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
+    </v-layout>
+    <v-layout slot="extension" v-if="!isMini">
+      <v-flex sm2 class="text-bold text-uppercase">
+        STT
+      </v-flex>
+      <v-flex sm3 class="text-bold text-uppercase">
+        tên phòng ban
+      </v-flex>
+      <v-flex sm3 class="text-bold text-uppercase">
+        tên chi nhánh
+      </v-flex>
+      <v-flex sm2 class="text-bold text-uppercase">
+        trạng thái
+      </v-flex>
+      <v-flex sm2 class="text-bold text-uppercase">
+        hành động
+      </v-flex>
+    </v-layout>
+  </v-toolbar>
+</div>
+<v-flex xs12 class="border-e0-top">
+  <data-view
+  :name="dataViewName"
+  api-url="departments"
+  v-if="dataViewHeight"
+  :viewHeight="dataViewHeight"
+  :params="params"
+  :ref="dataViewName"
+  >
+  <template slot-scope="{items}">
+    <v-list>
+      <template v-for="(item, index) in items.data">
+       <v-layout class="pa-2" :key="index">
+        <v-flex sm2 class="ml-3" sm1 :class="isMini && 'd-none'">
+          {{ index + 1 }}
+        </v-flex>
+        <v-flex sm3 :class="isMini && 'd-none'">
+          {{ item.name }}
+        </v-flex>
+        <v-flex class="mr-1" sm3 :class="isMini && 'd-none'">
+          {{ item.branch_name }}
+        </v-flex>
+        <v-flex sm2 :class="isMini && 'd-none'">
+             <v-tooltip bottom sm12>
+              <v-switch
+              @click.native.stop="changeStatus(item.id)"
+              class='ml-3'
+              name="status"
+              slot="activator"
+              v-model="item.status"
+              ></v-switch>
+              <span v-if="item.status">Hiển thị</span>
+              <span v-else>Không hiển thị</span>
+            </v-tooltip>
+        </v-flex>
+        <v-flex sm2 :class="isMini && 'd-none'">
+          <v-tooltip bottom>
+            <v-btn slot="activator" class="ma-0" v-if="canAccess('department.update')" icon @click="editItem(item,item.id)">
+              <v-icon class='theme--light teal--text'>edit</v-icon>
+            </v-btn>
+            <span>Sửa</span>
+          </v-tooltip>
+          <v-tooltip bottom>
+            <v-btn slot="activator" class="ma-0" v-if="canAccess('department.delete')" icon @click.stop="removeConfirm(item.id)">
+              <v-icon class="theme--light pink--text">delete</v-icon>
+            </v-btn>
+            <span>Xóa</span>
+          </v-tooltip>
+        </v-flex>
+      </v-layout>
+      <v-divider
+      :key="'div' + index + item.id"
+      v-if="index + 1 < items.data.length"
+      ></v-divider>
+    </template>
+  </v-list>
 </template>
-<script type="text/javascript">
+</data-view>
+</v-flex>
+<dialog-confirm v-model="dialogDelete" @input="remove" />
+</v-layout>
+</template>
+<script>
 import DialogConfirm from '@/components/DialogConfirm'
+import { debounce } from 'lodash'
+import DataView from '@/components/DataView/DataView'
 import { mapActions, mapGetters } from 'vuex'
 export default{
+  name: 'UserListting',
+  props: {
+    isMini: {
+      type: Boolean,
+      default: false
+    }
+  },
   components: {
+    DataView,
     DialogConfirm
   },
   data: () => ({
+    dataViewHeight: 0,
+    dataViewName: 'department',
     idDepartment: null,
     dialogDelete: false,
-    status: 'Không hiển thị',
     dialog: false,
-    headers: [
-      { text: 'STT', sortable: false },
-      { text: 'Tên bộ phận', sortable: false },
-      { text: 'Tên chi nhánh', sortable: false },
-      { text: ' Trạng thái', sortable: false },
-      { text: 'Hành động', sortable: false }
-    ],
     editedIndex: -1,
+    editTitle: -1,
+    status: 'Không hiển thị',
     department: {
       name: '',
       status: 0,
       branch_id: ''
     },
+    params: {
+      q: '',
+      branch_id: ''
+    },
     defaultItem: {
-      status: 0
     }
   }),
   computed: {
-    ...mapGetters('Branch', ['branchAll']),
     formTitle () {
-      return this.editedIndex === -1 ? 'Thêm bộ phận' : 'Sửa bộ phận'
+      return this.editTitle === -1 ? 'Thêm phòng ban' : 'Sửa phòng ban'
     },
+    ...mapGetters('Branch', ['branchAll']),
     ...mapGetters('Department', ['departmentDetail']),
     ...mapGetters(['isFetchingApi'])
   },
@@ -139,23 +229,96 @@ export default{
       val || this.close()
     }
   },
-  created () {
-    this.fetchDepartment()
-    this.getBranchs()
-  },
   methods: {
     ...mapActions(['setMiniDrawer']),
-    ...mapActions('Department', ['fetchDepartment', 'deleteDepartment', 'updateDepartment']),
     ...mapActions(['showNotify', 'setMiniDrawer']),
-    ...mapActions('Department', ['createDepartment']),
-    ...mapActions('Branch', ['getBranchs']),
+    ...mapActions('Department', ['fetchDepartment', 'createDepartment', 'deleteDepartment', 'updateDepartment','updateStatusDepartment']),
     ...mapActions('Dataview', ['removeDataviewEntry']),
+    ...mapActions('Branch', ['getBranchs']),
+    ///change status
+     changeStatus(idDepartment){
+       this.updateStatusDepartment({
+          id: idDepartment
+      })
+     },
+    /// status
+    status_txt () {
+      if (this.department.status) {
+        this.status = 'Hiển thị'
+      } else {
+        this.status = 'Không hiển thị'
+      }
+    },
+    // dialog
+    openDialog () {
+      this.editTitle = -1
+      this.dialog = true
+    },
+    // end dialog
+    close () {
+      this.dialog = false
+      setTimeout(() => {
+        this.department = Object.assign({}, this.defaultItem)
+        this.editedIndex = -1
+      }, 300)
+    },
+    // đổ dữ liệu from edit
     editItem (item, id) {
+      this.editTitle = -2
       this.idDepartment = id
       this.editedIndex = this.departmentDetail.indexOf(item)
       this.department = Object.assign({}, item)
       this.dialog = true
     },
+    submitForm () {
+      if (this.editedIndex === -1) {
+        let department = Object.assign({}, this.department)
+        department.status = department.status ? 1 : 0
+        this.createDepartment({
+          department: department,
+          cb: (response) => {
+            this.dialog = false
+            setTimeout(() => {
+              console.log('data department :', department)
+              this.editedIndex = -1
+            }, 300)
+            this.showNotify({
+              color: 'success',
+              text: 'Thành công'
+            })
+            this.filter()
+          }
+        })
+      } else {
+        let department = Object.assign({}, this.department)
+        department.status = department.status ? 1 : 0
+        this.updateDepartment({
+          id: this.idDepartment,
+          department: department,
+          cb: (response) => {
+            this.fetchDepartment()
+            this.showNotify({
+              color: 'success',
+              text: 'Thành công'
+            })
+            this.dialog = false
+            setTimeout(() => {
+              console.log('data department :', department)
+              this.editedIndex = -1
+            }, 300)
+            this.filter()
+          }
+        })
+      }
+    },
+    /// screach
+    changeSearch: debounce(function () {
+      this.filter()
+    }, 500),
+    filter () {
+      this.$refs[this.dataViewName].$emit('reload')
+    },
+    // xóa department
     removeConfirm (id) {
       this.idDepartment = id
       this.dialogDelete = true
@@ -166,7 +329,7 @@ export default{
           id: this.idDepartment,
           cb: (response) => {
             this.removeDataviewEntry({
-              name: 'position',
+              name: 'department',
               data: this.departmentDetail,
               key: 'id'
             })
@@ -175,7 +338,7 @@ export default{
               color: 'success'
             })
             this.dialogDelete = false
-            this.fetchDepartment()
+            this.filter()
           },
           error: (error) => {
             if (error.status === 404) {
@@ -187,63 +350,32 @@ export default{
           }
         })
       }
-    },
-    status_txt () {
-      if (this.department.status) {
-        this.status = 'Hiển thị'
-      } else {
-        this.status = 'Không hiển thị'
-      }
-    },
-    close () {
-      this.dialog = false
-      setTimeout(() => {
-        this.department = Object.assign({}, this.defaultItem)
-        this.editedIndex = -1
-      }, 300)
-    },
-    submitForm () {
-      if (this.editedIndex === -1) {
-        this.createDepartment({
-          department: this.department,
-          cb: (response) => {
-            this.dialog = false
-            setTimeout(() => {
-              let department = Object.assign({}, this.department)
-              department.status = department.status ? 1 : 0
-              console.log('department :', department)
-              this.editedIndex = -1
-            }, 300)
-            this.showNotify({
-              color: 'success',
-              text: 'Thành công'
-            })
-            this.fetchDepartment()
-          }
-        })
-      } else {
-        this.updateDepartment({
-          id: this.idDepartment,
-          department: this.department,
-          cb: (response) => {
-            this.fetchDepartment()
-            this.showNotify({
-              color: 'success',
-              text: 'Thành công'
-            })
-            this.dialog = false
-            setTimeout(() => {
-              let department = Object.assign({}, this.department)
-              department.status = department.status ? 1 : 0
-              console.log('department :', department)
-              this.editedIndex = -1
-            }, 300)
-          }
-        })
-      }
     }
+  },
+  mounted () {
+    this.dataViewHeight = this.$refs.laylout.clientHeight - 168
+    let query = { ...this.$route.query }
+    if (query.hasOwnProperty('reload')) {
+      this.$nextTick(() => {
+        this.$refs[this.dataViewName].$emit('reload')
+      })
+      delete query.reload
+      this.$router.replace({
+        query: query
+      })
+    }
+  },
+  created () {
+    this.getBranchs()
+    this.fetchDepartment()
   }
 }
 </script>
-<style>
+<style scoped>
+  .v-toolbar__extension{
+    height: 66px !important;
+  }
+  .v-input.v-text-field{
+    margin-top: 0px !important;
+  }
 </style>

@@ -9,7 +9,7 @@ export default[
       require_auth: true,
       breadcrumb: []
     },
-    component: () => import('@/views/contracts/Listting')
+    component: () => import('@/views/contracts/Index')
   },
   {
     path: 'contract/create',
