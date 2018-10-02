@@ -81,6 +81,13 @@ const actions = {
       success: cb
     }, { root: true })
   },
+  updateStatusBranch ({ commit, dispatch }, payload) {
+    let { id } = payload
+    dispatch('fetchApi', {
+      url: `branches/change-status/${id}`,
+      method: 'PUT'
+    }, { root: true })
+  },
   deleteBranch ({ commit, dispatch }, payload) {
     let { id, cb, error } = payload || {}
     dispatch('fetchApi', {
