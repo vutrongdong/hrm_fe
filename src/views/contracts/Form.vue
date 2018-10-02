@@ -76,6 +76,7 @@
        item-value="id"
        label="Tên nhân viên"
        item-text="name"
+       v-if="Array.isArray(userDetail)"
        >
      </v-autocomplete>
    </v-flex>

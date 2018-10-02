@@ -139,7 +139,17 @@
           {{ item.branch_name }}
         </v-flex>
         <v-flex sm2 :class="isMini && 'd-none'">
-          {{ item.status_txt }}
+             <v-tooltip bottom sm12>
+              <v-switch
+              @click.native.stop="changeStatus(item.id)"
+              class='ml-3'
+              name="status"
+              slot="activator"
+              v-model="item.status"
+              ></v-switch>
+              <span v-if="item.status">Hiển thị</span>
+              <span v-else>Không hiển thị</span>
+            </v-tooltip>
         </v-flex>
         <v-flex sm2 :class="isMini && 'd-none'">
           <v-tooltip bottom>
@@ -222,9 +232,15 @@ export default{
   methods: {
     ...mapActions(['setMiniDrawer']),
     ...mapActions(['showNotify', 'setMiniDrawer']),
-    ...mapActions('Department', ['fetchDepartment', 'createDepartment', 'deleteDepartment', 'updateDepartment']),
+    ...mapActions('Department', ['fetchDepartment', 'createDepartment', 'deleteDepartment', 'updateDepartment','updateStatusDepartment']),
     ...mapActions('Dataview', ['removeDataviewEntry']),
     ...mapActions('Branch', ['getBranchs']),
+    ///change status
+     changeStatus(idDepartment){
+       this.updateStatusDepartment({
+          id: idDepartment
+      })
+     },
     /// status
     status_txt () {
       if (this.department.status) {

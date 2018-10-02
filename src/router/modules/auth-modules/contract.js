@@ -33,27 +33,6 @@ export default[
     component: () => import('@/views/contracts/Create')
   },
   {
-    path: 'contract/:id',
-    name: 'contract-detail',
-    meta: {
-      title: {
-        i18n: 'title.contract.detail'
-      },
-      require_auth: true,
-      breadcrumb: [
-        {
-          path: '/contract',
-          meta: {
-            title: {
-              i18n: 'title.contract.index'
-            }
-          }
-        }
-      ]
-    },
-    component: () => import('@/views/contracts/Detail')
-  },
-  {
     path: 'contract/:id/edit',
     name: 'contract-edit',
     meta: {

@@ -67,6 +67,7 @@ const actions = {
         params: params || {},
         success: (response) => {
           commit(SET_USER, response.data)
+          console.log("data user :",response.data);
         },
         error: error
       },

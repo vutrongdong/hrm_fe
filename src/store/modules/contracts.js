@@ -11,14 +11,14 @@ const initState = () => {
 /**
  * state
  */
-const state = {
+ const state = {
   contract: initState().contract
 }
 
 /**
  * actions
  */
-const actions = {
+ const actions = {
   setContract ({ commit }, payload) {
     let { contract } = payload || {}
     commit(SET_CONTRACTS, contract)
@@ -37,7 +37,7 @@ const actions = {
         error: error
       },
       { root: true }
-    )
+      )
   },
   getContract ({ commit, dispatch }, payload) {
     let { contractId, params, error } = payload || {}
@@ -53,7 +53,7 @@ const actions = {
         error: error
       },
       { root: true }
-    )
+      )
   },
   createContract ({ commit, dispatch }, payload) {
     let { contract, cb } = payload || {}
@@ -74,22 +74,29 @@ const actions = {
       error: error
     }, { root: true })
   },
-  deleteContract ({ commit, dispatch }, payload) {
-    let { id, cb, error } = payload || {}
-    console.log('id contracts :', id)
-    dispatch('fetchApi', {
-      url: `contracts/${id}`,
-      method: 'DELETE',
-      success: cb,
-      error: error
-    }, { root: true })
-  }
+  updateStatusContract({ commit, dispatch},payload){
+   let { id } = payload
+   dispatch('fetchApi', {
+    url: `contracts/change-status/${id}`,
+    method: 'PUT'
+  }, { root: true })
+ },
+ deleteContract ({ commit, dispatch }, payload) {
+  let { id, cb, error } = payload || {}
+  console.log('id contracts :', id)
+  dispatch('fetchApi', {
+    url: `contracts/${id}`,
+    method: 'DELETE',
+    success: cb,
+    error: error
+  }, { root: true })
+}
 }
 
 /**
  * mutations
  */
-const mutations = {
+ const mutations = {
   [SET_CONTRACTS]: (state, contract) => {
     state.contract = contract
   }

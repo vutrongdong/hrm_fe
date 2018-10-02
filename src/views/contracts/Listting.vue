@@ -1,7 +1,7 @@
     <template>
       <v-layout ref="laylout" column fill-height>
         <div ref="header">
-          <v-toolbar height="60px" color="white" flat>
+          <v-toolbar height="70px" color="white" flat>
             <v-layout row wrap>
              <v-flex md1 xs3 :class="isMini">
               <!--  <v-tooltip bottom> -->
@@ -17,7 +17,7 @@
                 <!--  <span>Thêm mới</span> -->
                 <!-- </v-tooltip> -->
               </v-flex>
-              <v-flex xs8 class="mt-1 mr-2" :class="isMini && 'full-flex-basic'">
+              <v-flex xs5 class="mt-1 mr-2" :class="isMini && 'full-flex-basic'">
                 <v-text-field
                 hide-details
                 single-line
@@ -90,10 +90,10 @@
                <v-flex xs12> {{item.date_effective}}</v-flex>
                <v-flex xs12> {{item.date_expiration}}</v-flex>
              </v-flex>
-             <v-flex xs2 class="pl-2" :class="isMini && 'd-none'">
-              {{item.status_txt}}
+             <v-flex xs2 class="pl-3" :class="isMini && 'd-none'">
+                  {{item.status_txt}}
             </v-flex>
-            <v-flex xs1 class="pl-1" :class="isMini && 'd-none'">
+           <v-flex xs1 class="pl-1" :class="isMini && 'd-none'">
              <v-tooltip bottom>
               <v-btn slot="activator" class="ma-0" v-if="canAccess('contracts.update')" icon @click.stop="$router.push({name: 'contract-edit', params: {id: item.id}})">
                 <v-icon class='theme--light teal--text'>edit</v-icon>
@@ -122,42 +122,44 @@
 </v-layout>
 </template>
 <script type="text/javascript">
-import DialogConfirm from '@/components/DialogConfirm'
-import { debounce } from 'lodash'
-import DataView from '@/components/DataView/DataView'
-import { mapActions, mapGetters } from 'vuex'
-export default{
-  name: 'ContractListting',
-  props: {
-    isMini: {
-      type: Boolean,
-      default: false
-    }
-  },
-  components: {
-    DataView,
-    DialogConfirm
-  },
-  data: () => ({
-    dialogDelete: false,
-    dataViewHeight: 0,
-    dataViewName: 'contracts',
-    idContract: null,
-    params: {
-      q: ''
-    }
-  }),
-  created: {
-    ...mapGetters('User', ['userDetail']),
-    ...mapGetters('Contracts', ['contractDetail'])
-  },
-  methods: {
-    ...mapActions('Dataview', ['removeDataviewEntry']),
-    ...mapActions('Contracts', ['deleteContract', 'getContract']),
-    ...mapActions('User', ['getUsers']),
-    contractDetail (contract) {
-      this.getContract({ contractId: contract.id })
-      // this.$router.push({ name: 'contract-detail', params: { id: contract.id } })
+  import DialogConfirm from '@/components/DialogConfirm'
+  import { debounce } from 'lodash'
+  import DataView from '@/components/DataView/DataView'
+  import { mapActions, mapGetters } from 'vuex'
+  export default{
+    name: 'ContractListting',
+    props: {
+      isMini: {
+        type: Boolean,
+        default: false
+      }
+    },
+    components: {
+      DataView,
+      DialogConfirm
+    },
+    data: () => ({
+      dialogDelete: false,
+      dataViewHeight: 0,
+      dataViewName: 'contract',
+      idContract: null,
+      user: [],
+      params: {
+        q: ''
+      }
+    }),
+    created: {
+      ...mapGetters('User', ['userDetail']),
+      ...mapGetters('Contracts', ['contractDetail'])
+    },
+    methods: {
+      ...mapActions('Dataview', ['removeDataviewEntry']),
+      ...mapActions('Contracts', ['deleteContract', 'getContract']),
+      ...mapActions('User',['fetchUser']),
+      //changeStatus
+      contractDetail (contract) {
+        this.getContract({ contractId: contract.id })
+      //this.$router.push({ name: 'contract-detail', params: { id: contract.id } })
     },
     /// screach
     changeSearch: debounce(function () {
@@ -172,48 +174,50 @@ export default{
     },
     remove (confirm) {
       if (confirm) {
-        this.deleteContract({
-          id: this.idContract,
-          cb: (response) => {
-            this.removeDataviewEntry({
-              name: 'contract',
-              data: this.contractDetail,
-              key: 'id'
-            })
+       this.deleteContract({
+        id: this.idContract,
+        cb: (response) => {
+          this.removeDataviewEntry({
+            name: 'contract',
+            data: this.contractDetail,
+            key: 'id'
+          })
+          this.$store.dispatch('showNotify', {
+            text: this.$t('alert.success'),
+            color: 'success'
+          })
+          this.dialogDelete = false
+          this.$refs[this.dataViewName].$emit('reload')
+        },
+        error: (error) => {
+          if (error.status === 404) {
             this.$store.dispatch('showNotify', {
-              text: this.$t('alert.success'),
-              color: 'success'
+              text: this.$t('alert.not-found'),
+              color: 'warning'
             })
-            this.dialogDelete = false
-            this.$refs[this.dataViewName].$emit('reload')
-          },
-          error: (error) => {
-            if (error.status === 404) {
-              this.$store.dispatch('showNotify', {
-                text: this.$t('alert.not-found'),
-                color: 'warning'
-              })
-            }
           }
-        })
-      }
-    }
-  },
-  mounted () {
-    this.dataViewHeight = this.$refs.laylout.clientHeight - 168
-    let query = { ...this.$route.query }
-    if (query.hasOwnProperty('reload')) {
-      this.$nextTick(() => {
-        this.$refs[this.dataViewName].$emit('reload')
+        }
       })
-      delete query.reload
-      this.$router.replace({
-        query: query
-      })
-    }
-  },
-  created () {
+     }
+   }
+ },
+ mounted () {
+  this.dataViewHeight = this.$refs.laylout.clientHeight - 188
+  let query = { ...this.$route.query }
+  if (query.hasOwnProperty('reload')) {
+    this.$nextTick(() => {
+      this.$refs[this.dataViewName].$emit('reload')
+    })
+    delete query.reload
+    this.$router.replace({
+      query: query
+    })
   }
+},
+created () {
+    this.user =this.fetchUser();
+    console.log("user details :", this.user);
+}
 }
 </script>
 <style type="text/css" media="screen">

@@ -72,16 +72,16 @@
         </v-dialog>
       </v-layout>
       <v-layout slot="extension" v-if="!isMini">
-        <v-flex sm3 class="text-bold text-uppercase">
+        <v-flex sm1 class="text-bold text-uppercase">
           STT
         </v-flex>
-        <v-flex sm3 class="text-bold text-uppercase">
+        <v-flex sm8 class="text-bold text-uppercase">
           tên chức danh
         </v-flex>
-        <v-flex sm3 class="text-bold text-uppercase">
+        <v-flex sm2 class="text-bold text-uppercase">
           trạng thái
         </v-flex>
-        <v-flex sm3 class="text-bold text-uppercase">
+        <v-flex sm1 class="text-bold text-uppercase">
           hành động
         </v-flex>
       </v-layout>
@@ -100,100 +100,115 @@
       <v-list>
         <template v-for="(item, index) in items.data">
           <v-layout class="pa-2" :key="index">
-            <v-flex sm3 class="ml-3" sm1 :class="isMini && 'd-none'">
+            <v-flex sm1 class="ml-3" sm1 :class="isMini && 'd-none'">
               {{ index + 1 }}
             </v-flex>
-            <v-flex sm3 :class="isMini && 'd-none'">
+            <v-flex sm8 :class="isMini && 'd-none'">
               {{ item.name }}
             </v-flex>
-            <v-flex sm3 :class="isMini && 'd-none'">
-              {{ item.status_txt }}
-            </v-flex>
-            <v-flex sm3 :class="isMini && 'd-none'">
-              <v-tooltip bottom>
-                <v-btn slot="activator" class="ma-0" v-if="canAccess('position.update')" icon @click="editItem(item,item.id)">
-                  <v-icon class='theme--light teal--text'>edit</v-icon>
-                </v-btn>
-                <span>Sửa</span>
-              </v-tooltip>
-              <v-tooltip bottom>
-                <v-btn slot="activator" class="ma-0" v-if="canAccess('position.delete')" icon @click.stop="removeConfirm(item.id)">
-                  <v-icon class="theme--light pink--text">delete</v-icon>
-                </v-btn>
-                <span>Xóa</span>
-              </v-tooltip>
-            </v-flex>
-          </v-layout>
-          <v-divider
-          :key="'div' + index + item.id"
-          v-if="index + 1 < items.data.length"
-          ></v-divider>
-        </template>
+            <v-flex sm2 :class="isMini && 'd-none'">
+             <v-tooltip bottom sm12>
+              <v-switch
+              @click.native.stop="changeStatus(item.id)"
+              class='ml-3'
+              name="status"
+              slot="activator"
+              v-model="item.status"
+              ></v-switch>
+              <span v-if="item.status">Hiển thị</span>
+              <span v-else>Không hiển thị</span>
+            </v-tooltip>
+          </v-flex>
+          <v-flex sm1 :class="isMini && 'd-none'">
+            <v-tooltip bottom>
+              <v-btn slot="activator" class="ma-0" v-if="canAccess('position.update')" icon @click="editItem(item,item.id)">
+                <v-icon class='theme--light teal--text'>edit</v-icon>
+              </v-btn>
+              <span>Sửa</span>
+            </v-tooltip>
+            <v-tooltip bottom>
+              <v-btn slot="activator" class="ma-0" v-if="canAccess('position.delete')" icon @click.stop="removeConfirm(item.id)">
+                <v-icon class="theme--light pink--text">delete</v-icon>
+              </v-btn>
+              <span>Xóa</span>
+            </v-tooltip>
+          </v-flex>
+        </v-layout>
+        <v-divider
+        :key="'div' + index + item.id"
+        v-if="index + 1 < items.data.length"
+        ></v-divider>
+      </template>
 
-      </v-list>
-    </template>
-  </data-view>
+    </v-list>
+  </template>
+</data-view>
 </v-flex>
 <dialog-confirm v-model="dialogDelete" @input="remove" />
 </v-layout>
 </template>
 <script type="text/javascript">
-import DialogConfirm from '@/components/DialogConfirm'
-import { debounce } from 'lodash'
-import DataView from '@/components/DataView/DataView'
-import { mapActions, mapGetters } from 'vuex'
-export default{
-  name: 'UserListting',
-  props: {
-    isMini: {
-      type: Boolean,
-      default: false
-    }
-  },
-  components: {
-    DataView,
-    DialogConfirm
-  },
-  data: () => ({
-    dataViewHeight: 0,
-    dataViewName: 'position',
-    idPosition: null,
-    dialogDelete: false,
-    status: 'Không hiển thị',
-    dialog: false,
-    editedIndex: -1,
-    editTitle: -1,
-    position: {
-      status: 0,
-      name: ''
+  import DialogConfirm from '@/components/DialogConfirm'
+  import { debounce } from 'lodash'
+  import DataView from '@/components/DataView/DataView'
+  import { mapActions, mapGetters } from 'vuex'
+  export default{
+    name: 'UserListting',
+    props: {
+      isMini: {
+        type: Boolean,
+        default: false
+      }
     },
-    params: {
-      q: ''
+    components: {
+      DataView,
+      DialogConfirm
     },
-    defaultItem: {
-    }
-  }),
-  computed: {
-    formTitle () {
-      return this.editTitle === -1 ? 'Thêm chức danh' : 'Sửa chức danh'
+    data: () => ({
+      dataViewHeight: 0,
+      dataViewName: 'position',
+      idPosition: null,
+      dialogDelete: false,
+      status: 'Không hiển thị',
+      dialog: false,
+      editedIndex: -1,
+      editTitle: -1,
+      position: {
+        status: 0,
+        name: ''
+      },
+      params: {
+        q: ''
+      },
+      defaultItem: {
+      }
+    }),
+    computed: {
+      formTitle () {
+        return this.editTitle === -1 ? 'Thêm chức danh' : 'Sửa chức danh'
+      },
+      ...mapGetters('Position', ['positionDetail']),
+      ...mapGetters(['isFetchingApi'])
     },
-    ...mapGetters('Position', ['positionDetail']),
-    ...mapGetters(['isFetchingApi'])
-  },
-  watch: {
-    dialog (val) {
-      val || this.close()
-    }
-  },
-  created () {
-    this.fetchPosition()
-  },
-  methods: {
-    ...mapActions(['setMiniDrawer']),
-    ...mapActions('Position', ['fetchPosition', 'deletePosition', 'updatePosition']),
-    ...mapActions(['showNotify', 'setMiniDrawer']),
-    ...mapActions('Position', ['createPosition']),
-    ...mapActions('Dataview', ['removeDataviewEntry']),
+    watch: {
+      dialog (val) {
+        val || this.close()
+      }
+    },
+    created () {
+      this.fetchPosition()
+    },
+    methods: {
+      ...mapActions(['setMiniDrawer']),
+      ...mapActions('Position', ['fetchPosition', 'deletePosition', 'updatePosition','updateStatusPosition']),
+      ...mapActions(['showNotify', 'setMiniDrawer']),
+      ...mapActions('Position', ['createPosition']),
+      ...mapActions('Dataview', ['removeDataviewEntry']),
+      changeStatus(idPosition){
+       this.updateStatusPosition({
+          id: idPosition
+      })
+     },
     // dialog
     openDialog () {
       this.editTitle = -1
