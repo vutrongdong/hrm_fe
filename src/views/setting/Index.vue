@@ -1,24 +1,46 @@
 <template>
   <v-layout ref="laylout" column fill-height>
-    <v-toolbar dense color="white" flat>
-      <v-spacer></v-spacer>
-      <h3>Thiết lập thông tin công ty</h3>
-      <v-spacer></v-spacer>
-      <v-btn v-if="canAccess('setting.create')"
-      class="mr-5" icon color="primary"
-      @click="addSetting">
-      <v-icon>add</v-icon>
-    </v-btn>
+   <div ref="header">
+    <v-toolbar height="50px" color="white" flat>
+      <v-layout row wrap>
+        <v-tooltip bottom>
+          <v-btn slot="activator" v-if="canAccess('setting.create')"
+          class="mr-5" icon color="primary"
+          @click="addSetting">
+          <v-icon>add</v-icon>
+        </v-btn>
+        <span>Thêm mới</span>
+      </v-tooltip>
+      <h2 style="margin-top:10px;">Thông tin công ty</h2>
+    </v-layout>
+    <v-layout slot="extension" v-if="!isMini">
+      <v-flex sm1 class="text-bold text-uppercase">
+        STT
+      </v-flex>
+      <v-flex sm2 class="text-bold text-uppercase">
+        Tên
+      </v-flex>
+      <v-flex sm5 class="text-bold text-uppercase">
+        Giá trị
+      </v-flex>
+      <v-flex sm2 class="text-bold text-uppercase mr-1">
+        Trạng thái
+      </v-flex>
+      <v-flex sm2 class="text-bold text-uppercase mr-1">
+        Hành động
+      </v-flex>
+    </v-layout>
   </v-toolbar>
-  <v-flex>
+</div>
+<v-flex>
   <v-dialog v-model="dialog" max-width="500px">
-    <v-card>
-      <v-card-title>
-        <span class="headline">{{ formTitle }}</span>
+    <v-card class="pa-0">
+      <v-card-title class="pa-2">
+        <span class="headline mt-1" width="100%" style="margin:0 auto">{{ formTitle }}</span>
       </v-card-title>
       <!-- form edit -->
       <v-card-text id="formSub">
-        <v-container grid-list-md class="white scroll-y border-e0-top">
+        <v-container fluid class="white scroll-y border-e0-top pt-0">
           <v-layout wrap>
             <!-- name -->
             <v-flex xs12 sm6 md12>
@@ -31,10 +53,21 @@
               :label="$t('label.name') + '*'"
               v-model="setting.name"> </v-text-field>
             </v-flex>
+            <!-- slug -->
+            <v-flex xs12 sm6 md12>
+              <v-text-field
+              placeholder="nhập slug"
+              v-validate="'required'"
+              :error-messages="errors.has('slug') ? errors.collect('slug') : []"
+              :data-vv-as="$t('label.slug')"
+              name="slug"
+              :label="$t('label.slug')+ '*'"
+              v-model="setting.slug"> </v-text-field>
+            </v-flex>
             <!-- value -->
             <v-flex xs12 sm6 md12>
               <v-text-field
-              placeholder="nhập gía trị"
+              placeholder="nhập giá trị"
               v-validate="'required'"
               :error-messages="errors.has('value') ? errors.collect('value') : []"
               :data-vv-as="$t('label.value')"
@@ -68,47 +101,94 @@
   </v-card>
 </v-dialog>
 </v-flex>
-<v-container>
-  <v-data-table
-  v-if="Array.isArray(settingDetail)"
-  :headers="headers"
-  :items="settingDetail"
-  hide-actions
-  expand
-  class="elevation-1"
+<v-flex xs12 class="border-e0-top">
+  <data-view
+  :name="dataViewName"
+  api-url="settings"
+  v-if="dataViewHeight"
+  :viewHeight="dataViewHeight"
+  :params="params"
+  :ref="dataViewName"
   >
-  <template slot="items" slot-scope="props">
-    <td> {{ props.index + 1 }}</td>
-    <td style="text-transform: capitalize">{{ props.item.name }}</td>
-    <td style="text-transform: capitalize">{{ props.item.value }}</td>
-    <td>{{ props.item.status_txt }}</td>
-    <td id="action"> <v-icon v-if="canAccess('setting.update')" class="mr-6" @click="editItem(props.item,props.item.id)" color="green"> edit</v-icon>
-      <v-icon style="margin-left:10px" v-if="canAccess('setting.delete')" icon @click="removeConfirm(props.item.id)" color="red"> delete </v-icon>
-    </td>
+  <template slot-scope="{items}">
+    <v-list three-line>
+      <template v-for="(item, index) in items.data">
+        <v-layout class="pa-2">
+          <v-flex class="ml-3" sm1 :class="isMini && 'd-none'">
+            {{ index + 1 }}
+          </v-flex>
+          <v-flex sm2 :class="isMini && 'd-none'">
+            {{ item.name }}
+          </v-flex>
+          <v-flex class="mr-1" sm5 :class="isMini && 'd-none'">
+            {{ item.value }}
+          </v-flex>
+          <v-flex sm2 :class="isMini && 'd-none'">
+            <v-tooltip bottom sm12>
+              <v-switch
+              @click.native.stop="changeStatus(item.id)"
+              class='ml-3'
+              name="status"
+              slot="activator"
+              v-model="item.status"
+              ></v-switch>
+              <span v-if="item.status">Hiển thị</span>
+              <span v-else>Không hiển thị</span>
+            </v-tooltip>
+          </v-flex>
+          <v-flex sm2 :class="isMini && 'd-none'">
+            <v-tooltip bottom>
+              <v-btn slot="activator" class="ma-0" v-if="canAccess('setting.update')" icon @click="editItem(item,item.id)">
+                <v-icon class='theme--light teal--text'>edit</v-icon>
+              </v-btn>
+              <span>Sửa</span>
+            </v-tooltip>
+            <v-tooltip bottom>
+              <v-btn slot="activator" class="ma-0" v-if="canAccess('setting.delete')" icon @click.stop="removeConfirm(item.id)">
+                <v-icon class="theme--light pink--text">delete</v-icon>
+              </v-btn>
+              <span>Xóa</span>
+            </v-tooltip>
+          </v-flex>
+        </v-layout>
+        <v-divider
+        :key="'div' + index + item.id"
+        v-if="index + 1 < items.data.length"
+        ></v-divider>
+      </template>
+    </v-list>
   </template>
-</v-data-table>
-</v-container>
+</data-view>
+</v-flex>
 <dialog-confirm v-model="dialogDelete" @input="remove" />
 </v-layout>
 </template>
 <script>
+import { debounce } from 'lodash'
+import DataView from '@/components/DataView/DataView'
 import DialogConfirm from '@/components/DialogConfirm'
 import { mapActions, mapGetters } from 'vuex'
 export default{
+  name: 'setingIndex',
   components: {
+    DataView,
     DialogConfirm
   },
+  props: {
+    isMini: {
+      type: Boolean,
+      default: false
+    }
+  },
   data: () => ({
+    dataViewHeight: 0,
+    dataViewName: 'setting',
+    params: {
+      q: ''
+    },
     idSetting: null,
     dialogDelete: false,
     dialog: false,
-    headers: [
-      { text: 'STT', sortable: false },
-      { text: 'Tên thông tin', sortable: false },
-      { text: 'Giá trị', sortable: false },
-      { text: 'Trạng Thái', sortable: false },
-      { text: 'Hành động', sortable: false }
-    ],
     editedIndex: -1,
     setting: {
       status: true
@@ -128,11 +208,21 @@ export default{
     this.FetchSetting()
   },
   mounted () {
-    this.dataViewHeight = this.$refs.laylout.clientHeight - 48
+    this.dataViewHeight = this.$refs.laylout.clientHeight - 148
+    let query = { ...this.$route.query }
+    if (query.hasOwnProperty('reload')) {
+      this.$nextTick(() => {
+        this.$refs[this.dataViewName].$emit('reload')
+      })
+      delete query.reload
+      this.$router.replace({
+        query: query
+      })
+    }
   },
   methods: {
     ...mapActions(['setMiniDrawer']),
-    ...mapActions('Setting', ['FetchSetting', 'deleteSetting', 'updateSetting']),
+    ...mapActions('Setting', ['FetchSetting', 'deleteSetting', 'updateSetting','updateStatusSetting']),
     ...mapActions(['showNotify', 'setMiniDrawer']),
     ...mapActions('Setting', ['createSetting']),
     addSetting () {
@@ -140,9 +230,20 @@ export default{
     },
     editItem (item, id) {
       this.idSetting = id
-      this.editedIndex = this.settingDetail.indexOf(item)
+      this.editedIndex = 1
       this.setting = Object.assign({}, item)
       this.dialog = true
+    },
+    changeStatus (idSetting) {
+      this.updateStatusSetting({
+        id: idSetting
+      })
+    },
+    changeSearch: debounce(function () {
+      this.filter()
+    }, 500),
+    filter () {
+      this.$refs[this.dataViewName].$emit('reload')
     },
     removeConfirm (id) {
       this.idSetting = id
@@ -158,7 +259,7 @@ export default{
               color: 'success'
             })
             this.dialogDelete = false
-            this.FetchSetting()
+            this.$refs[this.dataViewName].$emit('reload')
           },
           error: (error) => {
             if (error.status === 404) {
@@ -192,7 +293,7 @@ export default{
               color: 'success',
               text: 'Thành công'
             })
-            this.FetchSetting()
+            this.$refs[this.dataViewName].$emit('reload')
           }
         })
       } else {
@@ -200,7 +301,7 @@ export default{
           id: this.idSetting,
           setting: this.setting,
           cb: (response) => {
-            this.FetchSetting()
+            this.$refs[this.dataViewName].$emit('reload')
             this.showNotify({
               color: 'success',
               text: 'Thành công'

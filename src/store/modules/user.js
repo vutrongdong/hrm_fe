@@ -44,6 +44,7 @@ const actions = {
   },
   getUser ({ commit, dispatch }, payload) {
     let { userId, params } = payload
+    console.log(12324, params)
     dispatch(
       'fetchApi',
       {

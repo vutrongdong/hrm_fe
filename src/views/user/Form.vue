@@ -1,3 +1,4 @@
+
 <template>
   <v-form @submit.prevent="validateBeforeSubmit">
     <v-tabs centered color="cyan" dark icons-and-text >
@@ -20,12 +21,11 @@
       <!-- tab1 -->
       <v-tab-item id="tab-1" style="margin:30px 0px">
         <v-card flat row>
-         <h3>Thông tin tài khoản</h3>
          <v-layout>
           <v-flex md6 style="margin-right:10px">
             <!-- email -->
             <v-text-field
-            placeholder="Nhập email"
+            placeholder="vd:trongdong717@gmail.com"
             :error-messages="errors.has('email') ? errors.collect('email') : []"
             v-validate="'required|email'"
             :data-vv-as="$t('label.email')"
@@ -108,7 +108,6 @@
     </v-tab-item>
     <!-- tab2 -->
     <v-tab-item id="tab-2" style="margin-top:30px">
-      <h3>Thông tin cá nhân</h3>
       <v-layout>
         <v-flex md6 style="margin-right:10px">
           <!-- phone -->
@@ -119,31 +118,6 @@
           name="phone"
           :label="$t('label.phone')"
           v-model="user.phone"></v-text-field>
-          <!-- qualification -->
-          <v-text-field
-          placeholder="nhập trình độ học vấn"
-          :error-messages="errors.has('qualification') ? errors.collect('qualification') : []"
-          :data-vv-as="$t('label.qualification')"
-          name="qualification"
-          :label="$t('label.qualification')"
-          v-model="user.qualification"></v-text-field>
-
-          <!-- gender -->
-          <v-flex md12 row>
-            <v-flex style="margin-top:12px">
-              <label style="margin-top:10px">Giới tính</label>
-              <v-checkbox
-              @change="gender_txt"
-              :label="gender"
-              class="checkbox"
-              style="margin-top:0px;"
-              name="gender"
-              v-model="user.gender">
-            </v-checkbox>
-          </v-flex> </v-flex>
-        </v-flex>
-        <!--right  thông tin bổ sung -->
-        <v-flex md6 style="margin-left:10px">
           <!-- address -->
           <v-text-field
           :error-messages="errors.has('address') ? errors.collect('address') : []"
@@ -152,196 +126,251 @@
           name="address"
           :label="$t('label.address')"
           v-model="user.address"> </v-text-field>
-          <!-- birth_day -->
-          <template>
-            <v-menu
-            ref="menu"
-            :close-on-content-click="false"
-            v-model="menu"
-            :nudge-right="40"
-            lazy transition="scale-transition"
-            offset-y
-            full-width
-            min-width="290px">
-            <v-text-field
-            placeholder="Nhập ngày sinh"
-            slot="activator"
-            v-model="user.date_of_birth"
-            label="Ngày sinh"
-            readonly > </v-text-field>
-            <v-date-picker
-            ref="picker"
-            v-model="user.date_of_birth"
-            :max="new Date().toISOString().substr(0, 10)"
-            min="1950-01-01"
-            @change="save"> </v-date-picker> </v-menu>
-          </template>
-          <!-- image -->
-          <v-flex>
-            <link href='https://fonts.googleapis.com/css?family=Material+Icons' rel="stylesheet" type="text/css">
-            <v-text-field placeholder="Chọn một ảnh" label="Hình ảnh" @click='pickFile' v-model='user.avatar'></v-text-field>
-            <input
-            type="file"
-            style="display: none"
-            ref="image"
-            accept="image/*"
-            @change="onFilePicked"
-            >
-            <img :src="imageUrl" width="100%" v-if="imageUrl"/>
-          </v-flex> </v-flex>
-        </v-layout>
-      </v-tab-item>
-      <v-tab-item id="tab-3" style="margin-top:30px">
-        <v-flex md-11>
+          <!-- qualification -->
+          <v-text-field
+          placeholder="nhập trình độ học vấn"
+          :error-messages="errors.has('qualification') ? errors.collect('qualification') : []"
+          :data-vv-as="$t('label.qualification')"
+          name="qualification"
+          :label="$t('label.qualification')"
+          v-model="user.qualification"></v-text-field>
+          <!-- gender -->
+          <v-flex md12 row>
+            <v-flex style="margin-top:12px">
+              <v-select
+              :items="genderUser"
+              item-text="name"
+              item-value="value"
+              v-model="user.gender"
+              label="Giới tính"
+              ></v-select>
+            </v-flex> </v-flex>
+          </v-flex>
+          <v-flex md6 style="margin-left:10px">
+            <!-- birth_day -->
+            <template>
+              <v-menu
+              ref="menu"
+              :close-on-content-click="false"
+              v-model="menu"
+              :nudge-right="40"
+              lazy transition="scale-transition"
+              offset-y
+              full-width
+              min-width="290px">
+              <v-text-field
+              placeholder="Nhập ngày sinh"
+              slot="activator"
+              v-model="user.date_of_birth"
+              label="Ngày sinh"
+              readonly > </v-text-field>
+              <v-date-picker
+              ref="picker"
+              v-model="user.date_of_birth"
+              :max="new Date().toISOString().substr(0, 10)"
+              min="1950-01-01"
+              @change="save"> </v-date-picker> </v-menu>
+            </template>
+            <!-- image -->
+            <v-flex class="mt-3">
+              <label style="color: #7f8c91;">Ảnh đại diện</label>
+              <imageUpload/>
+            </v-flex> </v-flex>
+          </v-layout>
+        </v-tab-item>
+        <v-tab-item id="tab-3" style="margin-top:30px">
+          <h3>Hợp đồng</h3>
+          <v-layout row wrap>
+            <v-flex xs6 class="pr-2">
+              <!-- title contract -->
+              <v-text-field
+              placeholder="Nhập tiêu đề hợp đồng"
+              :error-messages="errors.has('title') ? errors.collect('title') : []"
+              :data-vv-as="$t('label.title')"
+              name="title"
+              :label="$t('label.title') + ' * '"
+              v-model="user.contracts.title"> </v-text-field>
+              <!-- type contract -->
+              <v-select
+              v-validate="'required'"
+              :error-messages="errors.has('type') ? errors.collect('type') : []"
+              :data-vv-as="$t('label.type')"
+              name="type"
+              :label="$t('label.type')"
+              v-model="user.contracts.type"
+              :items="contractDetail"
+              item-value="type"
+              item-text="type_txt"> </v-select>
+              <!-- status contract-->
+              <v-select
+              v-validate="'required'"
+              :error-messages="errors.has('status') ? errors.collect('status') : []"
+              :data-vv-as="$t('label.status')"
+              name="status"
+              :label="$t('label.status')"
+              v-model="user.contracts.status"
+              :items="contractDetail"
+              item-value="status"
+              item-text="status_txt"> </v-select>
+            </v-flex>
+            <v-flex xs6 class="pl-2">
+              <!-- date_sign -->
+              <v-datetime-picker
+              label="Ngày đăng kí"
+              v-model="user.contracts.date_sign"
+              ></v-datetime-picker>
+              <!-- date_efective -->
+              <v-datetime-picker
+              label="Ngày có hiệu lực"
+              v-model="user.contracts.date_efective"
+              ></v-datetime-picker>
+              <!-- date_expiration -->
+              <v-datetime-picker
+              label="Ngày kết thúc"
+              v-model="user.contracts.date_expiration"
+              ></v-datetime-picker>
+            </v-flex>
+
+          </v-layout>
+          <v-layout row wrap>
             <!-- form sub -->
-            <children
-            :id="index"
-            :index = "index"
-            :key="index"
-            :user="user"
+            <formSub
             :dataUser="user"
             v-on:positionAndDepartment="positionAndDepartment($event)">
-            </children>
-             </v-flex>
-            <!-- tab3 -->
-          </v-tab-item>
-        </v-tabs>
-
-        {{dataUser.departments}}
-        <!-- end tab -->
-        <!-- button create or update -->
-        <v-flex md12 text-md-center>
-          <v-btn
-          :loading="isFetchingApi"
-          :disabled="isFetchingApi"
-          color="primary"
-          type="submit"
-          >
-          <template v-if="isCreate">
-            <v-icon left>add</v-icon> {{$t('control.create')}}
-          </template>
-          <template v-else>
-            <v-icon left>save</v-icon> {{$t('control.save')}}
-          </template>
-        </v-btn>
-      </v-flex>
-    </v-form>
-  </template>
-  <script>
-  import { mapGetters, mapActions } from 'vuex'
-  import { map } from 'lodash'
-  import form_Sub from './Form_sub'
-  export default{
-    name: 'UserForm',
-    components: { form_Sub },
-    computed: {
-      ...mapGetters(['isFetchingApi']),
-      isCreate () {
-        return this.type === 'create'
-      }
-    },
-    props: {
-      type: {
-        type: String,
-        default: 'create'
-      },
-      dataUser: {
-        type: Object,
-        default: () => {
-          return {}
-        }
-      }
-    },
-    watch: {
-      menu (val) {
-        val && this.$nextTick(() => (this.$refs.picker.activePicker = 'YEAR'))
-      },
-      dataUser (val) {
-        this.user = val
-      }
-    },
-    data () {
-      return {
-        imageUrl: '',
-        imageFile: '',
-        gender: '',
-        status: 'Kích hoạt',
-        range: 1,
-        menu: false,
-        user: {
-          avatar: '',
-          gender: true,
-          status: true,
-          roles: [],
-          departments: []
-        },
-        roles: [],
-        departmentPosition: []
-      }
-    },
-    methods: {
-      ...mapActions(['fetchApi']),
-      setInitData () {
-        let dataUser = { ...this.dataUser }
-        console.log('let',dataUser)
-        if (dataUser.roles) {
-          dataUser.roles = map(dataUser.roles.data, (role) => {
-            return role.id
-          })
-        }
-        this.user = { ...this.user, ...dataUser }
-      },
-      save (date) {
-        this.$refs.menu.save(date)
-      },
-      status_txt ()
-      {
-        if (this.user.status) { this.status = 'Kích hoạt' } else { this.status = 'Không kích hoạt' }
-      },
-    gender_txt () {
-      if (this.user.gender) { this.gender = 'Nam' } else { this.gender = 'Nữ' }
-    },
-  validateBeforeSubmit () {
-    this.$validator.validateAll().then(result => {
-      if (result) {
-        let user = Object.assign({}, this.user)
-        user.gender = user.gender ? 1 : 0
-        user.status = user.status ? 1 : 0
-        this.$emit('submit', this.user)
-      } else {
-        this.$store.dispatch('showNotify', {
-          text: this.$t('alert.invalid'),
-          color: 'warning'
-        })
-      }
-    })
-  },
-  pickFile () {
-    this.$refs.image.click()
-  },
-  onFilePicked (e) {
-    const files = e.target.files
-    if (files[0] !== undefined) {
-      this.user.avatar = files[0].name
-      if (this.user.avatar.lastIndexOf('.') <= 0) {
-        return
-      }
-      const fr = new FileReader()
-      fr.readAsDataURL(files[0])
-      fr.addEventListener('load', () => {
-        this.imageUrl = fr.result
-              this.imageFile = files[0] // this is an image file that can be sent to server...
-            })
-    } else {
-      this.user.avatar = ''
-      this.imageFile = ''
-      this.imageUrl = ''
+          </formSub> </v-flex>
+        </v-layout>
+        <!-- tab3 -->
+      </v-tab-item>
+    </v-tabs>
+    <!-- end tab -->
+    <!-- button create or update -->
+    <v-flex md12 text-md-center>
+      <v-btn
+      :loading="isFetchingApi"
+      :disabled="isFetchingApi"
+      color="primary"
+      type="submit"
+      >
+      <template v-if="isCreate">
+        <v-icon left>add</v-icon> {{$t('control.create')}}
+      </template>
+      <template v-else>
+        <v-icon left>save</v-icon> {{$t('control.save')}}
+      </template>
+    </v-btn>
+  </v-flex>
+</v-form>
+</template>
+<script>
+import { mapGetters, mapActions } from 'vuex'
+import { map } from 'lodash'
+import formSub from './Form_sub'
+import imageUpload from '@/components/UploadMultipleImage/UploadMultipleImage'
+export default{
+  name: 'UserForm',
+  components: { formSub, imageUpload },
+  computed: {
+    ...mapGetters(['isFetchingApi']),
+    ...mapGetters('Contracts', ['contractDetail']),
+    isCreate () {
+      return this.type === 'create'
     }
   },
-    // end upload image
-    positionAndDepartment (updated, index) {
-      this.departmentPosition[index] = updated
-      this.user.departments = this.departmentPosition
+  props: {
+    type: {
+      type: String,
+      default: 'create'
+    },
+    dataUser: {
+      type: Object,
+      default: () => {
+        return {}
+      }
+    }
+  },
+  data () {
+    return {
+      status: 'Kích hoạt',
+      range: 1,
+      menu: false,
+      genderUser: [
+        { name: 'Nam', value: 1 },
+        { name: 'Nữ', value: 2 },
+        { name: 'Khác', value: 3 }
+      ],
+      user: {
+        avatar: '',
+        gender: 1,
+        status: true,
+        roles: [],
+        departments: [],
+        contracts:
+        {
+          status: 0,
+          type: 0,
+          date_sign: null,
+          date_efective: null,
+          date_expiration: null
+        }
+      },
+      roles: []
+    }
+  },
+  watch: {
+    menu (val) {
+      val && this.$nextTick(() => (this.$refs.picker.activePicker = 'YEAR'))
+    },
+    dataUser (val) {
+      this.user = val
+    }
+  },
+  methods: {
+    ...mapActions(['fetchApi']),
+    ...mapActions('Contracts', ['fetchContract']),
+    setInitData () {
+      let dataUser = { ...this.dataUser }
+      console.log('let', dataUser)
+      if (dataUser.roles) {
+        dataUser.roles = map(dataUser.roles.data, (role) => {
+          return role.id
+        })
+      }
+      this.user = { ...this.user, ...dataUser }
+    },
+    save (date) {
+      this.$refs.menu.save(date)
+    },
+    status_txt () {
+      if (this.user.status) { this.status = 'Kích hoạt' } else { this.status = 'Không kích hoạt' }
+    },
+    // thời gian đăng kí , có hiệu lực hợp đồng
+    dateConstract () {
+      let date = new Date()
+      this.user.contracts.date_sign = date
+      this.user.contracts.date_efective = date
+    },
+    // thời gian kết thúc hợp đồng
+    dateExpirationConstract () {
+      let date = new Date()
+      date.setMonth(date.getMonth() + 2)
+      this.user.contracts.date_expiration = date
+    },
+    validateBeforeSubmit () {
+      this.$validator.validateAll().then(result => {
+        if (result) {
+          let user = Object.assign({}, this.user)
+          user.status = user.status ? 1 : 0
+          this.$emit('submit', this.user)
+        } else {
+          this.$store.dispatch('showNotify', {
+            text: this.$t('alert.invalid'),
+            color: 'warning'
+          })
+        }
+      })
+    },
+    positionAndDepartment (updated) {
+      this.user.departments = updated
     }
   },
   mounted () {
@@ -357,9 +386,11 @@
     })
   },
   created () {
+    this.dateExpirationConstract()
+    this.dateConstract()
+    this.fetchContract()
     this.dataUser && this.setInitData()
-    this.status_txt ()
-    this.gender_txt()
+    this.status_txt()
   }
 }
 </script>
@@ -367,5 +398,11 @@
 label{
   color: #5b5a5a;
   font-size:15px;
+}
+.image-list-container, align-items-center{
+  display:none !important;
+}
+.image-icon-info{
+  display:none !important;
 }
 </style>

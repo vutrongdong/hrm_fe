@@ -13,15 +13,15 @@ import * as filters from '@/filters'
 import permissionMixin from '@/mixins/permission'
 import formatMixin from '@/mixins/format'
 import Datetime from 'vue-datetime'
-// You need a specific loader for CSS files
+import tinymce from 'vue-tinymce-editor'
 import 'vue-datetime/dist/vue-datetime.css'
-// import BootstrapVue from 'bootstrap-vue'
-// import 'bootstrap/dist/css/bootstrap.css'
-// import 'bootstrap-vue/dist/bootstrap-vue.css'
 import FBSignInButton from 'vue-facebook-signin-button'
-// Vue.use(BootstrapVue)
-Vue.use(Datetime)
+import DatetimePicker from 'vuetify-datetime-picker'
+// import 'vuetify-datetime-picker/src/stylus/main.styl'
 
+Vue.use(DatetimePicker)
+Vue.use(Datetime)
+Vue.component('tinymce', tinymce)
 Vue.use(FBSignInButton)
 // custom filters
 Object.keys(filters).forEach(key => {

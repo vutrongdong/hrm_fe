@@ -6,7 +6,7 @@ import {
 
 const initState = () => {
   return {
-    branchs: {},
+    branchs: [],
     branch: {}
   }
 }

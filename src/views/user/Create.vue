@@ -1,5 +1,5 @@
 <template>
-  <v-layout ref="laylout" row>
+  <v-layout ref="laylout" row fill-height>
     <v-flex xs12 class="border-e0-left white">
       <v-toolbar dense color="white" flat>
         <v-spacer></v-spacer>
@@ -9,8 +9,8 @@
           <v-icon>close</v-icon>
         </v-btn>
       </v-toolbar>
-      <v-container>
-        <user-form @submit="submitForm" />
+      <v-container fluid class="white scroll-y border-e0-top" :style="{height: dataViewHeight + 'px'}">
+        <user-form  @submit="submitForm"/>
       </v-container>
     </v-flex>
   </v-layout>
@@ -22,6 +22,11 @@ export default{
   name: 'CreateUser',
   components: {
     UserForm
+  },
+  data () {
+    return {
+      dataViewHeight: 0
+    }
   },
   methods: {
     ...mapActions(['showNotify', 'setMiniDrawer']),
@@ -48,6 +53,9 @@ export default{
   },
   created () {
     this.setMiniDrawer(false)
+  },
+  mounted () {
+    this.dataViewHeight = this.$refs.laylout.clientHeight - 48
   }
 }
 </script>

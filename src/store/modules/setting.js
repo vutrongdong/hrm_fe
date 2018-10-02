@@ -13,14 +13,14 @@ const initState = () => {
 /**
  * state
  */
-const state = {
+ const state = {
   settings: initState().settings
 }
 
 /**
  * actions
  */
-const actions = {
+ const actions = {
   FetchSetting ({ commit, dispatch }, payload) {
     let { params } = payload || {}
     dispatch(
@@ -34,7 +34,7 @@ const actions = {
         }
       },
       { root: true }
-    )
+      )
   },
   getSetting ({ commit, dispatch }, payload) {
     let { settingId, params } = payload || {}
@@ -49,7 +49,7 @@ const actions = {
         }
       },
       { root: true }
-    )
+      )
   },
   setSetting ({ commit }, payload) {
     let { settings } = payload || {}
@@ -77,6 +77,13 @@ const actions = {
       success: cb
     }, { root: true })
   },
+  updateStatusSetting ({ commit, dispatch }, payload) {
+    let { id } = payload
+    dispatch('fetchApi', {
+      url: `settings/change-status/${id}`,
+      method: 'PUT'
+    }, { root: true })
+  },
   async deleteSetting ({ commit, dispatch }, payload) {
     const { id, cb } = payload || {}
     dispatch('fetchApi', {
@@ -93,7 +100,7 @@ const actions = {
 /**
  * mutations
  */
-const mutations = {
+ const mutations = {
   [SET_SETTINGS]: (state, settings) => {
     state.settings = settings
   },
@@ -110,7 +117,7 @@ const mutations = {
 /**
  * getters
  */
-const getters = {
+ const getters = {
   settingDetail: (state) => state.settings
 }
 
