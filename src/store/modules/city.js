@@ -6,8 +6,8 @@ import {
 
 const initState = () => {
   return {
-    city: {},
-    districts: {},
+    city: [],
+    districts: [],
     branches: {}
   }
 }

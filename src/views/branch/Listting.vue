@@ -5,13 +5,13 @@
       <v-layout row wrap>
         <v-flex xs2>
           <v-tooltip bottom>
-            <v-btn slot="activator" v-if="canAccess('branch.create')" class="mr-3 mt-2" icon color="primary" @click="$router.push({name: 'branch-create'})">
+            <v-btn slot="activator" v-if="canAccess('branch.create')" class="mr-3 mt-3" icon color="primary" @click="$router.push({name: 'branch-create'})">
               <v-icon>add</v-icon>
             </v-btn>
             <span>Thêm mới</span>
           </v-tooltip>
         </v-flex>
-        <v-flex xs10>
+        <v-flex xs6 class="mt-1" :class="isMini && 'full-flex-basic'">
           <v-text-field
           hide-details
           single-line
@@ -21,16 +21,57 @@
           clearable
           ></v-text-field>
         </v-flex>
+        <v-flex xs2 class='mt-1' :class="isMini && 'd-none'">
+          <v-tooltip bottom>
+            <v-select
+            slot="activator"
+            class='ml-2'
+            @change="changedCity"
+            placeholder="Thành phố"
+            item-text="name"
+            item-value="id"
+            :items="cityAll"
+            v-model="params.cityId"
+            menu-props="auto"
+            hide-details
+            single-line
+            ></v-select>
+            <span>Lọc theo thành phố</span>
+          </v-tooltip>
+        </v-flex>
+        <v-flex xs2 class='mt-1' :class="isMini && 'd-none'">
+          <v-tooltip bottom :color="colorDistrict">
+            <v-select
+            slot="activator"
+            :disabled = "!districtActive"
+            class='ml-2'
+            @change="filter"
+            placeholder="Quận huyện"
+            item-text="name"
+            item-value="id"
+            :items="districtByCity"
+            v-model="params.districtID"
+            menu-props="auto"
+            hide-details
+            single-line
+            ></v-select>
+            <span v-if='districtActive'>Lọc theo quận huyện</span>
+            <span v-else>Vui lòng chọn quận huyện trước !</span>
+          </v-tooltip>
+        </v-flex>
       </v-layout>
       <v-layout slot="extension" v-if="!isMini">
         <v-flex sm1 class="text-bold text-uppercase">
           STT
         </v-flex>
-        <v-flex sm4 class="text-bold text-uppercase">
+        <v-flex sm3 class="text-bold text-uppercase">
           Tên chi nhánh
         </v-flex>
-        <v-flex sm3 class="text-bold text-uppercase">
+        <v-flex sm2 class="text-bold text-uppercase">
           Địa chỉ
+        </v-flex>
+        <v-flex sm2 class="text-bold text-uppercase">
+          Loại
         </v-flex>
         <v-flex sm2 class="text-bold text-uppercase">
           Trạng thái
@@ -64,7 +105,7 @@
             <v-flex sm1 :class="isMini && 'd-none'">
               {{index + 1}}
             </v-flex>
-            <v-flex sm4 :class="isMini && 'full-flex-basic full-max-width'">
+            <v-flex sm3 :class="isMini && 'full-flex-basic full-max-width'">
               {{ item.name}}
               <v-list-tile-sub-title class="text--primary" v-if="item.email" :class="isMini && 'd-none'">
                 <v-icon size="16px">email</v-icon>
@@ -75,19 +116,23 @@
                 {{ item.phone }}
               </v-list-tile-sub-title>
             </v-flex>
-            <v-flex sm3 :class="isMini && 'd-none'">
+            <v-flex sm2 class="pr-3" :class="isMini && 'd-none'">
               {{ item.address }}
             </v-flex>
+            <v-flex class="mr-2" sm2 :class="isMini && 'd-none'">
+              {{ item.type_txt }}
+            </v-flex>
             <v-flex sm2 :class="isMini && 'd-none'">
-              <v-tooltip bottom>
+              <v-tooltip bottom sm12>
                 <v-switch
-                @click.stop
-                class="ml-3"
+                @click.native.stop="changeStatus(item.id)"
+                class='ml-3'
+                name="status"
                 slot="activator"
-                v-model="branch.status"
-                color="orange"
+                v-model="item.status"
                 ></v-switch>
-                <span>{{ item.status_txt }}</span>
+                <span v-if="item.status">Hoạt Động</span>
+                <span v-else>Không hoạt động</span>
               </v-tooltip>
             </v-flex>
             <v-flex sm2 :class="isMini && 'd-none'">
@@ -123,7 +168,7 @@
 import { debounce } from 'lodash'
 import DialogConfirm from '@/components/DialogConfirm'
 import DataView from '@/components/DataView/DataView'
-import { mapActions } from 'vuex'
+import { mapActions,mapGetters } from 'vuex'
 export default {
   name: 'BranchListting',
   components: {
@@ -141,9 +186,11 @@ export default {
     }
   },
   data: () => ({
-    branch:{
-      status:1
+    colorDistrict: 'red',
+    branch: {
+      status: 1
     },
+    districtActive: false,
     dialogDelete: false,
     idBranch: null,
     title: [
@@ -157,19 +204,23 @@ export default {
     dataViewHeight: 0,
     dataViewName: 'branch',
     params: {
-      q: ''
+      q: '',
+      cityId:'',
+      districtId:''
     }
   }),
   computed: {
     isIndex () {
       return this.type === 'index'
-    }
+    },
+    ...mapGetters('City',['cityAll','districtByCity'])
   },
   methods: {
     ...mapActions(['setMiniDrawer']),
     ...mapActions('Dataview', ['removeDataviewEntry']),
-    ...mapActions('Branch', ['getBranch','getBranchs', 'deleteBranch']),
+    ...mapActions('Branch', ['getBranch', 'getBranchs', 'deleteBranch', 'updateStatusBranch']),
     ...mapActions(['showNotify', 'setMiniDrawer']),
+    ...mapActions('City', ['getCity','getDistrictByCity']),
     branchDetail (branch) {
       this.getBranch({ branchId: branch.id })
       this.$router.push({ name: 'branch-detail', params: { id: branch.id } })
@@ -177,8 +228,24 @@ export default {
     changeSearch: debounce(function () {
       this.filter()
     }, 500),
+    changedCity: debounce(function (value) {
+      this.colorDistrict = ''
+      this.districtActive = true
+      this.getDistrictByCity({
+        cityId: value,
+        cb: () => {
+          this.districtAll = this.districtByCity
+        }
+      })
+      this.filter()
+    }, 500),
     filter () {
       this.$refs[this.dataViewName].$emit('reload')
+    },
+    changeStatus (idBranch) {
+      this.updateStatusBranch({
+        id: idBranch
+      })
     },
     removeConfirm (id) {
       this.idBranch = id
@@ -220,6 +287,9 @@ export default {
         query: query
       })
     }
+  },
+  created(){
+    this.getCity()
   }
 }
 </script>

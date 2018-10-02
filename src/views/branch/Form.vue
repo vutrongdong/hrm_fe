@@ -5,12 +5,10 @@
       <!-- thông tin chi nhánh -->
       <v-tab href="#tab-1">
         Thông tin chi nhánh
-        <v-icon>fas fa-info-circle</v-icon>
       </v-tab>
       <!-- Thông tin thêm -->
       <v-tab href="#tab-2">
         Thông tin thêm
-        <v-icon>phone</v-icon>
       </v-tab>
       <!-- tab1 -->
       <v-tab-item id="tab-1" style="margin:30px 0px">
@@ -147,6 +145,7 @@
               name="description"
               :label="$t('label.description')"
               v-model="branch.description"
+              @editorInit="e => e.setContent(branch.description ? branch.description : '')"
               ></tinymce>
             </v-flex>
             <v-flex md6 xs6 style="margin-left:10px">
@@ -183,6 +182,7 @@
               name="about"
               :label="$t('label.about')"
               v-model="branch.about"
+              @editorInit="e => e.setContent(branch.about ? branch.about : '')"
               ></tinymce>
             </v-flex>
           </v-layout>
