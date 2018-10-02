@@ -1,74 +1,131 @@
     <template>
-        <v-form  @submit.prevent="validateBeforeSubmit">
-          <v-container fluid>
-            <v-layout row wrap class="marTop-22">
-              <v-flex xs6 class="pr-2">
-                <!-- title contract -->
-                <v-text-field
-                placeholder="Nhập tiêu đề hợp đồng"
-                :error-messages="errors.has('title') ? errors.collect('title') : []"
-                :data-vv-as="$t('label.title')"
-                name="title"
-                :label="$t('label.title') + ' * '"
-                v-model="contract.title"> </v-text-field>
-                <!-- type contract -->
-              </v-flex>
-              <v-flex xs6 class="pr-2">
-               <v-select
-               v-validate="'required'"
-               :error-messages="errors.has('type') ? errors.collect('type') : []"
-               :data-vv-as="$t('label.type')"
-               name="type"
-               :label="$t('label.type')"
-               v-model="contract.type"
-               :items="types"
-               item-value="id"
-               item-text="name"> </v-select>
-               <!-- status contract-->
-             </v-flex>
-           </v-layout>
-           <v-layout row wrap class="marTop-22">
-            <v-flex xs6>
+      <v-form  @submit.prevent="validateBeforeSubmit">
+        <v-container fluid>
+          <v-layout row wrap class="marTop-22">
+            <v-flex xs6 class="pr-2">
+              <!-- title contract -->
+              <v-text-field
+              placeholder="Nhập tiêu đề hợp đồng"
+              :error-messages="errors.has('title') ? errors.collect('title') : []"
+              :data-vv-as="$t('label.title')"
+              name="title"
+              :label="$t('label.title') + ' * '"
+              v-model="contract.title"> </v-text-field>
+              <!-- type contract -->
+            </v-flex>
+            <v-flex xs6 class="pr-2">
              <v-select
              v-validate="'required'"
-             :error-messages="errors.has('status') ? errors.collect('status') : []"
-             :data-vv-as="$t('label.status')"
-             name="status"
-             :label="$t('label.status')"
-             v-model="contract.status"
-             :items="status"
+             :error-messages="errors.has('type') ? errors.collect('type') : []"
+             :data-vv-as="$t('label.type')"
+             name="type"
+             :label="$t('label.type')"
+             v-model="contract.type"
+             :items="types"
              item-value="id"
-             item-text="name">
-           </v-select>
-         </v-flex>
-         <v-flex xs6>
-          <!-- date_sign -->
-          <v-datetime-picker
-          label="Ngày đăng ký"
-          v-model="contract.date_sign"
-          ></v-datetime-picker>
-        </v-flex>
-      </v-layout>
-
-      <v-layout row wrap class="marTop-22">
-        <v-flex xs6>
-         <!-- date_efective -->
-         <v-datetime-picker
-         label="Ngày có hiệu lực"
-         v-model="contract.date_efective"
-         ></v-datetime-picker>
+             item-text="name"> </v-select>
+             <!-- status contract-->
+           </v-flex>
+         </v-layout>
+         <v-layout row wrap class="marTop-22">
+          <v-flex xs6>
+           <v-select
+           v-validate="'required'"
+           :error-messages="errors.has('status') ? errors.collect('status') : []"
+           :data-vv-as="$t('label.status')"
+           name="status"
+           :label="$t('label.status')"
+           v-model="contract.status"
+           :items="status"
+           item-value="id"
+           item-text="name">
+         </v-select>
        </v-flex>
-
        <v-flex xs6>
-         <!-- date_expiration -->
-         <v-datetime-picker
-         label="Ngày kết thúc"
-         v-model="contract.date_expiration"
-         ></v-datetime-picker>
-       </v-flex>
-     </v-layout>
+        <!-- date_sign -->
+        <!-- date_sign -->
+        <template>
+          <v-menu
+          ref="dateSign"
+          :close-on-content-click="false"
+          v-model="dateSign"
+          :nudge-right="40"
+          lazy transition="scale-transition"
+          offset-y
+          full-width
+          min-width="290px">
+          <v-text-field
+          placeholder="Nhập ngày ký"
+          slot="activator"
+          v-model="contract.date_sign"
+          label="Ngày ký"
+          readonly > </v-text-field>
+          <v-date-picker
+          ref="picker"
+          v-model="contract.date_sign"
+          :max="new Date().toISOString().substr(0, 10)"
+          min="1950-01-01"
+          @change="save"> </v-date-picker> </v-menu>
+        </template>
+      </v-flex>
+    </v-layout>
 
-     <v-layout row wrap class="marTop-22 marButton-22">
+    <v-layout row wrap class="marTop-22">
+      <v-flex xs6>
+        <!-- date_effective -->
+        <template>
+          <v-menu
+          ref="dateEffective"
+          :close-on-content-click="false"
+          v-model="dateEffective"
+          :nudge-right="40"
+          lazy transition="scale-transition"
+          offset-y
+          full-width
+          min-width="290px">
+          <v-text-field
+          placeholder="Ngày  hiệu lực"
+          slot="activator"
+          v-model="contract.date_effective"
+          label="Ngày  hiệu lực"
+          readonly > </v-text-field>
+          <v-date-picker
+          ref="picker"
+          v-model="contract.date_effective"
+          :max="new Date().toISOString().substr(0, 10)"
+          min="1950-01-01"
+          @change="save"> </v-date-picker> </v-menu>
+          </template>
+        </v-flex>
+
+        <v-flex xs6>
+         <template>
+          <v-menu
+          ref="dateExpiration"
+          :close-on-content-click="false"
+          v-model="dateExpiration"
+          :nudge-right="40"
+          lazy transition="scale-transition"
+          offset-y
+          full-width
+          min-width="290px">
+          <v-text-field
+          placeholder="Ngày có hết hạn"
+          slot="activator"
+          v-model="contract.date_expiration"
+          label="Ngày có hết hạn"
+          readonly > </v-text-field>
+          <v-date-picker
+          ref="picker"
+          v-model="contract.date_expiration"
+          :max="new Date().toISOString().substr(0, 10)"
+          min="1950-01-01"
+          @change="save"> </v-date-picker> </v-menu>
+        </template>
+      </v-flex>
+    </v-layout>
+
+    <v-layout row wrap class="marTop-22 marButton-22">
       <v-flex xs6>
        <v-autocomplete
        v-model="contract.user_id"
@@ -126,6 +183,9 @@ export default{
   data () {
     return {
       menu: null,
+      dateSign: false,
+      dateEffective: false,
+      dateExpiration: false,
       contract: {
         code: '',
         title: '',
@@ -152,24 +212,57 @@ export default{
     }
   },
   watch: {
-    menu (val) {
+    dateSign (val) {
+      val && this.$nextTick(() => (this.$refs.picker.activePicker = 'YEAR'))
+    },
+    dateEffective (val) {
+      val && this.$nextTick(() => (this.$refs.picker.activePicker = 'YEAR'))
+    },
+    dateExpiration (val) {
       val && this.$nextTick(() => (this.$refs.picker.activePicker = 'YEAR'))
     }
   },
   methods: {
     ...mapActions(['fetchApi']),
     ...mapActions('User', ['fetchUser']),
+    save (date) {
+      this.$refs.dateSign.save(date)
+      this.$refs.dateEffective.save(date)
+      this.$refs.dateExpiration.save(date)
+    },
     // thời gian đăng kí , có hiệu lực hợp đồng
     dateConstract () {
-      let date = new Date()
-      this.contract.date_sign = date
-      this.contract.date_efective = date
+      let today = new Date()
+      let dd = today.getDate()
+      let mm = today.getMonth() + 1
+      let yyyy = today.getFullYear()
+
+      if (dd < 10) {
+        dd = '0' + dd
+      }
+      if (mm < 10) {
+        mm = '0' + mm
+      }
+      today = yyyy + '-' + mm + '-' + dd
+      this.contract.date_sign = today
+      this.contract.date_effective = today
     },
     // thời gian kết thúc hợp đồng
     dateExpirationConstract () {
-      let date = new Date()
-      date.setMonth(date.getMonth() + 2)
-      this.contract.date_expiration = date
+      let today = new Date()
+      let dd = today.getDate()
+      let mm = today.getMonth() + 3
+      let yyyy = today.getFullYear()
+
+      if (dd < 10) {
+        dd = '0' + dd
+      }
+
+      if (mm < 10) {
+        mm = '0' + mm
+      }
+      today = yyyy + '-' + mm + '-' + dd
+      this.contract.date_expiration = today
     },
     setInitData () {
       let dataContract = { ...this.dataContract }
@@ -196,11 +289,11 @@ export default{
   }
 }
 </script>
-    <style scoped>
-      .marTop-22{
-       margin-top: -22px !important;
-     }
-     .marButton-22{
-      margin-bottom: 22px !important;
-    }
-  </style>
+<style scoped>
+  .marTop-22{
+   margin-top: -22px !important;
+ }
+ .marButton-22{
+  margin-bottom: 22px !important;
+}
+</style>

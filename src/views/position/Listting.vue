@@ -100,7 +100,7 @@
       <v-list>
         <template v-for="(item, index) in items.data">
           <v-layout class="pa-2" :key="index">
-            <v-flex sm1 class="ml-3" sm1 :class="isMini && 'd-none'">
+            <v-flex sm1 class="ml-3" :class="isMini && 'd-none'">
               {{ index + 1 }}
             </v-flex>
             <v-flex sm8 :class="isMini && 'd-none'">
@@ -148,67 +148,67 @@
 </v-layout>
 </template>
 <script type="text/javascript">
-  import DialogConfirm from '@/components/DialogConfirm'
-  import { debounce } from 'lodash'
-  import DataView from '@/components/DataView/DataView'
-  import { mapActions, mapGetters } from 'vuex'
-  export default{
-    name: 'UserListting',
-    props: {
-      isMini: {
-        type: Boolean,
-        default: false
-      }
+import DialogConfirm from '@/components/DialogConfirm'
+import { debounce } from 'lodash'
+import DataView from '@/components/DataView/DataView'
+import { mapActions, mapGetters } from 'vuex'
+export default{
+  name: 'UserListting',
+  props: {
+    isMini: {
+      type: Boolean,
+      default: false
+    }
+  },
+  components: {
+    DataView,
+    DialogConfirm
+  },
+  data: () => ({
+    dataViewHeight: 0,
+    dataViewName: 'position',
+    idPosition: null,
+    dialogDelete: false,
+    status: 'Không hiển thị',
+    dialog: false,
+    editedIndex: -1,
+    editTitle: -1,
+    position: {
+      status: 0,
+      name: ''
     },
-    components: {
-      DataView,
-      DialogConfirm
+    params: {
+      q: ''
     },
-    data: () => ({
-      dataViewHeight: 0,
-      dataViewName: 'position',
-      idPosition: null,
-      dialogDelete: false,
-      status: 'Không hiển thị',
-      dialog: false,
-      editedIndex: -1,
-      editTitle: -1,
-      position: {
-        status: 0,
-        name: ''
-      },
-      params: {
-        q: ''
-      },
-      defaultItem: {
-      }
-    }),
-    computed: {
-      formTitle () {
-        return this.editTitle === -1 ? 'Thêm chức danh' : 'Sửa chức danh'
-      },
-      ...mapGetters('Position', ['positionDetail']),
-      ...mapGetters(['isFetchingApi'])
+    defaultItem: {
+    }
+  }),
+  computed: {
+    formTitle () {
+      return this.editTitle === -1 ? 'Thêm chức danh' : 'Sửa chức danh'
     },
-    watch: {
-      dialog (val) {
-        val || this.close()
-      }
-    },
-    created () {
-      this.fetchPosition()
-    },
-    methods: {
-      ...mapActions(['setMiniDrawer']),
-      ...mapActions('Position', ['fetchPosition', 'deletePosition', 'updatePosition','updateStatusPosition']),
-      ...mapActions(['showNotify', 'setMiniDrawer']),
-      ...mapActions('Position', ['createPosition']),
-      ...mapActions('Dataview', ['removeDataviewEntry']),
-      changeStatus(idPosition){
-       this.updateStatusPosition({
-          id: idPosition
+    ...mapGetters('Position', ['positionDetail']),
+    ...mapGetters(['isFetchingApi'])
+  },
+  watch: {
+    dialog (val) {
+      val || this.close()
+    }
+  },
+  created () {
+    this.fetchPosition()
+  },
+  methods: {
+    ...mapActions(['setMiniDrawer']),
+    ...mapActions('Position', ['fetchPosition', 'deletePosition', 'updatePosition', 'updateStatusPosition']),
+    ...mapActions(['showNotify', 'setMiniDrawer']),
+    ...mapActions('Position', ['createPosition']),
+    ...mapActions('Dataview', ['removeDataviewEntry']),
+    changeStatus (idPosition) {
+      this.updateStatusPosition({
+        id: idPosition
       })
-     },
+    },
     // dialog
     openDialog () {
       this.editTitle = -1
@@ -268,7 +268,7 @@
       }
     },
     submitForm () {
-      if (this.editedIndex === -1) {
+      if (this.editTitle === -1) {
         let position = Object.assign({}, this.position)
         position.status = position.status ? 1 : 0
         this.createPosition({
@@ -289,6 +289,7 @@
       } else {
         let position = Object.assign({}, this.position)
         position.status = position.status ? 1 : 0
+        console.log('data update position', position)
         this.updatePosition({
           id: this.idPosition,
           position: position,

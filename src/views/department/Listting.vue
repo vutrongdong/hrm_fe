@@ -232,15 +232,15 @@ export default{
   methods: {
     ...mapActions(['setMiniDrawer']),
     ...mapActions(['showNotify', 'setMiniDrawer']),
-    ...mapActions('Department', ['fetchDepartment', 'createDepartment', 'deleteDepartment', 'updateDepartment','updateStatusDepartment']),
+    ...mapActions('Department', ['fetchDepartment', 'createDepartment', 'deleteDepartment', 'updateDepartment', 'updateStatusDepartment']),
     ...mapActions('Dataview', ['removeDataviewEntry']),
     ...mapActions('Branch', ['getBranchs']),
-    ///change status
-     changeStatus(idDepartment){
-       this.updateStatusDepartment({
-          id: idDepartment
+    /// change status
+    changeStatus (idDepartment) {
+      this.updateStatusDepartment({
+        id: idDepartment
       })
-     },
+    },
     /// status
     status_txt () {
       if (this.department.status) {
@@ -271,7 +271,7 @@ export default{
       this.dialog = true
     },
     submitForm () {
-      if (this.editedIndex === -1) {
+      if (this.editTitle === -1) {
         let department = Object.assign({}, this.department)
         department.status = department.status ? 1 : 0
         this.createDepartment({
@@ -309,6 +309,7 @@ export default{
             this.filter()
           }
         })
+        console.log('update department ', department)
       }
     },
     /// screach
