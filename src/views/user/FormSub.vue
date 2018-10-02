@@ -95,11 +95,11 @@ export default {
       }
     }
   },
-  watch: {
-    // dataUser (val) {
-    //   this.user = val
-    // }
-  },
+  // watch: {
+  //   dataUser (val) {
+  //     this.user = val
+  //   }
+  // },
   computed: {
     ...mapGetters('Branch', ['branchAll']),
     ...mapGetters('Department', ['departmentByBranch']),
