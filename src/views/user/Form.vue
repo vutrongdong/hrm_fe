@@ -5,17 +5,14 @@
       <!-- thông tin tài khoản -->
       <v-tab href="#tab-1">
         Thông tin tài khoản
-        <v-icon>phone</v-icon>
       </v-tab>
       <!-- Thông tin cá nhân -->
       <v-tab href="#tab-2">
         Thông tin cá nhân
-        <v-icon>account_box</v-icon>
       </v-tab>
       <!-- công việc -->
       <v-tab href="#tab-3">
         Công việc
-        <v-icon>favorite</v-icon>
       </v-tab>
       <!-- tab1 -->
       <v-tab-item id="tab-1" style="margin:30px 0px">
@@ -178,8 +175,8 @@
           </v-layout>
         </v-tab-item>
         <v-tab-item id="tab-3" style="margin-top:30px">
-          <h3>Hợp đồng</h3>
-          <v-layout row wrap>
+          <h3 v-if="isCreate">Hợp đồng</h3>
+          <v-layout row wrap v-if="isCreate">
             <v-flex xs6 class="pr-2">
               <!-- title contract -->
               <v-text-field
