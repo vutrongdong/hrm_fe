@@ -18,7 +18,6 @@
           placeholder="Nhập tên, sđt, email ..."
           v-model="params.q"
           @keyup="changeSearch"
-          clearable
           ></v-text-field>
         </v-flex>
         <v-flex xs2 class='mt-1' :class="isMini && 'd-none'">
