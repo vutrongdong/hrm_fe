@@ -12,7 +12,7 @@ import i18n from './i18n'
 import * as filters from '@/filters'
 import permissionMixin from '@/mixins/permission'
 import formatMixin from '@/mixins/format'
-
+import tinymce from 'vue-tinymce-editor'
 import DatetimePicker from 'vuetify-datetime-picker'
 // import 'vuetify-datetime-picker/src/stylus/main.styl'
 // You need a specific loader for CSS files
