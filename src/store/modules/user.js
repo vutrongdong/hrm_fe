@@ -87,11 +87,12 @@ const actions = {
     }, { root: true })
   },
   updateStatusUser ({ commit, dispatch }, payload) {
-    let { id, user } = payload
+    let { id, user, cb } = payload
     dispatch('fetchApi', {
       url: `users/change-status/${id}`,
       method: 'PUT',
-      data: user
+      data: user,
+      success: cb
     }, { root: true })
   },
   updateUser ({ commit, dispatch }, payload) {

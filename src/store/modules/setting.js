@@ -78,10 +78,11 @@ const actions = {
     }, { root: true })
   },
   updateStatusSetting ({ commit, dispatch }, payload) {
-    let { id } = payload
+    let { id, cb } = payload
     dispatch('fetchApi', {
       url: `settings/change-status/${id}`,
-      method: 'PUT'
+      method: 'PUT',
+      success: cb
     }, { root: true })
   },
   async deleteSetting ({ commit, dispatch }, payload) {

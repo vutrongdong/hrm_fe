@@ -53,6 +53,13 @@
 .full-max-width {
   max-width: 100% !important;
 }
+.full-width-col-10 {
+  max-width: 80% !important;
+  margin-bottom: 15px;
+}
+.max-width-col-2{
+  max-width: 20% !important;
+}
 .custom-table table {
   width: 100%;
   border-collapse: collapse;

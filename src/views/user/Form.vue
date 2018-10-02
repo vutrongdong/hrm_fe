@@ -43,7 +43,7 @@
             v-model="user.password"> </v-text-field>
             <!-- status -->
             <v-flex style="margin-top:12px;">
-              <label>Trạng Thái</label>
+              <label>Trạng thái</label>
               <v-flex row>
                 <v-checkbox
                 style="margin-top:0px"
@@ -68,7 +68,7 @@
             v-model="user.name"></v-text-field>
             <!-- password confirm -->
             <v-text-field
-            placeholder="Nhập lại password"
+            placeholder="Nhập lại mật khẩu"
             v-if="isCreate"
             :error-messages="errors.has('password_confirmation') ? errors.collect('password_confirmation') : []"
             v-validate="'required|min:6'"
@@ -89,7 +89,7 @@
             color="white"
             hide-no-data
             hide-selected
-            placeholder="tìm kiếm"
+            placeholder="Tìm kiếm"
             style="margin-left:-30px"
             prepend-icon="mdi-database-search">
             <template slot="selection" slot-scope="data">
@@ -269,7 +269,7 @@
                 full-width
                 min-width="290px">
                 <v-text-field
-                placeholder="Ngày có hết hạn"
+                placeholder="Ngày hết hạn"
                 slot="activator"
                 v-model="user.contracts.date_expiration"
                 label="Ngày có hết hạn"

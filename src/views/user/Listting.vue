@@ -3,7 +3,7 @@
     <div ref="header">
       <v-toolbar height="50px" color="white" flat>
         <v-layout row wrap>
-          <v-flex xs2 :class="isMini">
+          <v-flex xs1 :class="isMini && 'max-width-col-2'">
             <v-tooltip bottom>
               <v-btn slot="activator" v-if="canAccess('user.create')" class="mr-3 mt-3" icon color="primary" @click="$router.push({name: 'user-create'})">
                 <v-icon>add</v-icon>
@@ -11,16 +11,17 @@
               <span>Thêm mới</span>
             </v-tooltip>
           </v-flex>
-          <v-flex xs5 class="mt-1" :class="isMini && 'full-flex-basic full-max-search'">
+          <v-flex xs4 class="mt-1" :class="isMini && 'full-flex-basic full-width-col-10'">
             <v-text-field
             hide-details
             single-line
             placeholder="Nhập tên, sđt, email ..."
             v-model="params.q"
             @keyup="changeSearch"
+            clearable
             ></v-text-field>
           </v-flex>
-          <v-flex xs5 class='mt-1' :class="isMini && 'd-none'">
+          <v-flex xs4 class='mt-1' :class="isMini && 'd-none'">
             <v-tooltip bottom>
               <v-autocomplete
               slot="activator"
@@ -36,6 +37,24 @@
               single-line
               ></v-autocomplete>
               <span>Lọc theo hợp đồng</span>
+            </v-tooltip>
+          </v-flex>
+          <v-flex xs3 class='mt-1' :class="isMini && 'd-none'">
+            <v-tooltip bottom>
+              <v-select
+              slot="activator"
+              class='ml-2'
+              @change="filter"
+              placeholder="Trạng thái"
+              item-text="status_txt"
+              item-value="status"
+              :items="statusUser"
+              v-model="params.status"
+              menu-props="auto"
+              hide-details
+              single-line
+              ></v-select>
+              <span>Lọc theo trạng thái</span>
             </v-tooltip>
           </v-flex>
         </v-layout>
@@ -180,59 +199,59 @@
               <!-- end infomation -->
               <v-flex sm2 :class="isMini && 'd-none'" >
                 <v-flex v-if="item.departments">
-                <v-flex :key="index" v-for="(department, index) in item.departments.data">
-                  {{ department.name }}
+                  <v-flex :key="index" v-for="(department, index) in item.departments.data">
+                    {{ department.name }}
+                  </v-flex>
                 </v-flex>
               </v-flex>
-            </v-flex>
-            <v-flex sm2 :class="isMini && 'd-none'" >
-              <v-flex v-if="item.departments">
-                <v-flex :key="index" v-for="(department, index) in item.departments.data">
-                  {{ department.position_name }}
+              <v-flex sm2 :class="isMini && 'd-none'" >
+                <v-flex v-if="item.departments">
+                  <v-flex :key="index" v-for="(department, index) in item.departments.data">
+                    {{ department.position_name }}
+                  </v-flex>
                 </v-flex>
               </v-flex>
-            </v-flex>
-            <v-flex sm2>
-              <v-flex v-if='item.contracts' >
-                <v-flex :class="isMini && 'd-none'" :key="index" v-for="(contract, index) in item.contracts.data" >
-                  {{ contract.type_txt }}
+              <v-flex sm2>
+                <v-flex v-if='item.contracts' >
+                  <v-flex :class="isMini && 'd-none'" :key="index" v-for="(contract, index) in item.contracts.data" >
+                    {{ contract.type_txt }}
+                  </v-flex>
                 </v-flex>
               </v-flex>
+              <v-flex sm1 :class="isMini && 'd-none'">
+               <v-tooltip bottom sm6>
+                <v-btn slot="activator" class="ma-0" v-if="canAccess('user.update')" icon @click.stop="editUser(item.id)">
+                  <v-icon class='theme--light teal--text'>edit</v-icon>
+                </v-btn>
+                <span>Sửa</span>
+              </v-tooltip>
+              <v-tooltip bottom sm6>
+                <v-btn slot="activator" class="ma-0" v-if="canAccess('user.delete')" icon @click.stop="removeConfirm(item.id)">
+                  <v-icon class="theme--light pink--text">delete</v-icon>
+                </v-btn>
+                <span>Xóa</span>
+              </v-tooltip>
+              <v-tooltip bottom sm12>
+                <v-switch
+                @click.native.stop="changeStatus(item.id)"
+                class='ml-3'
+                name="status"
+                slot="activator"
+                v-model="item.status"
+                ></v-switch>
+                <span v-if="item.status">Kích hoạt</span>
+                <span v-else>Không kích hoạt</span>
+              </v-tooltip>
             </v-flex>
-            <v-flex sm1 :class="isMini && 'd-none'">
-             <v-tooltip bottom sm6>
-              <v-btn slot="activator" class="ma-0" v-if="canAccess('user.update')" icon @click.stop="editUser(item.id)">
-                <v-icon class='theme--light teal--text'>edit</v-icon>
-              </v-btn>
-              <span>Sửa</span>
-            </v-tooltip>
-            <v-tooltip bottom sm6>
-              <v-btn slot="activator" class="ma-0" v-if="canAccess('user.delete')" icon @click.stop="removeConfirm(item.id)">
-                <v-icon class="theme--light pink--text">delete</v-icon>
-              </v-btn>
-              <span>Xóa</span>
-            </v-tooltip>
-            <v-tooltip bottom sm12>
-              <v-switch
-              @click.native.stop="changeStatus(item.id)"
-              class='ml-3'
-              name="status"
-              slot="activator"
-              v-model="item.status"
-              ></v-switch>
-              <span v-if="item.status">Kích hoạt</span>
-              <span v-else>Không kích hoạt</span>
-            </v-tooltip>
-          </v-flex>
-        </v-layout>
-      </v-list-tile>
-      <v-divider
-      :key="'div' + index + item.id"
-      v-if="index + 1 < items.data.length"
-      ></v-divider>
-    </template>
-  </v-list>
-</template>
+          </v-layout>
+        </v-list-tile>
+        <v-divider
+        :key="'div' + index + item.id"
+        v-if="index + 1 < items.data.length"
+        ></v-divider>
+      </template>
+    </v-list>
+  </template>
 </data-view>
 </v-flex>
 <dialog-confirm v-model="dialogDelete" @input="remove" />
@@ -267,12 +286,17 @@ export default{
     user: {
       status: true
     },
+    statusUser:[
+    {status_txt: 'Kích hoạt', status: 1},
+    {status_txt: 'Không kích hoạt' , status: 0},
+    ],
     params: {
       q: '',
       branchId: '',
       departmentId: '',
       positionId: '',
       contractType: '',
+      status: '',
       include: 'roles,departments,contracts'
     }
   }),
@@ -324,7 +348,21 @@ export default{
     },
     changeStatus (idUser) {
       this.updateStatusUser({
-        id: idUser
+        id: idUser,
+        cb: (response) => {
+          this.$store.dispatch('showNotify', {
+            text: this.$t('alert.success'),
+            color: 'success'
+          })
+        },
+        error: (error) => {
+          if (error.status === 404) {
+            this.$store.dispatch('showNotify', {
+              text: this.$t('alert.not-found'),
+              color: 'warning'
+            })
+          }
+        }
       })
     },
     editUser (userId) {
@@ -393,7 +431,6 @@ export default{
 .v-toolbar__content{
   height: 80px !important;
 }
-.full-max-search{
-  width: 80%;
+.full-width-col-10{
 }
 </style>
