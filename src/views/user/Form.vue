@@ -64,7 +64,8 @@
             v-validate="'required|min:3'"
             :data-vv-as="$t('label.name')"
             name="name"
-            :label="$t('label.name') + '*'"
+            :label="$t('label.name')"
+            class="input-required"
             v-model="user.name"></v-text-field>
             <!-- password confirm -->
             <v-text-field
@@ -171,7 +172,7 @@
             <!-- image -->
             <v-flex class="mt-3">
               <label style="color: #7f8c91;">Ảnh đại diện</label>
-              <imageUpload/>
+              <imageUpload :multiple="false" />
             </v-flex> </v-flex>
           </v-layout>
         </v-tab-item>
@@ -497,9 +498,6 @@ export default{
 label{
   color: #5b5a5a;
   font-size:15px;
-}
-.image-list-container, align-items-center{
-  display:none !important;
 }
 .image-icon-info{
   display:none !important;

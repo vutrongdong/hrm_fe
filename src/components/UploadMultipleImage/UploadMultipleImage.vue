@@ -54,7 +54,7 @@
       </div>
     </div>
 
-    <div class="image-list-container display-flex" v-if="images.length">
+    <div class="image-list-container display-flex" v-if="images.length && multiple">
       <div class="image-list-item position-relative cursor-pointer" :class="image.highlight && 'image-highlight'" v-for="(image, index) in images" :key="index" @click="changeHighlight(index)">
         <div class="centered">
           <img class="show-img img-responsive" :src="image.path">
@@ -69,7 +69,7 @@
       </div>
     </div>
     <div>
-      <input id="image-upload" @change="uploadFieldChange" name="images" multiple :accept="accept" type="file">
+      <input id="image-upload" @change="uploadFieldChange" name="images" :multiple="multiple" :accept="accept" type="file">
     </div>
 
     <v-dialog v-model="dialogImage" width="840px" height="600px">
@@ -122,6 +122,10 @@ export default {
       default: () => {
         return []
       }
+    },
+    multiple: {
+      type: Boolean,
+      default: true
     }
   },
   data () {
@@ -175,16 +179,16 @@ export default {
         let dataURI = e.target.result
         if (dataURI) {
           if (!this.images.length) {
-            this.images.push({ id: idTime, name: file.name, path: dataURI, highlight: 1, default: 1 })
+            this.images.push({id: idTime, name: file.name, path: dataURI, highlight: 1, default: 1})
             this.currentIndexImage = 0
           } else {
-            this.images.push({ id: idTime, name: file.name, path: dataURI, highlight: 0, default: 0 })
+            this.images.push({id: idTime, name: file.name, path: dataURI, highlight: 0, default: 0})
           }
         }
       }
       reader.readAsDataURL(file)
       this.$emit('data-change', this.images)
-      this.$emit('upload-image', { file: formData, id: idTime })
+      this.$emit('upload-image', {file: formData, id: idTime})
     },
     uploadFieldChange (e) {
       let files = e.target.files || e.dataTransfer.files
@@ -463,6 +467,9 @@ export default {
 .custom-carousel .v-jumbotron__wrapper {
   display: flex;
   justify-content: center;
+}
+.custom-carousel .v-image__image--cover {
+  background-size: contain;
 }
 .custom-carousel .v-jumbotron__wrapper img {
   position: relative;
