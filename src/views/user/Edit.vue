@@ -3,7 +3,7 @@
     <v-flex xs12 class="border-e0-left white">
       <v-toolbar dense color="white" flat>
         <v-spacer></v-spacer>
-        <v-toolbar-title>Chỉnh sửa người dùng: {{userDetail.name}}</v-toolbar-title>
+        <v-toolbar-title class="text-uppercase">{{userDetail.name}}</v-toolbar-title>
         <v-spacer></v-spacer>
         <v-btn icon @click="$router.push({name: 'user'})">
           <v-icon>close</v-icon>
@@ -38,11 +38,14 @@ export default{
     ...mapActions('User', ['updateUser', 'getUser', 'setUser']),
     ...mapActions('Dataview', ['updateDataviewEntry']),
     submitForm (formData) {
-      // console.log(formData)
+      let submitForm = Object.assign({}, formData)
+      submitForm.departments = submitForm.departments.data
+      // console.log('submit', formData)
       // return false
+      submitForm.contracts = submitForm.contracts.data
       this.updateUser({
         id: this.$route.params.id,
-        user: formData,
+        user: submitForm,
         params: {
           include: 'roles'
         },
@@ -64,9 +67,8 @@ export default{
   },
   created () {
     if (!this.userDetail.id) {
-      this.getUser({ userId: this.$route.params.id, params: { include: 'roles,departments' } })
+      this.getUser({ userId: this.$route.params.id, params: { include: 'roles,departments,contracts' } })
     }
-    console.log('userDetail', this.userDetail)
   },
   mounted () {
     this.dataViewHeight = this.$refs.laylout.clientHeight - 48

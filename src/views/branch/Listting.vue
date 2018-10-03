@@ -3,25 +3,24 @@
    <div ref="header">
     <v-toolbar height="50px" color="white" flat>
       <v-layout row wrap>
-        <v-flex xs2>
+        <v-flex xs1 :class="isMini && 'full-flex-basic max-width-col-2'">
           <v-tooltip bottom>
-            <v-btn slot="activator" v-if="canAccess('branch.create')" class="mr-3 mt-3" icon color="primary" @click="$router.push({name: 'branch-create'})">
+            <v-btn slot="activator" v-if="canAccess('branch.create')" class="mt-3" icon color="primary" @click="$router.push({name: 'branch-create'})">
               <v-icon>add</v-icon>
             </v-btn>
             <span>Thêm mới</span>
           </v-tooltip>
         </v-flex>
-        <v-flex xs6 class="mt-1" :class="isMini && 'full-flex-basic'">
+        <v-flex xs5 class="mt-1" :class="isMini && 'full-flex-basic full-width-col-10'">
           <v-text-field
           hide-details
           single-line
           placeholder="Nhập tên, sđt, email ..."
           v-model="params.q"
           @keyup="changeSearch"
-          clearable
           ></v-text-field>
         </v-flex>
-        <v-flex xs2 class='mt-1' :class="isMini && 'd-none'">
+        <v-flex xs3 class='mt-1' :class="isMini && 'd-none'">
           <v-tooltip bottom>
             <v-select
             slot="activator"
@@ -39,7 +38,7 @@
             <span>Lọc theo thành phố</span>
           </v-tooltip>
         </v-flex>
-        <v-flex xs2 class='mt-1' :class="isMini && 'd-none'">
+        <v-flex xs3 class='mt-1' :class="isMini && 'd-none'">
           <v-tooltip bottom :color="colorDistrict">
             <v-select
             slot="activator"
@@ -158,8 +157,7 @@
       </template>
     </v-list>
     <dialog-confirm v-model="dialogDelete" @input="remove" />
-  </v-list>
-</template>
+  </template>
 </data-view>
 </v-flex>
 </v-layout>
@@ -168,7 +166,7 @@
 import { debounce } from 'lodash'
 import DialogConfirm from '@/components/DialogConfirm'
 import DataView from '@/components/DataView/DataView'
-import { mapActions,mapGetters } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
 export default {
   name: 'BranchListting',
   components: {
@@ -194,33 +192,33 @@ export default {
     dialogDelete: false,
     idBranch: null,
     title: [
-    { text: 'Tên chi nhánh', sortable: false },
-    { text: 'Email', sortable: false },
-    { text: 'Mã sô thuế', sortable: false },
-    { text: 'Địa chỉ', sortable: false },
-    { text: 'Trạng thái', sortable: false },
-    { text: 'Hành động', sortable: false }
+      { text: 'Tên chi nhánh', sortable: false },
+      { text: 'Email', sortable: false },
+      { text: 'Mã sô thuế', sortable: false },
+      { text: 'Địa chỉ', sortable: false },
+      { text: 'Trạng thái', sortable: false },
+      { text: 'Hành động', sortable: false }
     ],
     dataViewHeight: 0,
     dataViewName: 'branch',
     params: {
       q: '',
-      cityId:'',
-      districtId:''
+      cityId: '',
+      districtId: ''
     }
   }),
   computed: {
     isIndex () {
       return this.type === 'index'
     },
-    ...mapGetters('City',['cityAll','districtByCity'])
+    ...mapGetters('City', ['cityAll', 'districtByCity'])
   },
   methods: {
     ...mapActions(['setMiniDrawer']),
     ...mapActions('Dataview', ['removeDataviewEntry']),
     ...mapActions('Branch', ['getBranch', 'getBranchs', 'deleteBranch', 'updateStatusBranch']),
     ...mapActions(['showNotify', 'setMiniDrawer']),
-    ...mapActions('City', ['getCity','getDistrictByCity']),
+    ...mapActions('City', ['getCity', 'getDistrictByCity']),
     branchDetail (branch) {
       this.getBranch({ branchId: branch.id })
       this.$router.push({ name: 'branch-detail', params: { id: branch.id } })
@@ -244,7 +242,21 @@ export default {
     },
     changeStatus (idBranch) {
       this.updateStatusBranch({
-        id: idBranch
+        id: idBranch,
+        cb: (response) => {
+          this.$store.dispatch('showNotify', {
+            text: this.$t('alert.success'),
+            color: 'success'
+          })
+        },
+        error: (error) => {
+          if (error.status === 404) {
+            this.$store.dispatch('showNotify', {
+              text: this.$t('alert.not-found'),
+              color: 'warning'
+            })
+          }
+        }
       })
     },
     removeConfirm (id) {
@@ -276,7 +288,11 @@ export default {
     }
   },
   mounted () {
-    this.dataViewHeight = this.$refs.laylout.clientHeight - 176
+    if (this.$route.params.id) {
+      this.dataViewHeight = this.$refs.laylout.clientHeight - 130
+    } else {
+      this.dataViewHeight = this.$refs.laylout.clientHeight - 176
+    }
     let query = { ...this.$route.query }
     if (query.hasOwnProperty('reload')) {
       this.$nextTick(() => {
@@ -288,7 +304,7 @@ export default {
       })
     }
   },
-  created(){
+  created () {
     this.getCity()
   }
 }

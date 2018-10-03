@@ -45,7 +45,10 @@
             <!-- name -->
             <v-flex xs12 sm6 md12>
               <v-text-field
-              placeholder="nhập tên"
+              @keydown="generateSlug"
+              @change="generateSlug"
+              @keyup="generateSlug"
+              placeholder="Nhập tên"
               :error-messages="errors.has('name') ? errors.collect('name') : []"
               v-validate="'required'"
               :data-vv-as="$t('label.name')"
@@ -56,7 +59,7 @@
             <!-- slug -->
             <v-flex xs12 sm6 md12>
               <v-text-field
-              placeholder="nhập slug"
+              placeholder="Nhập slug"
               v-validate="'required'"
               :error-messages="errors.has('slug') ? errors.collect('slug') : []"
               :data-vv-as="$t('label.slug')"
@@ -67,7 +70,7 @@
             <!-- value -->
             <v-flex xs12 sm6 md12>
               <v-text-field
-              placeholder="nhập giá trị"
+              placeholder="Nhập giá trị"
               v-validate="'required'"
               :error-messages="errors.has('value') ? errors.collect('value') : []"
               :data-vv-as="$t('label.value')"
@@ -113,7 +116,7 @@
   <template slot-scope="{items}">
     <v-list three-line>
       <template v-for="(item, index) in items.data">
-        <v-layout class="pa-2">
+        <v-layout class="pa-2" :key="index" >
           <v-flex class="ml-3" sm1 :class="isMini && 'd-none'">
             {{ index + 1 }}
           </v-flex>
@@ -124,7 +127,7 @@
             {{ item.value }}
           </v-flex>
           <v-flex sm2 :class="isMini && 'd-none'">
-            <v-tooltip bottom sm12>
+            <v-tooltip bottom smind12>
               <v-switch
               @click.native.stop="changeStatus(item.id)"
               class='ml-3'
@@ -138,7 +141,7 @@
           </v-flex>
           <v-flex sm2 :class="isMini && 'd-none'">
             <v-tooltip bottom>
-              <v-btn slot="activator" class="ma-0" v-if="canAccess('setting.update')" icon @click="editItem(item,item.id)">
+              <v-btn slot="activator" class="ma-0" v-if="canAccess('setting.update')" icon @click="editSetting(item,item.id)">
                 <v-icon class='theme--light teal--text'>edit</v-icon>
               </v-btn>
               <span>Sửa</span>
@@ -165,6 +168,7 @@
 </template>
 <script>
 import { debounce } from 'lodash'
+import { stringToSlug } from '@/helpers'
 import DataView from '@/components/DataView/DataView'
 import DialogConfirm from '@/components/DialogConfirm'
 import { mapActions, mapGetters } from 'vuex'
@@ -191,6 +195,9 @@ export default{
     dialog: false,
     editedIndex: -1,
     setting: {
+      name: '',
+      value: '',
+      slug: '',
       status: true
     },
     defaultItem: {
@@ -222,13 +229,15 @@ export default{
   },
   methods: {
     ...mapActions(['setMiniDrawer']),
-    ...mapActions('Setting', ['FetchSetting', 'deleteSetting', 'updateSetting','updateStatusSetting']),
+    ...mapActions('Setting', ['FetchSetting', 'deleteSetting', 'updateSetting', 'updateStatusSetting']),
     ...mapActions(['showNotify', 'setMiniDrawer']),
     ...mapActions('Setting', ['createSetting']),
     addSetting () {
+      this.setting = Object.assign({}, this.defaultItem)
+      this.editedIndex = -1
       this.dialog = true
     },
-    editItem (item, id) {
+    editSetting (item, id) {
       this.idSetting = id
       this.editedIndex = 1
       this.setting = Object.assign({}, item)
@@ -236,7 +245,21 @@ export default{
     },
     changeStatus (idSetting) {
       this.updateStatusSetting({
-        id: idSetting
+        id: idSetting,
+        cb: (response) => {
+          this.$store.dispatch('showNotify', {
+            text: this.$t('alert.success'),
+            color: 'success'
+          })
+        },
+        error: (error) => {
+          if (error.status === 404) {
+            this.$store.dispatch('showNotify', {
+              text: this.$t('alert.not-found'),
+              color: 'warning'
+            })
+          }
+        }
       })
     },
     changeSearch: debounce(function () {
@@ -279,6 +302,7 @@ export default{
         this.editedIndex = -1
       }, 300)
     },
+    //Thêm sửa setting
     submitForm () {
       if (this.editedIndex === -1) {
         this.createSetting({
@@ -314,7 +338,11 @@ export default{
           }
         })
       }
-    }
+    },
+    // cấu hình slug khi nhâp
+    generateSlug () {
+      this.setting.slug = stringToSlug(this.setting.name)
+    },
   }
 }
 </script>
