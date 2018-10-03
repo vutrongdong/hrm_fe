@@ -117,9 +117,6 @@
           </v-flex>
         </v-layout>
       </v-toolbar>
-      <v-toolbar height="20px" color="white" flat v-if="!isMini">
-        <small style="margin-top: 7px;">Tổng số nhân viên: {{ totalUser.pagination.total }}</small>
-      </v-toolbar>
       <v-toolbar height="45px" color="white" flat v-if="!isMini">
         <v-layout>
           <v-flex sm1 class="text-bold text-uppercase">
@@ -407,7 +404,7 @@ export default{
     if (this.$route.params.id) {
       this.dataViewHeight = this.$refs.laylout.clientHeight - 55
     } else {
-      this.dataViewHeight = this.$refs.laylout.clientHeight - 167
+      this.dataViewHeight = this.$refs.laylout.clientHeight - 150
     }
     let query = { ...this.$route.query }
     if (query.hasOwnProperty('reload')) {
