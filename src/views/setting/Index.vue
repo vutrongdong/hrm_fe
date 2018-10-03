@@ -3,7 +3,7 @@
    <div ref="header">
     <v-toolbar height="50px" color="white" flat>
       <v-layout row wrap>
-        <v-tooltip bottom>
+        <v-tooltip bottom class="mt-2">
           <v-btn slot="activator" v-if="canAccess('setting.create')"
           class="mr-5" icon color="primary"
           @click="addSetting">
@@ -11,7 +11,16 @@
         </v-btn>
         <span>Thêm mới</span>
       </v-tooltip>
-      <h2 style="margin-top:10px;">Thông tin công ty</h2>
+      <v-flex xs10 class="mt-1" :class="isMini && 'full-flex-basic full-width-col-10'">
+          <v-text-field
+          hide-details
+          single-line
+          placeholder="Nhập tên ..."
+          v-model="params.q"
+          clearable
+          @keyup="changeSearch"
+          ></v-text-field>
+        </v-flex>
     </v-layout>
     <v-layout slot="extension" v-if="!isMini">
       <v-flex sm1 class="text-bold text-uppercase">
@@ -45,15 +54,13 @@
             <!-- name -->
             <v-flex xs12 sm6 md12>
               <v-text-field
-              @keydown="generateSlug"
-              @change="generateSlug"
-              @keyup="generateSlug"
               placeholder="Nhập tên"
               :error-messages="errors.has('name') ? errors.collect('name') : []"
               v-validate="'required'"
               :data-vv-as="$t('label.name')"
               name="name"
-              :label="$t('label.name') + '*'"
+              :label="$t('label.name')"
+              class="input-required"
               v-model="setting.name"> </v-text-field>
             </v-flex>
             <!-- slug -->
@@ -64,7 +71,8 @@
               :error-messages="errors.has('slug') ? errors.collect('slug') : []"
               :data-vv-as="$t('label.slug')"
               name="slug"
-              :label="$t('label.slug')+ '*'"
+              :label="$t('label.slug')"
+              class="input-required"
               v-model="setting.slug"> </v-text-field>
             </v-flex>
             <!-- value -->
@@ -75,7 +83,8 @@
               :error-messages="errors.has('value') ? errors.collect('value') : []"
               :data-vv-as="$t('label.value')"
               name="value"
-              :label="$t('label.value')+ '*'"
+              :label="$t('label.value')"
+              class="input-required"
               v-model="setting.value"> </v-text-field>
             </v-flex>
             <!-- status -->
@@ -127,9 +136,10 @@
             {{ item.value }}
           </v-flex>
           <v-flex sm2 :class="isMini && 'd-none'">
-            <v-tooltip bottom smind12>
+            <v-tooltip bottom>
               <v-switch
-              @click.native.stop="changeStatus(item.id)"
+              @click.native.stop
+              @change="changeStatus(item.id)"
               class='ml-3'
               name="status"
               slot="activator"
@@ -168,7 +178,6 @@
 </template>
 <script>
 import { debounce } from 'lodash'
-import { stringToSlug } from '@/helpers'
 import DataView from '@/components/DataView/DataView'
 import DialogConfirm from '@/components/DialogConfirm'
 import { mapActions, mapGetters } from 'vuex'
@@ -338,10 +347,6 @@ export default{
           }
         })
       }
-    },
-    // cấu hình slug khi nhâp
-    generateSlug () {
-      this.setting.slug = stringToSlug(this.setting.name)
     }
   }
 }

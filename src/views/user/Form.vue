@@ -26,7 +26,8 @@
             v-validate="'required|email'"
             :data-vv-as="$t('label.email')"
             name="email"
-            :label="$t('label.email') + '*'"
+            :label="$t('label.email')"
+            class="input-required"
             type="email"
             :disabled="!isCreate"
             v-model="user.email"> </v-text-field>
@@ -37,7 +38,8 @@
             :error-messages="errors.has('password') ? errors.collect('password') : []" v-validate="'required|min:6'"
             :data-vv-as="$t('label.password')"
             name="password"
-            :label="$t('label.password') + '*'"
+            :label="$t('label.password')"
+            class="input-required"
             type="password"
             v-model="user.password"> </v-text-field>
             <!-- status -->
@@ -74,7 +76,8 @@
             v-validate="'required|min:6'"
             :data-vv-as="$t('label.password_confirmation')"
             name="password_confirmation"
-            :label="$t('label.password_confirmation') + '*'"
+            :label="$t('label.password_confirmation')"
+            class="input-required"
             type="password"
             v-model="user.password_confirmation"> </v-text-field>
             <!-- quyền truy cập -->
@@ -171,7 +174,7 @@
             <!-- image -->
             <v-flex class="mt-3">
               <label style="color: #7f8c91;">Ảnh đại diện</label>
-              <imageUpload :multiple="false" />
+              <imageUpload :multiple="false"/>
             </v-flex> </v-flex>
           </v-layout>
         </v-tab-item>
@@ -348,22 +351,22 @@ export default{
       dateEffective: false,
       dateExpiration: false,
       genderUser: [
-        { name: 'Nam', value: 1 },
-        { name: 'Nữ', value: 0 },
-        { name: 'Khác', value: 2 }
+      { name: 'Nam', value: 1 },
+      { name: 'Nữ', value: 0 },
+      { name: 'Khác', value: 2 }
       ],
       typeContract: [
-        { name: 'Học việc', value: 0 },
-        { name: 'Cộng tác viên', value: 1 },
-        { name: 'Thử việc', value: 2 },
-        { name: 'Có thời hạn', value: 3 },
-        { name: 'Không thời hạn', value: 4 },
-        { name: 'Khác', value: 5 }
+      { name: 'Học việc', value: 0 },
+      { name: 'Cộng tác viên', value: 1 },
+      { name: 'Thử việc', value: 2 },
+      { name: 'Có thời hạn', value: 3 },
+      { name: 'Không thời hạn', value: 4 },
+      { name: 'Khác', value: 5 }
       ],
       statusContract: [
-        { name: 'Tiêu chuẩn', value: 0 },
-        { name: 'Chấm dứt', value: 1 },
-        { name: 'Gia hạn', value: 2 }
+      { name: 'Tiêu chuẩn', value: 0 },
+      { name: 'Chấm dứt', value: 1 },
+      { name: 'Gia hạn', value: 2 }
       ],
       user: {
         avatar: '',
@@ -489,7 +492,7 @@ export default{
   }
 }
 </script>
-<style coped>
+<style scoped>
 label{
   color: #5b5a5a;
   font-size:15px;

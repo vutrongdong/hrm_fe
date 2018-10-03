@@ -18,6 +18,8 @@
           placeholder="Nhập tên, sđt, email ..."
           v-model="params.q"
           @keyup="changeSearch"
+          clearable
+          @click:clear="changeSearch"
           ></v-text-field>
         </v-flex>
         <v-flex xs3 class='mt-1' :class="isMini && 'd-none'">
@@ -34,6 +36,7 @@
             menu-props="auto"
             hide-details
             single-line
+            clearable
             ></v-select>
             <span>Lọc theo thành phố</span>
           </v-tooltip>
@@ -53,6 +56,7 @@
             menu-props="auto"
             hide-details
             single-line
+            clearable
             ></v-select>
             <span v-if='districtActive'>Lọc theo quận huyện</span>
             <span v-else>Vui lòng chọn quận huyện trước !</span>
@@ -66,16 +70,16 @@
         <v-flex sm3 class="text-bold text-uppercase">
           Tên chi nhánh
         </v-flex>
-        <v-flex sm2 class="text-bold text-uppercase">
+        <v-flex sm3 class="text-bold text-uppercase">
           Địa chỉ
         </v-flex>
         <v-flex sm2 class="text-bold text-uppercase">
-          Loại
+          Thành phố
         </v-flex>
         <v-flex sm2 class="text-bold text-uppercase">
-          Trạng thái
+          Quận, huyện
         </v-flex>
-        <v-flex sm2 class="text-bold text-uppercase mr-1">
+        <v-flex sm1 class="text-bold text-uppercase mr-1">
           Hành động
         </v-flex>
       </v-layout>
@@ -106,6 +110,10 @@
             </v-flex>
             <v-flex sm3 :class="isMini && 'full-flex-basic full-max-width'">
               {{ item.name}}
+              <v-tooltip bottom v-if="item.type_txt==='Chi nhánh chính'">
+                <v-icon class="mb-1" size="15px" slot="activator" color="red">fa fa-star</v-icon>
+                <span>Chi nhánh chính</span>
+              </v-tooltip>
               <v-list-tile-sub-title class="text--primary" v-if="item.email" :class="isMini && 'd-none'">
                 <v-icon size="16px">email</v-icon>
                 {{ item.email }}
@@ -115,16 +123,32 @@
                 {{ item.phone }}
               </v-list-tile-sub-title>
             </v-flex>
-            <v-flex sm2 class="pr-3" :class="isMini && 'd-none'">
+            <v-flex sm3 class="pr-3" :class="isMini && 'd-none'">
               {{ item.address }}
             </v-flex>
-            <v-flex class="mr-2" sm2 :class="isMini && 'd-none'">
-              {{ item.type_txt }}
+            <v-flex sm2 :class="isMini && 'd-none'">
+              {{ item.city_name }}
             </v-flex>
             <v-flex sm2 :class="isMini && 'd-none'">
+              {{ item.district_name }}
+            </v-flex>
+            <v-flex sm1 :class="isMini && 'd-none'">
+              <v-tooltip bottom sm6>
+                <v-btn slot="activator" class="ma-0" v-if="canAccess('branch.update')" icon @click.stop="$router.push({name: 'branch-edit', params: {id: item.id}})">
+                  <v-icon class='theme--light teal--text'>edit</v-icon>
+                </v-btn>
+                <span>Sửa</span>
+              </v-tooltip>
+              <v-tooltip bottom sm6>
+                <v-btn slot="activator" class="ma-0" v-if="canAccess('branch.delete')" icon @click.stop="removeConfirm(item.id)">
+                  <v-icon class="theme--light pink--text">delete</v-icon>
+                </v-btn>
+                <span>Xóa</span>
+              </v-tooltip>
               <v-tooltip bottom sm12>
                 <v-switch
-                @click.native.stop="changeStatus(item.id)"
+                @click.native.stop
+                @change="changeStatus(item.id)"
                 class='ml-3'
                 name="status"
                 slot="activator"
@@ -132,20 +156,6 @@
                 ></v-switch>
                 <span v-if="item.status">Hoạt Động</span>
                 <span v-else>Không hoạt động</span>
-              </v-tooltip>
-            </v-flex>
-            <v-flex sm2 :class="isMini && 'd-none'">
-              <v-tooltip bottom>
-                <v-btn slot="activator" class="ma-0" v-if="canAccess('branch.update')" icon @click.stop="$router.push({name: 'branch-edit', params: {id: item.id}})">
-                  <v-icon class='theme--light teal--text'>edit</v-icon>
-                </v-btn>
-                <span>Sửa</span>
-              </v-tooltip>
-              <v-tooltip bottom>
-                <v-btn slot="activator" class="ma-0" v-if="canAccess('branch.delete')" icon @click.stop="removeConfirm(item.id)">
-                  <v-icon class="theme--light pink--text">delete</v-icon>
-                </v-btn>
-                <span>Xóa</span>
               </v-tooltip>
             </v-flex>
           </v-layout>
@@ -227,14 +237,19 @@ export default {
       this.filter()
     }, 500),
     changedCity: debounce(function (value) {
-      this.colorDistrict = ''
-      this.districtActive = true
-      this.getDistrictByCity({
-        cityId: value,
-        cb: () => {
-          this.districtAll = this.districtByCity
-        }
-      })
+      if (value) {
+        this.colorDistrict = ''
+        this.districtActive = true
+        this.getDistrictByCity({
+          cityId: value,
+          cb: () => {
+            this.districtAll = this.districtByCity
+          }
+        })
+      } else {
+        this.colorDistrict = 'red'
+        this.districtActive = false
+      }
       this.filter()
     }, 500),
     filter () {
