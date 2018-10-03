@@ -1,6 +1,6 @@
 <template>
-  <v-layout id="scroll-view" class="scroll-y" :style="{height: viewHeight + 'px'}" v-scroll:#scroll-view="onScroll" column>
-    <v-flex xs12>
+  <v-layout column>
+    <v-flex xs12 id="scroll-view" class="scroll-y white" :style="{height: viewHeight - 28 + 'px'}" v-scroll:#scroll-view="onScroll">
       <slot :items="items"></slot>
     </v-flex>
     <v-flex xs12 v-if="isFetchingApi">
@@ -10,6 +10,12 @@
         color="primary"
         :indeterminate="isFetchingApi"
       ></v-progress-linear>
+    </v-flex>
+    <v-flex v-else xs12 style="height: 6px" class="white">
+      &nbsp;
+    </v-flex>
+    <v-flex xs12 v-if="!!this.items.pagination && this.items.pagination.total" class="px-3 white" style="text-align: right; height: 22px;">
+      {{this.items.data.length}} / {{this.items.pagination.total}}
     </v-flex>
   </v-layout>
 </template>
