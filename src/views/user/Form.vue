@@ -1,4 +1,3 @@
-
 <template>
   <v-form @submit.prevent="validateBeforeSubmit">
     <v-tabs centered color="cyan" dark icons-and-text >
@@ -427,11 +426,9 @@ export default{
       let dd = today.getDate()
       let mm = today.getMonth() + 1
       let yyyy = today.getFullYear()
-
       if (dd < 10) {
         dd = '0' + dd
       }
-
       if (mm < 10) {
         mm = '0' + mm
       }
@@ -445,11 +442,9 @@ export default{
       let dd = today.getDate()
       let mm = today.getMonth() + 3
       let yyyy = today.getFullYear()
-
       if (dd < 10) {
         dd = '0' + dd
       }
-
       if (mm < 10) {
         mm = '0' + mm
       }

@@ -79,11 +79,13 @@
        "create": "Thêm mới thiết lập",
        "edit": "Chỉnh sửa thiết lập"
     }
-
   },
   "label": {
     "qualification":"Trình độ",
     "name": "Tên",
+    "name_position" : "Tên chức danh",
+    "name_department" : "Tên phòng ban",
+    "name_branch" : "Tên chi nhánh",
     "status" : "Trạng thái",
     "email": "Email",
     "about":"Thông tin",

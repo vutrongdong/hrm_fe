@@ -75,10 +75,12 @@ const actions = {
     }, { root: true })
   },
   updateStatusPosition ({ commit, dispatch }, payload) {
-    let { id } = payload
+    let { id, cb, error } = payload
     dispatch('fetchApi', {
       url: `positions/change-status/${id}`,
-      method: 'PUT'
+      method: 'PUT',
+      success: cb,
+      error: error
     }, { root: true })
   },
   deletePosition ({ commit, dispatch }, payload) {
