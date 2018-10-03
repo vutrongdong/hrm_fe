@@ -151,3 +151,13 @@
   background: linear-gradient(to right, rgba(3,71,148,1) 0%, rgba(0,89,148,1) 50%, rgba(110,192,93,1) 100%);
   filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#034794', endColorstr='#6ec05d', GradientType=1 );
 }*/
+
+.input-required label.v-label:after {
+  content: "*";
+  color: red;
+  font-size: 75%;
+  line-height: 0;
+  position: relative;
+  vertical-align: baseline;
+  top: -0.5em;
+}
