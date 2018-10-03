@@ -45,9 +45,6 @@
             <!-- name -->
             <v-flex xs12 sm6 md12>
               <v-text-field
-              @keydown="generateSlug"
-              @change="generateSlug"
-              @keyup="generateSlug"
               placeholder="Nhập tên"
               :error-messages="errors.has('name') ? errors.collect('name') : []"
               v-validate="'required'"
@@ -168,7 +165,6 @@
 </template>
 <script>
 import { debounce } from 'lodash'
-import { stringToSlug } from '@/helpers'
 import DataView from '@/components/DataView/DataView'
 import DialogConfirm from '@/components/DialogConfirm'
 import { mapActions, mapGetters } from 'vuex'
@@ -339,10 +335,6 @@ export default{
         })
       }
     },
-    // cấu hình slug khi nhâp
-    generateSlug () {
-      this.setting.slug = stringToSlug(this.setting.name)
-    }
   }
 }
 </script>
