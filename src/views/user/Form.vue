@@ -64,7 +64,8 @@
             v-validate="'required|min:3'"
             :data-vv-as="$t('label.name')"
             name="name"
-            :label="$t('label.name') + '*'"
+            :label="$t('label.name')"
+            class="input-required"
             v-model="user.name"></v-text-field>
             <!-- password confirm -->
             <v-text-field
