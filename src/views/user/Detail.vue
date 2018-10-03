@@ -398,6 +398,7 @@ export default{
         })
       }
     },
+    //hiển thị thời gian trên ô input
     save (date) {
       this.$refs.dateSign.save(date)
       this.$refs.dateEffective.save(date)

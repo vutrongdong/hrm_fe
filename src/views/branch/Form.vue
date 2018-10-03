@@ -68,7 +68,7 @@
               item-value="id"
               item-text="name"
               @change="changedCity"
-              placeholder="Chọn một thành phố" > </v-select>
+              placeholder="Chọn thành phố" > </v-select>
               <!-- district -->
               <v-select
               v-if="Array.isArray(districtAll)"
@@ -82,10 +82,10 @@
               :items="districtAll"
               item-value="id"
               item-text="name"
-              placeholder="Hãy chọn một quận hoặc huyện"> </v-select>
+              placeholder="Hãy chọn quận hoặc huyện"> </v-select>
               <!-- email -->
               <v-text-field
-              placeholder="VD: https://mail.google.com/myMail"
+              placeholder="https://mail.google.com/myMail"
               :error-messages="errors.has('email') ? errors.collect('email') : []"
               :data-vv-as="$t('label.email')"
               name="email"
@@ -121,7 +121,7 @@
               v-model="branch.phone"> </v-text-field>
               <!-- facebook -->
               <v-text-field
-              placeholder="VD: https://www.facebook.com/tienlee.ask"
+              placeholder="https://www.facebook.com/tienlee.ask"
               :error-messages="errors.has('facebook') ? errors.collect('facebook') : []"
               :data-vv-as="$t('label.facebook')"
               name="facebook"
@@ -129,7 +129,7 @@
               v-model="branch.facebook"> </v-text-field>
               <!-- website -->
               <v-text-field
-              placeholder="VD: https://vnexpress.net"
+              placeholder="https://vnexpress.net"
               :error-messages="errors.has('website') ? errors.collect('website') : []"
               :data-vv-as="$t('label.website')"
               name="website"
@@ -159,7 +159,7 @@
               v-model="branch.bank"> </v-text-field>
               <!-- instagram -->
               <v-text-field
-              placeholder="VD: https://www.instagram.com/nht"
+              placeholder="https://www.instagram.com/nht"
               :error-messages="errors.has('instagram') ? errors.collect('instagram') : []"
               :data-vv-as="$t('label.instagram')"
               name="instagram"
@@ -167,7 +167,7 @@
               v-model="branch.instagram"> </v-text-field>
               <!-- zalo -->
               <v-text-field
-              placeholder="VD: https://oa.zalo.me/home"
+              placeholder="https://oa.zalo.me/home"
               :error-messages="errors.has('zalo') ? errors.collect('zalo') : []"
               :data-vv-as="$t('label.zalo')"
               name="zalo"

@@ -22,7 +22,7 @@
           <v-flex md6 style="margin-right:10px">
             <!-- email -->
             <v-text-field
-            placeholder="vd:trongdong717@gmail.com"
+            placeholder="Example@gmail.com"
             :error-messages="errors.has('email') ? errors.collect('email') : []"
             v-validate="'required|email'"
             :data-vv-as="$t('label.email')"
