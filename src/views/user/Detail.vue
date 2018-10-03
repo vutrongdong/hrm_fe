@@ -28,213 +28,268 @@
     </v-toolbar>
     <v-container fluid class="white scroll-y border-e0-top" :style="{height: dataViewHeight + 'px'}">
       <v-layout row>
-        <v-flex md5 sm5 xs5>
+        <v-flex xs4>
           <img v-if="userDetail.image" src="userDetail.image" alt="">
           <img width="100%" src="https://demo1.sinnovasoft.com/Content/images/empty.png" alt="">
         </v-flex>
-        <v-flex md7 sm7 xs7 style="padding-left:10px;" id="info-user">
-          <p v-if="userDetail.code"> - Mã nhân viên : {{ userDetail.code }}</p>
-          <p v-if="userDetail.name"> - Tên nhân viên : {{ userDetail.name }}</p>
-          <p> - Thư điện tử : {{ userDetail.email }}</p>
-          <p v-if='userDetail.qualification'> - Trình độ chuyên môn : {{ userDetail.qualification }}</p>
-          <p v-if='userDetail.address'> - Địa chỉ : {{ userDetail.address }}</p>
-          <p v-if="userDetail.phone"> - Số điện thoại: {{ userDetail.phone }}</p>
-          <p v-if="userDetail.gender_txt"> - Giới tính: {{ userDetail.gender_txt }}</p>
-          <p v-if="userDetail.date_of_birth"> - Ngày sinh: {{ userDetail.date_of_birth }}</p>
-          <p v-if="userDetail.status_txt"> - Trạng thái: {{ userDetail.status_txt }}</p>
-        </v-flex>
-      </v-layout>
-      <v-flex xs12 v-if="userDetail.departments">
-        <h3>Vị trí , chức vụ của nhân viên</h3>
-        <v-data-table
-        :headers="headersPosition"
-        :items="userDetail.departments.data"
-        hide-actions
-        class="elevation-1 mt-2"
-        >
-        <template slot="items" slot-scope="props">
-          <td>{{ props.item.branch_name }}</td>
-          <td>{{ props.item.name }}</td>
-          <td>{{ props.item.position_name }}</td>
-        </template>
-      </v-data-table>
-    </v-flex>
-    <v-flex class="mt-4" xs12 v-if="userDetail.contracts">
-      <h3>Hợp đồng nhân viên
-        <v-tooltip bottom>
-          <v-btn slot="activator" v-if="canAccess('user.create')"
-          class="mr-5" icon color="primary"
-          @click="addContract">
-          <v-icon>add</v-icon
-            > </v-btn>
-            <span>Thêm hợp đồng</span>
-          </v-tooltip>
-        </h3>
-        <v-data-table
-        id="tableContract"
-        :headers="headersContract"
-        :items="userDetail.contracts.data"
-        hide-actions
-        class="elevation-1 mt-2"
-        >
-        <template slot="items" slot-scope="props">
-          <td colspan="2">{{ props.item.title }}</td>
-          <td>{{ props.item.type_txt }}</td>
-          <td>{{ props.item.date_sign }}</td>
-          <td>{{ props.item.date_effective }}</td>
-          <td>{{ props.item.date_expiration }}</td>
-          <td>{{ props.item.status_txt }}</td>
-          <td colspan="2" style="padding:2px;">
-            <v-tooltip bottom class="ml-3">
-              <v-btn style="margin:0px;" slot='activator' v-if="canAccess('user.update')" icon @click="editContract(props.item,props.item.id)">
-                <v-icon size="19px">edit</v-icon>
-              </v-btn>
-              <span>Sửa</span>
-            </v-tooltip>
-            <v-tooltip bottom>
-              <v-btn style="margin: 0px;" slot="activator" v-if="canAccess('user.delete')" icon @click="removeConfirmContract(props.item.id)">
-                <v-icon size="19px">delete</v-icon>
-              </v-btn>
-              <span>Xóa</span>
-            </v-tooltip>
-          </td>
-        </template>
-      </v-data-table> </v-flex>
-    </v-container>
-    <v-dialog v-model="dialogEditContract" max-width="500px">
-      <v-card>
-        <v-card-title>
-          <span class="headline">{{ formTitle }}</span>
-        </v-card-title>
-        <!-- form edit -->
-        <v-card-text id="formSub">
-          <v-container grid-list-md class="white scroll-y border-e0-top">
-            <v-layout row wrap>
-              <v-flex xs6 class="pr-2">
-                <!-- title contract -->
-                <v-text-field
-                v-validate="'required'"
-                placeholder="Nhập tiêu đề hợp đồng"
-                :error-messages="errors.has('title') ? errors.collect('title') : []"
-                :data-vv-as="$t('label.title')"
-                name="title"
-                :label="$t('label.title') + ' * '"
-                v-model="contracts.title"> </v-text-field>
-                <!-- type contract -->
-                <v-select
-                v-validate="'required'"
-                :error-messages="errors.has('type') ? errors.collect('type') : []"
-                :data-vv-as="$t('label.type')"
-                name="type"
-                :label="$t('label.type')"
-                v-model="contracts.type"
-                :items="typeContract"
-                item-value="value"
-                item-text="name"> </v-select>
-                <!-- status contract-->
-                <v-select
-                v-validate="'required'"
-                :error-messages="errors.has('status') ? errors.collect('status') : []"
-                :data-vv-as="$t('label.status')"
-                name="status"
-                :label="$t('label.status')"
-                v-model="contracts.status"
-                :items="statusContract"
-                item-value="value"
-                item-text="name"> </v-select>
-              </v-flex>
-              <v-flex xs6 class="pl-2">
-                <!-- date_sign -->
-                <template>
-                  <v-menu
-                  v-validate="'required'"
-                  ref="dateSign"
-                  :close-on-content-click="false"
-                  v-model="dateSign"
-                  :nudge-right="40"
-                  lazy transition="scale-transition"
-                  offset-y
-                  full-width
-                  min-width="290px">
-                  <v-text-field
-                  placeholder="Nhập ngày ký"
-                  slot="activator"
-                  v-model="contracts.date_sign"
-                  label="Ngày ký"
-                  readonly > </v-text-field>
-                  <v-date-picker
-                  ref="picker"
-                  v-model="contracts.date_sign"
-                  :max="new Date().toISOString().substr(0, 10)"
-                  min="2000-01-01"
-                  @change="save"> </v-date-picker> </v-menu>
-                </template>
-                <!-- date_effective -->
-                <template>
-                  <v-menu
-                  v-validate="'required'"
-                  ref="dateEffective"
-                  :close-on-content-click="false"
-                  v-model="dateEffective"
-                  :nudge-right="40"
-                  lazy transition="scale-transition"
-                  offset-y
-                  full-width
-                  min-width="290px">
-                  <v-text-field
-                  placeholder="Ngày có hiệu lực"
-                  slot="activator"
-                  v-model="contracts.date_effective"
-                  label="Ngày có hiệu lực"
-                  readonly > </v-text-field>
-                  <v-date-picker
-                  ref="picker"
-                  v-model="contracts.date_effective"
-                  :max="new Date().toISOString().substr(0, 10)"
-                  min="2000-01-01"
-                  @change="save"> </v-date-picker> </v-menu>
-                </template>
-                <!-- date_expiration -->
-                <template>
-                  <v-menu
-                  v-validate="'required'"
-                  ref="dateExpiration"
-                  :close-on-content-click="false"
-                  v-model="dateExpiration"
-                  :nudge-right="40"
-                  lazy transition="scale-transition"
-                  offset-y
-                  full-width
-                  min-width="290px">
-                  <v-text-field
-                  placeholder="Ngày hết hạn"
-                  slot="activator"
-                  v-model="contracts.date_expiration"
-                  label="Ngày có hết hạn"
-                  readonly > </v-text-field>
-                  <v-date-picker
-                  ref="picker"
-                  v-model="contracts.date_expiration"
-                  :max="new Date().toISOString().substr(0, 10)"
-                  min="2000-01-01"
-                  @change="save"> </v-date-picker> </v-menu>
-                </template>
-              </v-flex>
-
-            </v-layout>
-          </v-container>
-        </v-card-text>
-        <!-- end form edit -->
-        <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn color="blue darken-1" flat @click.native="closeContract">Hủy bỏ</v-btn>
-          <v-btn color="blue darken-1" flat @click.native="submitForm"><span v-if="editedIndex!==-1">Lưu lại</span><span v-else>Thêm mới</span></v-btn>
-        </v-card-actions>
-      </v-card>
-    </v-dialog>
+        <v-flex xs8 style="padding-left:10px;" id="info-user">
+          <v-layout row v-if="userDetail.code">
+            <v-flex xs4>
+             Mã nhân viên
+           </v-flex>
+           <v-flex xs8>
+             {{ userDetail.code }}
+           </v-flex> </v-layout>
+           <v-layout class="mt-2" v-i>
+            <v-flex xs4>
+              Tên nhân viên
+            </v-flex>
+            <v-flex xs8>
+             {{ userDetail.name }}
+           </v-flex> </v-layout>
+           <v-layout class="mt-2">
+            <v-flex xs4>
+             Thư điện tử
+           </v-flex>
+           <v-flex xs8>
+             {{ userDetail.email }}
+           </v-flex> </v-layout>
+           <v-layout class="mt-2">
+            <v-flex xs4>
+             Trình độ chuyên môn
+           </v-flex>
+           <v-flex xs8>
+             {{ userDetail.qualification }}
+           </v-flex> </v-layout>
+           <v-layout class="mt-2">
+            <v-flex xs4>
+             Địa chỉ
+           </v-flex>
+           <v-flex xs8>
+             {{ userDetail.address }}
+           </v-flex> </v-layout>
+           <v-layout class="mt-2">
+            <v-flex xs4>
+             Số điện thoại
+           </v-flex>
+           <v-flex xs8>
+             {{ userDetail.phone }}
+           </v-flex> </v-layout>
+           <v-layout class="mt-2">
+            <v-flex xs4>
+              Giới tính
+            </v-flex>
+            <v-flex xs8>
+             {{ userDetail.gender_txt }}
+           </v-flex> </v-layout>
+           <v-layout class="mt-2">
+            <v-flex xs4>
+              Ngày sinh
+            </v-flex>
+            <v-flex xs8>
+             {{ userDetail.date_of_birth }}
+           </v-flex> </v-layout>
+           <v-layout class="mt-2">
+            <v-flex xs4>
+              Trạng thái
+            </v-flex>
+            <v-flex xs8>
+             {{ userDetail.status_txt }}
+           </v-flex>
+         </v-layout>
+       </v-flex>
+     </v-layout>
+     <v-flex class="mt-4" xs12 v-if="userDetail.departments">
+      <h3>Vị trí , chức vụ của nhân viên</h3>
+      <v-data-table
+      :headers="headersPosition"
+      :items="userDetail.departments.data"
+      hide-actions
+      class="elevation-1 mt-2"
+      >
+      <template slot="items" slot-scope="props">
+        <td>{{ props.item.branch_name }}</td>
+        <td>{{ props.item.name }}</td>
+        <td>{{ props.item.position_name }}</td>
+      </template>
+    </v-data-table>
   </v-flex>
-  <dialog-confirm v-model="dialogDeleteUser" @input="removeUser" />
-  <dialog-confirm v-model="dialogDeleteContract" @input="removeContract" />
+  <v-flex class="mt-4" xs12 v-if="userDetail.contracts">
+    <h3>Hợp đồng nhân viên
+      <v-tooltip bottom>
+        <v-btn slot="activator" v-if="canAccess('user.create')"
+        class="mr-5" icon color="primary"
+        @click="addContract">
+        <v-icon>add</v-icon
+          > </v-btn>
+          <span>Thêm hợp đồng</span>
+        </v-tooltip>
+      </h3>
+      <v-data-table
+      id="tableContract"
+      :headers="headersContract"
+      :items="userDetail.contracts.data"
+      hide-actions
+      class="elevation-1 mt-2"
+      >
+      <template slot="items" slot-scope="props">
+        <td colspan="2">{{ props.item.title }}</td>
+        <td>{{ props.item.type_txt }}</td>
+        <td>{{ props.item.date_sign }}</td>
+        <td>{{ props.item.date_effective }}</td>
+        <td>{{ props.item.date_expiration }}</td>
+        <td>{{ props.item.status_txt }}</td>
+        <td colspan="2" style="padding:2px;">
+          <v-tooltip bottom class="ml-3">
+            <v-btn style="margin:0px;" slot='activator' v-if="canAccess('user.update')" icon @click="editContract(props.item,props.item.id)">
+              <v-icon size="19px">edit</v-icon>
+            </v-btn>
+            <span>Sửa</span>
+          </v-tooltip>
+          <v-tooltip bottom>
+            <v-btn style="margin: 0px;" slot="activator" v-if="canAccess('user.delete')" icon @click="removeConfirmContract(props.item.id)">
+              <v-icon size="19px">delete</v-icon>
+            </v-btn>
+            <span>Xóa</span>
+          </v-tooltip>
+        </td>
+      </template>
+    </v-data-table> </v-flex>
+  </v-container>
+  <v-dialog v-model="dialogEditContract" max-width="500px">
+    <v-card>
+      <v-card-title>
+        <span class="headline">{{ formTitle }}</span>
+      </v-card-title>
+      <!-- form edit -->
+      <v-card-text id="formSub">
+        <v-container grid-list-md class="white scroll-y border-e0-top">
+          <v-layout row wrap>
+            <v-flex xs6 class="pr-2">
+              <!-- title contract -->
+              <v-text-field
+              v-validate="'required'"
+              placeholder="Nhập tiêu đề hợp đồng"
+              :error-messages="errors.has('title') ? errors.collect('title') : []"
+              :data-vv-as="$t('label.title')"
+              name="title"
+              :label="$t('label.title') + ' * '"
+              v-model="contracts.title"> </v-text-field>
+              <!-- type contract -->
+              <v-select
+              v-validate="'required'"
+              :error-messages="errors.has('type') ? errors.collect('type') : []"
+              :data-vv-as="$t('label.type')"
+              name="type"
+              :label="$t('label.type')"
+              v-model="contracts.type"
+              :items="typeContract"
+              item-value="value"
+              item-text="name"> </v-select>
+              <!-- status contract-->
+              <v-select
+              v-validate="'required'"
+              :error-messages="errors.has('status') ? errors.collect('status') : []"
+              :data-vv-as="$t('label.status')"
+              name="status"
+              :label="$t('label.status')"
+              v-model="contracts.status"
+              :items="statusContract"
+              item-value="value"
+              item-text="name"> </v-select>
+            </v-flex>
+            <v-flex xs6 class="pl-2">
+              <!-- date_sign -->
+              <template>
+                <v-menu
+                v-validate="'required'"
+                ref="dateSign"
+                :close-on-content-click="false"
+                v-model="dateSign"
+                :nudge-right="40"
+                lazy transition="scale-transition"
+                offset-y
+                full-width
+                min-width="290px">
+                <v-text-field
+                placeholder="Nhập ngày ký"
+                slot="activator"
+                v-model="contracts.date_sign"
+                label="Ngày ký"
+                readonly > </v-text-field>
+                <v-date-picker
+                ref="picker"
+                v-model="contracts.date_sign"
+                :max="new Date().toISOString().substr(0, 10)"
+                min="2000-01-01"
+                @change="save"> </v-date-picker> </v-menu>
+              </template>
+              <!-- date_effective -->
+              <template>
+                <v-menu
+                v-validate="'required'"
+                ref="dateEffective"
+                :close-on-content-click="false"
+                v-model="dateEffective"
+                :nudge-right="40"
+                lazy transition="scale-transition"
+                offset-y
+                full-width
+                min-width="290px">
+                <v-text-field
+                placeholder="Ngày có hiệu lực"
+                slot="activator"
+                v-model="contracts.date_effective"
+                label="Ngày có hiệu lực"
+                readonly > </v-text-field>
+                <v-date-picker
+                ref="picker"
+                v-model="contracts.date_effective"
+                :max="new Date().toISOString().substr(0, 10)"
+                min="2000-01-01"
+                @change="save"> </v-date-picker> </v-menu>
+              </template>
+              <!-- date_expiration -->
+              <template>
+                <v-menu
+                v-validate="'required'"
+                ref="dateExpiration"
+                :close-on-content-click="false"
+                v-model="dateExpiration"
+                :nudge-right="40"
+                lazy transition="scale-transition"
+                offset-y
+                full-width
+                min-width="290px">
+                <v-text-field
+                placeholder="Ngày hết hạn"
+                slot="activator"
+                v-model="contracts.date_expiration"
+                label="Ngày có hết hạn"
+                readonly > </v-text-field>
+                <v-date-picker
+                ref="picker"
+                v-model="contracts.date_expiration"
+                :max="new Date().toISOString().substr(0, 10)"
+                min="2000-01-01"
+                @change="save"> </v-date-picker> </v-menu>
+              </template>
+            </v-flex>
+
+          </v-layout>
+        </v-container>
+      </v-card-text>
+      <!-- end form edit -->
+      <v-card-actions>
+        <v-spacer></v-spacer>
+        <v-btn color="blue darken-1" flat @click.native="closeContract">Hủy bỏ</v-btn>
+        <v-btn color="blue darken-1" flat @click.native="submitForm"><span v-if="editedIndex!==-1">Lưu lại</span><span v-else>Thêm mới</span></v-btn>
+      </v-card-actions>
+    </v-card>
+  </v-dialog>
+</v-flex>
+<dialog-confirm v-model="dialogDeleteUser" @input="removeUser" />
+<dialog-confirm v-model="dialogDeleteContract" @input="removeContract" />
 </v-layout>
 </template>
 
@@ -260,37 +315,37 @@ export default{
         date_effective: null,
         date_expiration: null
       },
-      //các loại hợp đồng
+      // các loại hợp đồng
       typeContract: [
-      { name: 'Học việc', value: 0 },
-      { name: 'Cộng tác viên', value: 1 },
-      { name: 'Thử việc', value: 2 },
-      { name: 'Có thời hạn', value: 3 },
-      { name: 'Không thời hạn', value: 4 },
-      { name: 'Khác', value: 5 }
+        { name: 'Học việc', value: 0 },
+        { name: 'Cộng tác viên', value: 1 },
+        { name: 'Thử việc', value: 2 },
+        { name: 'Có thời hạn', value: 3 },
+        { name: 'Không thời hạn', value: 4 },
+        { name: 'Khác', value: 5 }
       ],
-      //các trạng thái của hợp đồng
+      // các trạng thái của hợp đồng
       statusContract: [
-      { name: 'Tiêu chuẩn', value: 0 },
-      { name: 'Chấm dứt', value: 1 },
-      { name: 'Gia hạn', value: 2 }
+        { name: 'Tiêu chuẩn', value: 0 },
+        { name: 'Chấm dứt', value: 1 },
+        { name: 'Gia hạn', value: 2 }
       ],
       // tiêu đề của bảng chi nhánh phòng ban , chức vụ
       headersPosition: [
-      { text: 'Chi nhánh', value: 'branch', sortable: false },
-      { text: 'Phòng ban', value: 'department', sortable: false },
-      { text: 'Chức vụ', value: 'position', sortable: false }
+        { text: 'Chi nhánh', value: 'branch', sortable: false },
+        { text: 'Phòng ban', value: 'department', sortable: false },
+        { text: 'Chức vụ', value: 'position', sortable: false }
       ],
       // tiêu đề của bảng hợp đồng
       headersContract: [
-      { text: 'Tên hợp đồng', value: 'title', sortable: false },
-      { text: '', sortable: false },
-      { text: 'Loại hợp đồng', value: 'type', sortable: false },
-      { text: 'Ngày đăng kí', value: 'date_sign', sortable: false },
-      { text: 'Ngày bắt đầu', value: 'date_effective', sortable: false },
-      { text: 'Ngày kêt thúc', value: 'date_expiration', sortable: false },
-      { text: 'Trạng thái', value: 'status', sortable: false },
-      { text: 'Hành động', value: 'action', sortable: false }
+        { text: 'Tên hợp đồng', value: 'title', sortable: false },
+        { text: '', sortable: false },
+        { text: 'Loại hợp đồng', value: 'type', sortable: false },
+        { text: 'Ngày đăng kí', value: 'date_sign', sortable: false },
+        { text: 'Ngày bắt đầu', value: 'date_effective', sortable: false },
+        { text: 'Ngày kêt thúc', value: 'date_expiration', sortable: false },
+        { text: 'Trạng thái', value: 'status', sortable: false },
+        { text: 'Hành động', value: 'action', sortable: false }
       ],
       dataViewHeight: 0,
       dialogEditContract: false,
@@ -365,7 +420,7 @@ export default{
         })
       }
     },
-    //xóa contract
+    // xóa contract
     removeConfirmContract (idContract) {
       this.contracts.id = idContract
       this.dialogDeleteContract = true
@@ -398,7 +453,7 @@ export default{
         })
       }
     },
-    //hiển thị thời gian trên ô input
+    // hiển thị thời gian trên ô input
     save (date) {
       this.$refs.dateSign.save(date)
       this.$refs.dateEffective.save(date)
