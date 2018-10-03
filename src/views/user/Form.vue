@@ -27,7 +27,8 @@
             v-validate="'required|email'"
             :data-vv-as="$t('label.email')"
             name="email"
-            :label="$t('label.email') + '*'"
+            :label="$t('label.email')"
+            class="input-required"
             type="email"
             :disabled="!isCreate"
             v-model="user.email"> </v-text-field>
@@ -38,7 +39,8 @@
             :error-messages="errors.has('password') ? errors.collect('password') : []" v-validate="'required|min:6'"
             :data-vv-as="$t('label.password')"
             name="password"
-            :label="$t('label.password') + '*'"
+            :label="$t('label.password')"
+            class="input-required"
             type="password"
             v-model="user.password"> </v-text-field>
             <!-- status -->
@@ -64,7 +66,8 @@
             v-validate="'required|min:3'"
             :data-vv-as="$t('label.name')"
             name="name"
-            :label="$t('label.name') + '*'"
+            :label="$t('label.name')"
+            class="input-required"
             v-model="user.name"></v-text-field>
             <!-- password confirm -->
             <v-text-field
@@ -74,7 +77,8 @@
             v-validate="'required|min:6'"
             :data-vv-as="$t('label.password_confirmation')"
             name="password_confirmation"
-            :label="$t('label.password_confirmation') + '*'"
+            :label="$t('label.password_confirmation')"
+            class="input-required"
             type="password"
             v-model="user.password_confirmation"> </v-text-field>
             <!-- quyền truy cập -->
@@ -171,7 +175,7 @@
             <!-- image -->
             <v-flex class="mt-3">
               <label style="color: #7f8c91;">Ảnh đại diện</label>
-              <imageUpload/>
+              <imageUpload :multiple="false"/>
             </v-flex> </v-flex>
           </v-layout>
         </v-tab-item>
@@ -493,7 +497,7 @@ export default{
   }
 }
 </script>
-<style coped>
+<style scoped>
 label{
   color: #5b5a5a;
   font-size:15px;

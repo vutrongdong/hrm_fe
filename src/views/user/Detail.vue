@@ -32,15 +32,15 @@
           <img v-if="userDetail.image" src="userDetail.image" alt="">
           <img width="100%" src="https://demo1.sinnovasoft.com/Content/images/empty.png" alt="">
         </v-flex>
-        <v-flex xs8 style="padding-left:10px;" id="info-user">
-          <v-layout row v-if="userDetail.code">
+        <v-flex xs8 style="padding-left:10px;">
+          <v-layout>
             <v-flex xs4>
              Mã nhân viên
            </v-flex>
            <v-flex xs8>
              {{ userDetail.code }}
            </v-flex> </v-layout>
-           <v-layout class="mt-2" v-i>
+           <v-layout class="mt-2">
             <v-flex xs4>
               Tên nhân viên
             </v-flex>

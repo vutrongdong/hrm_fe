@@ -36,14 +36,14 @@
           <v-tooltip bottom>
             <v-select
             slot="activator"
-            v-model="user.departments[index].department_id"
+            v-model="user.departments[index].id"
             label="Phòng ban"
             :disabled="!departmentActive"
             :items="departments[user.departments[index].branch_id]"
             item-text="name"
-            item-value="department_id"
-            :error-messages="errors.has ('department_id') ? errors.collect('department_id') : []"
-            name="department_id"
+            item-value="id"
+            :error-messages="errors.has ('id') ? errors.collect('id') : []"
+            name="id"
             placeholder="Phòng ban"
             single-line
             @change="changeDepartment"></v-select>
