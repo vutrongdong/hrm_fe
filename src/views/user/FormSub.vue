@@ -13,62 +13,73 @@
       </v-flex>
       <v-layout row wrap :key="index" v-for="(department, index) in user.departments">
         <v-flex md4>
-          <label>Chi nhánh</label>
-          <v-select
-          v-model="user.departments[index].branch_id"
-          label="Chi nhánh"
-          :items="branchAll"
-          item-text="name"
-          item-value="id"
-          :error-messages="errors.has('branch_id') ? errors.collect('branch_id') : []"
-          name="branch_id"
-          placeholder="Thuộc chi nhánh"
-          single-line
-          @change= "changeBranch"
-          ></v-select>
+          <v-tooltip bototm>
+            <v-select
+            slot="activator"
+            v-model="user.departments[index].branch_id"
+            label="Chi nhánh"
+            :items="branchAll"
+            item-text="name"
+            item-value="id"
+            :error-messages="errors.has('branch_id') ? errors.collect('branch_id') : []"
+            name="branch_id"
+            placeholder="Chi nhánh"
+            single-line
+            @change= "changeBranch"
+            ></v-select>
+            <span>Chọn chi nhánh</span>
+          </v-tooltip>
         </v-flex>
         <v-spacer></v-spacer>
         <!-- department -->
         <v-flex md4 id="position">
-          <label>Phòng ban</label>
-          <v-select
-          v-model="user.departments[index].department_id"
-          label="Phòng ban"
-          :disabled="!departmentActive"
-          :items="departments[user.departments[index].branch_id]"
-          item-text="name"
-          item-value="department_id"
-          :error-messages="errors.has ('department_id') ? errors.collect('department_id') : []"
-          name="department_id"
-          placeholder="Thuộc phòng ban"
-          single-line
-          @change="changeDepartment"></v-select>
-        </v-flex>
-        <v-spacer></v-spacer><v-flex md3>
-          <!-- postion -->
-          <label>Chức vụ</label>
-          <v-select
-          v-model="user.departments[index].position_id"
-          :items="positionAll"
-          :disabled="!positionActive"
-          item-text="name"
-          item-value="id"
-          :error-messages="errors.has('position_id') ? errors.collect('position_id') : []"
-          name="position_id"
-          placeholder="Vị trí"
-          single-line
-          @change="changePosition"></v-select></v-flex>
           <v-tooltip bottom>
-            <v-btn slot="activator" style="margin-top:35px;"
-            icon color="error"
-            @click="deleteDepartment(index)">
-            <v-icon>delete</v-icon>
-          </v-btn>
-          <span>Xóa</span>
-        </v-tooltip>
-      </v-layout>
+            <v-select
+            slot="activator"
+            v-model="user.departments[index].department_id"
+            label="Phòng ban"
+            :disabled="!departmentActive"
+            :items="departments[user.departments[index].branch_id]"
+            item-text="name"
+            item-value="department_id"
+            :error-messages="errors.has ('department_id') ? errors.collect('department_id') : []"
+            name="department_id"
+            placeholder="Phòng ban"
+            single-line
+            @change="changeDepartment"></v-select>
+            <span>Chọn phòng ban</span>
+          </v-tooltip>
+        </v-flex>
+        <v-spacer></v-spacer>
+        <!-- postion -->
+        <v-flex md3>
+          <v-tooltip bottom>
+            <v-select
+            slot="activator"
+            v-model="user.departments[index].position_id"
+            :items="positionAll"
+            :disabled="!positionActive"
+            item-text="name"
+            item-value="id"
+            :error-messages="errors.has('position_id') ? errors.collect('position_id') : []"
+            name="position_id"
+            placeholder="Chức vụ"
+            single-line
+            @change="changePosition"></v-select>
+            <span>Chọn chức vụ</span>
+          </v-tooltip>
+        </v-flex>
+        <v-tooltip bottom>
+          <v-btn slot="activator" style="margin-top:35px;"
+          icon color="error"
+          @click="deleteDepartment(index)">
+          <v-icon>delete</v-icon>
+        </v-btn>
+        <span>Xóa</span>
+      </v-tooltip>
     </v-layout>
-  </template>
+  </v-layout>
+</template>
 <script>
 import { mapGetters, mapActions } from 'vuex'
 export default {

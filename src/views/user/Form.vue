@@ -22,7 +22,7 @@
           <v-flex md6 style="margin-right:10px">
             <!-- email -->
             <v-text-field
-            placeholder="vd:trongdong717@gmail.com"
+            placeholder="Example@gmail.com"
             :error-messages="errors.has('email') ? errors.collect('email') : []"
             v-validate="'required|email'"
             :data-vv-as="$t('label.email')"
@@ -43,7 +43,7 @@
             v-model="user.password"> </v-text-field>
             <!-- status -->
             <v-flex style="margin-top:12px;">
-              <label>Trạng Thái</label>
+              <label>Trạng thái</label>
               <v-flex row>
                 <v-checkbox
                 style="margin-top:0px"
@@ -64,11 +64,12 @@
             v-validate="'required|min:3'"
             :data-vv-as="$t('label.name')"
             name="name"
-            :label="$t('label.name') + '*'"
+            :label="$t('label.name')"
+            class="input-required"
             v-model="user.name"></v-text-field>
             <!-- password confirm -->
             <v-text-field
-            placeholder="Nhập lại password"
+            placeholder="Nhập lại mật khẩu"
             v-if="isCreate"
             :error-messages="errors.has('password_confirmation') ? errors.collect('password_confirmation') : []"
             v-validate="'required|min:6'"
@@ -89,7 +90,7 @@
             color="white"
             hide-no-data
             hide-selected
-            placeholder="tìm kiếm"
+            placeholder="Tìm kiếm"
             style="margin-left:-30px"
             prepend-icon="mdi-database-search">
             <template slot="selection" slot-scope="data">
@@ -269,7 +270,7 @@
                 full-width
                 min-width="290px">
                 <v-text-field
-                placeholder="Ngày có hết hạn"
+                placeholder="Ngày hết hạn"
                 slot="activator"
                 v-model="user.contracts.date_expiration"
                 label="Ngày có hết hạn"

@@ -14,7 +14,7 @@
         <span>Sửa</span>
       </v-tooltip>
       <v-tooltip bottom>
-        <v-btn slot="activator" v-if="canAccess('user.delete')" icon @click="removeConfirm">
+        <v-btn slot="activator" v-if="canAccess('user.delete')" icon @click="removeConfirmUser">
           <v-icon>delete</v-icon>
         </v-btn>
         <span>Xóa</span>
@@ -61,11 +61,14 @@
     </v-flex>
     <v-flex class="mt-4" xs12 v-if="userDetail.contracts">
       <h3>Hợp đồng nhân viên
-        <v-btn v-if="canAccess('user.create')"
-        class="mr-5" icon color="primary"
-        @click="addContract">
-        <v-icon>add</v-icon
-          > </v-btn>
+        <v-tooltip bottom>
+          <v-btn slot="activator" v-if="canAccess('user.create')"
+          class="mr-5" icon color="primary"
+          @click="addContract">
+          <v-icon>add</v-icon
+            > </v-btn>
+            <span>Thêm hợp đồng</span>
+          </v-tooltip>
         </h3>
         <v-data-table
         id="tableContract"
@@ -89,7 +92,7 @@
               <span>Sửa</span>
             </v-tooltip>
             <v-tooltip bottom>
-              <v-btn style="margin: 0px;" slot="activator" v-if="canAccess('user.delete')" icon @click="removeConfirm(props.item.id)">
+              <v-btn style="margin: 0px;" slot="activator" v-if="canAccess('user.delete')" icon @click="removeConfirmContract(props.item.id)">
                 <v-icon size="19px">delete</v-icon>
               </v-btn>
               <span>Xóa</span>
@@ -163,7 +166,7 @@
                   ref="picker"
                   v-model="contracts.date_sign"
                   :max="new Date().toISOString().substr(0, 10)"
-                  min="1950-01-01"
+                  min="2000-01-01"
                   @change="save"> </v-date-picker> </v-menu>
                 </template>
                 <!-- date_effective -->
@@ -188,7 +191,7 @@
                   ref="picker"
                   v-model="contracts.date_effective"
                   :max="new Date().toISOString().substr(0, 10)"
-                  min="1950-01-01"
+                  min="2000-01-01"
                   @change="save"> </v-date-picker> </v-menu>
                 </template>
                 <!-- date_expiration -->
@@ -213,7 +216,7 @@
                   ref="picker"
                   v-model="contracts.date_expiration"
                   :max="new Date().toISOString().substr(0, 10)"
-                  min="1950-01-01"
+                  min="2000-01-01"
                   @change="save"> </v-date-picker> </v-menu>
                 </template>
               </v-flex>
@@ -230,7 +233,8 @@
       </v-card>
     </v-dialog>
   </v-flex>
-  <dialog-confirm v-model="dialogDelete" @input="remove" />
+  <dialog-confirm v-model="dialogDeleteUser" @input="removeUser" />
+  <dialog-confirm v-model="dialogDeleteContract" @input="removeContract" />
 </v-layout>
 </template>
 
@@ -248,6 +252,7 @@ export default{
     return {
       contracts:
       {
+        id: '',
         user_id: '',
         status: 0,
         type: 0,
@@ -255,45 +260,49 @@ export default{
         date_effective: null,
         date_expiration: null
       },
+      //các loại hợp đồng
       typeContract: [
-        { name: 'Học việc', value: 0 },
-        { name: 'Cộng tác viên', value: 1 },
-        { name: 'Thử việc', value: 2 },
-        { name: 'Có thời hạn', value: 3 },
-        { name: 'Không thời hạn', value: 4 },
-        { name: 'Khác', value: 5 }
+      { name: 'Học việc', value: 0 },
+      { name: 'Cộng tác viên', value: 1 },
+      { name: 'Thử việc', value: 2 },
+      { name: 'Có thời hạn', value: 3 },
+      { name: 'Không thời hạn', value: 4 },
+      { name: 'Khác', value: 5 }
       ],
+      //các trạng thái của hợp đồng
       statusContract: [
-        { name: 'Tiêu chuẩn', value: 0 },
-        { name: 'Chấm dứt', value: 1 },
-        { name: 'Gia hạn', value: 2 }
+      { name: 'Tiêu chuẩn', value: 0 },
+      { name: 'Chấm dứt', value: 1 },
+      { name: 'Gia hạn', value: 2 }
       ],
       // tiêu đề của bảng chi nhánh phòng ban , chức vụ
       headersPosition: [
-        { text: 'Chi nhánh', value: 'branch', sortable: false },
-        { text: 'Phòng ban', value: 'department', sortable: false },
-        { text: 'Chức vụ', value: 'position', sortable: false }
+      { text: 'Chi nhánh', value: 'branch', sortable: false },
+      { text: 'Phòng ban', value: 'department', sortable: false },
+      { text: 'Chức vụ', value: 'position', sortable: false }
       ],
       // tiêu đề của bảng hợp đồng
       headersContract: [
-        { text: 'Tên hợp đồng', value: 'title', sortable: false },
-        { text: '', sortable: false },
-        { text: 'Loại hợp đồng', value: 'type', sortable: false },
-        { text: 'Ngày đăng kí', value: 'date_sign', sortable: false },
-        { text: 'Ngày bắt đầu', value: 'date_effective', sortable: false },
-        { text: 'Ngày kêt thúc', value: 'date_expiration', sortable: false },
-        { text: 'Trạng thái', value: 'status', sortable: false },
-        { text: 'Hành động', value: 'action', sortable: false }
+      { text: 'Tên hợp đồng', value: 'title', sortable: false },
+      { text: '', sortable: false },
+      { text: 'Loại hợp đồng', value: 'type', sortable: false },
+      { text: 'Ngày đăng kí', value: 'date_sign', sortable: false },
+      { text: 'Ngày bắt đầu', value: 'date_effective', sortable: false },
+      { text: 'Ngày kêt thúc', value: 'date_expiration', sortable: false },
+      { text: 'Trạng thái', value: 'status', sortable: false },
+      { text: 'Hành động', value: 'action', sortable: false }
       ],
       dataViewHeight: 0,
       dialogEditContract: false,
-      dialogDelete: false,
+      dialogDeleteUser: false,
+      dialogDeleteContract: false,
       dateSign: false,
       dateEffective: false,
       dateExpiration: false,
       editedIndex: -1,
-      defaultItem: {
-        status: true
+      defaultContract: {
+        status: 0,
+        type: 0
       }
     }
   },
@@ -324,10 +333,11 @@ export default{
     ...mapActions('User', ['getUser', 'deleteUser']),
     ...mapActions('Dataview', ['removeDataviewEntry']),
     ...mapActions(['showNotify']),
-    removeConfirm () {
-      this.dialogDelete = true
+    // xóa user
+    removeConfirmUser () {
+      this.dialogDeleteUser = true
     },
-    remove (confirm) {
+    removeUser (confirm) {
       if (confirm) {
         this.deleteUser({
           id: this.$route.params.id,
@@ -341,7 +351,7 @@ export default{
               text: this.$t('alert.success'),
               color: 'success'
             })
-            this.dialogDelete = false
+            this.dialogDeleteUser = false
             this.$router.push({ name: 'user' })
           },
           error: (error) => {
@@ -355,6 +365,40 @@ export default{
         })
       }
     },
+    //xóa contract
+    removeConfirmContract (idContract) {
+      this.contracts.id = idContract
+      this.dialogDeleteContract = true
+    },
+    removeContract (confirm) {
+      if (confirm) {
+        this.deleteContract({
+          id: this.contracts.id,
+          cb: (response) => {
+            this.removeDataviewEntry({
+              name: 'contract',
+              data: this.contracts,
+              key: 'id'
+            })
+            this.$store.dispatch('showNotify', {
+              text: this.$t('alert.success'),
+              color: 'success'
+            })
+            this.dialogDeleteContract = false
+            this.getUser({ userId: this.$route.params.id, params: { include: 'roles,departments,contracts' } })
+          },
+          error: (error) => {
+            if (error.status === 404) {
+              this.$store.dispatch('showNotify', {
+                text: this.$t('alert.not-found'),
+                color: 'warning'
+              })
+            }
+          }
+        })
+      }
+    },
+    //hiển thị thời gian trên ô input
     save (date) {
       this.$refs.dateSign.save(date)
       this.$refs.dateEffective.save(date)
@@ -368,7 +412,11 @@ export default{
       this.dialogEditContract = true
     },
     addContract () {
-      this.contracts = this.contracts
+      this.editedIndex = -1
+      this.contracts = Object.assign({}, this.defaultContract)
+      this.dateExpirationConstract()
+      this.dateSignContract()
+      this.contracts.user_id = this.userDetail.id
       this.dialogEditContract = true
     },
     closeContract () {
@@ -377,7 +425,7 @@ export default{
         if (this.editedIndex === -1) {
           this.editedIndex = -1
         } else {
-          this.contracts = Object.assign({}, this.defaultItem)
+          this.contracts = Object.assign({}, this.defaultContract)
           this.editedIndex = -1
         }
       }, 300)
@@ -389,7 +437,7 @@ export default{
           cb: (response) => {
             this.dialog = false
             setTimeout(() => {
-              this.contracts = Object.assign({}, this.defaultItem)
+              this.contracts = Object.assign({}, this.defaultContract)
               this.editedIndex = -1
             }, 300)
             this.showNotify({
@@ -397,6 +445,7 @@ export default{
               text: 'Thành công'
             })
             this.getUser({ userId: this.$route.params.id, params: { include: 'roles,departments,contracts' } })
+            this.dialogEditContract = false
           }
         })
       } else {
@@ -409,7 +458,7 @@ export default{
               text: 'Thành công'
             })
             setTimeout(() => {
-              this.contracts = Object.assign({}, this.defaultItem)
+              this.contracts = Object.assign({}, this.defaultContract)
               this.editedIndex = -1
             }, 300)
             this.getUser({ userId: this.$route.params.id, params: { include: 'roles,departments,contracts' } })
@@ -419,7 +468,7 @@ export default{
       }
     },
     // thời gian đăng kí , có hiệu lực hợp đồng
-    dateConstract () {
+    dateSignContract () {
       let today = new Date()
       let dd = today.getDate()
       let mm = today.getMonth() + 1
@@ -455,8 +504,6 @@ export default{
     }
   },
   created () {
-    this.dateExpirationConstract()
-    this.dateConstract()
     this.setMiniDrawer(true)
     if (!this.userDetail.id) {
       this.getUser({ userId: this.$route.params.id, params: { include: 'roles,departments,contracts' } })

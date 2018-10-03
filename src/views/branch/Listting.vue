@@ -3,15 +3,15 @@
    <div ref="header">
     <v-toolbar height="50px" color="white" flat>
       <v-layout row wrap>
-        <v-flex xs2>
+        <v-flex xs1 :class="isMini && 'full-flex-basic max-width-col-2'">
           <v-tooltip bottom>
-            <v-btn slot="activator" v-if="canAccess('branch.create')" class="mr-3 mt-3" icon color="primary" @click="$router.push({name: 'branch-create'})">
+            <v-btn slot="activator" v-if="canAccess('branch.create')" class="mt-3" icon color="primary" @click="$router.push({name: 'branch-create'})">
               <v-icon>add</v-icon>
             </v-btn>
             <span>Thêm mới</span>
           </v-tooltip>
         </v-flex>
-        <v-flex xs6 class="mt-1" :class="isMini && 'full-flex-basic'">
+        <v-flex xs5 class="mt-1" :class="isMini && 'full-flex-basic full-width-col-10'">
           <v-text-field
           hide-details
           single-line
@@ -20,7 +20,7 @@
           @keyup="changeSearch"
           ></v-text-field>
         </v-flex>
-        <v-flex xs2 class='mt-1' :class="isMini && 'd-none'">
+        <v-flex xs3 class='mt-1' :class="isMini && 'd-none'">
           <v-tooltip bottom>
             <v-select
             slot="activator"
@@ -38,7 +38,7 @@
             <span>Lọc theo thành phố</span>
           </v-tooltip>
         </v-flex>
-        <v-flex xs2 class='mt-1' :class="isMini && 'd-none'">
+        <v-flex xs3 class='mt-1' :class="isMini && 'd-none'">
           <v-tooltip bottom :color="colorDistrict">
             <v-select
             slot="activator"
@@ -157,7 +157,7 @@
       </template>
     </v-list>
     <dialog-confirm v-model="dialogDelete" @input="remove" />
-</template>
+  </template>
 </data-view>
 </v-flex>
 </v-layout>
@@ -242,7 +242,21 @@ export default {
     },
     changeStatus (idBranch) {
       this.updateStatusBranch({
-        id: idBranch
+        id: idBranch,
+        cb: (response) => {
+          this.$store.dispatch('showNotify', {
+            text: this.$t('alert.success'),
+            color: 'success'
+          })
+        },
+        error: (error) => {
+          if (error.status === 404) {
+            this.$store.dispatch('showNotify', {
+              text: this.$t('alert.not-found'),
+              color: 'warning'
+            })
+          }
+        }
       })
     },
     removeConfirm (id) {
@@ -274,7 +288,11 @@ export default {
     }
   },
   mounted () {
-    this.dataViewHeight = this.$refs.laylout.clientHeight - 176
+    if (this.$route.params.id) {
+      this.dataViewHeight = this.$refs.laylout.clientHeight - 130
+    } else {
+      this.dataViewHeight = this.$refs.laylout.clientHeight - 176
+    }
     let query = { ...this.$route.query }
     if (query.hasOwnProperty('reload')) {
       this.$nextTick(() => {
