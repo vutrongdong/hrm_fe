@@ -286,9 +286,9 @@ export default{
     user: {
       status: true
     },
-    statusUser:[
-    {status_txt: 'Kích hoạt', status: 1},
-    {status_txt: 'Không kích hoạt' , status: 0},
+    statusUser: [
+      { status_txt: 'Kích hoạt', status: 1 },
+      { status_txt: 'Không kích hoạt', status: 0 }
     ],
     params: {
       q: '',

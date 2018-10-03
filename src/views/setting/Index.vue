@@ -302,7 +302,7 @@ export default{
         this.editedIndex = -1
       }, 300)
     },
-    //Thêm sửa setting
+    // Thêm sửa setting
     submitForm () {
       if (this.editedIndex === -1) {
         this.createSetting({
@@ -342,7 +342,7 @@ export default{
     // cấu hình slug khi nhâp
     generateSlug () {
       this.setting.slug = stringToSlug(this.setting.name)
-    },
+    }
   }
 }
 </script>
