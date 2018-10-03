@@ -248,7 +248,7 @@ export default{
     return {
       contracts:
       {
-        user_id:'',
+        user_id: '',
         status: 0,
         type: 0,
         date_sign: null,

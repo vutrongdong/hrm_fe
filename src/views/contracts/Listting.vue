@@ -17,7 +17,7 @@
                 <!--  <span>Thêm mới</span> -->
                 <!-- </v-tooltip> -->
               </v-flex>
-              <v-flex xs10 class="mt-1 mr-2" :class="isMini && 'full-flex-basic'">
+              <v-flex xs5 class="mr-2" :class="isMini && 'full-flex-basic'">
                 <v-text-field
                 hide-details
                 single-line
@@ -26,114 +26,125 @@
                 @keyup="changeSearch"
                 ></v-text-field>
               </v-flex>
-            </v-layout>
-            <v-layout slot="extension" v-if="!isMini">
-              <v-flex sm1 class="text-bold text-uppercase">
-                STT
-              </v-flex>
-              <v-flex sm2 class="text-bold text-uppercase">
-               tiêu đề
-             </v-flex>
-             <v-flex sm2 class="text-bold text-uppercase">
-              loại
-            </v-flex>
-            <v-flex  sm2 class="text-uppercase text-bold">
-              tên nhân viên
-            </v-flex>
-            <v-flex sm2 class="text-uppercase text-bold">
-              <v-flex sm12>Ngày</v-flex>
-            </v-flex>
-            <v-flex sm2 class="text-bold text-uppercase">
-              trạng thái
-            </v-flex>
-            <v-flex sm1 class="text-bold text-uppercase">
-              Hành động
+              <v-flex xs5 class="mt-1 mr-2" :class="isMini && 'd-none'">
+                <v-autocomplete
+                :items="userDetail"
+                item-value="id"
+                item-text="name"
+                @change="filter"
+                v-model="params.user_id"
+                v-if="Array.isArray(userDetail)"
+                >
+              </v-autocomplete>
             </v-flex>
           </v-layout>
-        </v-toolbar>
-      </div>
-      <v-flex xs12  class="border-e0-top">
-        <data-view
-        :name="dataViewName"
-        api-url="contracts"
-        v-if="dataViewHeight"
-        :viewHeight="dataViewHeight"
-        :params="params"
-        :ref="dataViewName">
-        <template slot-scope="{items}">
-          <v-list three-line>
-            <template v-for="(item, index) in items.data">
-             <v-list-tile
-             :key="'item' + item.id"
-             avatar
-             @click="contractDetail(item)"
-             :inactive="item.id === $route.params.id"
-             :class="item.id === $route.params.id && 'grey lighten-2'"
-             >
-             <v-layout class="pa-2">
-              <v-flex sm1 :class="isMini && 'd-none'">
-                {{index + 1}}
-              </v-flex>
-              <v-flex  class="pr-2 " sm2 :class="isMini && 'full-flex-basic full-max-width' " v-if="item.title">
-                {{ item.title }}
-              </v-flex>
-              <v-flex  sm2  :class="isMini && 'd-none'">
-               <v-tooltip bottom sm12>
+          <v-layout slot="extension" v-if="!isMini">
+            <v-flex sm1 class="text-bold text-uppercase">
+              STT
+            </v-flex>
+            <v-flex sm3 class="text-bold text-uppercase">
+             tiêu đề
+           </v-flex>
+           <v-flex sm2 class="text-bold text-uppercase">
+            loại
+          </v-flex>
+          <v-flex  sm2 class="text-uppercase text-bold">
+            tên nhân viên
+          </v-flex>
+          <v-flex sm2 class="text-uppercase text-bold">
+            <v-flex sm12>Ngày</v-flex>
+          </v-flex>
+          <v-flex sm1 class="text-bold text-uppercase pr-2">
+            trạng thái
+          </v-flex>
+          <v-flex sm1 class="text-bold text-uppercase">
+            Hành động
+          </v-flex>
+        </v-layout>
+      </v-toolbar>
+    </div>
+    <v-flex xs12  class="border-e0-top">
+      <data-view
+      :name="dataViewName"
+      api-url="contracts"
+      v-if="dataViewHeight"
+      :viewHeight="dataViewHeight"
+      :params="params"
+      :ref="dataViewName">
+      <template slot-scope="{items}">
+        <v-list three-line>
+          <template v-for="(item, index) in items.data">
+           <v-list-tile
+           :key="'item' + item.id"
+           avatar
+           @click="contractDetail(item)"
+           :inactive="item.id === $route.params.id"
+           :class="item.id === $route.params.id && 'grey lighten-2'"
+           >
+           <v-layout class="pa-2">
+            <v-flex sm1 :class="isMini && 'd-none'">
+              {{index + 1}}
+            </v-flex>
+            <v-flex  class="pr-3" sm3 :class="isMini && 'full-flex-basic full-max-width'">
+              {{ item.title }}
+            </v-flex>
+            <v-flex  sm2  :class="isMini && 'd-none'">
+             <v-tooltip bottom sm12>
                <v-flex xs12  slot="activator">
-                  {{ item.type_txt }}
-                </v-flex>
-                <span> Loại hợp đồng</span>
-              </v-tooltip>
-            </v-flex>
-           <v-flex class="pr-5 pl-2" sm2 :class="isMini && 'd-none'">
-              {{item.user_name}}
-            </v-flex>
-            <v-flex xs2  class="pl-2" :class="isMini  && 'd-none'">
-              <v-tooltip  bottom sm12>
-                <v-flex xs12 slot="activator">
-                  {{item.date_sign}}
-                </v-flex>
-                <span>Ngày đăng ký</span>
-              </v-tooltip>
-
-              <v-tooltip  bottom sm12>
-                <v-flex xs12 slot="activator">
-                  {{ item.date_effective }}
-                </v-flex>
-                <span>Ngày hiệu lực</span>
-              </v-tooltip>
-
-              <v-tooltip bottom sm12>
-               <v-flex xs12 slot="activator">
-                {{ item.date_expiration }}
+                {{ item.type_txt }}
               </v-flex>
-              <span>Ngày  kết thúc</span>
+              <span> Loại hợp đồng</span>
             </v-tooltip>
           </v-flex>
-          <v-flex xs2 class="pl-3" :class="isMini && 'd-none'">
-            {{item.status_txt}}
+          <v-flex class="pr-5 pl-2" sm2 :class="isMini && 'd-none'">
+            {{item.user_name}}
           </v-flex>
-          <v-flex xs1 class="pl-1" :class="isMini && 'd-none'">
-           <v-tooltip bottom>
-            <v-btn slot="activator" class="ma-0" v-if="canAccess('contracts.update')" icon @click.stop="$router.push({name: 'contract-edit', params: {id: item.id}})">
-              <v-icon class='theme--light teal--text'>edit</v-icon>
-            </v-btn>
-            <span>Sửa</span>
-          </v-tooltip>
-          <v-tooltip bottom>
-            <v-btn slot="activator" class="ma-0" v-if="canAccess('contracts.delete')" icon @click.stop="removeConfirm(item.id)">
-              <v-icon class="theme--light pink--text">delete</v-icon>
-            </v-btn>
-            <span>Xóa</span>
+          <v-flex xs2  class="pl-2" :class="isMini  && 'd-none'">
+            <v-tooltip  bottom sm12>
+              <v-flex xs12 slot="activator">
+                {{item.date_sign}}
+              </v-flex>
+              <span>Ngày đăng ký</span>
+            </v-tooltip>
+
+            <v-tooltip  bottom sm12>
+              <v-flex xs12 slot="activator">
+                {{ item.date_effective }}
+              </v-flex>
+              <span>Ngày hiệu lực</span>
+            </v-tooltip>
+
+            <v-tooltip bottom sm12>
+             <v-flex xs12 slot="activator">
+              {{ item.date_expiration }}
+            </v-flex>
+            <span>Ngày  kết thúc</span>
           </v-tooltip>
         </v-flex>
-      </v-layout>
-    </v-list-tile>
-    <v-divider
-    :key="'div' + index + item.id"
-    v-if="index + 1 < items.data.length"
-    ></v-divider>
-  </template>
+        <v-flex xs1 class="pl-3" :class="isMini && 'd-none'">
+          {{item.status_txt}}
+        </v-flex>
+        <v-flex xs1 class="pl-1" :class="isMini && 'd-none'">
+         <v-tooltip bottom>
+          <v-btn slot="activator" class="ma-0" v-if="canAccess('contracts.update')" icon @click.stop="$router.push({name: 'contract-edit', params: {id: item.id}})">
+            <v-icon class='theme--light teal--text'>edit</v-icon>
+          </v-btn>
+          <span>Sửa</span>
+        </v-tooltip>
+        <v-tooltip bottom>
+          <v-btn slot="activator" class="ma-0" v-if="canAccess('contracts.delete')" icon @click.stop="removeConfirm(item.id)">
+            <v-icon class="theme--light pink--text">delete</v-icon>
+          </v-btn>
+          <span>Xóa</span>
+        </v-tooltip>
+      </v-flex>
+    </v-layout>
+  </v-list-tile>
+  <v-divider
+  :key="'div' + index + item.id"
+  v-if="index + 1 < items.data.length"
+  ></v-divider>
+</template>
 </v-list>
 </template>
 </data-view>
@@ -165,10 +176,12 @@ export default{
     idContract: null,
     user: [],
     params: {
-      q: ''
+      q: '',
+      user_id: ''
     }
   }),
-  created: {
+  computed: {
+    ...mapGetters(['isFetchingApi']),
     ...mapGetters('User', ['userDetail']),
     ...mapGetters('Contracts', ['contractDetail'])
   },
@@ -179,7 +192,7 @@ export default{
     // changeStatus
     contractDetail (contract) {
       this.getContract({ contractId: contract.id })
-      // this.$router.push({ name: 'contract-detail', params: { id: contract.id } })
+      this.$router.push({ name: 'contract-detail', params: { id: contract.id } })
     },
     /// screach
     changeSearch: debounce(function () {
@@ -235,11 +248,12 @@ export default{
     }
   },
   created () {
-    this.user = this.fetchUser()
-    console.log('user details :', this.user)
+    this.fetchUser()
   }
 }
 </script>
 <style type="text/css" media="screen">
-
+  .v-input.v-text-field{
+       margin-top: 3px
+  }
 </style>

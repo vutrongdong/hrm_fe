@@ -13,14 +13,14 @@ const initState = () => {
 /**
  * state
  */
- const state = {
+const state = {
   settings: initState().settings
 }
 
 /**
  * actions
  */
- const actions = {
+const actions = {
   FetchSetting ({ commit, dispatch }, payload) {
     let { params } = payload || {}
     dispatch(
@@ -34,7 +34,7 @@ const initState = () => {
         }
       },
       { root: true }
-      )
+    )
   },
   getSetting ({ commit, dispatch }, payload) {
     let { settingId, params } = payload || {}
@@ -49,7 +49,7 @@ const initState = () => {
         }
       },
       { root: true }
-      )
+    )
   },
   setSetting ({ commit }, payload) {
     let { settings } = payload || {}
@@ -100,7 +100,7 @@ const initState = () => {
 /**
  * mutations
  */
- const mutations = {
+const mutations = {
   [SET_SETTINGS]: (state, settings) => {
     state.settings = settings
   },
@@ -117,7 +117,7 @@ const initState = () => {
 /**
  * getters
  */
- const getters = {
+const getters = {
   settingDetail: (state) => state.settings
 }
 

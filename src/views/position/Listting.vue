@@ -1,7 +1,7 @@
 <template>
   <v-layout ref="laylout" column fill-height>
     <div ref="header">
-      <v-toolbar height="60px" color="white" flat>
+      <v-toolbar height="50px" color="white" flat>
         <v-layout row wrap>
           <v-flex md1 xs3 :class="isMini">
            <!--  <v-tooltip bottom> -->
@@ -16,7 +16,7 @@
             <!--  <span>Thêm mới</span> -->
             <!-- </v-tooltip> -->
           </v-flex>
-          <v-flex xs10 class="mt-1 mr-2" :class="isMini && 'full-flex-basic'">
+          <v-flex xs5 class="mt-1 mr-2" :class="isMini && 'full-flex-basic'">
             <v-text-field
             hide-details
             single-line
@@ -30,26 +30,26 @@
           <v-dialog v-model="dialog" max-width="500px">
            <v-card>
             <v-card-title>
-              <span class="headline">{{ formTitle }}</span>
+              <span class="headline" width="100%" style="margin:0 auto">{{ formTitle }}</span>
             </v-card-title>
             <v-card-text id="formSub">
               <v-container grid-list-md>
                 <v-layout wrap>
                   <!-- name -->
                   <v-flex xs12 sm6 md12>
+                    <label class="title-position">Tên chức danh</label>
                     <v-text-field
-                    placeholder="Nhập tên"
-                    :error-messages="errors.has('name') ? errors.collect('name') : []"
+                    placeholder="Nhập tên chức danh"
+                    :error-messages="errors.has('name_position') ? errors.collect('name_position') : []"
                     v-validate="'required'"
-                    :data-vv-as="$t('label.name')"
-                    name="name"
-                    :label="$t('label.name') + '*'"
+                    :data-vv-as="$t('label.name_position')"
+                    name="name_position"
                     v-model="position.name"> </v-text-field>
                   </v-flex>
                   <!-- value -->
                   <!-- status -->
                   <v-flex xs12 sm6 md12>
-                    <label>Trạng thái</label>
+                    <label class="title-position">Trạng thái</label>
                     <v-checkbox
                     @change="status_txt"
                     :label="status"
@@ -64,9 +64,10 @@
           </v-card-text>
           <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn color="blue darken-1" flat @click.native="close">Hủy bỏ</v-btn>
             <v-btn color="blue darken-1" flat @click.native="submitForm">
               <span v-if="editTitle==-2">Lưu lại</span><span v-else>Thêm mới</span></v-btn>
+              <v-btn color="blue darken-1" flat @click.native="reset">Thiết lập lại</v-btn>
+              <v-btn color="blue darken-1" flat @click.native="close">Hủy bỏ</v-btn>
             </v-card-actions>
           </v-card>
         </v-dialog>
@@ -139,7 +140,6 @@
         v-if="index + 1 < items.data.length"
         ></v-divider>
       </template>
-
     </v-list>
   </template>
 </data-view>
@@ -148,79 +148,99 @@
 </v-layout>
 </template>
 <script type="text/javascript">
-import DialogConfirm from '@/components/DialogConfirm'
-import { debounce } from 'lodash'
-import DataView from '@/components/DataView/DataView'
-import { mapActions, mapGetters } from 'vuex'
-export default{
-  name: 'UserListting',
-  props: {
-    isMini: {
-      type: Boolean,
-      default: false
-    }
-  },
-  components: {
-    DataView,
-    DialogConfirm
-  },
-  data: () => ({
-    dataViewHeight: 0,
-    dataViewName: 'position',
-    idPosition: null,
-    dialogDelete: false,
-    status: 'Không hiển thị',
-    dialog: false,
-    editedIndex: -1,
-    editTitle: -1,
-    position: {
-      status: 0,
-      name: ''
+  import DialogConfirm from '@/components/DialogConfirm'
+  import { debounce } from 'lodash'
+  import DataView from '@/components/DataView/DataView'
+  import { mapActions, mapGetters } from 'vuex'
+  export default{
+    name: 'UserListting',
+    props: {
+      isMini: {
+        type: Boolean,
+        default: false
+      }
     },
-    params: {
-      q: ''
+    components: {
+      DataView,
+      DialogConfirm
     },
-    defaultItem: {
-    }
-  }),
-  computed: {
-    formTitle () {
-      return this.editTitle === -1 ? 'Thêm chức danh' : 'Sửa chức danh'
+    data: () => ({
+      dataViewHeight: 0,
+      dataViewName: 'position',
+      idPosition: null,
+      dialogDelete: false,
+      status: 'Hiển thị',
+      dialog: false,
+      editedIndex: -1,
+      editTitle: -1,
+      position: {
+        status: true,
+        name: ''
+      },
+      params: {
+        q: ''
+      },
+      defaultItem: {
+      }
+    }),
+    computed: {
+      formTitle () {
+        return this.editTitle === -1 ? 'Thêm chức danh' : 'Sửa chức danh'
+      },
+      ...mapGetters('Position', ['positionDetail']),
+      ...mapGetters(['isFetchingApi'])
     },
-    ...mapGetters('Position', ['positionDetail']),
-    ...mapGetters(['isFetchingApi'])
-  },
-  watch: {
-    dialog (val) {
-      val || this.close()
-    }
-  },
-  created () {
-    this.fetchPosition()
-  },
-  methods: {
-    ...mapActions(['setMiniDrawer']),
-    ...mapActions('Position', ['fetchPosition', 'deletePosition', 'updatePosition', 'updateStatusPosition']),
-    ...mapActions(['showNotify', 'setMiniDrawer']),
-    ...mapActions('Position', ['createPosition']),
-    ...mapActions('Dataview', ['removeDataviewEntry']),
+    watch: {
+      dialog (val) {
+        val || this.close()
+      }
+    },
+    created () {
+      this.fetchPosition()
+    },
+    methods: {
+      ...mapActions(['setMiniDrawer']),
+      ...mapActions('Position', ['fetchPosition', 'deletePosition', 'updatePosition', 'updateStatusPosition']),
+      ...mapActions(['showNotify', 'setMiniDrawer']),
+      ...mapActions('Position', ['createPosition']),
+      ...mapActions('Dataview', ['removeDataviewEntry']),
+    // update status
     changeStatus (idPosition) {
       this.updateStatusPosition({
-        id: idPosition
+        id: idPosition,
+        cb: (response) => {
+          this.showNotify({
+            color: 'success',
+            text: 'Thành công'
+          })
+        }
       })
+    },
+    // reset form
+    reset () {
+      this.position.name = ''
+      this.position.status = true
     },
     // dialog
     openDialog () {
       this.editTitle = -1
+      this.position.status = true
       this.dialog = true
     },
+    // show data edit
     editItem (item, id) {
       this.editTitle = -2
       this.idPosition = id
       this.editedIndex = this.positionDetail.indexOf(item)
       this.position = Object.assign({}, item)
+      if (this.position.status == 1) {
+        this.status = 'Hiển thị'
+      } else {
+        this.status = 'Không hiển thị'
+      }
       this.dialog = true
     },
+    // remove position
     removeConfirm (id) {
       this.idPosition = id
       this.dialogDelete = true
@@ -253,6 +273,7 @@ export default{
         })
       }
     },
+    /// close dialog
     close () {
       this.dialog = false
       setTimeout(() => {
@@ -268,6 +289,7 @@ export default{
       }
     },
     submitForm () {
+      // add data
       if (this.editTitle === -1) {
         let position = Object.assign({}, this.position)
         position.status = position.status ? 1 : 0
@@ -287,6 +309,7 @@ export default{
           }
         })
       } else {
+        // edit data
         let position = Object.assign({}, this.position)
         position.status = position.status ? 1 : 0
         console.log('data update position', position)
@@ -317,7 +340,7 @@ export default{
     }
   },
   mounted () {
-    this.dataViewHeight = this.$refs.laylout.clientHeight - 168
+    this.dataViewHeight = this.$refs.laylout.clientHeight - 104
     let query = { ...this.$route.query }
     if (query.hasOwnProperty('reload')) {
       this.$nextTick(() => {
@@ -331,5 +354,16 @@ export default{
   }
 }
 </script>
-<style>
+<style scoped>
+  .v-input.v-text-field{
+    margin-top: 0px;
+  }
+  .title-position{
+    font-family: Roboto,sans-serif!important;
+    font-size: 16px!important;
+    font-weight: 500;
+    letter-spacing: .02em!important;
+    line-height: 1!important;
+  }
+
 </style>

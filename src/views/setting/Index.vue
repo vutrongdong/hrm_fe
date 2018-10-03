@@ -222,7 +222,7 @@ export default{
   },
   methods: {
     ...mapActions(['setMiniDrawer']),
-    ...mapActions('Setting', ['FetchSetting', 'deleteSetting', 'updateSetting','updateStatusSetting']),
+    ...mapActions('Setting', ['FetchSetting', 'deleteSetting', 'updateSetting', 'updateStatusSetting']),
     ...mapActions(['showNotify', 'setMiniDrawer']),
     ...mapActions('Setting', ['createSetting']),
     addSetting () {

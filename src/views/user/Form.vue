@@ -348,22 +348,22 @@ export default{
       dateEffective: false,
       dateExpiration: false,
       genderUser: [
-      { name: 'Nam', value: 1 },
-      { name: 'Nữ', value: 0 },
-      { name: 'Khác', value: 2 }
+        { name: 'Nam', value: 1 },
+        { name: 'Nữ', value: 0 },
+        { name: 'Khác', value: 2 }
       ],
       typeContract: [
-      { name: 'Học việc', value: 0 },
-      { name: 'Cộng tác viên', value: 1 },
-      { name: 'Thử việc', value: 2 },
-      { name: 'Có thời hạn', value: 3 },
-      { name: 'Không thời hạn', value: 4 },
-      { name: 'Khác', value: 5 }
+        { name: 'Học việc', value: 0 },
+        { name: 'Cộng tác viên', value: 1 },
+        { name: 'Thử việc', value: 2 },
+        { name: 'Có thời hạn', value: 3 },
+        { name: 'Không thời hạn', value: 4 },
+        { name: 'Khác', value: 5 }
       ],
       statusContract: [
-      { name: 'Tiêu chuẩn', value: 0 },
-      { name: 'Chấm dứt', value: 1 },
-      { name: 'Gia hạn', value: 2 }
+        { name: 'Tiêu chuẩn', value: 0 },
+        { name: 'Chấm dứt', value: 1 },
+        { name: 'Gia hạn', value: 2 }
       ],
       user: {
         avatar: '',

@@ -84,6 +84,7 @@
   "label": {
     "qualification":"Trình độ",
     "name": "Tên",
+    "name_position" : "Tên chức danh",
     "status" : "Trạng thái",
     "email": "Email",
     "about":"Thông tin",

@@ -93,10 +93,12 @@ const actions = {
     }, { root: true })
   },
   updateStatusDepartment ({ commit, dispatch }, payload) {
-    let { id } = payload
+    let { id, cb, error } = payload
     dispatch('fetchApi', {
       url: `departments/change-status/${id}`,
-      method: 'PUT'
+      method: 'PUT',
+      success: cb,
+      error: error
     }, { root: true })
   },
   deleteDepartment ({ commit, dispatch }, payload) {
