@@ -11,7 +11,7 @@
               <span>Thêm mới</span>
             </v-tooltip>
           </v-flex>
-          <v-flex xs4 class="mt-1" :class="isMini && 'full-flex-basic full-width-col-10'">
+          <v-flex xs5 class="mt-1" :class="isMini && 'full-flex-basic full-width-col-10'">
             <v-text-field
             hide-details
             single-line
@@ -19,6 +19,7 @@
             v-model="params.q"
             @keyup="changeSearch"
             clearable
+            @click:clear="clearSearch"
             ></v-text-field>
           </v-flex>
           <v-flex xs4 class='mt-1' :class="isMini && 'd-none'">
@@ -35,11 +36,12 @@
               menu-props="auto"
               hide-details
               single-line
+              clearable
               ></v-autocomplete>
               <span>Lọc theo hợp đồng</span>
             </v-tooltip>
           </v-flex>
-          <v-flex xs3 class='mt-1' :class="isMini && 'd-none'">
+          <v-flex xs2 class='mt-1' :class="isMini && 'd-none'">
             <v-tooltip bottom>
               <v-select
               slot="activator"
@@ -53,6 +55,7 @@
               menu-props="auto"
               hide-details
               single-line
+              clearable
               ></v-select>
               <span>Lọc theo trạng thái</span>
             </v-tooltip>
@@ -73,6 +76,8 @@
               menu-props="auto"
               hide-details
               single-line
+              clearable
+              @click:clear="clearFilter"
               ></v-autocomplete>
               <span>Lọc theo chi nhánh</span>
             </v-tooltip>
@@ -87,11 +92,12 @@
               placeholder="Chọn phòng ban"
               :items="departments"
               item-text="name"
-              item-value="department_id"
+              item-value="id"
               v-model="params.departmentId"
               menu-props="auto"
               hide-details
               single-line
+              clearable
               ></v-autocomplete>
               <span v-if='departmentActiveByBranch'>Lọc theo phòng ban</span>
               <span v-else style="color:#fff;">Vui lòng chọn chi nhánh trước !</span>
@@ -111,14 +117,12 @@
               menu-props="auto"
               hide-details
               single-line
+              clearable
               ></v-autocomplete>
               <span>Lọc theo chức vụ</span>
             </v-tooltip>
           </v-flex>
         </v-layout>
-      </v-toolbar>
-      <v-toolbar height="20px" color="white" flat v-if="!isMini">
-        <small style="margin-top: 7px;">Tổng số nhân viên: {{ totalUser.pagination.total }}</small>
       </v-toolbar>
       <v-toolbar height="45px" color="white" flat v-if="!isMini">
         <v-layout>
@@ -233,7 +237,8 @@
               </v-tooltip>
               <v-tooltip bottom sm12>
                 <v-switch
-                @click.native.stop="changeStatus(item.id)"
+                @click.native.stop
+                @change="changeStatus(item.id)"
                 class='ml-3'
                 name="status"
                 slot="activator"
@@ -320,6 +325,12 @@ export default{
       this.getUser({ userId: user.id, params: { include: 'roles,departments,contracts' } })
       this.$router.push({ name: 'user-detail', params: { id: user.id } })
     },
+    clearSearch () {
+      this.changeSearch()
+    },
+    clearFilter () {
+      this.changeSearch()
+    },
     changeSearch: debounce(function () {
       this.filter()
     }, 500),
@@ -327,15 +338,20 @@ export default{
     changeBranch: debounce(function (value) {
       this.placeholderDepartment = 'Chọn phòng ban'
       this.colorDepartment = ''
-      this.departmentActiveByBranch = true
-      this.getDepartmentForUser({
-        branchId: value,
-        params: { include: 'departments' },
-        cb: () => {
-          console.log(this.departments)
-          this.departments = this.departmentByBranch
-        }
-      })
+      if (value) {
+        this.departmentActiveByBranch = true
+        this.getDepartmentForUser({
+          branchId: value,
+          params: { include: 'departments' },
+          cb: () => {
+            console.log(this.departments)
+            this.departments = this.departmentByBranch
+          }
+        })
+      } else {
+        this.departmentActiveByBranch = false
+        this.colorDepartment = 'red'
+      }
       this.filter()
     }, 500),
     ChangeDepartment: debounce(function () {
@@ -349,6 +365,7 @@ export default{
     changeStatus (idUser) {
       this.updateStatusUser({
         id: idUser,
+        user: this.user,
         cb: (response) => {
           this.$store.dispatch('showNotify', {
             text: this.$t('alert.success'),
@@ -407,7 +424,7 @@ export default{
     if (this.$route.params.id) {
       this.dataViewHeight = this.$refs.laylout.clientHeight - 55
     } else {
-      this.dataViewHeight = this.$refs.laylout.clientHeight - 167
+      this.dataViewHeight = this.$refs.laylout.clientHeight - 150
     }
     let query = { ...this.$route.query }
     if (query.hasOwnProperty('reload')) {

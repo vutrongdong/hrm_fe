@@ -28,9 +28,11 @@ export default{
     ...mapActions(['showNotify', 'setMiniDrawer']),
     ...mapActions('User', ['createUser']),
     submitForm (formData) {
-      if (formData.departments.length && !formData.departments[0].department_id) {
-        formData.departments = []
-      }
+      // if (formData.departments.length && !formData.departments[0].department_id) {
+      //   formData.departments = []
+      // }
+      // console.log("ok",formData)
+      // return
       this.createUser({
         user: formData,
         cb: (response) => {

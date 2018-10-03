@@ -23,7 +23,8 @@
               v-validate="'required'"
               :data-vv-as="$t('label.name')"
               name="name"
-              :label="$t('label.name') + '*'"
+              :label="$t('label.name')"
+              class="input-required"
               v-model="branch.name"> </v-text-field>
               <!-- address -->
               <v-text-field
@@ -32,7 +33,8 @@
               :data-vv-as="$t('label.address')"
               name="address"
               v-validate="'required'"
-              :label="$t('label.address') + '*'"
+              :label="$t('label.address')"
+              class="input-required"
               v-model="branch.address"> </v-text-field>
               <!-- tax_number -->
               <v-text-field
@@ -41,7 +43,8 @@
               :data-vv-as="$t('label.tax_number')"
               name="tax_number"
               v-validate="'required'"
-              :label="$t('label.tax_number') + '*'"
+              :label="$t('label.tax_number')"
+              class="input-required"
               v-model="branch.tax_number"> </v-text-field>
               <!-- status -->
               <label>Trạng thái</label>
@@ -62,7 +65,8 @@
               :error-messages="errors.has('city_id') ? errors.collect('city_id') : []"
               :data-vv-as="$t('label.city_id')"
               name="city_id"
-              :label="$t('label.city_id') + '*'"
+              :label="$t('label.city_id')"
+              class="input-required"
               v-model="branch.city_id"
               :items="cityAll"
               item-value="id"
@@ -77,7 +81,8 @@
               :error-messages="errors.has('district_id') ? errors.collect('district_id') : []"
               :data-vv-as="$t('label.district_id')"
               name="district_id"
-              :label="$t('label.district_id')+ '*'"
+              :label="$t('label.district_id')"
+              class="input-required"
               v-model="branch.district_id"
               :items="districtAll"
               item-value="id"
@@ -90,7 +95,8 @@
               :data-vv-as="$t('label.email')"
               name="email"
               v-validate="'required'"
-              :label="$t('label.email') + '*'"
+              :label="$t('label.email')"
+              class="input-required"
               v-model="branch.email"> </v-text-field>
               <!-- type_branch -->
               <label>Thuộc loại</label>
@@ -239,7 +245,7 @@ export default{
       status: '',
       districtAll: {},
       branch: {
-        type: true,
+        type: false,
         status: true
       }
     }
