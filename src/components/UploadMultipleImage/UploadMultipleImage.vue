@@ -95,11 +95,11 @@ export default {
   props: {
     dragText: {
       type: String,
-      default: 'Drag Image(s)'
+      default: 'Kéo thả ảnh'
     },
     browseText: {
       type: String,
-      default: '(or) Browse'
+      default: 'hoặc chọn một ảnh'
     },
     primaryText: {
       type: String,

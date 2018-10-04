@@ -1,23 +1,28 @@
 <template>
   <v-layout column>
     <v-flex xs12 id="scroll-view" class="scroll-y white" :style="{height: viewHeight - 28 + 'px'}" v-scroll:#scroll-view="onScroll">
-      <slot :items="items"></slot>
+      <slot :items="items">
+       <v-flex xs12 >{{items.pagination.count}} </v-flex>
+     </slot>
+     <v-flex xs12 v-if="!!this.items.pagination && items.pagination.count == 0" class="px-3" style="text-align:center; color:red;  height: 22px;">
+      Không có kết quả nào được tìm thấy
     </v-flex>
-    <v-flex xs12 v-if="isFetchingApi">
-       <v-progress-linear
-        style="margin: 2px 0px 1px 0px"
-        height="3"
-        color="primary"
-        :indeterminate="isFetchingApi"
-      ></v-progress-linear>
-    </v-flex>
-    <v-flex v-else xs12 style="height: 6px" class="white">
-      &nbsp;
-    </v-flex>
-    <v-flex xs12 v-if="!!this.items.pagination && this.items.pagination.total" class="px-3 white" style="text-align: right; height: 22px;">
-      {{this.items.data.length}} / {{this.items.pagination.total}}
-    </v-flex>
-  </v-layout>
+  </v-flex>
+  <v-flex xs12 v-if="isFetchingApi">
+   <v-progress-linear
+   style="margin: 2px 0px 1px 0px"
+   height="3"
+   color="primary"
+   :indeterminate="isFetchingApi"
+   ></v-progress-linear>
+ </v-flex>
+ <v-flex v-else xs12 style="height: 6px" class="white">
+  &nbsp;
+</v-flex>
+<v-flex xs12 v-if="!!this.items.pagination && this.items.pagination.total" class="px-3 white" style="text-align: right; height: 22px;">
+  {{this.items.data.length}} / {{this.items.pagination.total}}
+</v-flex>
+</v-layout>
 </template>
 <script>
 import { mapActions, mapGetters } from 'vuex'
@@ -81,7 +86,7 @@ export default{
        * check scroll down & scroll distance bottom <= distance
        * @author KingDarkness <nguyentranhoan13@gmail.com>
        */
-      if (this.items.lastScrollPos < e.target.scrollTop && (e.target.scrollHeight - (e.target.scrollTop + e.target.offsetHeight)) < this.scroll.distance) {
+       if (this.items.lastScrollPos < e.target.scrollTop && (e.target.scrollHeight - (e.target.scrollTop + e.target.offsetHeight)) < this.scroll.distance) {
         if (this.items.pagination.total_pages && !this.isFetchingApi && this.items.pagination.current_page + 1 <= this.items.pagination.total_pages) {
           let pagination = { ...this.items.pagination }
           ++pagination.current_page
