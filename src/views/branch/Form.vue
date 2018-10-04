@@ -94,7 +94,7 @@
               :error-messages="errors.has('email') ? errors.collect('email') : []"
               :data-vv-as="$t('label.email')"
               name="email"
-              v-validate="'required'"
+              v-validate="'required','email'"
               :label="$t('label.email')"
               class="input-required"
               v-model="branch.email"> </v-text-field>

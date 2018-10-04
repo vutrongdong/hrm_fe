@@ -9,13 +9,13 @@
       <v-spacer></v-spacer>
       <v-tooltip bottom>
         <v-btn slot='activator' v-if="canAccess('user.update')" icon @click="$router.push({name: 'user-edit', params: {id: $route.params.id}})">
-          <v-icon>edit</v-icon>
+          <v-icon color="green">edit</v-icon>
         </v-btn>
         <span>Sửa</span>
       </v-tooltip>
       <v-tooltip bottom>
         <v-btn slot="activator" v-if="canAccess('user.delete')" icon @click="removeConfirmUser">
-          <v-icon>delete</v-icon>
+          <v-icon color="red">delete</v-icon>
         </v-btn>
         <span>Xóa</span>
       </v-tooltip>
@@ -135,20 +135,22 @@
       <template slot="items" slot-scope="props">
         <td colspan="2">{{ props.item.title }}</td>
         <td>{{ props.item.type_txt }}</td>
-        <td>{{ props.item.date_sign }}</td>
-        <td>{{ props.item.date_effective }}</td>
-        <td>{{ props.item.date_expiration }}</td>
+        <td colspan="2">
+          <b>Đăng kí:</b> {{ props.item.date_sign }}<br>
+          <b>Hiệu lực</b> {{ props.item.date_effective }}<br>
+          <b>Kết thúc:</b> {{ props.item.date_expiration }}<br>
+        </td>
         <td>{{ props.item.status_txt }}</td>
         <td colspan="2" style="padding:2px;">
           <v-tooltip bottom class="ml-3">
             <v-btn style="margin:0px;" slot='activator' v-if="canAccess('user.update')" icon @click="editContract(props.item,props.item.id)">
-              <v-icon size="19px">edit</v-icon>
+              <v-icon size="19px" color="green">edit</v-icon>
             </v-btn>
             <span>Sửa</span>
           </v-tooltip>
           <v-tooltip bottom>
             <v-btn style="margin: 0px;" slot="activator" v-if="canAccess('user.delete')" icon @click="removeConfirmContract(props.item.id)">
-              <v-icon size="19px">delete</v-icon>
+              <v-icon size="19px" color="red">delete</v-icon>
             </v-btn>
             <span>Xóa</span>
           </v-tooltip>
@@ -317,35 +319,34 @@ export default{
       },
       // các loại hợp đồng
       typeContract: [
-        { name: 'Học việc', value: 0 },
-        { name: 'Cộng tác viên', value: 1 },
-        { name: 'Thử việc', value: 2 },
-        { name: 'Có thời hạn', value: 3 },
-        { name: 'Không thời hạn', value: 4 },
-        { name: 'Khác', value: 5 }
+      { name: 'Học việc', value: 0 },
+      { name: 'Cộng tác viên', value: 1 },
+      { name: 'Thử việc', value: 2 },
+      { name: 'Có thời hạn', value: 3 },
+      { name: 'Không thời hạn', value: 4 },
+      { name: 'Khác', value: 5 }
       ],
       // các trạng thái của hợp đồng
       statusContract: [
-        { name: 'Tiêu chuẩn', value: 0 },
-        { name: 'Chấm dứt', value: 1 },
-        { name: 'Gia hạn', value: 2 }
+      { name: 'Tiêu chuẩn', value: 0 },
+      { name: 'Chấm dứt', value: 1 },
+      { name: 'Gia hạn', value: 2 }
       ],
       // tiêu đề của bảng chi nhánh phòng ban , chức vụ
       headersPosition: [
-        { text: 'Chi nhánh', value: 'branch', sortable: false },
-        { text: 'Phòng ban', value: 'department', sortable: false },
-        { text: 'Chức vụ', value: 'position', sortable: false }
+      { text: 'Chi nhánh', value: 'branch', sortable: false },
+      { text: 'Phòng ban', value: 'department', sortable: false },
+      { text: 'Chức vụ', value: 'position', sortable: false }
       ],
       // tiêu đề của bảng hợp đồng
       headersContract: [
-        { text: 'Tên hợp đồng', value: 'title', sortable: false },
-        { text: '', sortable: false },
-        { text: 'Loại hợp đồng', value: 'type', sortable: false },
-        { text: 'Ngày đăng kí', value: 'date_sign', sortable: false },
-        { text: 'Ngày bắt đầu', value: 'date_effective', sortable: false },
-        { text: 'Ngày kêt thúc', value: 'date_expiration', sortable: false },
-        { text: 'Trạng thái', value: 'status', sortable: false },
-        { text: 'Hành động', value: 'action', sortable: false }
+      { text: 'Tên hợp đồng', value: 'title', sortable: false },
+      { text: '', sortable: false },
+      { text: 'Loại hợp đồng', value: 'type', sortable: false },
+      { text: 'Thời gian', value: 'date_sign', sortable: false },
+      { text: '', sortable: false },
+      { text: 'Trạng thái', sortable: false },
+      { text: 'Hành động', value: 'action', sortable: false }
       ],
       dataViewHeight: 0,
       dialogEditContract: false,

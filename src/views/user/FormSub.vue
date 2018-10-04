@@ -39,7 +39,7 @@
             v-model="user.departments[index].department_id"
             label="Phòng ban"
             :disabled="!departmentActive"
-            :items="departments[user.departments[index].branch_id]"
+            :items="getDepartmentByBranch(user.departments[index].branch_id)"
             item-text="name"
             item-value="id"
             :error-messages="errors.has ('department_id') ? errors.collect('department_id') : []"
@@ -82,12 +82,13 @@
   </v-layout>
 </template>
 <script>
+import { filter } from 'lodash'
 import { mapGetters, mapActions } from 'vuex'
 export default {
   name: 'UserFormSub',
   data () {
     return {
-      departments: {},
+      departments: [],
       departmentActive: false,
       positionActive: false,
       user: {
@@ -108,9 +109,9 @@ export default {
     }
   },
   watch: {
-    // dataUser (val) {
-    //   this.user = val
-    // }
+    dataUser (val) {
+      this.setInitData()
+    }
   },
   computed: {
     ...mapGetters('Branch', ['branchAll']),
@@ -137,6 +138,13 @@ export default {
       this.positionActive = true
       this.emitDepartment()
     },
+    getDepartmentByBranch (branchId) {
+      let array = []
+      if (this.departments.length) {
+        array = filter(this.departments, function (o) { return parseInt(o.branch_id) === parseInt(branchId) })
+      }
+      return array
+    },
     changePosition () {
       this.emitDepartment()
     },
@@ -158,9 +166,12 @@ export default {
             return item
           })
         }
-      } else {
-        this.user.departments.push({})
       }
+    }
+  },
+  mounted () {
+    if (!this.dataUser.departments.data) {
+      this.user.departments.push({})
     }
   },
   created () {
@@ -171,13 +182,8 @@ export default {
         limit: -1
       },
       success: (response) => {
-        const items = response.data
-        items.forEach(item => {
-          if (!this.departments[item.branch_id]) {
-            this.departments[item.branch_id] = []
-          }
-          this.departments[item.branch_id].push(item)
-        })
+        this.departments = response.data
+        // console.log("fadf",response.data)
       }
     })
     this.getBranchForUser()

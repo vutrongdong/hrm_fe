@@ -32,7 +32,7 @@ export default{
       if (formData.contracts.length && !formData.contracts[0].title) {
         formData.contracts = []
       }
-      // console.log("ok",formData)
+      // console.log("value form",formData)
       // return
       this.createUser({
         user: formData,

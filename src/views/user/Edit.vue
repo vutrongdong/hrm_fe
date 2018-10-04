@@ -28,16 +28,14 @@ export default{
     ...mapActions('User', ['updateUser', 'getUser', 'setUser']),
     ...mapActions('Dataview', ['updateDataviewEntry']),
     submitForm (formData) {
-      let submitForm = Object.assign({}, formData)
-      submitForm.departments = submitForm.departments.data
-      // console.log('submit', formData)
-      // return false
-      submitForm.contracts = submitForm.contracts.data
+      if (formData.departments.data) {
+        formData.departments = formData.departments.data
+      }
       this.updateUser({
         id: this.$route.params.id,
-        user: submitForm,
+        user: formData,
         params: {
-          include: 'roles'
+          include: 'roles,departments'
         },
         cb: (response) => {
           this.showNotify({

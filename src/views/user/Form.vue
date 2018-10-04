@@ -1,16 +1,16 @@
 <template>
   <v-form @submit.prevent="validateBeforeSubmit">
     <v-app>
-      <v-stepper non-linear v-model="stepUser">
+      <v-stepper style="text-shadow: none inline !important" flat v-model="stepUser">
         <v-stepper-header style="height: 50px">
-          <v-stepper-step  editable :rules="[() => false]" :complete="stepUser > 1" step="1">Thông tin tài khoản
+          <v-stepper-step :rules="[() => !errors.has('name') && !errors.has('email') && !errors.has('password') && !errors.has('password_confirmation')]"  editable :complete="stepUser > 1" step="1">Thông tin tài khoản
           </v-stepper-step>
           <v-stepper-step error-icon  editable :complete="stepUser > 2" step="2">Thông tin cá nhân</v-stepper-step>
           <v-stepper-step  editable  step="3">Công việc</v-stepper-step>
         </v-stepper-header>
         <v-stepper-items>
           <!-- step 1 ======================================================  -->
-          <v-stepper-content style="height: 700px" step="1" >
+          <v-stepper-content step="1" >
             <v-layout>
               <v-flex md6 style="margin-right:10px">
                 <!-- email -->
@@ -31,29 +31,33 @@
                 v-if="isCreate"
                 :error-messages="errors.has('password') ? errors.collect('password') : []" v-validate="'required|min:6'"
                 :data-vv-as="$t('label.password')"
+                ref="password"
                 name="password"
                 :label="$t('label.password')"
                 class="input-required"
                 type="password"
                 v-model="user.password"> </v-text-field>
                 <!-- status -->
-                <v-flex style="margin-top:12px;">
+                <v-flex xs2 style="margin-top: 20px">
                   <label>Trạng thái</label>
-                  <v-flex row>
-                    <v-checkbox
-                    style="margin-top:0px"
-                    @change="status_txt"
-                    :label="status"
-                    class="checkbox"
+                  <v-tooltip bottom>
+                    <v-switch
+                    class="mt-0"
+                    @change="user.status !== user.status"
                     name="status"
-                    v-model="user.status">
-                  </v-checkbox>
-                </v-flex></v-flex>
+                    slot="activator"
+                    v-model="user.status"
+                    ></v-switch>
+                    <span v-if="user.status">Kích hoạt</span>
+                    <span v-else>Không kích hoạt</span>
+                  </v-tooltip>
+                </v-flex>
               </v-flex>
               <v-spacer></v-spacer>
               <v-flex md6 style="margin-left:10px">
                 <!-- name -->
                 <v-text-field
+                :autofocus="true"
                 placeholder="Nhập vào tên"
                 :error-messages="errors.has('name') ? errors.collect('name') : []"
                 v-validate="'required'"
@@ -67,7 +71,7 @@
                 placeholder="Nhập lại mật khẩu"
                 v-if="isCreate"
                 :error-messages="errors.has('password_confirmation') ? errors.collect('password_confirmation') : []"
-                v-validate="'required|min:6'"
+                v-validate="'required|min:6|confirmed:password'"
                 :data-vv-as="$t('label.password_confirmation')"
                 name="password_confirmation"
                 :label="$t('label.password_confirmation')"
@@ -99,7 +103,6 @@
               </v-flex>
             </v-layout>
             <v-btn
-            style="position:absolute; top: 500px"
             color="primary"
             @click="stepUser = 2">
           Tiếp tục</v-btn>
@@ -110,7 +113,7 @@
             <v-flex md6 style="margin-right:10px">
               <!-- phone -->
               <v-text-field
-              placeholder="nhập số điện thoại"
+              placeholder="Nhập số điện thoại"
               :error-messages="errors.has('phone') ? errors.collect('phone') : []"
               :data-vv-as="$t('label.phone')"
               name="phone"
@@ -126,7 +129,7 @@
               v-model="user.address"> </v-text-field>
               <!-- qualification -->
               <v-text-field
-              placeholder="nhập trình độ học vấn"
+              placeholder="Nhập trình độ học vấn"
               :error-messages="errors.has('qualification') ? errors.collect('qualification') : []"
               :data-vv-as="$t('label.qualification')"
               name="qualification"
@@ -179,7 +182,7 @@
               color="primary"
               @click="stepUser = 3"
               > Tiếp tục </v-btn>
-              <v-btn dark color="green" @click="stepUser = 1">Quay lại</v-btn>
+              <v-btn dark color="warning" @click="stepUser = 1">Quay lại</v-btn>
             </v-stepper-content>
             <!-- step 3 ======================================================  -->
             <v-stepper-content step="3">
@@ -192,7 +195,7 @@
                   :error-messages="errors.has('title') ? errors.collect('title') : []"
                   :data-vv-as="$t('label.title')"
                   name="title"
-                  :label="$t('label.title') + ' * '"
+                  :label="$t('label.title')"
                   v-model="user.contracts.title"> </v-text-field>
                   <!-- type contract -->
                   <v-select
@@ -312,7 +315,7 @@
               </template>
             </v-btn>
 
-            <v-btn dark color="green" @click="stepUser = 2">Quay lại</v-btn>
+            <v-btn dark color="warning" @click="stepUser = 2">Quay lại</v-btn>
           </v-stepper-content>
         </v-stepper-items>
       </v-stepper>
@@ -355,22 +358,22 @@ export default{
       dateEffective: false,
       dateExpiration: false,
       genderUser: [
-      { name: 'Nam', value: 1 },
-      { name: 'Nữ', value: 0 },
-      { name: 'Khác', value: 2 }
+        { name: 'Nam', value: 1 },
+        { name: 'Nữ', value: 0 },
+        { name: 'Khác', value: 2 }
       ],
       typeContract: [
-      { name: 'Học việc', value: 0 },
-      { name: 'Cộng tác viên', value: 1 },
-      { name: 'Thử việc', value: 2 },
-      { name: 'Có thời hạn', value: 3 },
-      { name: 'Không thời hạn', value: 4 },
-      { name: 'Khác', value: 5 }
+        { name: 'Học việc', value: 0 },
+        { name: 'Cộng tác viên', value: 1 },
+        { name: 'Thử việc', value: 2 },
+        { name: 'Có thời hạn', value: 3 },
+        { name: 'Không thời hạn', value: 4 },
+        { name: 'Khác', value: 5 }
       ],
       statusContract: [
-      { name: 'Tiêu chuẩn', value: 0 },
-      { name: 'Chấm dứt', value: 1 },
-      { name: 'Gia hạn', value: 2 }
+        { name: 'Tiêu chuẩn', value: 0 },
+        { name: 'Chấm dứt', value: 1 },
+        { name: 'Gia hạn', value: 2 }
       ],
       user: {
         avatar: '',
@@ -380,6 +383,7 @@ export default{
         departments: [],
         contracts:
         {
+          title: '',
           status: 0,
           type: 0,
           date_sign: null,
@@ -391,8 +395,8 @@ export default{
     }
   },
   watch: {
-    dataUser (val) {
-      this.user = val
+    dataUser () {
+      this.setInitData()
     },
     dateOfBirth (val) {
       val && this.$nextTick(() => (this.$refs.picker.activePicker = 'YEAR'))
@@ -487,11 +491,11 @@ export default{
         this.roles = response.data
       }
     })
+    this.dataUser && this.setInitData()
   },
   created () {
     this.dateExpirationConstract()
     this.dateConstract()
-    this.dataUser && this.setInitData()
     this.status_txt()
   }
 }
