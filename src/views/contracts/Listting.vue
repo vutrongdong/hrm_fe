@@ -233,177 +233,177 @@ v-if="index + 1 < items.data.length"
 </v-layout>
 </template>
 <script type="text/javascript">
-  import DialogConfirm from '@/components/DialogConfirm'
-  import { debounce } from 'lodash'
-  import DataView from '@/components/DataView/DataView'
-  import { mapActions, mapGetters } from 'vuex'
-  export default{
-    name: 'ContractListting',
-    props: {
-      isMini: {
-        type: Boolean,
-        default: false
-      }
+import DialogConfirm from '@/components/DialogConfirm'
+import { debounce } from 'lodash'
+import DataView from '@/components/DataView/DataView'
+import { mapActions, mapGetters } from 'vuex'
+export default{
+  name: 'ContractListting',
+  props: {
+    isMini: {
+      type: Boolean,
+      default: false
+    }
+  },
+  components: {
+    DataView,
+    DialogConfirm
+  },
+  data: () => ({
+    dialogDelete: false,
+    dataViewHeight: 0,
+    dataViewName: 'contract',
+    idContract: null,
+    contract: {
+      date_sign: '',
+      date_effective: '',
+      date_expiration: '',
+      user_id: ''
     },
-    components: {
-      DataView,
-      DialogConfirm
-    },
-    data: () => ({
-      dialogDelete: false,
-      dataViewHeight: 0,
-      dataViewName: 'contract',
-      idContract: null,
-      contract: {
-        date_sign: '',
-        date_effective: '',
-        date_expiration: '',
-        user_id: ''
-      },
-      dateEffective: false,
-      dateExpiration: false,
-      types: [
+    dateEffective: false,
+    dateExpiration: false,
+    types: [
       { 'id': 0, 'name': 'Học việc' },
       { 'id': 1, 'name': 'Cộng tác viên' },
       { 'id': 2, 'name': 'Thử việc' },
       { 'id': 3, 'name': 'Có thời hạn' },
       { 'id': 4, 'name': 'Không thời hạn' },
       { 'id': 5, 'name': 'Khác' }
-      ],
-      status: [
+    ],
+    status: [
       { 'id': 0, 'name': 'Tiêu chuẩn' },
       { 'id': 1, 'name': 'Chấm dứt' },
       { 'id': 2, 'name': 'Gia hạn' }
-      ],
-      params: {
-        q: '',
-        user_id: '',
-        types: '',
-        status: ''
-      }
-    }),
-    watch: {
-      dateEffective (val) {
-        val && this.$nextTick(() => (this.$refs.picker.activePicker = 'YEAR'))
-      },
-      dateExpiration (val) {
-        val && this.$nextTick(() => (this.$refs.picker.activePicker = 'YEAR'))
-      }
+    ],
+    params: {
+      q: '',
+      user_id: '',
+      types: '',
+      status: ''
+    }
+  }),
+  watch: {
+    dateEffective (val) {
+      val && this.$nextTick(() => (this.$refs.picker.activePicker = 'YEAR'))
     },
-    computed: {
-      ...mapGetters(['isFetchingApi']),
-      ...mapGetters('User', ['userDetail'])
-          // ...mapGetters('Contracts', ['contractDetail'])
-        },
-        methods: {
-          ...mapActions('Dataview', ['removeDataviewEntry']),
-          ...mapActions('Contracts', ['deleteContract', 'getContract']),
-          ...mapActions('User', ['fetchUser']),
-          //save time
-          save (date) {
-             this.$refs.dateEffective.save(date)
-             this.$refs.dateExpiration.save(date)
-          },
-           // thời gian đăng kí , có hiệu lực hợp đồng
-           dateConstract () {
-            let today = new Date()
-            let dd = today.getDate()
-            let mm = today.getMonth() + 1
-            let yyyy = today.getFullYear()
-            if (dd < 10) {
-              dd = '0' + dd
-            }
-            if (mm < 10) {
-              mm = '0' + mm
-            }
-            today = yyyy + '-' + mm + '-' + dd
-            this.contract.date_sign = today
-            this.contract.date_effective = today
-          },
-          // thời gian kết thúc hợp đồng
-          dateExpirationConstract () {
-            let today = new Date()
-            let dd = today.getDate()
-            let mm = today.getMonth() + 3
-            let yyyy = today.getFullYear()
-            if (dd < 10) {
-              dd = '0' + dd
-            }
-            if (mm < 10) {
-              mm = '0' + mm
-            }
-            today = yyyy + '-' + mm + '-' + dd
-            this.contract.date_expiration = today
-          },
-          // changeStatus
-          contractDetail (contract) {
-            this.getContract({ contractId: contract.id })
-            // this.$router.push({ name: 'contract-detail', params: { id: contract.id } })
-          },
-          /// screach
-          changeSearch: debounce(function () {
-            this.filter()
-          }, 500),
-          filter () {
+    dateExpiration (val) {
+      val && this.$nextTick(() => (this.$refs.picker.activePicker = 'YEAR'))
+    }
+  },
+  computed: {
+    ...mapGetters(['isFetchingApi']),
+    ...mapGetters('User', ['userDetail'])
+    // ...mapGetters('Contracts', ['contractDetail'])
+  },
+  methods: {
+    ...mapActions('Dataview', ['removeDataviewEntry']),
+    ...mapActions('Contracts', ['deleteContract', 'getContract']),
+    ...mapActions('User', ['fetchUser']),
+    // save time
+    save (date) {
+      this.$refs.dateEffective.save(date)
+      this.$refs.dateExpiration.save(date)
+    },
+    // thời gian đăng kí , có hiệu lực hợp đồng
+    dateConstract () {
+      let today = new Date()
+      let dd = today.getDate()
+      let mm = today.getMonth() + 1
+      let yyyy = today.getFullYear()
+      if (dd < 10) {
+        dd = '0' + dd
+      }
+      if (mm < 10) {
+        mm = '0' + mm
+      }
+      today = yyyy + '-' + mm + '-' + dd
+      this.contract.date_sign = today
+      this.contract.date_effective = today
+    },
+    // thời gian kết thúc hợp đồng
+    dateExpirationConstract () {
+      let today = new Date()
+      let dd = today.getDate()
+      let mm = today.getMonth() + 3
+      let yyyy = today.getFullYear()
+      if (dd < 10) {
+        dd = '0' + dd
+      }
+      if (mm < 10) {
+        mm = '0' + mm
+      }
+      today = yyyy + '-' + mm + '-' + dd
+      this.contract.date_expiration = today
+    },
+    // changeStatus
+    contractDetail (contract) {
+      this.getContract({ contractId: contract.id })
+      // this.$router.push({ name: 'contract-detail', params: { id: contract.id } })
+    },
+    /// screach
+    changeSearch: debounce(function () {
+      this.filter()
+    }, 500),
+    filter () {
+      this.$refs[this.dataViewName].$emit('reload')
+    },
+    /// / reset screach
+    resetSreach: debounce(function () {
+      this.filter()
+    }, 100),
+    removeConfirm (id) {
+      this.idContract = id
+      this.dialogDelete = true
+    },
+    remove (confirm) {
+      if (confirm) {
+        this.deleteContract({
+          id: this.idContract,
+          cb: (response) => {
+            this.removeDataviewEntry({
+              name: 'contract',
+              data: this.contractDetail,
+              key: 'id'
+            })
+            this.$store.dispatch('showNotify', {
+              text: this.$t('alert.success'),
+              color: 'success'
+            })
+            this.dialogDelete = false
             this.$refs[this.dataViewName].$emit('reload')
           },
-          /// / reset screach
-          resetSreach: debounce(function () {
-            this.filter()
-          }, 100),
-          removeConfirm (id) {
-            this.idContract = id
-            this.dialogDelete = true
-          },
-          remove (confirm) {
-            if (confirm) {
-              this.deleteContract({
-                id: this.idContract,
-                cb: (response) => {
-                  this.removeDataviewEntry({
-                    name: 'contract',
-                    data: this.contractDetail,
-                    key: 'id'
-                  })
-                  this.$store.dispatch('showNotify', {
-                    text: this.$t('alert.success'),
-                    color: 'success'
-                  })
-                  this.dialogDelete = false
-                  this.$refs[this.dataViewName].$emit('reload')
-                },
-                error: (error) => {
-                  if (error.status === 404) {
-                    this.$store.dispatch('showNotify', {
-                      text: this.$t('alert.not-found'),
-                      color: 'warning'
-                    })
-                  }
-                }
+          error: (error) => {
+            if (error.status === 404) {
+              this.$store.dispatch('showNotify', {
+                text: this.$t('alert.not-found'),
+                color: 'warning'
               })
             }
           }
-        },
-        mounted () {
-          this.dataViewHeight = this.$refs.laylout.clientHeight - 168
-          let query = { ...this.$route.query }
-          if (query.hasOwnProperty('reload')) {
-            this.$nextTick(() => {
-              this.$refs[this.dataViewName].$emit('reload')
-            })
-            delete query.reload
-            this.$router.replace({
-              query: query
-            })
-          }
-        },
-        created () {
-          this.fetchUser()
-          this.dateConstract()
-          this.dateExpirationConstract()
-        }
+        })
       }
-    </script>
+    }
+  },
+  mounted () {
+    this.dataViewHeight = this.$refs.laylout.clientHeight - 168
+    let query = { ...this.$route.query }
+    if (query.hasOwnProperty('reload')) {
+      this.$nextTick(() => {
+        this.$refs[this.dataViewName].$emit('reload')
+      })
+      delete query.reload
+      this.$router.replace({
+        query: query
+      })
+    }
+  },
+  created () {
+    this.fetchUser()
+    this.dateConstract()
+    this.dateExpirationConstract()
+  }
+}
+</script>
     <style type="text/css" media="screen" scoped>
       .v-input.v-text-field{
        margin-top: 4px;

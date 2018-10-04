@@ -1,17 +1,7 @@
 <template>
   <v-layout ref="laylout" fill-height>
-    <v-flex xs12 class="border-e0-left white">
-      <v-toolbar dense color="white" flat>
-        <v-spacer></v-spacer>
-        <v-toolbar-title class="text-uppercase">{{userDetail.name}}</v-toolbar-title>
-        <v-spacer></v-spacer>
-        <v-btn icon @click="$router.push({name: 'user'})">
-          <v-icon>close</v-icon>
-        </v-btn>
-      </v-toolbar>
-      <v-container class="white scroll-y border-e0-top" :style="{height: dataViewHeight + 'px'}">
-        <user-form v-if="userDetail.id" @submit="submitForm" type="edit" :dataUser="userDetail" />
-      </v-container>
+    <v-flex class="white scroll-y border-e0-top" :style="{height: dataViewHeight + 'px'}">
+      <user-form v-if="userDetail.id" @submit="submitForm" type="edit" :dataUser="userDetail" />
     </v-flex>
   </v-layout>
 </template>
@@ -71,7 +61,7 @@ export default{
     }
   },
   mounted () {
-    this.dataViewHeight = this.$refs.laylout.clientHeight - 48
+    this.dataViewHeight = this.$refs.laylout.clientHeight - 5
   }
 }
 </script>

@@ -1,320 +1,323 @@
 <template>
   <v-form @submit.prevent="validateBeforeSubmit">
-    <v-tabs centered color="cyan" dark icons-and-text >
-      <v-tabs-slider color="yellow"></v-tabs-slider>
-      <!-- thông tin tài khoản -->
-      <v-tab href="#tab-1">
-        Thông tin tài khoản
-      </v-tab>
-      <!-- Thông tin cá nhân -->
-      <v-tab href="#tab-2">
-        Thông tin cá nhân
-      </v-tab>
-      <!-- công việc -->
-      <v-tab href="#tab-3">
-        Công việc
-      </v-tab>
-      <!-- tab1 -->
-      <v-tab-item id="tab-1" style="margin:30px 0px">
-        <v-card flat row>
-         <v-layout>
-          <v-flex md6 style="margin-right:10px">
-            <!-- email -->
-            <v-text-field
-            placeholder="Example@gmail.com"
-            :error-messages="errors.has('email') ? errors.collect('email') : []"
-            v-validate="'required|email'"
-            :data-vv-as="$t('label.email')"
-            name="email"
-            :label="$t('label.email')"
-            class="input-required"
-            type="email"
-            :disabled="!isCreate"
-            v-model="user.email"> </v-text-field>
-            <!-- password -->
-            <v-text-field
-            placeholder="Nhập mật khẩu"
-            v-if="isCreate"
-            :error-messages="errors.has('password') ? errors.collect('password') : []" v-validate="'required|min:6'"
-            :data-vv-as="$t('label.password')"
-            name="password"
-            :label="$t('label.password')"
-            class="input-required"
-            type="password"
-            v-model="user.password"> </v-text-field>
-            <!-- status -->
-            <v-flex style="margin-top:12px;">
-              <label>Trạng thái</label>
-              <v-flex row>
-                <v-checkbox
-                style="margin-top:0px"
-                @change="status_txt"
-                :label="status"
-                class="checkbox"
-                name="status"
-                v-model="user.status">
-              </v-checkbox>
-            </v-flex></v-flex>
-          </v-flex>
-          <v-spacer></v-spacer>
-          <v-flex md6 style="margin-left:10px">
-            <!-- name -->
-            <v-text-field
-            placeholder="Nhập vào tên"
-            :error-messages="errors.has('name') ? errors.collect('name') : []"
-            v-validate="'required|min:3'"
-            :data-vv-as="$t('label.name')"
-            name="name"
-            :label="$t('label.name')"
-            class="input-required"
-            v-model="user.name"></v-text-field>
-            <!-- password confirm -->
-            <v-text-field
-            placeholder="Nhập lại mật khẩu"
-            v-if="isCreate"
-            :error-messages="errors.has('password_confirmation') ? errors.collect('password_confirmation') : []"
-            v-validate="'required|min:6'"
-            :data-vv-as="$t('label.password_confirmation')"
-            name="password_confirmation"
-            :label="$t('label.password_confirmation')"
-            class="input-required"
-            type="password"
-            v-model="user.password_confirmation"> </v-text-field>
-            <!-- quyền truy cập -->
-            <v-autocomplete
-            multiple
-            label="Quyền truy cập"
-            v-model="user.roles"
-            :items="roles"
-            chips
-            item-text="name"
-            item-value="id"
-            color="white"
-            hide-no-data
-            hide-selected
-            placeholder="Tìm kiếm"
-            style="margin-left:-30px"
-            prepend-icon="mdi-database-search">
-            <template slot="selection" slot-scope="data">
-              <v-chip
-              :selected="data.selected"
-              close class="chip--select-multi"
-              @input="data.parent.selectItem(data.item)">
-              {{ data.item.name }}
-            </v-chip></template></v-autocomplete>
-          </v-flex>
-        </v-layout>
-      </v-card>
-    </v-tab-item>
-    <!-- tab2 -->
-    <v-tab-item id="tab-2" style="margin-top:30px">
-      <v-layout>
-        <v-flex md6 style="margin-right:10px">
-          <!-- phone -->
-          <v-text-field
-          placeholder="nhập số điện thoại"
-          :error-messages="errors.has('phone') ? errors.collect('phone') : []"
-          :data-vv-as="$t('label.phone')"
-          name="phone"
-          :label="$t('label.phone')"
-          v-model="user.phone"></v-text-field>
-          <!-- address -->
-          <v-text-field
-          :error-messages="errors.has('address') ? errors.collect('address') : []"
-          placeholder="Nhập địa chỉ"
-          :data-vv-as="$t('label.address')"
-          name="address"
-          :label="$t('label.address')"
-          v-model="user.address"> </v-text-field>
-          <!-- qualification -->
-          <v-text-field
-          placeholder="nhập trình độ học vấn"
-          :error-messages="errors.has('qualification') ? errors.collect('qualification') : []"
-          :data-vv-as="$t('label.qualification')"
-          name="qualification"
-          :label="$t('label.qualification')"
-          v-model="user.qualification"></v-text-field>
-          <!-- gender -->
-          <v-flex md12 row>
-            <v-flex style="margin-top:12px">
-              <v-select
-              :items="genderUser"
-              item-text="name"
-              item-value="value"
-              v-model="user.gender"
-              label="Giới tính"
-              ></v-select>
-            </v-flex> </v-flex>
-          </v-flex>
-          <v-flex md6 style="margin-left:10px">
-            <!-- birth_day -->
-            <template>
-              <v-menu
-              ref="dateOfBirth"
-              :close-on-content-click="false"
-              v-model="dateOfBirth"
-              :nudge-right="40"
-              lazy transition="scale-transition"
-              offset-y
-              full-width
-              min-width="290px">
+    <v-app>
+      <v-stepper non-linear v-model="stepUser">
+        <v-stepper-header style="height: 50px">
+          <v-stepper-step  editable :rules="[() => false]" :complete="stepUser > 1" step="1">Thông tin tài khoản
+          </v-stepper-step>
+          <v-stepper-step error-icon  editable :complete="stepUser > 2" step="2">Thông tin cá nhân</v-stepper-step>
+          <v-stepper-step  editable  step="3">Công việc</v-stepper-step>
+        </v-stepper-header>
+        <v-stepper-items>
+          <!-- step 1 ======================================================  -->
+          <v-stepper-content style="height: 700px" step="1" >
+            <v-layout>
+              <v-flex md6 style="margin-right:10px">
+                <!-- email -->
+                <v-text-field
+                placeholder="Example@gmail.com"
+                :error-messages="errors.has('email') ? errors.collect('email') : []"
+                v-validate="'required|email'"
+                :data-vv-as="$t('label.email')"
+                name="email"
+                :label="$t('label.email')"
+                class="input-required"
+                type="email"
+                :disabled="!isCreate"
+                v-model="user.email"> </v-text-field>
+                <!-- password -->
+                <v-text-field
+                placeholder="Nhập mật khẩu"
+                v-if="isCreate"
+                :error-messages="errors.has('password') ? errors.collect('password') : []" v-validate="'required|min:6'"
+                :data-vv-as="$t('label.password')"
+                name="password"
+                :label="$t('label.password')"
+                class="input-required"
+                type="password"
+                v-model="user.password"> </v-text-field>
+                <!-- status -->
+                <v-flex style="margin-top:12px;">
+                  <label>Trạng thái</label>
+                  <v-flex row>
+                    <v-checkbox
+                    style="margin-top:0px"
+                    @change="status_txt"
+                    :label="status"
+                    class="checkbox"
+                    name="status"
+                    v-model="user.status">
+                  </v-checkbox>
+                </v-flex></v-flex>
+              </v-flex>
+              <v-spacer></v-spacer>
+              <v-flex md6 style="margin-left:10px">
+                <!-- name -->
+                <v-text-field
+                placeholder="Nhập vào tên"
+                :error-messages="errors.has('name') ? errors.collect('name') : []"
+                v-validate="'required'"
+                :data-vv-as="$t('label.name')"
+                name="name"
+                :label="$t('label.name')"
+                class="input-required"
+                v-model="user.name"></v-text-field>
+                <!-- password confirm -->
+                <v-text-field
+                placeholder="Nhập lại mật khẩu"
+                v-if="isCreate"
+                :error-messages="errors.has('password_confirmation') ? errors.collect('password_confirmation') : []"
+                v-validate="'required|min:6'"
+                :data-vv-as="$t('label.password_confirmation')"
+                name="password_confirmation"
+                :label="$t('label.password_confirmation')"
+                class="input-required"
+                type="password"
+                v-model="user.password_confirmation"> </v-text-field>
+                <!-- quyền truy cập -->
+                <v-autocomplete
+                multiple
+                label="Quyền truy cập"
+                v-model="user.roles"
+                :items="roles"
+                chips
+                item-text="name"
+                item-value="id"
+                color="white"
+                hide-no-data
+                hide-selected
+                placeholder="Tìm kiếm"
+                style="margin-left:-30px"
+                prepend-icon="mdi-database-search">
+                <template slot="selection" slot-scope="data">
+                  <v-chip
+                  :selected="data.selected"
+                  close class="chip--select-multi"
+                  @input="data.parent.selectItem(data.item)">
+                  {{ data.item.name }}
+                </v-chip></template></v-autocomplete>
+              </v-flex>
+            </v-layout>
+            <v-btn
+            style="position:absolute; top: 500px"
+            color="primary"
+            @click="stepUser = 2">
+          Tiếp tục</v-btn>
+        </v-stepper-content>
+        <!-- step 2 ======================================================  -->
+        <v-stepper-content step="2">
+          <v-layout>
+            <v-flex md6 style="margin-right:10px">
+              <!-- phone -->
               <v-text-field
-              placeholder="Nhập ngày sinh"
-              slot="activator"
-              v-model="user.date_of_birth"
-              label="Ngày sinh"
-              readonly > </v-text-field>
-              <v-date-picker
-              ref="picker"
-              v-model="user.date_of_birth"
-              :max="new Date().toISOString().substr(0, 10)"
-              min="1950-01-01"
-              @change="save"> </v-date-picker> </v-menu>
-            </template>
-            <!-- image -->
-            <v-flex class="mt-3">
-              <label style="color: #7f8c91;">Ảnh đại diện</label>
-              <imageUpload :multiple="false"/>
-            </v-flex> </v-flex>
-          </v-layout>
-        </v-tab-item>
-        <v-tab-item id="tab-3" style="margin-top:30px">
-          <h3 v-if="isCreate">Hợp đồng</h3>
-          <v-layout row wrap v-if="isCreate">
-            <v-flex xs6 class="pr-2">
-              <!-- title contract -->
+              placeholder="nhập số điện thoại"
+              :error-messages="errors.has('phone') ? errors.collect('phone') : []"
+              :data-vv-as="$t('label.phone')"
+              name="phone"
+              :label="$t('label.phone')"
+              v-model="user.phone"></v-text-field>
+              <!-- address -->
               <v-text-field
-              placeholder="Nhập tiêu đề hợp đồng"
-              :error-messages="errors.has('title') ? errors.collect('title') : []"
-              :data-vv-as="$t('label.title')"
-              name="title"
-              :label="$t('label.title') + ' * '"
-              v-model="user.contracts.title"> </v-text-field>
-              <!-- type contract -->
-              <v-select
-              :error-messages="errors.has('type') ? errors.collect('type') : []"
-              :data-vv-as="$t('label.type')"
-              name="type"
-              :label="$t('label.type')"
-              v-model="user.contracts.type"
-              :items="typeContract"
-              item-value="value"
-              item-text="name"> </v-select>
-              <!-- status contract-->
-              <v-select
-              :error-messages="errors.has('status') ? errors.collect('status') : []"
-              :data-vv-as="$t('label.status')"
-              name="status"
-              :label="$t('label.status')"
-              v-model="user.contracts.status"
-              :items="statusContract"
-              item-value="value"
-              item-text="name"> </v-select>
-            </v-flex>
-            <v-flex xs6 class="pl-2">
-              <!-- date_sign -->
-              <template>
-                <v-menu
-                ref="dateSign"
-                :close-on-content-click="false"
-                v-model="dateSign"
-                :nudge-right="40"
-                lazy transition="scale-transition"
-                offset-y
-                full-width
-                min-width="290px">
-                <v-text-field
-                placeholder="Nhập ngày ký"
-                slot="activator"
-                v-model="user.contracts.date_sign"
-                label="Ngày ký"
-                readonly > </v-text-field>
-                <v-date-picker
-                ref="picker"
-                v-model="user.contracts.date_sign"
-                :max="new Date().toISOString().substr(0, 10)"
-                min="1950-01-01"
-                @change="save"> </v-date-picker> </v-menu>
-              </template>
-              <!-- date_effective -->
-              <template>
-                <v-menu
-                ref="dateEffective"
-                :close-on-content-click="false"
-                v-model="dateEffective"
-                :nudge-right="40"
-                lazy transition="scale-transition"
-                offset-y
-                full-width
-                min-width="290px">
-                <v-text-field
-                placeholder="Ngày có hiệu lực"
-                slot="activator"
-                v-model="user.contracts.date_effective"
-                label="Ngày có hiệu lực"
-                readonly > </v-text-field>
-                <v-date-picker
-                ref="picker"
-                v-model="user.contracts.date_effective"
-                :max="new Date().toISOString().substr(0, 10)"
-                min="1950-01-01"
-                @change="save"> </v-date-picker> </v-menu>
-              </template>
-              <!-- date_expiration -->
-              <template>
-                <v-menu
-                ref="dateExpiration"
-                :close-on-content-click="false"
-                v-model="dateExpiration"
-                :nudge-right="40"
-                lazy transition="scale-transition"
-                offset-y
-                full-width
-                min-width="290px">
-                <v-text-field
-                placeholder="Ngày hết hạn"
-                slot="activator"
-                v-model="user.contracts.date_expiration"
-                label="Ngày có hết hạn"
-                readonly > </v-text-field>
-                <v-date-picker
-                ref="picker"
-                v-model="user.contracts.date_expiration"
-                :max="new Date().toISOString().substr(0, 10)"
-                min="1950-01-01"
-                @change="save"> </v-date-picker> </v-menu>
-              </template>
-            </v-flex>
+              :error-messages="errors.has('address') ? errors.collect('address') : []"
+              placeholder="Nhập địa chỉ"
+              :data-vv-as="$t('label.address')"
+              name="address"
+              :label="$t('label.address')"
+              v-model="user.address"> </v-text-field>
+              <!-- qualification -->
+              <v-text-field
+              placeholder="nhập trình độ học vấn"
+              :error-messages="errors.has('qualification') ? errors.collect('qualification') : []"
+              :data-vv-as="$t('label.qualification')"
+              name="qualification"
+              :label="$t('label.qualification')"
+              v-model="user.qualification"></v-text-field>
+              <!-- gender -->
+              <v-flex md12 row>
+                <v-flex style="margin-top:12px">
+                  <v-select
+                  :items="genderUser"
+                  item-text="name"
+                  item-value="value"
+                  v-model="user.gender"
+                  label="Giới tính"
+                  ></v-select>
+                </v-flex> </v-flex>
+              </v-flex>
+              <v-flex md6 style="margin-left:10px">
+                <!-- birth_day -->
+                <template>
+                  <v-menu
+                  ref="dateOfBirth"
+                  :close-on-content-click="false"
+                  v-model="dateOfBirth"
+                  :nudge-right="40"
+                  lazy transition="scale-transition"
+                  offset-y
+                  full-width
+                  min-width="290px">
+                  <v-text-field
+                  placeholder="Nhập ngày sinh"
+                  slot="activator"
+                  v-model="user.date_of_birth"
+                  label="Ngày sinh"
+                  readonly > </v-text-field>
+                  <v-date-picker
+                  ref="picker"
+                  v-model="user.date_of_birth"
+                  :max="new Date().toISOString().substr(0, 10)"
+                  min="1950-01-01"
+                  @change="save"> </v-date-picker> </v-menu>
+                </template>
+                <!-- image -->
+                <v-flex class="mt-3">
+                  <label style="color: #7f8c91;">Ảnh đại diện</label>
+                  <imageUpload :multiple="false"/>
+                </v-flex> </v-flex>
+              </v-layout>
+              <v-btn
+              color="primary"
+              @click="stepUser = 3"
+              > Tiếp tục </v-btn>
+              <v-btn dark color="green" @click="stepUser = 1">Quay lại</v-btn>
+            </v-stepper-content>
+            <!-- step 3 ======================================================  -->
+            <v-stepper-content step="3">
+              <h3 v-if="isCreate">Hợp đồng</h3>
+              <v-layout row wrap v-if="isCreate">
+                <v-flex xs6 class="pr-2">
+                  <!-- title contract -->
+                  <v-text-field
+                  placeholder="Nhập tiêu đề hợp đồng"
+                  :error-messages="errors.has('title') ? errors.collect('title') : []"
+                  :data-vv-as="$t('label.title')"
+                  name="title"
+                  :label="$t('label.title') + ' * '"
+                  v-model="user.contracts.title"> </v-text-field>
+                  <!-- type contract -->
+                  <v-select
+                  :error-messages="errors.has('type') ? errors.collect('type') : []"
+                  :data-vv-as="$t('label.type')"
+                  name="type"
+                  :label="$t('label.type')"
+                  v-model="user.contracts.type"
+                  :items="typeContract"
+                  item-value="value"
+                  item-text="name"> </v-select>
+                  <!-- status contract-->
+                  <v-select
+                  :error-messages="errors.has('status') ? errors.collect('status') : []"
+                  :data-vv-as="$t('label.status')"
+                  name="status"
+                  :label="$t('label.status')"
+                  v-model="user.contracts.status"
+                  :items="statusContract"
+                  item-value="value"
+                  item-text="name"> </v-select>
+                </v-flex>
+                <v-flex xs6 class="pl-2">
+                  <!-- date_sign -->
+                  <template>
+                    <v-menu
+                    ref="dateSign"
+                    :close-on-content-click="false"
+                    v-model="dateSign"
+                    :nudge-right="40"
+                    lazy transition="scale-transition"
+                    offset-y
+                    full-width
+                    min-width="290px">
+                    <v-text-field
+                    placeholder="Nhập ngày ký"
+                    slot="activator"
+                    v-model="user.contracts.date_sign"
+                    label="Ngày ký"
+                    readonly > </v-text-field>
+                    <v-date-picker
+                    ref="picker"
+                    v-model="user.contracts.date_sign"
+                    :max="new Date().toISOString().substr(0, 10)"
+                    min="1950-01-01"
+                    @change="save"> </v-date-picker> </v-menu>
+                  </template>
+                  <!-- date_effective -->
+                  <template>
+                    <v-menu
+                    ref="dateEffective"
+                    :close-on-content-click="false"
+                    v-model="dateEffective"
+                    :nudge-right="40"
+                    lazy transition="scale-transition"
+                    offset-y
+                    full-width
+                    min-width="290px">
+                    <v-text-field
+                    placeholder="Ngày có hiệu lực"
+                    slot="activator"
+                    v-model="user.contracts.date_effective"
+                    label="Ngày có hiệu lực"
+                    readonly > </v-text-field>
+                    <v-date-picker
+                    ref="picker"
+                    v-model="user.contracts.date_effective"
+                    :max="new Date().toISOString().substr(0, 10)"
+                    min="1950-01-01"
+                    @change="save"> </v-date-picker> </v-menu>
+                  </template>
+                  <!-- date_expiration -->
+                  <template>
+                    <v-menu
+                    ref="dateExpiration"
+                    :close-on-content-click="false"
+                    v-model="dateExpiration"
+                    :nudge-right="40"
+                    lazy transition="scale-transition"
+                    offset-y
+                    full-width
+                    min-width="290px">
+                    <v-text-field
+                    placeholder="Ngày hết hạn"
+                    slot="activator"
+                    v-model="user.contracts.date_expiration"
+                    label="Ngày có hết hạn"
+                    readonly > </v-text-field>
+                    <v-date-picker
+                    ref="picker"
+                    v-model="user.contracts.date_expiration"
+                    :max="new Date().toISOString().substr(0, 10)"
+                    min="1950-01-01"
+                    @change="save"> </v-date-picker> </v-menu>
+                  </template>
+                </v-flex>
 
-          </v-layout>
-          <v-layout row wrap>
-            <!-- form sub -->
-            <formSub
-            :dataUser="user"
-            v-on:positionAndDepartment="positionAndDepartment($event)">
-          </formSub>
-        </v-layout>
-        <!-- tab3 -->
-      </v-tab-item>
-    </v-tabs>
-    <!-- end tab -->
-    <!-- button create or update -->
-    <v-flex md12 text-md-center>
-      <v-btn
-      :loading="isFetchingApi"
-      :disabled="isFetchingApi"
-      color="primary"
-      type="submit"
-      >
-      <template v-if="isCreate">
-        <v-icon left>add</v-icon> {{$t('control.create')}}
-      </template>
-      <template v-else>
-        <v-icon left>save</v-icon> {{$t('control.save')}}
-      </template>
-    </v-btn>
-  </v-flex>
-</v-form>
+              </v-layout>
+              <v-layout row wrap>
+                <!-- form sub -->
+                <formSub
+                :dataUser="user"
+                v-on:positionAndDepartment="positionAndDepartment($event)"
+                ></formSub>
+              </v-layout>
+              <v-btn
+              :loading="isFetchingApi"
+              :disabled="isFetchingApi"
+              color="primary"
+              type="submit"
+              >
+              <template v-if="isCreate">
+                <v-icon left>add</v-icon> {{$t('control.create')}}
+              </template>
+              <template v-else>
+                <v-icon left>save</v-icon> {{$t('control.save')}}
+              </template>
+            </v-btn>
+
+            <v-btn dark color="green" @click="stepUser = 2">Quay lại</v-btn>
+          </v-stepper-content>
+        </v-stepper-items>
+      </v-stepper>
+    </v-app>
+  </v-form>
 </template>
 <script>
 import { mapGetters, mapActions } from 'vuex'
@@ -345,6 +348,7 @@ export default{
   },
   data () {
     return {
+      stepUser: 1,
       status: 'Kích hoạt',
       dateOfBirth: false,
       dateSign: false,

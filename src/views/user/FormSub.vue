@@ -36,14 +36,14 @@
           <v-tooltip bottom>
             <v-select
             slot="activator"
-            v-model="user.departments[index].id"
+            v-model="user.departments[index].department_id"
             label="Phòng ban"
             :disabled="!departmentActive"
             :items="departments[user.departments[index].branch_id]"
             item-text="name"
             item-value="id"
-            :error-messages="errors.has ('id') ? errors.collect('id') : []"
-            name="id"
+            :error-messages="errors.has ('department_id') ? errors.collect('department_id') : []"
+            name="department_id"
             placeholder="Phòng ban"
             single-line
             @change="changeDepartment"></v-select>
@@ -70,7 +70,8 @@
           </v-tooltip>
         </v-flex>
         <v-tooltip bottom>
-          <v-btn slot="activator" style="margin-top:35px;"
+          <v-btn slot="activator"
+          style="margin-top:10px;"
           icon color="error"
           @click="deleteDepartment(index)">
           <v-icon>delete</v-icon>
@@ -151,6 +152,12 @@ export default {
         this.departmentActive = true
         this.positionActive = true
         this.user.departments = this.dataUser.departments.data.length ? this.user.departments.data : [{}]
+        if (this.user.departments.length) {
+          this.user.departments.map((item) => {
+            item.department_id = item.id
+            return item
+          })
+        }
       } else {
         this.user.departments.push({})
       }

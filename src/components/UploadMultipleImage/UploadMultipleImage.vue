@@ -179,16 +179,16 @@ export default {
         let dataURI = e.target.result
         if (dataURI) {
           if (!this.images.length) {
-            this.images.push({id: idTime, name: file.name, path: dataURI, highlight: 1, default: 1})
+            this.images.push({ id: idTime, name: file.name, path: dataURI, highlight: 1, default: 1 })
             this.currentIndexImage = 0
           } else {
-            this.images.push({id: idTime, name: file.name, path: dataURI, highlight: 0, default: 0})
+            this.images.push({ id: idTime, name: file.name, path: dataURI, highlight: 0, default: 0 })
           }
         }
       }
       reader.readAsDataURL(file)
       this.$emit('data-change', this.images)
-      this.$emit('upload-image', {file: formData, id: idTime})
+      this.$emit('upload-image', { file: formData, id: idTime })
     },
     uploadFieldChange (e) {
       let files = e.target.files || e.dataTransfer.files

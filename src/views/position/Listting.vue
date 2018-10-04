@@ -150,62 +150,62 @@
 </v-layout>
 </template>
 <script type="text/javascript">
-  import DialogConfirm from '@/components/DialogConfirm'
-  import { debounce } from 'lodash'
-  import DataView from '@/components/DataView/DataView'
-  import { mapActions, mapGetters } from 'vuex'
-  export default{
-    name: 'UserListting',
-    props: {
-      isMini: {
-        type: Boolean,
-        default: false
-      }
+import DialogConfirm from '@/components/DialogConfirm'
+import { debounce } from 'lodash'
+import DataView from '@/components/DataView/DataView'
+import { mapActions, mapGetters } from 'vuex'
+export default{
+  name: 'UserListting',
+  props: {
+    isMini: {
+      type: Boolean,
+      default: false
+    }
+  },
+  components: {
+    DataView,
+    DialogConfirm
+  },
+  data: () => ({
+    dataViewHeight: 0,
+    dataViewName: 'position',
+    idPosition: null,
+    dialogDelete: false,
+    status: 'Hiển thị',
+    dialog: false,
+    editedIndex: -1,
+    editTitle: -1,
+    position: {
+      status: true,
+      name: ''
     },
-    components: {
-      DataView,
-      DialogConfirm
+    params: {
+      q: ''
     },
-    data: () => ({
-      dataViewHeight: 0,
-      dataViewName: 'position',
-      idPosition: null,
-      dialogDelete: false,
-      status: 'Hiển thị',
-      dialog: false,
-      editedIndex: -1,
-      editTitle: -1,
-      position: {
-        status: true,
-        name: ''
-      },
-      params: {
-        q: ''
-      },
-      defaultItem: {
-      }
-    }),
-    computed: {
-      formTitle () {
-        return this.editTitle === -1 ? 'Thêm chức danh' : 'Sửa chức danh'
-      },
-      ...mapGetters('Position', ['positionDetail']),
-      ...mapGetters(['isFetchingApi'])
+    defaultItem: {
+    }
+  }),
+  computed: {
+    formTitle () {
+      return this.editTitle === -1 ? 'Thêm chức danh' : 'Sửa chức danh'
     },
-    watch: {
-      dialog (val) {
-        val || this.close()
-      }
-    },
-    created () {
-      this.fetchPosition()
-    },
-    methods: {
-      ...mapActions(['setMiniDrawer']),
-      ...mapActions('Position', ['fetchPosition', 'deletePosition', 'updatePosition', 'updateStatusPosition']),
-      ...mapActions(['showNotify', 'setMiniDrawer']),
-      ...mapActions('Position', ['createPosition']),
-      ...mapActions('Dataview', ['removeDataviewEntry']),
+    ...mapGetters('Position', ['positionDetail']),
+    ...mapGetters(['isFetchingApi'])
+  },
+  watch: {
+    dialog (val) {
+      val || this.close()
+    }
+  },
+  created () {
+    this.fetchPosition()
+  },
+  methods: {
+    ...mapActions(['setMiniDrawer']),
+    ...mapActions('Position', ['fetchPosition', 'deletePosition', 'updatePosition', 'updateStatusPosition']),
+    ...mapActions(['showNotify', 'setMiniDrawer']),
+    ...mapActions('Position', ['createPosition']),
+    ...mapActions('Dataview', ['removeDataviewEntry']),
     // update status
     changeStatus (idPosition) {
       this.updateStatusPosition({
@@ -237,7 +237,6 @@
       this.position = Object.assign({}, item)
       this.status_txt()
       this.dialog = true
-
     },
     // remove position
     removeConfirm (id) {
