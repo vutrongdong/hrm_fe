@@ -31,7 +31,7 @@
               placeholder="Hợp đồng"
               item-text="type_txt"
               item-value="type"
-              :items="contractDetail"
+              :items="contracts"
               v-model="params.contractType"
               menu-props="auto"
               hide-details
@@ -88,9 +88,7 @@
             class='ml-2'
             @change="changeBranch"
             placeholder="Chọn chi nhánh"
-            :items="items"
-            :loading="isLoading"
-            :search-input.sync="search"
+            :items="branches"
             item-text="name"
             item-value="id"
             v-model="params.branchId"
@@ -131,7 +129,7 @@
             class='ml-2'
             @change="filter"
             placeholder="Chọn chức vụ"
-            :items="positionAll"
+            :items="positions"
             item-text="name"
             item-value="id"
             v-model="params.positionId"
@@ -304,96 +302,47 @@ export default{
     DialogConfirm
   },
   data: () => ({
-      //
-      descriptionLimit: 30,
-      entries: [],
-      isLoading: false,
-      search: null,
-      //
-      filterMore: [
-      { name: 'Ngày vào', value: '' },
-      { name: 'Năm sinh', value: '' },
-      { name: 'Tháng sinh', value: '' }
+    branches: [],
+    contracts:[],
+    positions:[],
+    filterMore: [
+    { name: 'Ngày vào', value: '' },
+    { name: 'Năm sinh', value: '' },
+    { name: 'Tháng sinh', value: '' }
 
-      ],
-      colorDepartment: 'red',
-      departmentActiveByBranch: false,
-      positionActiveByDepartment: false,
-      dialogDelete: false,
-      dataViewHeight: 0,
-      dataViewName: 'user',
-      departments: [],
-      idUser: null,
-      user: {
-        status: true
-      },
-      branch:[],
-      statusUser: [
-      { status_txt: 'Kích hoạt', status: 1 },
-      { status_txt: 'Không kích hoạt', status: 0 }
-      ],
-      params: {
-        q: '',
-        branchId: '',
-        departmentId: '',
-        positionId: '',
-        contractType: '',
-        status: '',
-        include: 'roles,departments,contracts'
-      }
-    }),
-  watch:{
-    search (val) {
-      // Items have already been loaded
-      if (this.items.length > 0) return
-
-        this.isLoading = true
-
-      this.fetchApi({
-        url: 'branches',
-        method: 'GET',
-        params: {
-          limit: -1
-        },
-        success: (response) => {
-          this.items = response.data
-          this.isLoading = false
-        }
-      })
+    ],
+    colorDepartment: 'red',
+    departmentActiveByBranch: false,
+    positionActiveByDepartment: false,
+    dialogDelete: false,
+    dataViewHeight: 0,
+    dataViewName: 'user',
+    departments: [],
+    idUser: null,
+    user: {
+      status: true
+    },
+    statusUser: [
+    { status_txt: 'Kích hoạt', status: 1 },
+    { status_txt: 'Không kích hoạt', status: 0 }
+    ],
+    params: {
+      q: '',
+      branchId: '',
+      departmentId: '',
+      positionId: '',
+      contractType: '',
+      status: '',
+      include: 'roles,departments,contracts'
     }
-  },
+  }),
   computed: {
-    fields () {
-      if (!this.model) return []
-
-        return Object.keys(this.model).map(key => {
-          return {
-            key: key,
-            value: this.model[key] || 'n/a'
-          }
-        })
-    },
-    items () {
-      return this.entries.map(entry => {
-        const Description = entry.Description.length > this.descriptionLimit
-        ? entry.Description.slice(0, this.descriptionLimit) + '...'
-        : entry.Description
-
-        return Object.assign({}, entry, { Description })
-      })
-    },
-    ...mapGetters('Branch', ['branchAll']),
-    ...mapGetters('Department', ['departmentByBranch']),
-    ...mapGetters('Position', ['positionAll']),
-    ...mapGetters('Contracts', ['contractDetail'])
+    ...mapGetters('Department', ['departmentByBranch'])
   },
   methods: {
     ...mapActions('Dataview', ['removeDataviewEntry']),
     ...mapActions('User', ['getUser', 'deleteUser', 'updateStatusUser']),
-    ...mapActions('Branch', ['getBranchForUser']),
     ...mapActions('Department', ['getDepartmentForUser']),
-    ...mapActions('Contracts', ['fetchContract']),
-    ...mapActions('Position', ['fetchPosition']),
     ...mapActions(['fetchApi']),
     userDetail (user) {
       this.getUser({ userId: user.id, params: { include: 'roles,departments,contracts' } })
@@ -510,11 +459,50 @@ export default{
         query: query
       })
     }
-  },
-  created () {
-    this.getBranchForUser()
-    this.fetchPosition()
-    this.fetchContract()
+    // fetch api branch
+    this.fetchApi({
+      url: 'branches',
+      method: 'GET',
+      params: {
+        limit: -1
+      },
+      success: (response) => {
+        this.branches = response.data
+      }
+    })
+    // fetch api branch
+    this.fetchApi({
+      url: 'branches',
+      method: 'GET',
+      params: {
+        limit: -1
+      },
+      success: (response) => {
+        this.branches = response.data
+      }
+    })
+    // fetch api contracts
+    this.fetchApi({
+      url: 'contracts',
+      method: 'GET',
+      params: {
+        limit: -1
+      },
+      success: (response) => {
+        this.contracts = response.data
+      }
+    })
+    // fetch api position
+    this.fetchApi({
+      url: 'positions',
+      method: 'GET',
+      params: {
+        limit: -1
+      },
+      success: (response) => {
+        this.positions = response.data
+      }
+    })
   }
 }
 </script>

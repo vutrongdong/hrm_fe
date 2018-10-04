@@ -319,34 +319,34 @@ export default{
       },
       // các loại hợp đồng
       typeContract: [
-      { name: 'Học việc', value: 0 },
-      { name: 'Cộng tác viên', value: 1 },
-      { name: 'Thử việc', value: 2 },
-      { name: 'Có thời hạn', value: 3 },
-      { name: 'Không thời hạn', value: 4 },
-      { name: 'Khác', value: 5 }
+        { name: 'Học việc', value: 0 },
+        { name: 'Cộng tác viên', value: 1 },
+        { name: 'Thử việc', value: 2 },
+        { name: 'Có thời hạn', value: 3 },
+        { name: 'Không thời hạn', value: 4 },
+        { name: 'Khác', value: 5 }
       ],
       // các trạng thái của hợp đồng
       statusContract: [
-      { name: 'Tiêu chuẩn', value: 0 },
-      { name: 'Chấm dứt', value: 1 },
-      { name: 'Gia hạn', value: 2 }
+        { name: 'Tiêu chuẩn', value: 0 },
+        { name: 'Chấm dứt', value: 1 },
+        { name: 'Gia hạn', value: 2 }
       ],
       // tiêu đề của bảng chi nhánh phòng ban , chức vụ
       headersPosition: [
-      { text: 'Chi nhánh', value: 'branch', sortable: false },
-      { text: 'Phòng ban', value: 'department', sortable: false },
-      { text: 'Chức vụ', value: 'position', sortable: false }
+        { text: 'Chi nhánh', value: 'branch', sortable: false },
+        { text: 'Phòng ban', value: 'department', sortable: false },
+        { text: 'Chức vụ', value: 'position', sortable: false }
       ],
       // tiêu đề của bảng hợp đồng
       headersContract: [
-      { text: 'Tên hợp đồng', value: 'title', sortable: false },
-      { text: '', sortable: false },
-      { text: 'Loại hợp đồng', value: 'type', sortable: false },
-      { text: 'Thời gian', value: 'date_sign', sortable: false },
-      { text: '', sortable: false },
-      { text: 'Trạng thái', sortable: false },
-      { text: 'Hành động', value: 'action', sortable: false }
+        { text: 'Tên hợp đồng', value: 'title', sortable: false },
+        { text: '', sortable: false },
+        { text: 'Loại hợp đồng', value: 'type', sortable: false },
+        { text: 'Thời gian', value: 'date_sign', sortable: false },
+        { text: '', sortable: false },
+        { text: 'Trạng thái', sortable: false },
+        { text: 'Hành động', value: 'action', sortable: false }
       ],
       dataViewHeight: 0,
       dialogEditContract: false,

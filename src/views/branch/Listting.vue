@@ -304,9 +304,9 @@ export default {
   },
   mounted () {
     if (this.$route.params.id) {
-      this.dataViewHeight = this.$refs.laylout.clientHeight - 130
+      this.dataViewHeight = this.$refs.laylout.clientHeight - 55
     } else {
-      this.dataViewHeight = this.$refs.laylout.clientHeight - 176
+      this.dataViewHeight = this.$refs.laylout.clientHeight - 150
     }
     let query = { ...this.$route.query }
     if (query.hasOwnProperty('reload')) {
